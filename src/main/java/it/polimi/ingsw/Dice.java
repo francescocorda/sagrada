@@ -8,7 +8,7 @@ public class Dice {
 
     public Dice(Color color) {
         this.color = color;
-        roll();
+        //roll();
     }
 
     public Color getColor() {

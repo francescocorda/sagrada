@@ -1,5 +1,4 @@
 package it.polimi.ingsw;
-
 /**
  * Hello world!
  *
@@ -7,7 +6,9 @@ package it.polimi.ingsw;
 public class App 
 {
     public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+    {   Dice dice = new Dice(Color.ANSI_BLUE);
+        System.out.println( "Hello World!" + dice );
+        dice.setColor(Color.ANSI_PURPLE);
+        dice.dump();
     }
 }

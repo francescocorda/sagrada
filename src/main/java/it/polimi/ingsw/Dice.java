@@ -8,7 +8,7 @@ public class Dice {
 
     public Dice(Color color) {
         this.color = color;
-        //roll();
+        roll();
     }
 
     public Color getColor() {
@@ -37,6 +37,10 @@ public class Dice {
             "\u2684",
             "\u2685"
     };
+
+    public int valueOf(){
+        return face.compareTo("\u2680")+1;
+    }
 
     public void roll(){
         int count = faces.length;

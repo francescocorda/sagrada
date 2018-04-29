@@ -30,20 +30,21 @@ public class DiceBag {
         return d;
     }
 
-    void dump() {
-        int count = dices.size();
-        System.out.print("elems: ");
-        System.out.println(count);
-        for (Dice d : dices) {
-            System.out.println(d);
-            // or:
-            // d.dump();
+    @Override
+    public String toString(){
+        String string = "";
+        for(Dice temp: dices){
+            string+=temp.toString()+"\n";
         }
+        return "elems: "+dices.size()+"\n"+string;
+    }
+
+    void dump() {
+        System.out.println(this);
     }
 
     public int size(){
         return dices.size();
     }
-
 }
 

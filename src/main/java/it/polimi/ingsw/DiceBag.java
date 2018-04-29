@@ -34,7 +34,7 @@ public class DiceBag {
     public String toString(){
         String string = "";
         for(Dice temp: dices){
-            string+=temp.toString()+"\n";
+            string = string.concat(temp.toString()+"\n");
         }
         return "elems: "+dices.size()+"\n"+string;
     }

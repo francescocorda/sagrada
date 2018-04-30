@@ -25,6 +25,22 @@ public class Dice {
         return escape+"["+face+"]" + Color.RESET;
     }
 
+    public String getFace(){
+        return face;
+    }
+
+    public String getOppositeFace(){
+        return faces[6-valueOf()];
+    }
+
+    public boolean setFace(int value){
+        if(0<value && value<7){
+            this.face=faces[value-1];
+            return  true;
+        }
+        return false;
+    }
+
     void dump(){
         System.out.println(this);
     }

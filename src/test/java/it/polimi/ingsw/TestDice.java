@@ -26,5 +26,23 @@ public class TestDice {
         assertTrue((dice.valueOf()>0)&&(dice.valueOf()<7));
     }
 
+    @Test
+    public void oppositeFaceTest(){
+        Dice dice = new Dice(Color.ANSI_YELLOW);
+        for(int i =1; i<7; i++){
+            dice.setFace(i);
+            assertEquals(6-dice.valueOf()+1, dice.getOppositeFace().compareTo("\u2680")+1);
+        }
+    }
+
+    @Test
+    public void setFaceTest(){
+        Dice dice = new Dice(Color.ANSI_YELLOW);
+        assertFalse(dice.setFace(7));
+        assertFalse(dice.setFace(-1));
+    }
+
+
+
 
 }

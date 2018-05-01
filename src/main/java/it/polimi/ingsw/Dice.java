@@ -29,6 +29,7 @@ public class Dice {
         return face;
     }
 
+
     public String getOppositeFace(){
         return faces[6-valueOf()];
     }

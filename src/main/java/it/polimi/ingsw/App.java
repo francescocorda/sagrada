@@ -6,7 +6,10 @@ package it.polimi.ingsw;
 public class App 
 {
     public static void main( String[] args ) {
+
+
         Dice dice = new Dice(Color.ANSI_BLUE);
+
         System.out.println("Hello World!" + dice);
         dice.setColor(Color.ANSI_PURPLE);
         dice.dump();

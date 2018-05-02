@@ -8,7 +8,6 @@ public class TestDice {
     @Test
     public void colorTest(){
         Dice dice = new Dice(Color.ANSI_RED);
-        System.out.println(dice.valueOf());
         assertEquals(Color.ANSI_RED, dice.getColor());
         dice.setColor(Color.ANSI_BLUE);
         assertEquals(Color.ANSI_BLUE, dice.getColor());

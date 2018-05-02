@@ -34,6 +34,10 @@ public class Dice {
         return faces[6-valueOf()];
     }
 
+    public void setOppositeFace(){
+        this.face = faces[6-valueOf()];
+    }
+
     public boolean setFace(int value){
         if(0<value && value<7){
             this.face=faces[value-1];
@@ -65,4 +69,5 @@ public class Dice {
         int index = rand.nextInt(count);
         this.face = faces[index];
     }
+
 }

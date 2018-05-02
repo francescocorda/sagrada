@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 public enum Restriction {
+    ANSI_WHITE("\u001B[37m"),
     ANSI_RED("\u001B[31m"),
     ANSI_GREEN("\u001B[32m"),
     ANSI_YELLOW("\u001B[33m"),
@@ -23,4 +24,15 @@ public enum Restriction {
     public String escape() {
         return escape;
     }
+
+
+    public boolean compare(String value) {
+        return this.escape.equals(value);
+    }
+
+    public boolean compare(Color color) {
+        return this.escape.equals(color.escape());
+    }
+
+
 }

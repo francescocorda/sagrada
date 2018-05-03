@@ -1,13 +1,15 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.NotValidInputException;
+
 import java.util.ArrayList;
 
 public class PatternDeck {
 
     private ArrayList<PatternCard> patterns = new ArrayList<PatternCard>();
 
-    PatternCard kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream", 1);
-    PatternCard aurorae_magnificus = new PatternCard("Aurorae Magnificus", 2);
+    PatternCard kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream",1);
+    PatternCard aurorae_magnificus = new PatternCard("Aurorae Magnificus",2);
     PatternCard sun_catcher = new PatternCard("Sun Catcher", 3);
     PatternCard virtus = new PatternCard("Virtus", 4);
     PatternCard via_lux = new PatternCard("Via Lux", 5);
@@ -35,7 +37,11 @@ public class PatternDeck {
 
 
         //kaleidoscopic_dream
-        kaleidoscopic_dream.setDifficulty(4);
+        try {
+            kaleidoscopic_dream.setDifficulty(4);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         kaleidoscopic_dream.setRestriction(1,1, Restriction.ANSI_YELLOW);
         kaleidoscopic_dream.setRestriction(1,2, Restriction.ANSI_BLUE);
         kaleidoscopic_dream.setRestriction(1,5, Restriction.ONE);
@@ -51,7 +57,11 @@ public class PatternDeck {
         patterns.add(kaleidoscopic_dream);
 
         //aurorae_magnificus
-        aurorae_magnificus.setDifficulty(5);
+        try {
+            aurorae_magnificus.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         aurorae_magnificus.setRestriction(1,1, Restriction.FIVE);
         aurorae_magnificus.setRestriction(1,2, Restriction.ANSI_GREEN);
         aurorae_magnificus.setRestriction(1,3, Restriction.ANSI_BLUE);
@@ -68,7 +78,11 @@ public class PatternDeck {
         patterns.add(aurorae_magnificus);
 
         //sun_catcher
-        sun_catcher.setDifficulty(3);
+        try {
+            sun_catcher.setDifficulty(3);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         sun_catcher.setRestriction(1,2, Restriction.ANSI_BLUE);
         sun_catcher.setRestriction(1,3, Restriction.TWO);
         sun_catcher.setRestriction(1,5, Restriction.ANSI_YELLOW);
@@ -82,7 +96,11 @@ public class PatternDeck {
         patterns.add(sun_catcher);
 
         //virtus
-        virtus.setDifficulty(5);
+        try {
+            virtus.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         virtus.setRestriction(1,1, Restriction.FOUR);
         virtus.setRestriction(1,3, Restriction.TWO);
         virtus.setRestriction(1,4, Restriction.FIVE);
@@ -99,7 +117,11 @@ public class PatternDeck {
         patterns.add(virtus);
 
         //via_lux
-        via_lux.setDifficulty(4);
+        try {
+            via_lux.setDifficulty(4);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         via_lux.setRestriction(1,1, Restriction.ANSI_YELLOW);
         via_lux.setRestriction(1,3, Restriction.SIX);
         via_lux.setRestriction(2,2, Restriction.ONE);
@@ -115,7 +137,11 @@ public class PatternDeck {
         patterns.add(via_lux);
 
         //bellesguard
-        bellesguard.setDifficulty(3);
+        try {
+            bellesguard.setDifficulty(3);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         bellesguard.setRestriction(1,1, Restriction.ANSI_BLUE);
         bellesguard.setRestriction(1,2, Restriction.SIX);
         bellesguard.setRestriction(1,5, Restriction.ANSI_YELLOW);
@@ -130,7 +156,11 @@ public class PatternDeck {
         patterns.add(bellesguard);
 
         //firmitas
-        firmitas.setDifficulty(5);
+        try {
+            firmitas.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         firmitas.setRestriction(1,1, Restriction.ANSI_PURPLE);
         firmitas.setRestriction(1,2, Restriction.SIX);
         firmitas.setRestriction(1,5, Restriction.THREE);
@@ -147,7 +177,11 @@ public class PatternDeck {
         patterns.add(firmitas);
 
         //aurora_sagradis
-        aurora_sagradis.setDifficulty(4);
+        try {
+            aurora_sagradis.setDifficulty(4);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         aurora_sagradis.setRestriction(1,1, Restriction.ANSI_RED);
         aurora_sagradis.setRestriction(1,3, Restriction.ANSI_BLUE);
         aurora_sagradis.setRestriction(1,5, Restriction.ANSI_YELLOW);
@@ -162,7 +196,11 @@ public class PatternDeck {
         patterns.add(aurora_sagradis);
 
         //shadow_thief
-        shadow_thief.setDifficulty(5);
+        try {
+            shadow_thief.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         shadow_thief.setRestriction(1,1, Restriction.SIX);
         shadow_thief.setRestriction(1,2, Restriction.ANSI_PURPLE);
         shadow_thief.setRestriction(1,5, Restriction.FIVE);
@@ -179,7 +217,11 @@ public class PatternDeck {
         patterns.add(shadow_thief);
 
         //symphony_of_light
-        symphony_of_light.setDifficulty(6);
+        try {
+            symphony_of_light.setDifficulty(6);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         symphony_of_light.setRestriction(1,1, Restriction.TWO);
         symphony_of_light.setRestriction(1,3, Restriction.FIVE);
         symphony_of_light.setRestriction(1,5, Restriction.ONE);
@@ -196,7 +238,11 @@ public class PatternDeck {
         patterns.add(symphony_of_light);
 
         //industria
-        industria.setDifficulty(5);
+        try {
+            industria.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         industria.setRestriction(1,1, Restriction.ONE);
         industria.setRestriction(1,2, Restriction.ANSI_RED);
         industria.setRestriction(1,3, Restriction.THREE);
@@ -213,7 +259,11 @@ public class PatternDeck {
         patterns.add(industria);
 
         //batllo
-        batllo.setDifficulty(5);
+        try {
+            batllo.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         batllo.setRestriction(1,3, Restriction.SIX);
         batllo.setRestriction(2,2, Restriction.FIVE);
         batllo.setRestriction(2,3, Restriction.ANSI_BLUE);
@@ -231,7 +281,11 @@ public class PatternDeck {
         patterns.add(batllo);
 
         //gravitas
-        gravitas.setDifficulty(5);
+        try {
+            gravitas.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         gravitas.setRestriction(1,1, Restriction.ONE);
         gravitas.setRestriction(1,3, Restriction.THREE);
         gravitas.setRestriction(1,4, Restriction.ANSI_BLUE);
@@ -247,7 +301,11 @@ public class PatternDeck {
         patterns.add(gravitas);
 
         //lux_astram
-        lux_astram.setDifficulty(5);
+        try {
+            lux_astram.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         lux_astram.setRestriction(1,2, Restriction.ONE);
         lux_astram.setRestriction(1,3, Restriction.ANSI_GREEN);
         lux_astram.setRestriction(1,4, Restriction.ANSI_PURPLE);
@@ -265,7 +323,11 @@ public class PatternDeck {
         patterns.add(lux_astram);
 
         //firelight
-        firelight.setDifficulty(5);
+        try {
+            firelight.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         firelight.setRestriction(1,1, Restriction.THREE);
         firelight.setRestriction(1,2, Restriction.FOUR);
         firelight.setRestriction(1,3, Restriction.ONE);
@@ -282,7 +344,11 @@ public class PatternDeck {
         patterns.add(firelight);
 
         //fractal_drops
-        fractal_drops.setDifficulty(3);
+        try {
+            fractal_drops.setDifficulty(3);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         fractal_drops.setRestriction(1,2, Restriction.FOUR);
         fractal_drops.setRestriction(1,4, Restriction.ANSI_YELLOW);
         fractal_drops.setRestriction(1,5, Restriction.SIX);
@@ -296,7 +362,11 @@ public class PatternDeck {
         patterns.add(fractal_drops);
 
         //chromatic_splendor
-        chromatic_splendor.setDifficulty(4);
+        try {
+            chromatic_splendor.setDifficulty(4);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         chromatic_splendor.setRestriction(1,3, Restriction.ANSI_GREEN);
         chromatic_splendor.setRestriction(2,1, Restriction.TWO);
         chromatic_splendor.setRestriction(2,2, Restriction.ANSI_YELLOW);
@@ -312,7 +382,11 @@ public class PatternDeck {
         patterns.add(chromatic_splendor);
 
         //luz_celestial
-        luz_celestial.setDifficulty(3);
+        try {
+            luz_celestial.setDifficulty(3);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         luz_celestial.setRestriction(1,3, Restriction.ANSI_RED);
         luz_celestial.setRestriction(1,4, Restriction.FIVE);
         luz_celestial.setRestriction(2,1, Restriction.ANSI_PURPLE);
@@ -326,7 +400,11 @@ public class PatternDeck {
         patterns.add(luz_celestial);
 
         //water_of_life
-        water_of_life.setDifficulty(6);
+        try {
+            water_of_life.setDifficulty(6);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         water_of_life.setRestriction(1,1, Restriction.SIX);
         water_of_life.setRestriction(1,2, Restriction.ANSI_BLUE);
         water_of_life.setRestriction(1,5, Restriction.ONE);
@@ -344,7 +422,11 @@ public class PatternDeck {
         patterns.add(water_of_life);
 
         //lux_mundi
-        lux_mundi.setDifficulty(6);
+        try {
+            lux_mundi.setDifficulty(6);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         lux_mundi.setRestriction(1,3, Restriction.ONE);
         lux_mundi.setRestriction(2,1, Restriction.ONE);
         lux_mundi.setRestriction(2,2, Restriction.ANSI_GREEN);
@@ -362,7 +444,11 @@ public class PatternDeck {
         patterns.add(lux_mundi);
 
         //suns_glory
-        suns_glory.setDifficulty(6);
+        try {
+            suns_glory.setDifficulty(6);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         suns_glory.setRestriction(1,1, Restriction.ONE);
         suns_glory.setRestriction(1,2, Restriction.ANSI_PURPLE);
         suns_glory.setRestriction(1,3, Restriction.ANSI_YELLOW);
@@ -380,7 +466,11 @@ public class PatternDeck {
         patterns.add(suns_glory);
 
         //ripples_of_light
-        ripples_of_light.setDifficulty(5);
+        try {
+            ripples_of_light.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         ripples_of_light.setRestriction(1,4, Restriction.ANSI_RED);
         ripples_of_light.setRestriction(1,5, Restriction.FIVE);
         ripples_of_light.setRestriction(2,3, Restriction.ANSI_PURPLE);
@@ -398,7 +488,11 @@ public class PatternDeck {
         patterns.add(ripples_of_light);
 
         //comitas
-        comitas.setDifficulty(5);
+        try {
+            comitas.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         comitas.setRestriction(1,1, Restriction.ANSI_YELLOW);
         comitas.setRestriction(1,3, Restriction.TWO);
         comitas.setRestriction(1,5, Restriction.SIX);
@@ -414,7 +508,11 @@ public class PatternDeck {
         patterns.add(comitas);
 
         //fulgor_del_cielo
-        fulgor_del_cielo.setDifficulty(5);
+        try {
+            fulgor_del_cielo.setDifficulty(5);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         fulgor_del_cielo.setRestriction(1,2, Restriction.ANSI_BLUE);
         fulgor_del_cielo.setRestriction(1,3, Restriction.ANSI_RED);
         fulgor_del_cielo.setRestriction(2,2, Restriction.FOUR);

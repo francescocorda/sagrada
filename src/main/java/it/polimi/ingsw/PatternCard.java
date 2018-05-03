@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.*;
+
 public class PatternCard extends Card {
     private int difficulty;
     private Cell[][] patternCard = new Cell[4][5];
@@ -17,7 +19,8 @@ public class PatternCard extends Card {
         return difficulty;
     }
 
-    public void setDifficulty(int difficulty) {
+    public void setDifficulty(int difficulty) throws NotValidInputException{
+        if(difficulty<3||difficulty>6) throw new NotValidInputException();
         this.difficulty = difficulty;
     }
 
@@ -26,6 +29,9 @@ public class PatternCard extends Card {
     }
 
     public void setRestriction(int row, int col, Restriction restriction) {
+        if(row<1 || row>4 || col<1 || col>5) {
+            throw new IndexOutOfBoundsException();
+        }
         this.patternCard[row - 1][col - 1].setRestriction(restriction);
     }
 
@@ -34,6 +40,9 @@ public class PatternCard extends Card {
     }
 
     public void setExceptionRestriction(int row, int col, boolean exception) {
+        if(row<1 || row>4 || col<1 || col>5) {
+            throw new IndexOutOfBoundsException();
+        }
         this.patternCard[row - 1][col - 1].setExceptionRestriction(exception);
     }
 
@@ -43,6 +52,9 @@ public class PatternCard extends Card {
     }
 
     public void setExceptionPosition(int row, int col, boolean exception) {
+        if(row<1 || row>4 || col<1 || col>5) {
+            throw new IndexOutOfBoundsException();
+        }
         this.patternCard[row - 1][col - 1].setExceptionPosition(exception);
     }
 

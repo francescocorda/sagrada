@@ -10,4 +10,5 @@ public class TestPatternDeck {
         prova.createPatternDeck();
         prova.printPatternDeck();
     }
+
 }

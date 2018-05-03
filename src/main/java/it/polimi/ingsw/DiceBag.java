@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DiceBag {
-    ArrayList<Dice> dices;
+    private ArrayList<Dice> dices;
 
     public DiceBag() {
         dices = new ArrayList<Dice>();
@@ -20,14 +20,31 @@ public class DiceBag {
     }
 
     Dice draw() {
-        int count = dices.size();
+        int count = this.dices.size();
         if (count == 0)
-            return null;
+            throw new IndexOutOfBoundsException();
         Random rand = new Random();
         int index = rand.nextInt(count);
-        Dice d = dices.get(index);
-        this.dices.remove(d);
-        return d;
+        Dice dice = this.dices.get(index);
+        this.dices.remove(dice);
+        return dice;
+    }
+
+    ArrayList<Dice> draw(int numberOfDice) {
+        ArrayList<Dice> drawPool = new ArrayList<>();
+
+        if(numberOfDice>this.dices.size())
+            throw new IndexOutOfBoundsException();
+
+        for(int i=0; i<numberOfDice; i++) {
+            int count = this.dices.size();
+            Random rand = new Random();
+            int index = rand.nextInt(count);
+            Dice dice = this.dices.get(index);
+            this.dices.remove(dice);
+            drawPool.add(dice);
+        }
+        return drawPool;
     }
 
     @Override

@@ -1,12 +1,14 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidFaceException;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TestDice {
     @Test
-    public void colorTest(){
+    public void colorTest() {
         Dice dice = new Dice(Color.ANSI_RED);
         assertEquals(Color.ANSI_RED, dice.getColor());
         dice.setColor(Color.ANSI_BLUE);
@@ -20,28 +22,30 @@ public class TestDice {
     }
 
     @Test
-    public void numbersTest(){
+    public void numbersTest() {
         Dice dice = new Dice(Color.ANSI_RED);
-        assertTrue((dice.valueOf()>0)&&(dice.valueOf()<7));
+        assertTrue((dice.valueOf() > 0) && (dice.valueOf() < 7));
     }
 
     @Test
-    public void oppositeFaceTest(){
+    public void oppositeFaceTest() {
         Dice dice = new Dice(Color.ANSI_YELLOW);
-        for(int i =1; i<7; i++){
-            dice.setFace(i);
-            assertEquals(6-dice.valueOf()+1, dice.getOppositeFace().compareTo("\u2680")+1);
+        for (int i = 1; i < 7; i++) {
+            try {
+                dice.setFace(i);
+            } catch (InvalidFaceException e){
+                e.printStackTrace();
+            }
+            assertEquals(6 - dice.valueOf() + 1, dice.getOppositeFace().compareTo("\u2680") + 1);
         }
     }
 
     @Test
-    public void setFaceTest(){
+    public void setFaceTest() {
         Dice dice = new Dice(Color.ANSI_YELLOW);
-        assertFalse(dice.setFace(7));
-        assertFalse(dice.setFace(-1));
+        assertThrows(InvalidFaceException.class, ()->{dice.setFace(7);});
+        assertThrows(InvalidFaceException.class, ()->{dice.setFace(-1);});
     }
-
-
 
 
 }

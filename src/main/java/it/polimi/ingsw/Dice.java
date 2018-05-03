@@ -1,5 +1,7 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.InvalidFaceException;
+
 import java.util.Random;
 
 public class Dice {
@@ -38,12 +40,12 @@ public class Dice {
         this.face = faces[6-valueOf()];
     }
 
-    public boolean setFace(int value){
+    public void setFace(int value) throws InvalidFaceException{
         if(0<value && value<7){
             this.face=faces[value-1];
-            return  true;
         }
-        return false;
+        else
+            throw new InvalidFaceException();
     }
 
     void dump(){

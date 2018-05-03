@@ -14,11 +14,19 @@ public class TestWindowFrame {
     @Test
     public void setDiceTest() {
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard();
+        PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
-        dice.setFace(4);
+        try{
+            dice.setFace(4);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
         Dice dice2 = new Dice(Color.ANSI_RED);
-        dice2.setFace(6);
+        try{
+            dice2.setFace(6);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
         window.setPatternCard(pattern);
 
         try {
@@ -57,7 +65,7 @@ public class TestWindowFrame {
     @Test
     public void getDiceTest() {
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard();
+        PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
         window.setPatternCard(pattern);
 
@@ -71,6 +79,8 @@ public class TestWindowFrame {
         } catch (InvalidFirstMoveException e) {
             e.printStackTrace();
         } catch (OccupiedCellException e) {
+            e.printStackTrace();
+        } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
         //test funzionamento base setDice
@@ -98,7 +108,7 @@ public class TestWindowFrame {
     @Test
     public void removeDiceTest() {
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard();
+        PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
         window.setPatternCard(pattern);
 
@@ -161,7 +171,7 @@ public class TestWindowFrame {
     @Test
     public void hasValidNeighboursTest() {
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard();
+        PatternCard pattern = new PatternCard("default", 1);
         Dice dice1 = new Dice(Color.ANSI_PURPLE);
         Dice dice2 = new Dice(Color.ANSI_YELLOW);
         Dice dice3 = new Dice(Color.ANSI_BLUE);
@@ -180,6 +190,8 @@ public class TestWindowFrame {
         } catch (InvalidFirstMoveException e) {
             e.printStackTrace();
         } catch (OccupiedCellException e) {
+            e.printStackTrace();
+        } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
         //test funzionamento base hasNeighbours
@@ -224,7 +236,7 @@ public class TestWindowFrame {
     void firstMoveTest() {
 
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard();
+        PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
         window.setPatternCard(pattern);
 

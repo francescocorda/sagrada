@@ -31,4 +31,17 @@ public class Cell {
     public boolean getExceptionPosition() {
         return exceptionPosition;
     }
+
+    public void dump() {
+        System.out.println(toString());
+    }
+
+    public String toString() {
+        String escape = getRestriction().escape();
+        if (escape.compareTo("\u2680") + 1> 0) {
+            return Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET;
+        } else {
+            return escape + "[" + "\u25A0" + "]" + Restriction.RESET;
+        }
+    }
 }

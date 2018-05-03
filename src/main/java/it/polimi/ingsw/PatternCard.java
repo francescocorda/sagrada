@@ -49,18 +49,12 @@ public class PatternCard extends Card {
     @Override
     public String toString() {
         String string = "";
-        string=string.concat(" ID: " + getID() + "\n Name: " + getName() + "\n Difficulty: " +getDifficulty()+"\n");
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 5; j++) {
-                String escape = getRestriction(i, j).escape();
-                int face = escape.compareTo("\u2680") + 1;
-                if (face > 0) {
-                    string=string.concat(Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
-                } else {
-                    string=string.concat(escape + "[" + "\u25A0" + "]" + Restriction.RESET);
-                }
+        string = string.concat(" ID: " + getID() + "\n Name: " + getName() + "\n Difficulty: " +getDifficulty()+"\n");
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                string = string.concat(patternCard[i][j].toString());
             }
-            string=string.concat("\n");
+            string = string.concat("\n");
         }
         return string;
     }

@@ -49,7 +49,7 @@ public class Dice {
     }
 
     void dump(){
-        System.out.println(this);
+        System.out.println(toString());
     }
 
     public static final String[] faces = {

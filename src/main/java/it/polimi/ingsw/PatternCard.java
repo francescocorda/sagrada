@@ -1,17 +1,17 @@
 package it.polimi.ingsw;
 
-public class PatternCard {
+public class PatternCard extends Card{
     private int difficulty;
     private Cell[][] patternCard = new Cell[4][5];
 
-    public PatternCard() {      //temporaneo fino a che non creiamo le effettive pattercard del gioco
+    public PatternCard(String name, int ID) {      //temporaneo fino a che non creiamo le effettive pattercard del gioco
+        super(name, ID);
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 patternCard[i][j] = new Cell();
             }
         }
     }
-
 
     public int getDifficulty() {
         return difficulty;

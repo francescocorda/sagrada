@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 public class PatternDeck {
 
-    private ArrayList<PatternCard> patterns = new ArrayList<PatternCard>();
+    private ArrayList<PatternCard> patternDeck = new ArrayList<PatternCard>();
 
-    PatternCard kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream",1);
-    PatternCard aurorae_magnificus = new PatternCard("Aurorae Magnificus",2);
+    PatternCard kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream", 1);
+    PatternCard aurorae_magnificus = new PatternCard("Aurorae Magnificus", 2);
     PatternCard sun_catcher = new PatternCard("Sun Catcher", 3);
     PatternCard virtus = new PatternCard("Virtus", 4);
     PatternCard via_lux = new PatternCard("Via Lux", 5);
@@ -35,7 +35,6 @@ public class PatternDeck {
 
     public void createPatternDeck() {
 
-
         //kaleidoscopic_dream
         try {
             kaleidoscopic_dream.setDifficulty(4);
@@ -54,7 +53,7 @@ public class PatternDeck {
         kaleidoscopic_dream.setRestriction(4,1, Restriction.TWO);
         kaleidoscopic_dream.setRestriction(4,4, Restriction.ANSI_BLUE);
         kaleidoscopic_dream.setRestriction(4,5, Restriction.ANSI_YELLOW);
-        patterns.add(kaleidoscopic_dream);
+        patternDeck.add(kaleidoscopic_dream);
 
         //aurorae_magnificus
         try {
@@ -75,7 +74,7 @@ public class PatternDeck {
         aurorae_magnificus.setRestriction(4,1, Restriction.ONE);
         aurorae_magnificus.setRestriction(4,4, Restriction.ANSI_GREEN);
         aurorae_magnificus.setRestriction(4,5, Restriction.FOUR);
-        patterns.add(aurorae_magnificus);
+        patternDeck.add(aurorae_magnificus);
 
         //sun_catcher
         try {
@@ -93,7 +92,7 @@ public class PatternDeck {
         sun_catcher.setRestriction(4,1, Restriction.ANSI_GREEN);
         sun_catcher.setRestriction(4,2, Restriction.THREE);
         sun_catcher.setRestriction(4,5, Restriction.ANSI_PURPLE);
-        patterns.add(sun_catcher);
+        patternDeck.add(sun_catcher);
 
         //virtus
         try {
@@ -114,7 +113,7 @@ public class PatternDeck {
         virtus.setRestriction(4,1, Restriction.FIVE);
         virtus.setRestriction(4,2, Restriction.ANSI_GREEN);
         virtus.setRestriction(4,3, Restriction.ONE);
-        patterns.add(virtus);
+        patternDeck.add(virtus);
 
         //via_lux
         try {
@@ -134,7 +133,7 @@ public class PatternDeck {
         via_lux.setRestriction(4,3, Restriction.FOUR);
         via_lux.setRestriction(4,4, Restriction.THREE);
         via_lux.setRestriction(4,5, Restriction.ANSI_RED);
-        patterns.add(via_lux);
+        patternDeck.add(via_lux);
 
         //bellesguard
         try {
@@ -153,7 +152,7 @@ public class PatternDeck {
         bellesguard.setRestriction(4,2, Restriction.FOUR);
         bellesguard.setRestriction(4,4, Restriction.ONE);
         bellesguard.setRestriction(4,5, Restriction.ANSI_GREEN);
-        patterns.add(bellesguard);
+        patternDeck.add(bellesguard);
 
         //firmitas
         try {
@@ -174,7 +173,7 @@ public class PatternDeck {
         firmitas.setRestriction(4,3, Restriction.FIVE);
         firmitas.setRestriction(4,4, Restriction.ANSI_PURPLE);
         firmitas.setRestriction(4,5, Restriction.FOUR);
-        patterns.add(firmitas);
+        patternDeck.add(firmitas);
 
         //aurora_sagradis
         try {
@@ -193,7 +192,7 @@ public class PatternDeck {
         aurora_sagradis.setRestriction(3,2, Restriction.ONE);
         aurora_sagradis.setRestriction(3,4, Restriction.FIVE);
         aurora_sagradis.setRestriction(4,3, Restriction.SIX);
-        patterns.add(aurora_sagradis);
+        patternDeck.add(aurora_sagradis);
 
         //shadow_thief
         try {
@@ -214,7 +213,7 @@ public class PatternDeck {
         shadow_thief.setRestriction(4,3, Restriction.FIVE);
         shadow_thief.setRestriction(4,4, Restriction.FOUR);
         shadow_thief.setRestriction(4,5, Restriction.THREE);
-        patterns.add(shadow_thief);
+        patternDeck.add(shadow_thief);
 
         //symphony_of_light
         try {
@@ -235,7 +234,7 @@ public class PatternDeck {
         symphony_of_light.setRestriction(3,4, Restriction.ANSI_GREEN);
         symphony_of_light.setRestriction(4,2, Restriction.THREE);
         symphony_of_light.setRestriction(4,4, Restriction.FIVE);
-        patterns.add(symphony_of_light);
+        patternDeck.add(symphony_of_light);
 
         //industria
         try {
@@ -256,7 +255,7 @@ public class PatternDeck {
         industria.setRestriction(3,5, Restriction.ONE);
         industria.setRestriction(4,4, Restriction.THREE);
         industria.setRestriction(4,5, Restriction.ANSI_RED);
-        patterns.add(industria);
+        patternDeck.add(industria);
 
         //batllo
         try {
@@ -278,7 +277,7 @@ public class PatternDeck {
         batllo.setRestriction(4,3, Restriction.ANSI_RED);
         batllo.setRestriction(4,4, Restriction.FIVE);
         batllo.setRestriction(4,5, Restriction.THREE);
-        patterns.add(batllo);
+        patternDeck.add(batllo);
 
         //gravitas
         try {
@@ -298,7 +297,7 @@ public class PatternDeck {
         gravitas.setRestriction(4,2, Restriction.FIVE);
         gravitas.setRestriction(4,3, Restriction.TWO);
         gravitas.setRestriction(4,5, Restriction.ONE);
-        patterns.add(gravitas);
+        patternDeck.add(gravitas);
 
         //lux_astram
         try {
@@ -320,7 +319,7 @@ public class PatternDeck {
         lux_astram.setRestriction(3,3, Restriction.FIVE);
         lux_astram.setRestriction(3,4, Restriction.THREE);
         lux_astram.setRestriction(3,5, Restriction.ANSI_PURPLE);
-        patterns.add(lux_astram);
+        patternDeck.add(lux_astram);
 
         //firelight
         try {
@@ -341,7 +340,7 @@ public class PatternDeck {
         firelight.setRestriction(4,3, Restriction.ANSI_YELLOW);
         firelight.setRestriction(4,4, Restriction.ANSI_RED);
         firelight.setRestriction(4,5, Restriction.SIX);
-        patterns.add(firelight);
+        patternDeck.add(firelight);
 
         //fractal_drops
         try {
@@ -359,7 +358,7 @@ public class PatternDeck {
         fractal_drops.setRestriction(3,5, Restriction.ONE);
         fractal_drops.setRestriction(4,1, Restriction.ANSI_BLUE);
         fractal_drops.setRestriction(4,2, Restriction.ANSI_YELLOW);
-        patterns.add(fractal_drops);
+        patternDeck.add(fractal_drops);
 
         //chromatic_splendor
         try {
@@ -379,7 +378,7 @@ public class PatternDeck {
         chromatic_splendor.setRestriction(4,1, Restriction.ONE);
         chromatic_splendor.setRestriction(4,3, Restriction.SIX);
         chromatic_splendor.setRestriction(4,5, Restriction.FOUR);
-        patterns.add(chromatic_splendor);
+        patternDeck.add(chromatic_splendor);
 
         //luz_celestial
         try {
@@ -397,7 +396,7 @@ public class PatternDeck {
         luz_celestial.setRestriction(3,4, Restriction.ANSI_BLUE);
         luz_celestial.setRestriction(4,2, Restriction.ANSI_YELLOW);
         luz_celestial.setRestriction(4,3, Restriction.TWO);
-        patterns.add(luz_celestial);
+        patternDeck.add(luz_celestial);
 
         //water_of_life
         try {
@@ -419,7 +418,7 @@ public class PatternDeck {
         water_of_life.setRestriction(4,3, Restriction.ANSI_YELLOW);
         water_of_life.setRestriction(4,4, Restriction.THREE);
         water_of_life.setRestriction(4,5, Restriction.ANSI_PURPLE);
-        patterns.add(water_of_life);
+        patternDeck.add(water_of_life);
 
         //lux_mundi
         try {
@@ -441,7 +440,7 @@ public class PatternDeck {
         lux_mundi.setRestriction(4,2, Restriction.ANSI_BLUE);
         lux_mundi.setRestriction(4,3, Restriction.FIVE);
         lux_mundi.setRestriction(4,4, Restriction.ANSI_GREEN);
-        patterns.add(lux_mundi);
+        patternDeck.add(lux_mundi);
 
         //suns_glory
         try {
@@ -463,7 +462,7 @@ public class PatternDeck {
         suns_glory.setRestriction(4,3, Restriction.FOUR);
         suns_glory.setRestriction(4,4, Restriction.TWO);
         suns_glory.setRestriction(4,5, Restriction.ONE);
-        patterns.add(suns_glory);
+        patternDeck.add(suns_glory);
 
         //ripples_of_light
         try {
@@ -485,7 +484,7 @@ public class PatternDeck {
         ripples_of_light.setRestriction(4,3, Restriction.ANSI_GREEN);
         ripples_of_light.setRestriction(4,4, Restriction.ONE);
         ripples_of_light.setRestriction(4,5, Restriction.ANSI_RED);
-        patterns.add(ripples_of_light);
+        patternDeck.add(ripples_of_light);
 
         //comitas
         try {
@@ -505,7 +504,7 @@ public class PatternDeck {
         comitas.setRestriction(4,2, Restriction.TWO);
         comitas.setRestriction(4,3, Restriction.ANSI_YELLOW);
         comitas.setRestriction(4,4, Restriction.THREE);
-        patterns.add(comitas);
+        patternDeck.add(comitas);
 
         //fulgor_del_cielo
         try {
@@ -526,15 +525,26 @@ public class PatternDeck {
         fulgor_del_cielo.setRestriction(4,2, Restriction.ANSI_RED);
         fulgor_del_cielo.setRestriction(4,3, Restriction.THREE);
         fulgor_del_cielo.setRestriction(4,4, Restriction.ONE);
-        patterns.add(fulgor_del_cielo);
+        patternDeck.add(fulgor_del_cielo);
     }
 
 
-    public void printPatternDeck() {
-        for (int k=0; k<24; k++) {
-            patterns.get(k).dump();
+    public void dump() {
+        //for (PatternCard c: patternDeck) {
+        for(int i=0; i<patternDeck.size(); i++){
+            patternDeck.get(i).dump();
+            System.out.println("\n");
         }
     }
+
+    public String toString() {
+        String string= new String();
+        for (PatternCard c: patternDeck) {
+            string= string.concat(c.toString()+"\n\n");
+        }
+        return string;
+    }
+
 }
 
 

@@ -98,5 +98,4 @@ public class TestPatternCard {
         assertDoesNotThrow(()->patternCard.setExceptionRestriction(3,3,true));
     }
 
-
 }

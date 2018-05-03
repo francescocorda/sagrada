@@ -6,9 +6,9 @@ public class TestPatternDeck {
     @Test
     public void firstTest() {
         PatternDeck prova = new PatternDeck();
-
         prova.createPatternDeck();
-        prova.printPatternDeck();
+        prova.dump();
+        System.out.println(prova.toString());
     }
 
 }

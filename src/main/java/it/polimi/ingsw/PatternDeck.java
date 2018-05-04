@@ -6,34 +6,62 @@ import java.util.ArrayList;
 
 public class PatternDeck {
 
-    private ArrayList<PatternCard> patternDeck = new ArrayList<PatternCard>();
+    private ArrayList<PatternCard> patternDeck;
 
-    PatternCard kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream", 1);
-    PatternCard aurorae_magnificus = new PatternCard("Aurorae Magnificus", 2);
-    PatternCard sun_catcher = new PatternCard("Sun Catcher", 3);
-    PatternCard virtus = new PatternCard("Virtus", 4);
-    PatternCard via_lux = new PatternCard("Via Lux", 5);
-    PatternCard bellesguard = new PatternCard("Bellesguard", 6);
-    PatternCard firmitas = new PatternCard("Firmitas", 7);
-    PatternCard aurora_sagradis = new PatternCard("Aurora Sagradis", 8);
-    PatternCard shadow_thief = new PatternCard("Shadow Thief", 9);
-    PatternCard symphony_of_light = new PatternCard("Symphony Of Light", 10);
-    PatternCard industria = new PatternCard("Industria", 11);
-    PatternCard batllo = new PatternCard("Batllo", 12);
-    PatternCard gravitas = new PatternCard("Gravitas", 13);
-    PatternCard lux_astram = new PatternCard("Lux Astram", 14);
-    PatternCard firelight = new PatternCard("Firelight", 15);
-    PatternCard fractal_drops = new PatternCard("Fractal Drops", 16);
-    PatternCard chromatic_splendor = new PatternCard("Chromatic Splendor", 17);
-    PatternCard luz_celestial = new PatternCard("Luz Celestial", 18);
-    PatternCard water_of_life = new PatternCard("Water Of Life", 19);
-    PatternCard lux_mundi = new PatternCard("Lux Mundi", 20);
-    PatternCard suns_glory = new PatternCard("Sun's Glory", 21);
-    PatternCard ripples_of_light = new PatternCard("Ripples Of Light", 22);
-    PatternCard comitas = new PatternCard("Comitas", 23);
-    PatternCard fulgor_del_cielo = new PatternCard("Fulgor Del Cielo", 24);
+    private PatternCard kaleidoscopic_dream;
+    private PatternCard aurorae_magnificus;
+    private PatternCard sun_catcher;
+    private PatternCard virtus;
+    private PatternCard via_lux;
+    private PatternCard bellesguard;
+    private PatternCard firmitas;
+    private PatternCard aurora_sagradis;
+    private PatternCard shadow_thief;
+    private PatternCard symphony_of_light;
+    private PatternCard industria;
+    private PatternCard batllo;
+    private PatternCard gravitas;
+    private PatternCard lux_astram;
+    private PatternCard firelight;
+    private PatternCard fractal_drops;
+    private PatternCard chromatic_splendor;
+    private PatternCard luz_celestial;
+    private PatternCard water_of_life;
+    private PatternCard lux_mundi;
+    private PatternCard suns_glory;
+    private PatternCard ripples_of_light;
+    private PatternCard comitas;
+    private PatternCard fulgor_del_cielo;
 
-    public void createPatternDeck() {
+    //public void createPatternDeck() {
+
+    public PatternDeck() {
+        patternDeck = new ArrayList<PatternCard>();
+
+        kaleidoscopic_dream = new PatternCard("Kaleidoscopic Dream", 1);
+        aurorae_magnificus = new PatternCard("Aurorae Magnificus", 2);
+        sun_catcher = new PatternCard("Sun Catcher", 3);
+        virtus = new PatternCard("Virtus", 4);
+        via_lux = new PatternCard("Via Lux", 5);
+        bellesguard = new PatternCard("Bellesguard", 6);
+        firmitas = new PatternCard("Firmitas", 7);
+        aurora_sagradis = new PatternCard("Aurora Sagradis", 8);
+        shadow_thief = new PatternCard("Shadow Thief", 9);
+        symphony_of_light = new PatternCard("Symphony Of Light", 10);
+        industria = new PatternCard("Industria", 11);
+        batllo = new PatternCard("Batllo", 12);
+        gravitas = new PatternCard("Gravitas", 13);
+        lux_astram = new PatternCard("Lux Astram", 14);
+        firelight = new PatternCard("Firelight", 15);
+        fractal_drops = new PatternCard("Fractal Drops", 16);
+        chromatic_splendor = new PatternCard("Chromatic Splendor", 17);
+        luz_celestial = new PatternCard("Luz Celestial", 18);
+        water_of_life = new PatternCard("Water Of Life", 19);
+        lux_mundi = new PatternCard("Lux Mundi", 20);
+        suns_glory = new PatternCard("Sun's Glory", 21);
+        ripples_of_light = new PatternCard("Ripples Of Light", 22);
+        comitas = new PatternCard("Comitas", 23);
+        fulgor_del_cielo = new PatternCard("Fulgor Del Cielo", 24);
 
         //kaleidoscopic_dream
         try {
@@ -530,6 +558,13 @@ public class PatternDeck {
 
     public ArrayList<PatternCard> getPatternDeck(){
         return this.patternDeck;
+    }
+
+    public PatternCard getPatternCard(int index) throws NotValidInputException {   //l'ho aggiunta per avere un controllo sul parametro
+        if (index<0 || index>=patternDeck.size()){                                 // ma non so se può servire, ho visto che per ora
+            throw new NotValidInputException();                                    //avete usato la getPatternDeck().get(index).
+        }                                                                          //Nel caso non serva toglietela pure
+        return this.patternDeck.get(index);
     }
 
     public PatternCard removePatternCard(int index) {

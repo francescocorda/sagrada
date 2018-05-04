@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,7 @@ public class TestPatternDeck {
     @Test
     public void removePatternCard(){
         PatternDeck patternDeck = new PatternDeck();
-        patternDeck.createPatternDeck();
+        //patternDeck.createPatternDeck();
         assertEquals(24, patternDeck.getPatternDeck().size());
         assertThrows(IndexOutOfBoundsException.class, ()->patternDeck.removePatternCard(25));
 
@@ -19,4 +20,18 @@ public class TestPatternDeck {
         assertThrows(IndexOutOfBoundsException.class, ()->patternDeck.removePatternCard(25));
     }
 
+
+    @Test
+    public  void myTest() {
+        PatternDeck patternDeck = new PatternDeck();
+        patternDeck.dump();
+        try {
+            PatternCard patternCard = patternDeck.getPatternCard(4);
+            patternCard.dump();
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 }

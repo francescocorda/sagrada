@@ -248,7 +248,7 @@ public class TestWindowFrame {
     public void dumpTest(){
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
-        deck.createPatternDeck();
+        //deck.createPatternDeck();
         Random rand=new Random();
         int index = rand.nextInt(deck.getPatternDeck().size());
         PatternCard pattern = deck.getPatternDeck().get(index);
@@ -257,5 +257,31 @@ public class TestWindowFrame {
     }
 
 
+    @Test
+    public void firstGameDemoTest() {
+        WindowFrame window = new WindowFrame();
+        PatternDeck deck = new PatternDeck();
+        //deck.createPatternDeck();
+        PatternCard pattern = deck.getPatternDeck().get(10);
+        window.setPatternCard(pattern);
+        window.dump();
 
+        try {
+            window.setDice(1,2, new Dice(Color.ANSI_RED));
+            window.setDice(2,3, new Dice(Color.ANSI_RED));
+            window.setDice(3,4, new Dice(Color.ANSI_RED));
+            window.setDice(4,5, new Dice(Color.ANSI_RED));
+        } catch (MismatchedRestrictionException e) {
+            e.printStackTrace();
+        } catch (InvalidNeighboursException e) {
+            e.printStackTrace();
+        } catch (InvalidFirstMoveException e) {
+            e.printStackTrace();
+        } catch (OccupiedCellException e) {
+            e.printStackTrace();
+        }
+
+        window.dump();
+    }
 }
+

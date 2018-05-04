@@ -528,11 +528,19 @@ public class PatternDeck {
         patternDeck.add(fulgor_del_cielo);
     }
 
+    public ArrayList<PatternCard> getPatternDeck(){
+        return this.patternDeck;
+    }
+
+    public PatternCard removePatternCard(int index) {
+        if(index<0 || index >patternDeck.size()) throw new IndexOutOfBoundsException();
+        return patternDeck.remove(index);
+    }
+
 
     public void dump() {
-        //for (PatternCard c: patternDeck) {
-        for(int i=0; i<patternDeck.size(); i++){
-            patternDeck.get(i).dump();
+        for (PatternCard c: patternDeck) {
+            c.dump();
             System.out.println("\n");
         }
     }

@@ -4,6 +4,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -28,7 +30,6 @@ public class TestWindowFrame {
             e.printStackTrace();
         }
         window.setPatternCard(pattern);
-
         try {
             window.setDice(1,1, dice);
         } catch (MismatchedRestrictionException e) {
@@ -241,6 +242,18 @@ public class TestWindowFrame {
         window.setPatternCard(pattern);
 
         assertThrows(InvalidFirstMoveException.class, ()-> window.setDice(2,3,dice));
+    }
+
+    @Test
+    public void dumpTest(){
+        WindowFrame window = new WindowFrame();
+        PatternDeck deck = new PatternDeck();
+        deck.createPatternDeck();
+        Random rand=new Random();
+        int index = rand.nextInt(deck.getPatternDeck().size());
+        PatternCard pattern = deck.getPatternDeck().get(index);
+        window.setPatternCard(pattern);
+        window.dump();
     }
 
 

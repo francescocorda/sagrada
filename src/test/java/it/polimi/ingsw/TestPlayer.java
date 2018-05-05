@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class TestPlayer {
 
     @Test
-    public void firstTest() {
+    public void setNumberOfTokensTest() {
         Player player1 = new Player("player");
         try {
             player1.setNumOfTokens(1);

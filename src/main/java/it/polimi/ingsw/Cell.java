@@ -41,7 +41,7 @@ public class Cell {
         if (escape.compareTo("\u2680") + 1> 0) {
             return Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET;
         } else {
-            return escape + "[" + "\u25A0" + "]" + Restriction.RESET;
+            return escape + "[" + "\uD83E\uDD76" + "]" + Restriction.RESET;
         }
     }
 }

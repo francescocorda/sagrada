@@ -61,7 +61,7 @@ public class PatternCard extends Card {
     @Override
     public String toString() {
         String string = "";
-        string = string.concat(" ID: " + getID() + "\n Name: " + getName() + "\n Difficulty: " +getDifficulty()+"\n");
+        string = string.concat(super.toString()+"\nDifficulty: " +getDifficulty()+"\n");
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 string = string.concat(patternCard[i][j].toString());
@@ -71,6 +71,7 @@ public class PatternCard extends Card {
         return string;
     }
 
+    @Override
     public void dump() {
         System.out.println(toString());
     }

@@ -580,8 +580,9 @@ public class PatternDeck {
         }
     }
 
+    @Override
     public String toString() {
-        String string= new String();
+        String string= "";
         for (PatternCard c: patternDeck) {
             string= string.concat(c.toString()+"\n\n");
         }

@@ -107,4 +107,48 @@ public class Round {
     public ArrayList<PlayerTurn> getPlayerTurn(){
         return this.playerTurns;
     }
+
+    public String roundTrackToString(){
+        if(roundTrack.isEmpty())
+            return "ROUND  1:\nROUND  2:\nROUND  3:\nROUND  4:\nROUND  5:\nROUND  6:\nROUND  7:\nROUND  8:\nROUND  9:\nROUND 10:\n";
+        String string="";
+        for(int i=0; i<roundTrack.size(); i++){
+            string=string.concat("ROUND "+(i<10 ? " " : "")+i+1+": ");
+            for(int j=0; roundTrack.get(i).get(j)!=null; j++)
+                string=string.concat(roundTrack.get(i).get(j).toString()+" ");
+            string=string.concat("\n");
+        }
+        return string;
+    }
+
+    @Override
+    public String toString(){
+        String string = "RoundTrack:\n"+roundTrackToString();
+        string=string.concat("\nDiceBag:\n"+diceBag.toString());
+        int index=0;
+        string=string.concat("\nPLAYERS:\n");
+        for(Player player : players){
+            index++;
+            string=string.concat("\nPlayer N"+index+":\n");
+            string=string.concat(player.toString()+"\n");
+        }
+        string=string.concat("\nDrawPool: ");
+        if(drawPool==null)
+            string=string.concat("NOT ADDED YET");
+        else
+            for(Dice dice : drawPool)
+                string=string.concat(dice.toString()+" ");
+        string=string.concat("\n\nPLAYER TURNS:\n");
+        index=0;
+        for(PlayerTurn playerTurn : playerTurns){
+            index++;
+            string=string.concat("\nPlayerTurn N"+index+":\n");
+            string=string.concat(playerTurn.toString()+"\n");
+        }
+        return string;
+    }
+
+    public void dump(){
+        System.out.println(toString());
+    }
 }

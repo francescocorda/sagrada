@@ -16,7 +16,7 @@ public class TestRound {
         RoundSequence roundSequence= new RoundSequence(players, diceBag);
         ArrayList<ArrayList<Dice>> roundTrack= new ArrayList<>(10);
         for(int i=0; i<4; i++){
-            players.add(new Player("Player"+i+1));
+            players.add(new Player("Player"+(i+1)));
         }
         Round round=new Round(players, index, diceBag, roundTrack);
 

@@ -53,6 +53,21 @@ public class Player {
         return privateObjectiveCard;
     }
 
+    @Override
+    public String toString(){
+        String string="";
+        string=string.concat("Name: "+name+"\n"+
+        "Number of tokens: "+ numOfTokens+"\n"+
+        "Score: "+score+"\n"+
+        "\nPrivate Objective Card:\n"+
+                (privateObjectiveCard == null ? "NOT ADDED YET\n" : privateObjectiveCard.toString()+"\n")+
+        "WindowFrame:\n"+
+                (windowFrame==null ? "NOT ADDED YET\n" : windowFrame.toString()));
+        return string;
+    }
 
+    public void dump(){
+        System.out.println(toString());
+    }
 
 }

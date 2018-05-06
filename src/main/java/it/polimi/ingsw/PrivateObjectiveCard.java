@@ -33,10 +33,12 @@ public class PrivateObjectiveCard extends ObjectiveCard {
         return score;
     }
 
+    @Override
     public String toString() {
-        return " ID: " + getID() + "\n Name: " + color.escape()+ getName() + Color.RESET + "\n Description: " + getDescription()+"\n";
+        return "ID: " + getID() + "\nName: " + color.escape()+ getName() + Color.RESET + "\nDescription: " + getDescription()+"\n";
     }
 
+    @Override
     public void dump() {
         System.out.println(toString());
     }

@@ -62,4 +62,22 @@ public class PlayerTurn {
 
     }
 
+    @Override
+    public String toString(){
+        String string="DrawPool:\n";
+        if(drawPool==null)
+            string=string.concat("NOT ADDED YET");
+        else
+            for(Dice dice: drawPool)
+                string=string.concat(dice.toString());
+        string=string.concat("\nPlayer:\n"+player.toString());
+        string=string.concat("Action Performed: "+actionPerformed);
+        return string;
+    }
+
+    public void dump(){
+        System.out.println(toString());
+    }
+
+
 }

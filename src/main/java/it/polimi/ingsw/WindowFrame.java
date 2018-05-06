@@ -6,7 +6,7 @@ import it.polimi.ingsw.exceptions.*;
 public class WindowFrame {
 
     private Dice[][] dices = new Dice[4][5];
-    private PatternCard patternCard;
+    private PatternCard patternCard = new PatternCard("EMPTY", 0);
 
     public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
                                                             InvalidNeighboursException,
@@ -136,14 +136,14 @@ public class WindowFrame {
     @Override
     public String toString(){
         //Used Symbols:
-        String emptyDiceSymbol =  "\u25A0";
+        String emptyDiceSymbol =  "\uD83E\uDD76";
         String verticalSeparatorSymbol = "|";
-        String horizontalSeparator = "--"+verticalSeparatorSymbol+"----------------- "+verticalSeparatorSymbol+"\t--"+verticalSeparatorSymbol+"-----------------";
-        String horizontalCoordinates = " 1  2   3   4  5  ";
+        String horizontalSeparator = "--"+verticalSeparatorSymbol+"-----------------\t"+verticalSeparatorSymbol+"\t--"+verticalSeparatorSymbol+"-----------------";
+        String horizontalCoordinates = "  1  2  3  4  5  ";
 
         String string="";
         string=string.concat(" Pattern Card:\n -Name: "+patternCard.getName()+"\n -Difficulty: "+patternCard.getDifficulty()+"\n");
-        string=string.concat("  "+verticalSeparatorSymbol+horizontalCoordinates+verticalSeparatorSymbol+
+        string=string.concat("  "+verticalSeparatorSymbol+horizontalCoordinates+"\t"+verticalSeparatorSymbol+
                 "\t  "+verticalSeparatorSymbol + horizontalCoordinates+"\n" + horizontalSeparator + "\n");
         for(int i =0; i<4; i++){
             string=string.concat((i+1)+" " + verticalSeparatorSymbol);
@@ -156,7 +156,7 @@ public class WindowFrame {
                     string=string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
                 }
             }
-            string=string.concat(" "+verticalSeparatorSymbol+"\t");
+            string=string.concat("\t\t"+verticalSeparatorSymbol+"\t");
             string=string.concat((i+1)+" "+verticalSeparatorSymbol);
             for (int j = 0; j < 5; j++) {
                 string=string.concat(dices[i][j]==null ? "[" + emptyDiceSymbol + "]" : dices[i][j].toString());

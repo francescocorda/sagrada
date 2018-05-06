@@ -18,4 +18,16 @@ public abstract class ObjectiveCard extends Card {
 
     public abstract int countScore(WindowFrame windowFrame);
 
+    @Override
+    public String toString(){
+        String string = super.toString();
+        string=string.concat("\nDescription :"+description);
+        return string;
+    }
+
+    @Override
+    public void dump(){
+        System.out.println(toString());
+    }
+
 }

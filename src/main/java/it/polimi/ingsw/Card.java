@@ -24,4 +24,13 @@ public abstract class Card {
     public int getID() {
         return ID;
     }
+
+    @Override
+    public String toString(){
+        return "ID: " + ID + "\nName: " + name;
+    }
+
+    public void dump(){
+        System.out.println(toString());
+    }
 }

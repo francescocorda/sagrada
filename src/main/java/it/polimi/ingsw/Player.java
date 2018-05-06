@@ -14,7 +14,7 @@ public class Player {
         numOfTokens = 0;
         score = 0;
         privateObjectiveCard = null;
-        windowFrame = null;
+        windowFrame = new WindowFrame();
     }
 
     public void setName(String name) {
@@ -43,6 +43,14 @@ public class Player {
 
     public WindowFrame getWindowFrame() {
         return windowFrame;
+    }
+
+    public void setPatternCard(PatternCard patternCard){
+        this.windowFrame.setPatternCard(patternCard);
+    }
+
+    public PatternCard getPatternCard(){
+        return this.windowFrame.getPatternCard();
     }
 
     public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {

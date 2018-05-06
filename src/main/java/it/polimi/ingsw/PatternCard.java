@@ -4,10 +4,11 @@ import it.polimi.ingsw.exceptions.*;
 
 public class PatternCard extends Card {
     private int difficulty;
-    private Cell[][] patternCard = new Cell[4][5];
+    private Cell[][] patternCard;
 
     public PatternCard(String name, int ID) {      //temporaneo fino a che non creiamo le effettive pattercard del gioco
         super(name, ID);
+        patternCard = new Cell[4][5];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 patternCard[i][j] = new Cell();

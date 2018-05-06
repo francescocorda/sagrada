@@ -572,6 +572,10 @@ public class PatternDeck {
         return patternDeck.remove(index);
     }
 
+    public int size(){
+        return patternDeck.size();
+    }
+
 
     public void dump() {
         for (PatternCard c: patternDeck) {

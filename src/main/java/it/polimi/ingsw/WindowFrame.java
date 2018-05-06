@@ -5,8 +5,13 @@ import it.polimi.ingsw.exceptions.*;
 
 public class WindowFrame {
 
-    private Dice[][] dices = new Dice[4][5];
-    private PatternCard patternCard = new PatternCard("EMPTY", 0);
+    private Dice[][] dices;
+    private PatternCard patternCard;
+
+    public WindowFrame(){
+        dices = new Dice[4][5];
+        patternCard = new PatternCard("EMPTY", 0);
+    }
 
     public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
                                                             InvalidNeighboursException,

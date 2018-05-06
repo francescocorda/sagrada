@@ -2,7 +2,33 @@ package it.polimi.ingsw;
 
 import java.util.ArrayList;
 
-public class RoundSequence {
+public class RoundTrack {
+    private ArrayList<ArrayList<Dice>> roundTrack;
+
+    public RoundTrack() {
+        roundTrack = new ArrayList<>();
+    }
+
+    @Override
+    public String toString(){
+        if(roundTrack.isEmpty())
+            return "ROUND  1:\nROUND  2:\nROUND  3:\nROUND  4:\nROUND  5:\nROUND  6:\nROUND  7:\nROUND  8:\nROUND  9:\nROUND 10:\n";
+        String string="";
+        for(int i=0; i<roundTrack.size(); i++){
+            string=string.concat("ROUND "+(i<10 ? " " : "")+i+1+": ");
+            for(int j=0; roundTrack.get(i).get(j)!=null; j++)
+                string=string.concat(roundTrack.get(i).get(j).toString()+" ");
+            string=string.concat("\n");
+        }
+        return string;
+    }
+
+    public void dump(){
+        System.out.println(toString());
+    }
+
+
+    /* OLD VERSION
     private Round[] rounds;
     private ArrayList<Player> players;
     private ArrayList<ArrayList<Dice>> roundTrack;
@@ -53,4 +79,6 @@ public class RoundSequence {
     public void dump(){
         System.out.println(toString());
     }
+
+    */
 }

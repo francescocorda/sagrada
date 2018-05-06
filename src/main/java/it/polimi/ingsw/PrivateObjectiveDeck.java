@@ -52,6 +52,10 @@ public class PrivateObjectiveDeck {
         return privateObjectiveDeck.remove(index);
     }
 
+    public int size(){
+        return privateObjectiveDeck.size();
+    }
+
 
     public void dump() {
         for (PrivateObjectiveCard c: privateObjectiveDeck) {

@@ -53,12 +53,12 @@ public class Dice {
     }
 
     public static final String[] faces = {
-            "\u2680",
-            "\u2681",
-            "\u2682",
-            "\u2683",
-            "\u2684",
-            "\u2685"
+            "\u2680",  //ONE
+            "\u2681",  //TWO
+            "\u2682",  //THREE
+            "\u2683",  //FOUR
+            "\u2684",  //FIVE
+            "\u2685"   //SIX
     };
 
     public int valueOf(){

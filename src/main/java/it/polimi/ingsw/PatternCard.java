@@ -76,4 +76,13 @@ public class PatternCard extends Card {
     public void dump() {
         System.out.println(toString());
     }
+
+    public void setFalseExceptions(){
+        for(int i=1; i<=4; i++){
+            for(int j=1; j<=5; j++){
+                this.setExceptionPosition(i,j, false);
+                this.setExceptionRestriction(i,j, false);
+            }
+        }
+    }
 }

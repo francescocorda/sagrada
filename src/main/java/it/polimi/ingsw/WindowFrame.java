@@ -19,50 +19,63 @@ public class WindowFrame {
                                                             OccupiedCellException{
 
         if(row<1 || row>4 || col<1 || col>5) {
+            patternCard.setFalseExceptions();
             throw new IndexOutOfBoundsException();
         }
 
         if(dice==null) {
+            patternCard.setFalseExceptions();
             throw new NullPointerException();
         }
 
         if (isEmpty()) {
             if (row == 1 || row == 4 || col == 1 || col == 5) {
-                this.dices[row-1][col-1] = dice;
+                if(this.patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
+                        ||this.patternCard.getRestriction(row, col).compare(dice.getColor())
+                        ||this.patternCard.getRestriction(row, col).compare(dice.getFace())
+                        ||this.patternCard.getExceptionRestriction(row, col)==true){
+                    this.dices[row-1][col-1] = dice;
+                } else {
+                    patternCard.setFalseExceptions();
+                    throw new InvalidFirstMoveException();
+                }
             } else {
+                patternCard.setFalseExceptions();
                 throw new InvalidFirstMoveException();
             }
-        } else {
+        } else {   //if is not the first move
 
             if (dices[row-1][col-1] != null) { //required cell already occupied
+                patternCard.setFalseExceptions();
                 throw new OccupiedCellException();
             }
 
-            if(patternCard.getExceptionPosition(row, col)) {       //exception on position is actived by a toolcard
+            if(patternCard.getExceptionPosition(row, col) && checkNeighboursRestriction(row, col, dice)) {       //exception on position is actived by a toolcard
                 if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
-                        || patternCard.getRestriction(row, col).compare(dice.getColor())  //tutti gli equals sono da aggiustare
+                        || patternCard.getRestriction(row, col).compare(dice.getColor())
                         || patternCard.getRestriction(row, col).compare(dice.getFace())) {
                     this.dices[row - 1][col - 1] = dice;
-                    patternCard.setExceptionPosition(row,col,false);
+                    patternCard.setFalseExceptions();
                 }else {
+                    patternCard.setFalseExceptions();
                     throw new MismatchedRestrictionException();
                 }
             }
 
-            else if (hasValidNeighbours(row, col, dice)) {
+            else if (hasNeighbours(row, col) && checkNeighboursRestriction(row, col, dice)) {
                 if (patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
                         || patternCard.getExceptionRestriction(row,col)
-                        || patternCard.getRestriction(row, col).compare(dice.getColor())  //tutti gli equals sono da aggiustare
+                        || patternCard.getRestriction(row, col).compare(dice.getColor())
                         || patternCard.getRestriction(row, col).compare(dice.getFace())
                         ) {
                     this.dices[row - 1][col - 1] = dice;
-                    if (patternCard.getExceptionRestriction(row, col)) {
-                        patternCard.setExceptionRestriction(row, col, false);
-                    }
+                    patternCard.setFalseExceptions();
                 } else {
+                    patternCard.setFalseExceptions();
                     throw new MismatchedRestrictionException();
                 }
             } else {
+                patternCard.setFalseExceptions();
                 throw new InvalidNeighboursException();
             }
 
@@ -93,9 +106,8 @@ public class WindowFrame {
         return this.patternCard;
     }
 
-    public boolean hasValidNeighbours(int row, int col, Dice dice) {    //checks that the cell has at least one neighbour and that all the
-                                                                        //horizontal and vertical neighbours don't have the same face or color
-        boolean hasNeighbours = false;                                  //as the dice
+    public boolean checkNeighboursRestriction(int row, int col, Dice dice) {    //checks that all the horizontal and vertical neighbours
+                                                                                // don't have the same face or color as the dice
 
         if(row<1 || row>4 || col<1 || col>5) {
             throw new IndexOutOfBoundsException();
@@ -109,19 +121,36 @@ public class WindowFrame {
                         if ((i == row - 1 && (j == col - 2 || j == col)) || (j == col - 1 && (i == row - 2 || i == row))) {
                             if (dices[i][j].getColor().equals(dice.getColor()) || dices[i][j].getFace().equals(dice.getFace())) {
                                 return false;
-                            } else {
-                                hasNeighbours = true;
                             }
-                        } else if(!(i==row-1 && j==col-1)) {
-                            hasNeighbours = true;
                         }
                     }
                 }
 
             }
         }
-        return hasNeighbours;
+        return true;
     }
+
+    public boolean hasNeighbours(int row, int col) {    //checks that the cell has at least one neighbour
+
+        if(row<1 || row>4 || col<1 || col>5) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        for (int i = row - 2; i <= row; i++) {
+            for (int j = col - 2; j <= col; j++) {
+
+                if (i >= 0 && i <= 3 && j >= 0 && j <= 4) {
+                    if (dices[i][j] != null && !(i==row-1 && j==col-1)) {
+                        return true;
+                    }
+                }
+
+            }
+        }
+        return false;
+    }
+
 
     public Dice removeDice(int row, int col) throws DiceNotFoundException {
         Dice temp;
@@ -190,4 +219,5 @@ public class WindowFrame {
     public void dump(){
         System.out.println(toString());
     }
+
 }

@@ -4,6 +4,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -170,12 +171,18 @@ public class TestWindowFrame {
     }
 
     @Test
-    public void hasValidNeighboursTest() {
+    public void hasNeighboursTest() {
         WindowFrame window = new WindowFrame();
-        PatternCard pattern = new PatternCard("default", 1);
+        PatternDeck patternDeck = new PatternDeck();
+        PatternCard pattern = null;
+        try {
+            pattern = patternDeck.getPatternCard(10);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
         Dice dice1 = new Dice(Color.ANSI_PURPLE);
-        Dice dice2 = new Dice(Color.ANSI_YELLOW);
-        Dice dice3 = new Dice(Color.ANSI_BLUE);
+        Dice dice2 = new Dice(Color.ANSI_BLUE);
+        Dice dice3 = new Dice(Color.ANSI_RED);
         window.setPatternCard(pattern);
 
         try {
@@ -196,25 +203,51 @@ public class TestWindowFrame {
             e.printStackTrace();
         }
         //test funzionamento base hasNeighbours
-        assertEquals(true, window.hasValidNeighbours(3,1,dice3));
-        assertEquals(true, window.hasValidNeighbours(2,1,dice3));
-        assertEquals(true, window.hasValidNeighbours(2,2,dice3));
-        assertEquals(true, window.hasValidNeighbours(2,3,dice3));
-        assertEquals(true, window.hasValidNeighbours(3,3,dice3));
-        assertEquals(true, window.hasValidNeighbours(4,3,dice3));
-        assertEquals(true, window.hasValidNeighbours(4,2,dice3));
-        assertEquals(false, window.hasValidNeighbours(1,3,dice3));
+        assertEquals(true, window.hasNeighbours(3,1));
+        assertEquals(true, window.hasNeighbours(2,1));
+        assertEquals(true, window.hasNeighbours(2,2));
+        assertEquals(true, window.hasNeighbours(2,3));
+        assertEquals(true, window.hasNeighbours(3,3));
+        assertEquals(true, window.hasNeighbours(4,3));
+        assertEquals(true, window.hasNeighbours(4,2));
+        assertEquals(true, window.hasNeighbours(4,1));
+        assertEquals(true, window.hasNeighbours(3,2));
+        assertEquals(false, window.hasNeighbours(1,3));
 
 
         //test hasNeighbours posizioni non valide
-        assertThrows(IndexOutOfBoundsException.class, ()->window.hasValidNeighbours(7,1,dice3));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.hasValidNeighbours(3,10,dice3));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.hasValidNeighbours(-1,10,dice3));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.hasValidNeighbours(4,-4,dice3));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.hasNeighbours(7,1));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.hasNeighbours(3,10));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.hasNeighbours(-1,10));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.hasNeighbours(4,-4));
 
-        //test di corretto funzionamento senza eccezioni
+        //test inserimento parametri nulli
+        Integer a = null;
+        assertThrows(NullPointerException.class, ()->window.hasNeighbours(2,a));
+        assertThrows(NullPointerException.class, ()->window.hasNeighbours(a,3));
+    }
+
+    @Test
+    public void checkNeighboursRestrictionTest() {
+        WindowFrame window = new WindowFrame();
+        PatternDeck patternDeck = new PatternDeck();
+        PatternCard pattern = null;
         try {
-            window.setDice(4,3,dice3);
+            pattern = patternDeck.getPatternCard(10);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
+        Dice dice1 = new Dice(Color.ANSI_PURPLE);
+        Dice dice2 = new Dice(Color.ANSI_BLUE);
+        Dice dice3 = new Dice(Color.ANSI_RED);
+        window.setPatternCard(pattern);
+
+        try {
+            dice1.setFace(1);
+            window.setDice(4,1, dice1);
+            dice2.setFace(2);
+            window.setDice(3,2, dice2);
+            dice3.setFace(3);
         } catch (MismatchedRestrictionException e) {
             e.printStackTrace();
         } catch (InvalidNeighboursException e) {
@@ -223,14 +256,66 @@ public class TestWindowFrame {
             e.printStackTrace();
         } catch (OccupiedCellException e) {
             e.printStackTrace();
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
         }
-        assertDoesNotThrow(()->window.hasValidNeighbours(3,1,dice3));
+        //test funzionamento base checkNeighboursRestriction
+        assertEquals(true, window.checkNeighboursRestriction(3,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(2,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(2,2, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(2,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(3,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,2, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(3,2, dice3));
 
+        //test posizioni senza vicini
+        assertEquals(true, window.checkNeighboursRestriction(2,4, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,4, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(1,3, dice3));
+
+        //test dado stessa restrizione colore
+        dice3.setColor(Color.ANSI_BLUE);
+        assertEquals(false, window.checkNeighboursRestriction(3,1, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(3,3, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(2,2, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(4,2, dice3));
+
+        assertEquals(true, window.checkNeighboursRestriction(2,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(2,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(3,2, dice3));
+
+        //test dado stessa restrizione faccia
+        try {
+            dice3.setFace(2);
+            dice3.setColor(Color.ANSI_GREEN);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
+        assertEquals(false, window.checkNeighboursRestriction(3,1, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(3,3, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(2,2, dice3));
+        assertEquals(false, window.checkNeighboursRestriction(4,2, dice3));
+
+        assertEquals(true, window.checkNeighboursRestriction(2,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(2,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,1, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(4,3, dice3));
+        assertEquals(true, window.checkNeighboursRestriction(3,2, dice3));
+
+        //test checkNeighboursRestriction posizioni non valide
+        assertThrows(IndexOutOfBoundsException.class, ()->window.checkNeighboursRestriction(7,1, dice3));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.checkNeighboursRestriction(3,10, dice3));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.checkNeighboursRestriction(-1,10, dice3));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.checkNeighboursRestriction(4,-4, dice3));
 
         //test inserimento parametri nulli
         Integer a = null;
-        assertThrows(NullPointerException.class, ()->window.hasValidNeighbours(2,a,dice3));
-        assertThrows(NullPointerException.class, ()->window.hasValidNeighbours(a,3,dice3));
+        assertThrows(NullPointerException.class, ()->window.checkNeighboursRestriction(2,a, dice3));
+        assertThrows(NullPointerException.class, ()->window.checkNeighboursRestriction(a,3, dice3));
     }
 
     @Test
@@ -261,7 +346,6 @@ public class TestWindowFrame {
     public void firstGameDemoTest() {
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
-        //deck.createPatternDeck();
         PatternCard pattern = deck.getPatternDeck().get(10);
         window.setPatternCard(pattern);
         window.dump();
@@ -280,6 +364,162 @@ public class TestWindowFrame {
         } catch (OccupiedCellException e) {
             e.printStackTrace();
         }
+
+        window.dump();
+    }
+
+    @Test
+    public void sun_catcherTest(){  //Test di riempimento del pattern sun_catcher
+        WindowFrame window = new WindowFrame();
+        PatternDeck deck = new PatternDeck();
+        PatternCard card;
+        DiceBag diceBag = new DiceBag();
+        ArrayList<Dice> dices;
+        Dice dice;
+        try {
+            card= deck.getPatternCard(3);
+            window.setPatternCard(card);
+            dices = diceBag.draw(4);
+
+            //test inserimento primo dado in posizione[4][1]
+            dice = dices.remove(0);
+            dice.setColor(Color.ANSI_YELLOW);
+            dice.setFace(1);
+            Dice finalDice = dice;
+            assertThrows(InvalidFirstMoveException.class, ()->window.setDice(4,1, finalDice));
+            assertNotEquals(dice, window.getDice(4, 1));
+            assertEquals(null, window.getDice(4, 1));
+
+            //posizionamento 3 dadi
+            window.setDice(1,1, dice);
+            assertEquals(dice, window.getDice(1, 1));
+            dice=dices.remove(0);
+            dice.setColor(Color.ANSI_GREEN);
+            dice.setFace(4);
+            window.setDice(2,2, dice);
+            assertEquals(dice, window.getDice(2, 2));
+            dice=dices.remove(0);
+            dice.setColor(Color.ANSI_GREEN);
+            dice.setFace(5);
+            window.setDice(3,3, dice);
+            assertEquals(dice, window.getDice(3, 3));
+
+            //set a true ExceptionRestriction in posizione [3][4]
+            card.setExceptionRestriction(3, 4, true);
+            Dice dice1= new Dice(Color.ANSI_GREEN);
+            dice1.setFace(4);
+            assertThrows(InvalidNeighboursException.class, ()->window.setDice(3, 4, dice1));
+            card.setExceptionRestriction(3, 4, true);
+
+            Dice dice2= new Dice(Color.ANSI_YELLOW);
+            dice2.setFace(5);
+            assertThrows(InvalidNeighboursException.class, ()->window.setDice(3, 4, dice2));
+            card.setExceptionRestriction(3, 4, true);
+            dice2.setFace(2);
+            window.setDice(3, 4, dice2);
+            assertEquals(dice2,window.getDice(3, 4));
+
+            //set a true ExceptionPosition in posizione [1][5]
+            card.setExceptionPosition(1,5, true);
+            Dice dice3 = new Dice(Color.ANSI_RED);
+            assertThrows(MismatchedRestrictionException.class, ()->window.setDice(1, 5,dice3));
+
+            card.setExceptionPosition(1,5, true);
+            dice3.setColor(Color.ANSI_YELLOW);
+            window.setDice(1, 5, dice3);
+            assertEquals(dice3,window.getDice(1, 5));
+
+            //set a true ExceptionPosition in posizione [3][5]
+            card.setExceptionPosition(3,5, true);
+            Dice dice4 = new Dice(Color.ANSI_YELLOW);
+            dice4.setFace(3);
+            assertThrows(InvalidNeighboursException.class, ()->window.setDice(3, 5,dice4));
+
+            card.setExceptionPosition(3,5, true);
+            dice4.setColor(Color.ANSI_GREEN);
+            dice4.setFace(2);
+            assertThrows(InvalidNeighboursException.class, ()->window.setDice(3, 5,dice4));
+
+            card.setExceptionPosition(3,5, true);
+            dice4.setColor(Color.ANSI_GREEN);
+            dice4.setFace(4);
+            window.setDice(3, 5, dice4);
+            assertEquals(dice4,window.getDice(3, 5));
+
+            //riempio tutta la window
+            Dice dice5 = new Dice(Color.ANSI_BLUE);
+            dice5.setFace(3);
+            window.setDice(1, 2, dice5);
+            assertEquals(dice5,window.getDice(1, 2));
+            Dice dice6 = new Dice(Color.ANSI_RED);
+            dice6.setFace(2);
+            window.setDice(1, 3, dice6);
+            assertEquals(dice6,window.getDice(1, 3));
+            Dice dice7 = new Dice(Color.ANSI_GREEN);
+            dice7.setFace(3);
+            window.setDice(1, 4, dice7);
+            assertEquals(dice7,window.getDice(1, 4));
+            Dice dice8 = new Dice(Color.ANSI_BLUE);
+            dice8.setFace(2);
+            window.setDice(2, 1, dice8);
+            assertEquals(dice8,window.getDice(2, 1));
+            Dice dice9 = new Dice(Color.ANSI_BLUE);
+            dice9.setFace(1);
+            window.setDice(2, 3, dice9);
+            assertEquals(dice9,window.getDice(2, 3));
+            Dice dice10 = new Dice(Color.ANSI_RED);
+            dice10.setFace(5);
+            window.setDice(2, 4, dice10);
+            assertEquals(dice10,window.getDice(2, 4));
+            Dice dice11 = new Dice(Color.ANSI_PURPLE);
+            dice11.setFace(3);
+            window.setDice(2, 5, dice11);
+            assertEquals(dice11,window.getDice(2, 5));
+            Dice dice12 = new Dice(Color.ANSI_PURPLE);
+            dice12.setFace(3);
+            window.setDice(3, 1, dice12);
+            assertEquals(dice12,window.getDice(3, 1));
+            Dice dice13 = new Dice(Color.ANSI_YELLOW);
+            dice13.setFace(2);
+            window.setDice(3, 2, dice13);
+            assertEquals(dice13,window.getDice(3, 2));
+
+            Dice dice14 = new Dice(Color.ANSI_GREEN);
+            dice14.setFace(1);
+            window.setDice(4, 1, dice14);
+            assertEquals(dice14,window.getDice(4, 1));
+            Dice dice15 = new Dice(Color.ANSI_PURPLE);
+            dice15.setFace(3);
+            window.setDice(4, 2, dice15);
+            assertEquals(dice15,window.getDice(4, 2));
+            Dice dice16 = new Dice(Color.ANSI_BLUE);
+            dice16.setFace(2);
+            window.setDice(4, 3, dice16);
+            assertEquals(dice16,window.getDice(4, 3));
+            Dice dice17 = new Dice(Color.ANSI_GREEN);
+            dice17.setFace(3);
+            window.setDice(4, 4, dice17);
+            assertEquals(dice17,window.getDice(4, 4));
+            Dice dice18 = new Dice(Color.ANSI_PURPLE);
+            dice18.setFace(1);
+            window.setDice(4, 5, dice18);
+            assertEquals(dice18,window.getDice(4, 5));
+
+
+        } catch (MismatchedRestrictionException e) {
+            e.printStackTrace();
+        } catch (InvalidNeighboursException e) {
+            e.printStackTrace();
+        } catch (InvalidFirstMoveException e) {
+            e.printStackTrace();
+        } catch (OccupiedCellException e) {
+            e.printStackTrace();
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
+
 
         window.dump();
     }

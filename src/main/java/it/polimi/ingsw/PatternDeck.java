@@ -560,11 +560,11 @@ public class PatternDeck {
         return this.patternDeck;
     }
 
-    public PatternCard getPatternCard(int index) throws NotValidInputException {   //l'ho aggiunta per avere un controllo sul parametro
-        if (index<0 || index>=patternDeck.size()){                                 // ma non so se può servire, ho visto che per ora
+    public PatternCard getPatternCard(int id) throws NotValidInputException {   //l'ho aggiunta per avere un controllo sul parametro
+        if (id<0 || id>=patternDeck.size()){                                 // ma non so se può servire, ho visto che per ora
             throw new NotValidInputException();                                    //avete usato la getPatternDeck().get(index).
         }                                                                          //Nel caso non serva toglietela pure
-        return this.patternDeck.get(index);
+        return this.patternDeck.get(id-1);
     }
 
     public PatternCard removePatternCard(int index) {

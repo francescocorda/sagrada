@@ -13,7 +13,7 @@ public class TestRound {
         ArrayList<Player> players= new ArrayList<>();
         int index=0;
         DiceBag diceBag= new DiceBag();
-        RoundSequence roundSequence= new RoundSequence(players, diceBag);
+        RoundTrack roundSequence= new RoundTrack();
         ArrayList<ArrayList<Dice>> roundTrack= new ArrayList<>(10);
         for(int i=0; i<4; i++){
             players.add(new Player("Player"+(i+1)));

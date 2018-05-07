@@ -143,12 +143,16 @@ public class WindowFrame {
         //Used Symbols:
         String emptyDiceSymbol =  "\uD83E\uDD76";
         String verticalSeparatorSymbol = "|";
-        String horizontalSeparator = "--"+verticalSeparatorSymbol+"-----------------\t"+verticalSeparatorSymbol+"\t--"+verticalSeparatorSymbol+"-----------------";
+        String horizontalLine = "-----------------\t";
+        String horizontalSeparator = "--"+verticalSeparatorSymbol+horizontalLine+
+                verticalSeparatorSymbol+"\t--"+verticalSeparatorSymbol+horizontalLine+
+                verticalSeparatorSymbol+"\t--"+verticalSeparatorSymbol+horizontalLine;
         String horizontalCoordinates = "  1  2  3  4  5  ";
 
         String string="";
         string=string.concat(" Pattern Card:\n -Name: "+patternCard.getName()+"\n -Difficulty: "+patternCard.getDifficulty()+"\n");
         string=string.concat("  "+verticalSeparatorSymbol+horizontalCoordinates+"\t"+verticalSeparatorSymbol+
+                "\t  "+verticalSeparatorSymbol + horizontalCoordinates+"\t"+verticalSeparatorSymbol+
                 "\t  "+verticalSeparatorSymbol + horizontalCoordinates+"\n" + horizontalSeparator + "\n");
         for(int i =0; i<4; i++){
             string=string.concat((i+1)+" " + verticalSeparatorSymbol);
@@ -161,15 +165,25 @@ public class WindowFrame {
                     string=string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
                 }
             }
+            //DICE MATRIX
             string=string.concat("\t\t"+verticalSeparatorSymbol+"\t");
             string=string.concat((i+1)+" "+verticalSeparatorSymbol);
             for (int j = 0; j < 5; j++) {
                 string=string.concat(dices[i][j]==null ? "[" + emptyDiceSymbol + "]" : dices[i][j].toString());
             }
+            //EXCEPTION MATRIX
+            string=string.concat("\t\t"+verticalSeparatorSymbol+"\t");
+            string=string.concat((i+1)+" "+verticalSeparatorSymbol+" ");
+            for (int j = 0; j < 5; j++) {
+                if(patternCard.getExceptionRestriction(i+1, j+1)){
+                    string=string.concat(patternCard.getExceptionPosition(i+1, j+1) ? "[b]" : "[r]");
+                }else{
+                    string=string.concat(patternCard.getExceptionPosition(i+1, j+1) ? "[p]" : "[n]");
+                }
+            }
             string=string.concat("\n");
         }
-
-
+        string=string.concat("\n r: exception restriction\t p: exception position\t b: both\t n: no exception\n");
         return string;
     }
 

@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestPatternCard {
+class TestPatternCard {
     @Test
-    public void difficultyTest(){
+    void difficultyTest(){
         PatternCard patternCard=new PatternCard("Prova", 1);
         try {
             patternCard.setDifficulty(3);
@@ -39,7 +39,7 @@ public class TestPatternCard {
         assertThrows(NotValidInputException.class, ()->patternCard.setDifficulty(10));
     }
     @Test
-    public void restrictionTest(){
+    void restrictionTest(){
         PatternCard patternCard=new PatternCard("Prova", 1);
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(0, 0,Restriction.ANSI_WHITE));
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, 3,Restriction.ANSI_WHITE));
@@ -59,7 +59,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void ExceptionPositionTest(){
+    void ExceptionPositionTest(){
         PatternCard patternCard=new PatternCard("Prova", 1);
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setExceptionPosition(0, 0,true));
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setExceptionPosition(-1, 3,true));
@@ -79,7 +79,7 @@ public class TestPatternCard {
     }
 
     @Test
-    public void ExceptionRestrictionTest(){
+    void ExceptionRestrictionTest(){
         PatternCard patternCard=new PatternCard("Prova", 1);
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setExceptionRestriction(0, 0,true));
         assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setExceptionRestriction(-1, 3,true));

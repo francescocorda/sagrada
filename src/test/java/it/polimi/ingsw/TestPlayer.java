@@ -7,10 +7,10 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestPlayer {
+class TestPlayer {
 
     @Test
-    public void setNumberOfTokensTest() throws NotValidInputException {
+    void setNumberOfTokensTest() throws NotValidInputException {
         Player player1 = new Player("player");
         try {
             player1.setNumOfTokens(1);

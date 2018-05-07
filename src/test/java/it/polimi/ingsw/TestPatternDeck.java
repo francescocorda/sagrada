@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestPatternDeck {
+class TestPatternDeck {
 
     @Test
-    public void removePatternCard(){
+    void removePatternCard(){
         PatternDeck patternDeck = new PatternDeck();
         //patternDeck.createPatternDeck();
         assertEquals(24, patternDeck.getPatternDeck().size());
@@ -22,7 +22,7 @@ public class TestPatternDeck {
 
 
     @Test
-    public  void myTest() {
+    void myTest() {
         PatternDeck patternDeck = new PatternDeck();
         patternDeck.dump();
         try {

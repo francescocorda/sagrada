@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TestDiceBag {
+class TestDiceBag {
     @Test
-    public void dimensionTest(){
+    void dimensionTest(){
         DiceBag diceBagProva=new DiceBag();
         assertEquals(90, diceBagProva.size());
         diceBagProva.draw();
@@ -18,7 +18,7 @@ public class TestDiceBag {
     }
 
     @Test
-    public void fullDimensionTest(){
+    void fullDimensionTest(){
         DiceBag diceBag=new DiceBag();
         for(int i=0; i<90; i++){
             diceBag.draw();
@@ -27,7 +27,7 @@ public class TestDiceBag {
     }
 
     @Test
-    public void colorsNumberTest(){
+    void colorsNumberTest(){
         DiceBag diceBag = new DiceBag();
         ArrayList<Dice> dices = diceBag.draw(diceBag.size());
         int red=0;
@@ -63,7 +63,7 @@ public class TestDiceBag {
     }
 
     @Test
-    public void drawArrayTest(){
+    void drawArrayTest(){
         DiceBag diceBag = new DiceBag();
         int fullSize = diceBag.size();
         int numberForTest = 7;
@@ -79,13 +79,12 @@ public class TestDiceBag {
     }
 
    @Test
-    public void drawtest(){
+    void drawtest(){
         DiceBag diceBag = new DiceBag();
         int fullSize = diceBag.size();
-        Dice drawnDice;
         for(int i=0; i<fullSize; i++){
             System.out.println("Test number "+i);
-            drawnDice = diceBag.draw();
+            diceBag.draw();
             assertEquals(fullSize -(i+1), diceBag.size());
         }
        assertThrows(IndexOutOfBoundsException.class, ()->{final Dice dice = diceBag.draw();});

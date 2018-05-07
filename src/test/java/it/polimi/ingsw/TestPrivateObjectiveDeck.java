@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestPrivateObjectiveDeck {
+class TestPrivateObjectiveDeck {
 
     @Test
-    public void removePrivateObjectiveCard(){
+    void removePrivateObjectiveCard(){
         PrivateObjectiveDeck privateObjectiveDeck = new PrivateObjectiveDeck();
         assertEquals(5, privateObjectiveDeck.getPrivateObjectiveDeck().size());
         assertThrows(IndexOutOfBoundsException.class, ()->privateObjectiveDeck.removePrivateObjectiveCard(6));
@@ -21,7 +21,7 @@ public class TestPrivateObjectiveDeck {
                                                                                                                           //convenzione
 
     @Test
-    public  void getPrivateObjectiveCardTest() {
+    void getPrivateObjectiveCardTest() {
         PrivateObjectiveDeck privateObjectiveDeck = new PrivateObjectiveDeck();
         privateObjectiveDeck.dump();
 

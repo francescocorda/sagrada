@@ -11,21 +11,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 
-public class TestWindowFrame {
+class TestWindowFrame {
 
 
     @Test
-    public void setDiceTest() {
+    private void setDiceTest() {
         WindowFrame window = new WindowFrame();
         PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
-        try{
-            dice.setFace(4);
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
         Dice dice2 = new Dice(Color.ANSI_RED);
         try{
+            dice.setFace(4);
             dice2.setFace(6);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
@@ -33,39 +29,35 @@ public class TestWindowFrame {
         window.setPatternCard(pattern);
         try {
             window.setDice(1,1, dice);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | OccupiedCellException
+                | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         //test funzionamento base setDice
         assertEquals(dice, window.getDice(1,1));
 
         //test inserimento posizioni non valide
-        Dice finalDice = dice;
-        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(7,1, finalDice));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(3,10,finalDice));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(-1,10,finalDice));
-        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(4,-4, finalDice));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(7,1, dice2));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(3,10,dice2));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(-1,10,dice2));
+        assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(4,-4, dice2));
 
         //test di corretto funzionamento senza eccezioni
         assertDoesNotThrow(()->window.setDice(2,1,dice2));
 
         //test inserimento parametri nulli
         Integer a = null;
-        assertThrows(NullPointerException.class, ()->window.setDice(2,a,finalDice));
-        assertThrows(NullPointerException.class, ()->window.setDice(a,3,finalDice));
+        assertThrows(NullPointerException.class, ()->window.setDice(2,a,dice2));
+        assertThrows(NullPointerException.class, ()->window.setDice(a,3,dice2));
 
         Dice dice3 = null;
         assertThrows(NullPointerException.class, ()->window.setDice(1,1,dice3));
     }
 
     @Test
-    public void getDiceTest() {
+    void getDiceTest() {
         WindowFrame window = new WindowFrame();
         PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
@@ -74,15 +66,11 @@ public class TestWindowFrame {
         try {
             dice.setFace(1);
             window.setDice(1,1, dice);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
-            e.printStackTrace();
-        } catch (InvalidFaceException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | OccupiedCellException
+                | InvalidFirstMoveException
+                | InvalidFaceException e) {
             e.printStackTrace();
         }
         //test funzionamento base setDice
@@ -108,7 +96,7 @@ public class TestWindowFrame {
 
 
     @Test
-    public void removeDiceTest() {
+    void removeDiceTest() {
         WindowFrame window = new WindowFrame();
         PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
@@ -116,13 +104,10 @@ public class TestWindowFrame {
 
         try {
             window.setDice(1,1, dice);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | InvalidFirstMoveException
+                | OccupiedCellException e) {
             e.printStackTrace();
         }
         //test funzionamento base removeDice
@@ -130,9 +115,7 @@ public class TestWindowFrame {
 
         try {
             assertEquals(dice, window.removeDice(1,1));
-        } catch (DiceNotFoundException e) {
-            e.printStackTrace();
-        } catch (IndexOutOfBoundsException e) {
+        } catch (DiceNotFoundException | IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
 
@@ -152,13 +135,10 @@ public class TestWindowFrame {
         //test di corretto funzionamento senza eccezioni
         try {
             window.setDice(3,1, dice);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | OccupiedCellException
+                | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         assertDoesNotThrow(()->window.getDice(3,1));
@@ -171,7 +151,7 @@ public class TestWindowFrame {
     }
 
     @Test
-    public void hasNeighboursTest() {
+    void hasNeighboursTest() {
         WindowFrame window = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
         PatternCard pattern = null;
@@ -191,15 +171,11 @@ public class TestWindowFrame {
             dice2.setFace(2);
             window.setDice(3,2, dice2);
             dice3.setFace(3);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
-            e.printStackTrace();
-        } catch (InvalidFaceException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | InvalidFirstMoveException
+                | OccupiedCellException
+                | InvalidFaceException e) {
             e.printStackTrace();
         }
         //test funzionamento base hasNeighbours
@@ -228,7 +204,7 @@ public class TestWindowFrame {
     }
 
     @Test
-    public void checkNeighboursRestrictionTest() {
+    void checkNeighboursRestrictionTest() {
         WindowFrame window = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
         PatternCard pattern = null;
@@ -248,15 +224,11 @@ public class TestWindowFrame {
             dice2.setFace(2);
             window.setDice(3,2, dice2);
             dice3.setFace(3);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
-            e.printStackTrace();
-        } catch (InvalidFaceException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | InvalidFirstMoveException
+                | OccupiedCellException
+                | InvalidFaceException e) {
             e.printStackTrace();
         }
         //test funzionamento base checkNeighboursRestriction
@@ -330,7 +302,7 @@ public class TestWindowFrame {
     }
 
     @Test
-    public void dumpTest(){
+    void dumpTest(){
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
         //deck.createPatternDeck();
@@ -343,7 +315,7 @@ public class TestWindowFrame {
 
 
     @Test
-    public void firstGameDemoTest() {
+    void firstGameDemoTest() {
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
         PatternCard pattern = deck.getPatternDeck().get(10);
@@ -355,13 +327,10 @@ public class TestWindowFrame {
             window.setDice(2,3, new Dice(Color.ANSI_RED));
             window.setDice(3,4, new Dice(Color.ANSI_RED));
             window.setDice(4,5, new Dice(Color.ANSI_RED));
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | InvalidFirstMoveException
+                | OccupiedCellException e) {
             e.printStackTrace();
         }
 
@@ -369,7 +338,7 @@ public class TestWindowFrame {
     }
 
     @Test
-    public void sun_catcherTest(){  //Test di riempimento del pattern sun_catcher
+    void sun_catcherTest(){  //Test di riempimento del pattern sun_catcher
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
         PatternCard card;
@@ -496,7 +465,7 @@ public class TestWindowFrame {
             dice16.setFace(2);
             window.setDice(4, 3, dice16);
             assertEquals(dice16,window.getDice(4, 3));
-            Dice dice17 = new Dice(Color.ANSI_GREEN);
+            Dice dice17 = new Dice(Color.ANSI_RED);
             dice17.setFace(3);
             window.setDice(4, 4, dice17);
             assertEquals(dice17,window.getDice(4, 4));
@@ -506,21 +475,14 @@ public class TestWindowFrame {
             assertEquals(dice18,window.getDice(4, 5));
 
 
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
-            e.printStackTrace();
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        } catch (NotValidInputException e) {
+        } catch (MismatchedRestrictionException
+                | InvalidNeighboursException
+                | OccupiedCellException
+                | InvalidFirstMoveException
+                | NotValidInputException
+                | InvalidFaceException e) {
             e.printStackTrace();
         }
-
-
         window.dump();
     }
 }

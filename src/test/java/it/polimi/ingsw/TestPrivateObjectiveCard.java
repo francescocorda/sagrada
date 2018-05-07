@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestPrivateObjectiveCard  {
+class TestPrivateObjectiveCard  {
 
     @Test
-    public void countScoreTest() {
+    void countScoreTest() {
         WindowFrame window = new WindowFrame();
         PatternDeck deck = new PatternDeck();
         //deck.createPatternDeck();
@@ -30,13 +30,10 @@ public class TestPrivateObjectiveCard  {
             window.setDice(2,3, dice2);
             window.setDice(3,4, dice3);
             window.setDice(4,5, dice4);
-        } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
-        } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
-        } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
-        } catch (OccupiedCellException e) {
+        } catch (MismatchedRestrictionException
+                | OccupiedCellException
+                | InvalidFirstMoveException
+                | InvalidNeighboursException e) {
             e.printStackTrace();
         }
 

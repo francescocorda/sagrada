@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestRound {
+class TestRound {
     @Test
-    public void TwoTurnsInARowTest(){
+    void TwoTurnsInARowTest(){
         ArrayList<Player> players= new ArrayList<>();
         int index=0;
         DiceBag diceBag= new DiceBag();
-        RoundTrack roundSequence= new RoundTrack();
         ArrayList<ArrayList<Dice>> roundTrack= new ArrayList<>(10);
         for(int i=0; i<4; i++){
             players.add(new Player("Player"+(i+1)));
@@ -49,7 +48,6 @@ public class TestRound {
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
-
         assertEquals(players.get(3), round.getPlayerTurn().get(6).getPlayer());
         assertEquals(players.get(3), round.getPlayerTurn().get(7).getPlayer());
     }

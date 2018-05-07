@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TestDice {
+class TestDice {
     @Test
-    public void colorTest() {
+    void colorTest() {
         Dice dice = new Dice(Color.ANSI_RED);
         assertEquals(Color.ANSI_RED, dice.getColor());
         dice.setColor(Color.ANSI_BLUE);
@@ -22,13 +22,13 @@ public class TestDice {
     }
 
     @Test
-    public void numbersTest() {
+    void numbersTest() {
         Dice dice = new Dice(Color.ANSI_RED);
         assertTrue((dice.valueOf() > 0) && (dice.valueOf() < 7));
     }
 
     @Test
-    public void oppositeFaceTest() {
+    void oppositeFaceTest() {
         Dice dice = new Dice(Color.ANSI_YELLOW);
         for (int i = 1; i < 7; i++) {
             try {
@@ -41,7 +41,7 @@ public class TestDice {
     }
 
     @Test
-    public void setFaceTest() {
+    void setFaceTest() {
         Dice dice = new Dice(Color.ANSI_YELLOW);
         assertThrows(InvalidFaceException.class, ()->{dice.setFace(7);});
         assertThrows(InvalidFaceException.class, ()->{dice.setFace(-1);});

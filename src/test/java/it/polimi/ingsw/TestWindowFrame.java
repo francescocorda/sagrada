@@ -15,7 +15,7 @@ class TestWindowFrame {
 
 
     @Test
-    private void setDiceTest() {
+    void setDiceTest() {
         WindowFrame window = new WindowFrame();
         PatternCard pattern = new PatternCard("default", 1);
         Dice dice = new Dice(Color.ANSI_PURPLE);
@@ -391,10 +391,12 @@ class TestWindowFrame {
             //set a true ExceptionPosition in posizione [1][5]
             card.setExceptionPosition(1,5, true);
             Dice dice3 = new Dice(Color.ANSI_RED);
+            dice3.setFace(5);
             assertThrows(MismatchedRestrictionException.class, ()->window.setDice(1, 5,dice3));
 
             card.setExceptionPosition(1,5, true);
             dice3.setColor(Color.ANSI_YELLOW);
+            dice3.setFace(5);
             window.setDice(1, 5, dice3);
             assertEquals(dice3,window.getDice(1, 5));
 

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TestPrivateObjectiveCard  {
+class iTestPrivateObjectiveCard  {
 
     @Test
     void countScoreTest() {
@@ -19,9 +19,13 @@ class TestPrivateObjectiveCard  {
         window.setPatternCard(pattern);
         window.dump();
         Dice dice1 = new Dice(Color.ANSI_RED);
+        dice1.roll();
         Dice dice2 = new Dice(Color.ANSI_RED);
+        dice2.roll();
         Dice dice3 = new Dice(Color.ANSI_RED);
+        dice3.roll();
         Dice dice4 = new Dice(Color.ANSI_RED);
+        dice4.roll();
 
         PrivateObjectiveCard red = new PrivateObjectiveCard("red",4, Color.ANSI_RED);
 

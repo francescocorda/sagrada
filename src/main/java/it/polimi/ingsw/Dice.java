@@ -10,7 +10,7 @@ public class Dice {
 
     public Dice(Color color) {
         this.color = color;
-        roll();
+        this.face=null;
     }
 
     public Color getColor() {

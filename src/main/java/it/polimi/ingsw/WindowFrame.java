@@ -10,7 +10,7 @@ public class WindowFrame {
 
     public WindowFrame(){
         dices = new Dice[4][5];
-        patternCard = new PatternCard("EMPTY", 0);
+        patternCard=null;
     }
 
     public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
@@ -33,7 +33,7 @@ public class WindowFrame {
                 if(this.patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
                         ||this.patternCard.getRestriction(row, col).compare(dice.getColor())
                         ||this.patternCard.getRestriction(row, col).compare(dice.getFace())
-                        ||this.patternCard.getExceptionRestriction(row, col)==true){
+                        ||this.patternCard.getExceptionRestriction(row, col)){
                     this.dices[row-1][col-1] = dice;
                 } else {
                     patternCard.setFalseExceptions();

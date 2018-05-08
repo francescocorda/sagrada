@@ -30,7 +30,10 @@ test that the removePatternCard actually removes a patterncard from the deck(siz
 
 Player:  
 test that the numOfTokens are the same set by setNumOfTokens  
-test that you can't set a negative numOfTOkens  
+test that you can't set a negative numOfTOkens
+test that the constructor work as expected (all the attributes have the expected value)
+test that the attribute "name" is handled properly
+test that the attribute "numOfTokens" is handled properly
 
 PrivateObjectiveCard:  
 test that the points relative to the private objective are the sum of the faces of the card's color  

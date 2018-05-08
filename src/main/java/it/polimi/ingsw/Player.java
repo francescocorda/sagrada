@@ -27,7 +27,7 @@ public class Player {
 
     public void setNumOfTokens(int numOfTokens) throws NotValidInputException{
 
-        if(numOfTokens<0) {                                                             //forse inutile
+        if(numOfTokens<0 || numOfTokens>6) {
             throw new NotValidInputException();
         }
         this.numOfTokens = numOfTokens;
@@ -43,6 +43,14 @@ public class Player {
 
     public WindowFrame getWindowFrame() {
         return windowFrame;
+    }
+
+    public void setScore(int score){
+        this.score=score;
+    }
+
+    public int getScore(){
+        return score;
     }
 
     public void setPatternCard(PatternCard patternCard){

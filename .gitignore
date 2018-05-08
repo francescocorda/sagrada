@@ -90,7 +90,6 @@ fabric.properties
 
 # IntelliJ project files
 .idea
-*.iml
 out
 gen
 .idea/

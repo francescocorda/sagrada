@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PatternDeck {
 
@@ -32,6 +34,8 @@ public class PatternDeck {
     private PatternCard ripples_of_light;
     private PatternCard comitas;
     private PatternCard fulgor_del_cielo;
+
+    Logger logger = Logger.getLogger(PatternDeck.class.getName());
 
     //public void createPatternDeck() {
 
@@ -67,7 +71,7 @@ public class PatternDeck {
         try {
             kaleidoscopic_dream.setDifficulty(4);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         kaleidoscopic_dream.setRestriction(1,1, Restriction.ANSI_YELLOW);
         kaleidoscopic_dream.setRestriction(1,2, Restriction.ANSI_BLUE);
@@ -87,7 +91,7 @@ public class PatternDeck {
         try {
             aurorae_magnificus.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         aurorae_magnificus.setRestriction(1,1, Restriction.FIVE);
         aurorae_magnificus.setRestriction(1,2, Restriction.ANSI_GREEN);
@@ -108,7 +112,7 @@ public class PatternDeck {
         try {
             sun_catcher.setDifficulty(3);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         sun_catcher.setRestriction(1,2, Restriction.ANSI_BLUE);
         sun_catcher.setRestriction(1,3, Restriction.TWO);
@@ -126,7 +130,7 @@ public class PatternDeck {
         try {
             virtus.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         virtus.setRestriction(1,1, Restriction.FOUR);
         virtus.setRestriction(1,3, Restriction.TWO);
@@ -147,7 +151,7 @@ public class PatternDeck {
         try {
             via_lux.setDifficulty(4);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         via_lux.setRestriction(1,1, Restriction.ANSI_YELLOW);
         via_lux.setRestriction(1,3, Restriction.SIX);
@@ -167,7 +171,7 @@ public class PatternDeck {
         try {
             bellesguard.setDifficulty(3);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         bellesguard.setRestriction(1,1, Restriction.ANSI_BLUE);
         bellesguard.setRestriction(1,2, Restriction.SIX);
@@ -186,7 +190,7 @@ public class PatternDeck {
         try {
             firmitas.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         firmitas.setRestriction(1,1, Restriction.ANSI_PURPLE);
         firmitas.setRestriction(1,2, Restriction.SIX);
@@ -207,7 +211,7 @@ public class PatternDeck {
         try {
             aurora_sagradis.setDifficulty(4);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         aurora_sagradis.setRestriction(1,1, Restriction.ANSI_RED);
         aurora_sagradis.setRestriction(1,3, Restriction.ANSI_BLUE);
@@ -226,7 +230,7 @@ public class PatternDeck {
         try {
             shadow_thief.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         shadow_thief.setRestriction(1,1, Restriction.SIX);
         shadow_thief.setRestriction(1,2, Restriction.ANSI_PURPLE);
@@ -247,7 +251,7 @@ public class PatternDeck {
         try {
             symphony_of_light.setDifficulty(6);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         symphony_of_light.setRestriction(1,1, Restriction.TWO);
         symphony_of_light.setRestriction(1,3, Restriction.FIVE);
@@ -268,7 +272,7 @@ public class PatternDeck {
         try {
             industria.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         industria.setRestriction(1,1, Restriction.ONE);
         industria.setRestriction(1,2, Restriction.ANSI_RED);
@@ -289,7 +293,7 @@ public class PatternDeck {
         try {
             batllo.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         batllo.setRestriction(1,3, Restriction.SIX);
         batllo.setRestriction(2,2, Restriction.FIVE);
@@ -311,7 +315,7 @@ public class PatternDeck {
         try {
             gravitas.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         gravitas.setRestriction(1,1, Restriction.ONE);
         gravitas.setRestriction(1,3, Restriction.THREE);
@@ -331,7 +335,7 @@ public class PatternDeck {
         try {
             lux_astram.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         lux_astram.setRestriction(1,2, Restriction.ONE);
         lux_astram.setRestriction(1,3, Restriction.ANSI_GREEN);
@@ -353,7 +357,7 @@ public class PatternDeck {
         try {
             firelight.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         firelight.setRestriction(1,1, Restriction.THREE);
         firelight.setRestriction(1,2, Restriction.FOUR);
@@ -374,7 +378,7 @@ public class PatternDeck {
         try {
             fractal_drops.setDifficulty(3);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         fractal_drops.setRestriction(1,2, Restriction.FOUR);
         fractal_drops.setRestriction(1,4, Restriction.ANSI_YELLOW);
@@ -392,7 +396,7 @@ public class PatternDeck {
         try {
             chromatic_splendor.setDifficulty(4);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         chromatic_splendor.setRestriction(1,3, Restriction.ANSI_GREEN);
         chromatic_splendor.setRestriction(2,1, Restriction.TWO);
@@ -412,7 +416,7 @@ public class PatternDeck {
         try {
             luz_celestial.setDifficulty(3);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         luz_celestial.setRestriction(1,3, Restriction.ANSI_RED);
         luz_celestial.setRestriction(1,4, Restriction.FIVE);
@@ -430,7 +434,7 @@ public class PatternDeck {
         try {
             water_of_life.setDifficulty(6);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         water_of_life.setRestriction(1,1, Restriction.SIX);
         water_of_life.setRestriction(1,2, Restriction.ANSI_BLUE);
@@ -452,7 +456,7 @@ public class PatternDeck {
         try {
             lux_mundi.setDifficulty(6);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         lux_mundi.setRestriction(1,3, Restriction.ONE);
         lux_mundi.setRestriction(2,1, Restriction.ONE);
@@ -474,7 +478,7 @@ public class PatternDeck {
         try {
             suns_glory.setDifficulty(6);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         suns_glory.setRestriction(1,1, Restriction.ONE);
         suns_glory.setRestriction(1,2, Restriction.ANSI_PURPLE);
@@ -496,7 +500,7 @@ public class PatternDeck {
         try {
             ripples_of_light.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         ripples_of_light.setRestriction(1,4, Restriction.ANSI_RED);
         ripples_of_light.setRestriction(1,5, Restriction.FIVE);
@@ -518,7 +522,7 @@ public class PatternDeck {
         try {
             comitas.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         comitas.setRestriction(1,1, Restriction.ANSI_YELLOW);
         comitas.setRestriction(1,3, Restriction.TWO);
@@ -538,7 +542,7 @@ public class PatternDeck {
         try {
             fulgor_del_cielo.setDifficulty(5);
         } catch (NotValidInputException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
         fulgor_del_cielo.setRestriction(1,2, Restriction.ANSI_BLUE);
         fulgor_del_cielo.setRestriction(1,3, Restriction.ANSI_RED);

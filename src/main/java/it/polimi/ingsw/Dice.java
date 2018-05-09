@@ -52,7 +52,7 @@ public class Dice {
         System.out.println(toString());
     }
 
-    public static final String[] faces = {
+    protected static final String[] faces = {          //it was public before (changed on sonarqube's suggestion)
             "\u2680",  //ONE
             "\u2681",  //TWO
             "\u2682",  //THREE

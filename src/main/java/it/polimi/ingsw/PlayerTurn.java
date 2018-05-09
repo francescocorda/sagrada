@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PlayerTurn {
     private ArrayList<Dice> drawPool;
@@ -30,6 +32,8 @@ public class PlayerTurn {
 
     public void move() {
 
+        Logger logger = Logger.getLogger(PatternDeck.class.getName());
+
         //Observer mossa normale
         int index=1;
         int row=1;
@@ -37,13 +41,13 @@ public class PlayerTurn {
         try {
             player.getWindowFrame().setDice(row, col, drawPool.remove(index));
         } catch (MismatchedRestrictionException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         } catch (InvalidNeighboursException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         } catch (InvalidFirstMoveException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         } catch (OccupiedCellException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "context", e);
         }
 
         //Observer mossa toolcard

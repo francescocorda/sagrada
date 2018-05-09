@@ -87,4 +87,35 @@ class TestPlayer {
         assertThrows(NotValidInputException.class,()->{player.setNumOfTokens(-1);});
         assertDoesNotThrow(()->{player.setNumOfTokens(3);});
     }
+
+    @Test
+    void setPatternCardTest() {
+        String name = "player";
+        Player player = new Player(name);
+        PatternDeck deck = new PatternDeck();
+        PatternCard card = null;
+        try {
+            card = deck.getPatternCard(5);
+            player.setPatternCard(card);
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
+        assertEquals(card, player.getPatternCard());
+    }
+
+    @Test
+    void setPrivateObjCardTest() {
+        String name = "player";
+        Player player = new Player(name);
+        PrivateObjectiveDeck deck = new PrivateObjectiveDeck();
+        PrivateObjectiveCard card = null;
+        try {
+            card = deck.getPrivateObjectiveCard(2);
+            PrivateObjectiveCard finalCard = card;
+            assertDoesNotThrow(()->player.setPrivateObjectiveCard(finalCard));
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
+        }
+        assertEquals(card, player.getPrivateObjectiveCard());
+    }
 }

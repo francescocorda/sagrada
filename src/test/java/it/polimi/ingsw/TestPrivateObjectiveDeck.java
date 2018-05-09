@@ -31,4 +31,12 @@ class TestPrivateObjectiveDeck {
             e.printStackTrace();
         }
     }
+
+    @Test
+    void sizeTest() {
+        PrivateObjectiveDeck deck = new PrivateObjectiveDeck();
+        assertEquals(5, deck.size());
+        deck.removePrivateObjectiveCard(2);
+        assertEquals(4, deck.size());
+    }
 }

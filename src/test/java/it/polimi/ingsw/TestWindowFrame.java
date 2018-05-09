@@ -38,6 +38,9 @@ class TestWindowFrame {
         //test funzionamento base setDice
         assertEquals(dice, window.getDice(1,1));
 
+        //test inserimento posizione occupata
+        assertThrows(OccupiedCellException.class, ()->window.setDice(1,1, new Dice(Color.ANSI_YELLOW)));
+
         //test inserimento posizioni non valide
         assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(7,1, dice2));
         assertThrows(IndexOutOfBoundsException.class, ()->window.setDice(3,10,dice2));
@@ -323,14 +326,24 @@ class TestWindowFrame {
         window.dump();
 
         try {
-            window.setDice(1,2, new Dice(Color.ANSI_PURPLE));
-            window.setDice(2,3, new Dice(Color.ANSI_PURPLE));
-            window.setDice(3,4, new Dice(Color.ANSI_PURPLE));
-            window.setDice(2,5, new Dice(Color.ANSI_PURPLE));
+            Dice dice1 = new Dice(Color.ANSI_PURPLE);
+            dice1.setFace(1);
+            window.setDice(1,2, dice1);
+            Dice dice2 = new Dice(Color.ANSI_PURPLE);
+            dice2.setFace(2);
+            window.setDice(2,3, dice2);
+            Dice dice3 = new Dice(Color.ANSI_PURPLE);
+            dice3.setFace(3);
+            window.setDice(3,4, dice3);
+            Dice dice4 = new Dice(Color.ANSI_PURPLE);
+            dice4.setFace(5);
+            window.setDice(2,5, dice4);
         } catch (MismatchedRestrictionException
                 | InvalidNeighboursException
                 | InvalidFirstMoveException
                 | OccupiedCellException e) {
+            e.printStackTrace();
+        } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
@@ -475,6 +488,11 @@ class TestWindowFrame {
             dice18.setFace(1);
             window.setDice(4, 5, dice18);
             assertEquals(dice18,window.getDice(4, 5));
+            Dice dice19 = new Dice(Color.ANSI_PURPLE);
+            dice19.setFace(1);
+
+            //non si possono inserire più di 20 dadi
+            assertThrows(OccupiedCellException.class,()->window.setDice(4, 5, dice19));
 
 
         } catch (MismatchedRestrictionException

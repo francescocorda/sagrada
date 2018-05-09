@@ -10,7 +10,6 @@ public class PlayerTurn {
     private ArrayList<Dice> drawPool;
     private Player player;
     private ActionPerformed actionPerformed;
-    //View view;
 
     public PlayerTurn(Player player, ArrayList<Dice> drawPool) {
         this.drawPool=drawPool;
@@ -74,8 +73,8 @@ public class PlayerTurn {
         else
             for(Dice dice: drawPool)
                 string=string.concat(dice.toString());
-        string=string.concat("\nPlayer:\n"+player.toString());
-        string=string.concat("Action Performed: "+actionPerformed);
+        string=string.concat("\nPlayer: "+player.getName());
+        string=string.concat("\nAction Performed: "+actionPerformed);
         return string;
     }
 

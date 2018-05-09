@@ -14,8 +14,14 @@ class TestRound {
         int index=0;
         DiceBag diceBag= new DiceBag();
         ArrayList<ArrayList<Dice>> roundTrack= new ArrayList<>(10);
+        PatternDeck deck = new PatternDeck();
         for(int i=0; i<4; i++){
             players.add(new Player("Player"+(i+1)));
+            try {
+                players.get(i).setPatternCard(deck.getPatternCard(i+1));
+            } catch (NotValidInputException e) {
+                e.printStackTrace();
+            }
         }
         Round round=new Round(players, index, diceBag, roundTrack);
 
@@ -48,6 +54,9 @@ class TestRound {
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+
+        String temp = round.toString();
+        round.dump();
         assertEquals(players.get(3), round.getPlayerTurn().get(6).getPlayer());
         assertEquals(players.get(3), round.getPlayerTurn().get(7).getPlayer());
     }

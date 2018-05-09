@@ -323,10 +323,10 @@ class TestWindowFrame {
         window.dump();
 
         try {
-            window.setDice(1,2, new Dice(Color.ANSI_RED));
-            window.setDice(2,3, new Dice(Color.ANSI_RED));
-            window.setDice(3,4, new Dice(Color.ANSI_RED));
-            window.setDice(4,5, new Dice(Color.ANSI_RED));
+            window.setDice(1,2, new Dice(Color.ANSI_PURPLE));
+            window.setDice(2,3, new Dice(Color.ANSI_PURPLE));
+            window.setDice(3,4, new Dice(Color.ANSI_PURPLE));
+            window.setDice(2,5, new Dice(Color.ANSI_PURPLE));
         } catch (MismatchedRestrictionException
                 | InvalidNeighboursException
                 | InvalidFirstMoveException
@@ -346,7 +346,7 @@ class TestWindowFrame {
         ArrayList<Dice> dices;
         Dice dice;
         try {
-            card= deck.getPatternCard(3);
+            card= deck.getPatternCard(5);
             window.setPatternCard(card);
             dices = diceBag.draw(4);
 

@@ -6,7 +6,7 @@ public class PatternCard extends Card {
     private int difficulty;
     private Cell[][] patternCard;
 
-    public PatternCard(String name, int ID) {      //temporaneo fino a che non creiamo le effettive pattercard del gioco
+    public PatternCard(String name, int ID) {
         super(name, ID);
         patternCard = new Cell[4][5];
         for (int i = 0; i < 4; i++) {

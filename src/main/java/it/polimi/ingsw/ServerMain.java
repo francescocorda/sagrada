@@ -1,10 +1,11 @@
 package it.polimi.ingsw;
-/**
- * Hello world!
- *
- */
-public class App 
-{
+
+public class ServerMain {
+
+    private static boolean SERVER_UP;
+    private static SocketServer serverSoket;
+    private static int socketServerPort;
+
     public static void main( String[] args ) {
 
 
@@ -24,5 +25,20 @@ public class App
             //d.dump();
             bag.dump();
         }
+        //Initialize all the structure for the game/server
+        SERVER_UP=true;
+        socketServerPort=3000;
+        Lobby.getLobby();
+        start();
+        ServerMain server = new ServerMain();
+    }
+
+
+    private static void start(){
+        serverSoket = new SocketServer(socketServerPort);
+    }
+
+    public static boolean getStatus(){
+        return SERVER_UP;
     }
 }

@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SocketServer {
 
@@ -10,6 +12,7 @@ public class SocketServer {
     private PlayerData players;
     private ServerSocket serverSocket;
     private int clientCounter=0;
+    private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
 
     SocketServer(int PORT)
@@ -21,18 +24,18 @@ public class SocketServer {
         try {
             serverSocket = new java.net.ServerSocket(PORT);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e);
         }
-        try{
-            System.out.println("\nSocketServer waiting for client on port " +  serverSocket.getLocalPort());
+        try {
+            System.out.println("\nSocketServer waiting for client on port " + serverSocket.getLocalPort());
 
             // server infinite loop
-            while(ServerMain.getStatus()) {
+            while (ServerMain.getStatus()) {
                 socket = serverSocket.accept();
                 clientCounter++;
-                System.out.println("\nClient number: "+clientCounter+" has connected");
+                System.out.println("\nClient number: " + clientCounter + " has connected");
                 Connection connection = new ConnectionSocket(socket);
-                Runnable client = new ClientHandler(connection,ConnectionMode.SOCKET, players);
+                Runnable client = new ClientHandler(connection, ConnectionMode.SOCKET, players);
                 new Thread(client).start();
             }
         } catch(Exception e) {
@@ -48,7 +51,7 @@ public class SocketServer {
             try {
                 serverSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.log( Level.SEVERE, e.toString(), e);
             }
         }
     }

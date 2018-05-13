@@ -1,0 +1,77 @@
+{
+  "objectiveDeck":
+  {
+    "row": [
+      {
+        "name": "Colori Diversi - Riga",
+        "description": "Righe senza colori ripetuti",
+        "points": "6",
+        "restriction": "color"
+      },
+      {
+        "name": "Sfumature Diverse - Riga",
+        "description": "Righe senza senza sfumature ripetute",
+        "points": "5",
+        "restriction": "face"
+      }
+    ],
+    "column": [
+      {
+        "name": "Colori Diversi - Colonna",
+        "description": "Colonne senza colori ripetuti",
+        "points": "5",
+        "restriction": "color"
+      },
+      {
+        "name": "Sfumature Diverse - Colonna",
+        "description": "Colonne senza senza sfumature ripetute",
+        "points": "4",
+        "restriction": "face"
+      }
+    ],
+    "set": [
+      {
+        "name": "Sfumature Chiare",
+        "description": "Set di 1 & 2 ovunque",
+        "points": "2",
+        "restriction": "face",
+        "elements": ["ONE", "TWO"]
+      },
+      {
+        "name": "Sfumature Medie",
+        "description": "Set di 3 & 4 ovunque",
+        "points": "2",
+        "restriction": "face",
+        "elements": ["THREE", "FOUR"]
+      },
+      {
+        "name": "Sfumature Scure",
+        "description": "Set di 5 & 6 ovunque",
+        "points": "2",
+        "restriction": "face",
+        "elements": ["FIVE", "SIX"]
+      },
+      {
+        "name": "Sfumature Diverse",
+        "description": "Set di dadi di ogni valore ovunque",
+        "points": "5",
+        "restriction": "face",
+        "elements": ["ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX"]
+      },
+      {
+        "name": "Varietà di Colore",
+        "description": "Set di dadi di ogni colore ovunque",
+        "points": "4",
+        "restriction": "color",
+        "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]
+      }
+    ],
+    "diagonal": {
+      "name": "Diagonali Colorate",
+      "description": "Numero di dadi dello stesso colore diagonalmente adiacenti",
+      "points": "1",
+      "restriction": "color",
+      "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]
+    }
+  }
+}

@@ -21,7 +21,7 @@ public abstract class ObjectiveCard extends Card {
     @Override
     public String toString(){
         String string = super.toString();
-        string=string.concat("\nDescription :"+description);
+        string=string.concat("\nDescription: "+description);
         return string;
     }
 

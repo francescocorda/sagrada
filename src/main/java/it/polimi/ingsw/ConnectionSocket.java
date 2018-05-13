@@ -2,11 +2,14 @@ package it.polimi.ingsw;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConnectionSocket implements Connection {
     private BufferedReader inSocket;
     private PrintWriter outSocket;
     private Socket socket;
+    private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
     ConnectionSocket(Socket socket) {
         this.socket = socket;
@@ -20,11 +23,12 @@ public class ConnectionSocket implements Connection {
             outSocket = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e) {
             System.out.println("Exception: e=" + e);
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e);
 
             try {
                 socket.close();
             } catch (Exception ex) {
+                LOGGER.log( Level.SEVERE, ex.toString(), ex);
             }
         }
     }
@@ -38,7 +42,7 @@ public class ConnectionSocket implements Connection {
         try {
             message=inSocket.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e);
             message="";
         }
         return message;
@@ -48,7 +52,7 @@ public class ConnectionSocket implements Connection {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log( Level.SEVERE, e.toString(), e);
         }
     }
 }

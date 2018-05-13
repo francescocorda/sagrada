@@ -17,7 +17,7 @@ import static java.lang.Integer.valueOf;
 public class PatternDeck {
 
     private ArrayList<PatternCard> deck;
-    private static final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
+    private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
     public PatternDeck() {
         deck=new ArrayList<>();

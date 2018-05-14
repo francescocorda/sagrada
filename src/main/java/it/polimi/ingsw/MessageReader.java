@@ -23,7 +23,12 @@ public class MessageReader {
             }
             secondLastSymbol=lastSymbol;
             lastSymbol= message.indexOf('>', secondLastSymbol+1);
-            parts.add(message.substring(secondLastSymbol+1, lastSymbol));
+            if(lastSymbol == -1){
+                parts.add(message.substring(secondLastSymbol+1));
+                break;
+            }
+            else
+                parts.add(message.substring(secondLastSymbol+1, lastSymbol));
         }
     }
 

@@ -55,4 +55,13 @@ public class ConnectionSocket implements Connection {
             LOGGER.log( Level.SEVERE, e.toString(), e);
         }
     }
+
+    public boolean isConnected(){
+        try{
+            inSocket.read();
+            return true;
+        } catch (Exception e){
+            return  false;
+        }
+    }
 }

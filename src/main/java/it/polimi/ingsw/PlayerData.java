@@ -30,6 +30,15 @@ public class PlayerData{
         }
     }
 
+    public int onlinePlayersNumber(){
+        int number=0;
+        for(Data data: players){
+            if(data.isConnected()){
+                number++;
+            }
+        }
+        return  number;
+    }
 }
 
 

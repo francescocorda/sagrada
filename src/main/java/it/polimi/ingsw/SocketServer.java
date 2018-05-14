@@ -34,8 +34,9 @@ public class SocketServer {
                 socket = serverSocket.accept();
                 clientCounter++;
                 System.out.println("\nClient number: " + clientCounter + " has connected");
+                System.out.println("Players connected: "+players.onlinePlayersNumber());
                 Connection connection = new ConnectionSocket(socket);
-                Runnable client = new ClientHandler(connection, ConnectionMode.SOCKET, players);
+                Runnable client = new ClientController(connection , ConnectionMode.SOCKET, players);
                 new Thread(client).start();
             }
         } catch(Exception e) {

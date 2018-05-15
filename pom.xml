@@ -25,7 +25,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.2-SNAPSHOT</version>
+                <version>0.8.1</version>
                 <configuration>
                     <destFile>${sonar.jacoco.reportPath}</destFile>
                     <append>true</append>
@@ -68,7 +68,7 @@
                         <configuration>
                             <!-- Sets the path to the file which contains the execution data. -->
                             <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
-                            <!-- Sets the output directory for the code coverage report. -->
+
                             <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
                         </configuration>
                     </execution>
@@ -167,7 +167,7 @@
         <dependency>
             <groupId>org.jacoco</groupId>
             <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.2-SNAPSHOT</version>
+            <version>0.8.1</version>
         </dependency>
 
     </dependencies>

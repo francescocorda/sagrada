@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PlayerData{
     private ArrayList<Data> players;
 
-    PlayerData() {
+    public PlayerData() {
         players = new ArrayList<>();
     }
 

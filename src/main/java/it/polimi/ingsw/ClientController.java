@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Server.Connection;
+import it.polimi.ingsw.Server.ConnectionMode;
+
 public class ClientController implements Runnable {
 
     private enum Phase {
@@ -21,7 +24,7 @@ public class ClientController implements Runnable {
     private Status status;
     private Phase phase;
 
-    ClientController(Connection connection, ConnectionMode connectionMode, PlayerData players) {
+    public ClientController(Connection connection, ConnectionMode connectionMode, PlayerData players) {
         this.connectionMode = connectionMode;
         this.connection = connection;
         this.players = players;

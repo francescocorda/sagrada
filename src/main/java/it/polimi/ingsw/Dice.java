@@ -31,15 +31,6 @@ public class Dice {
         return face;
     }
 
-
-    public String getOppositeFace(){
-        return faces[6-valueOf()];
-    }
-
-    public void setOppositeFace(){
-        this.face = faces[6-valueOf()];
-    }
-
     public void setFace(int value) throws InvalidFaceException{
         if(0<value && value<7){
             this.face=faces[value-1];

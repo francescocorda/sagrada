@@ -9,6 +9,8 @@ public class RoundTrack {
         roundTrack = new ArrayList<>();
     }
 
+    public void addDice(Dice dice, int round_index) {}
+
     @Override
     public String toString(){
         if(roundTrack.isEmpty())

@@ -19,7 +19,7 @@ public class DiceBag {
             }
     }
 
-    Dice draw() {
+    public Dice draw() {
         int count = this.dices.size();
         if (count == 0)
             throw new IndexOutOfBoundsException();
@@ -27,10 +27,11 @@ public class DiceBag {
         int index = rand.nextInt(count);
         Dice dice = this.dices.get(index);
         this.dices.remove(dice);
+        dice.roll();
         return dice;
     }
 
-    ArrayList<Dice> draw(int numberOfDice) {
+    public ArrayList<Dice> draw(int numberOfDice) {
         ArrayList<Dice> drawPool = new ArrayList<>();
 
         if(numberOfDice>this.dices.size())
@@ -42,9 +43,14 @@ public class DiceBag {
             int index = rand.nextInt(count);
             Dice dice = this.dices.get(index);
             this.dices.remove(dice);
+            dice.roll();
             drawPool.add(dice);
         }
         return drawPool;
+    }
+
+    public void addDice(Dice dice) {
+        this.dices.add(dice);
     }
 
     @Override

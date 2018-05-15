@@ -29,19 +29,6 @@ class TestDice {
         assertTrue((dice.valueOf() > 0) && (dice.valueOf() < 7));
     }
 
-    @Test
-    void oppositeFaceTest() {
-        Dice dice = new Dice(Color.ANSI_YELLOW);
-        dice.roll();
-        for (int i = 1; i < 7; i++) {
-            try {
-                dice.setFace(i);
-            } catch (InvalidFaceException e){
-                e.printStackTrace();
-            }
-            assertEquals(6 - dice.valueOf() + 1, dice.getOppositeFace().compareTo("\u2680") + 1);
-        }
-    }
 
     @Test
     void setFaceTest() {

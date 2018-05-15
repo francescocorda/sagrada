@@ -46,6 +46,14 @@ public class Round {
         }
     }
 
+    public void removeTurn(PlayerTurn playerTurn) throws NotValidInputException {
+        if(playerTurns.contains(playerTurn)) {
+            this.playerTurns.remove(playerTurn);
+        } else {
+            throw new NotValidInputException();
+        }
+    }
+
     public void twoTurnsInARow(Player player) throws NotValidInputException {
 
         if(!players.contains(player)) {

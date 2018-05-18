@@ -1,17 +1,17 @@
 CLIENT -> SERVER  
   
-communication:  
+Communication:  
  * change_communication_mode  
  * pong  
  * quit  
   
-login:  
+Login:  
  * login<"username"><"password">  
   
-lobby:  
+Lobby:  
  * lobby<last_access><"time">  
   
-game:  
+Game:  
  * game<start><choose_pattern_card><"pattern_id">  
  * game<move><set_dice_window><"draftpool_index"><"row"><"column">  
  * game<move><remove_dice_window><"row"><"column">  
@@ -30,18 +30,18 @@ game:
 
 SERVER -> CLIENT  
   
-communication:  
+Communication:  
  * communication<socket>  
  * communication<rmi>  
  * ping  
   
-login:  
+Login:  
  * login<invalid_command>  
  * login<insert_credentials>  
  * login<success>  
  * login<failed>  
   
-lobby:
+Lobby:
  * lobby<invalid_command>  
  * lobby<last_access><welcome_back>  
  * lobby<last_access><invalid_time>  
@@ -53,7 +53,7 @@ lobby:
  * lobby<player_left><"username">  
  * lobby<start_game>  
   
-game:  
+Game:  
  * game<invalid_command>  
  * game<start><private_objective><"private_objective_json">  
  * game<start><public_objectives><"public_objectives_json">  

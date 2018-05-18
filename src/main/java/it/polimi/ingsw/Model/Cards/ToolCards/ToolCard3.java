@@ -1,17 +1,13 @@
 package it.polimi.ingsw.Model.Cards.ToolCards;
 
-
-
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
+import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 
 public class ToolCard3 extends ToolCard {
-    public void ToolCard3(){
+
+    public ToolCard3(){
         ID = 3;
         name = "Copper Foil Burnisher";
         description = "Move any one die in your window\nignoring shade restriction\n\nYou must obey all other\nplacement restriction";
@@ -19,19 +15,10 @@ public class ToolCard3 extends ToolCard {
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        Dice dice;
-        dice = specialMove.chooseDicefromWindow(player.getWindowFrame(), commands);
-        int index = 4;
-        boolean done = false;
-        while (!done) {
-            try {
-                specialMove.enableRestriction(player.getWindowFrame(), "VALUE");
-                specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(index));
-                done=true;
-            } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-                index = index+4;
-            }
-        }
+    public Dice useAbility(ArrayList<Dice> drawPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws DiceNotFoundException {
+        int row = Integer.valueOf(commands.remove(0));
+        int col = Integer.valueOf(commands.remove(0));
+        player.getWindowFrame().enableRestriction("VALUE");
+        return player.getWindowFrame().removeDice(row, col);
     }
 }

@@ -8,13 +8,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestToolCards {
 
     @Test
-    public void toolCard1Test() throws WrongRoundException {
+    public void toolCard1Test() throws WrongRoundException, InvalidNeighboursException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
@@ -24,8 +23,8 @@ public class TestToolCards {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        for (Dice c : drawPool) {
+        ArrayList<Dice> draftPool = diceBag.draw(9);
+        for (Dice c : draftPool) {
             if (c.valueOf() == 1 || c.valueOf() == 6) {
                 try {
                     c.setFace(3);
@@ -36,147 +35,144 @@ public class TestToolCards {
         }
         Player player1 = new Player("Gamer1");
         player1.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-
-        int dimension = drawPool.size();
+        RoundTrack roundTrack = new RoundTrack();
+        int dimension = draftPool.size();
         ToolCard toolCard = new ToolCard1();
-        String commands = "1\nINC\n1\n3";
-        Dice dice1 = drawPool.get(0);
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add("1"); commands.add("INC");
+        Dice dice1 = draftPool.get(0);
         int value = dice1.valueOf();
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands);
+        Dice dice2 = null;
+        try {
+            dice2 = toolCard.useAbility(draftPool, roundTrack, diceBag, player1, playerTurns, commands);
+        } catch (DiceNotFoundException | InvalidFaceException | MismatchedRestrictionException | OccupiedCellException | InvalidFirstMoveException e) {
+            e.printStackTrace();
+        }
 
         //funzionamento base
-        assertEquals(dimension - 1, drawPool.size());
-        assertEquals(dice1, windowFrame.getDice(1, 3));
-        assertEquals(value, windowFrame.getDice(1, 3).valueOf() - 1);
+        assertEquals(dimension-1, draftPool.size());
+        assertEquals(value, dice2.valueOf() - 1);
 
         //verifica che non posso trasformare un 1 in 6
-        Dice dice2;
         try {
-            drawPool.get(0).setFace(1);
+            draftPool.get(0).setFace(1);
 
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        dice2 = drawPool.get(0);
-        dimension = drawPool.size();
-        String commands1 = "1\nDEC\n2\n2";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands1);
-        assertEquals(dimension - 1, drawPool.size());
-        assertEquals(dice2, windowFrame.getDice(2, 2));
-        assertEquals(1, windowFrame.getDice(2, 2).valueOf());
+        dimension = draftPool.size();
+        commands.add("1"); commands.add("DEC");
+        Dice dice4 = draftPool.get(0);
+        assertThrows(InvalidFaceException.class,()-> toolCard.useAbility(draftPool, roundTrack, diceBag, player1, playerTurns, commands));
+        assertEquals(dimension, draftPool.size());
+        assertEquals(1, dice4.valueOf());
 
-        //verifica che non posso trasformare un 6 in 1
-        Dice dice3;
+        //verifica che non posso trasformare un 6 in 1;
         try {
-            drawPool.get(0).setFace(6);
+            draftPool.get(0).setFace(6);
 
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        dice3 = drawPool.get(0);
-        dimension = drawPool.size();
-        String commands2 = "1\nINC\n2\n4";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands2);
-        assertEquals(dimension - 1, drawPool.size());
-        assertEquals(dice3, windowFrame.getDice(2, 4));
-        assertEquals(6, windowFrame.getDice(2, 4).valueOf());
+        dimension = draftPool.size();
+        commands.add("1");commands.add("INC");
 
-        //verifica che devo rispettare restrizione di numero
-        Dice dice4;
-        try {
-            drawPool.get(0).setFace(4);
-
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
-        dice4 = drawPool.get(0);
-        dimension = drawPool.size();
-        String commands4 = "1\nINC\n3\n1";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands4);
-        assertEquals(dimension, drawPool.size());
-        assertEquals(null, windowFrame.getDice(3, 1));
-
-        //verifica che devo rispettare restrizione di colore
-        Dice dice5 = drawPool.get(0);
-        dice5.setColor(Color.ANSI_BLUE);
-        try {
-            dice5.setFace(3);
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
-        dimension = drawPool.size();
-        String commands5 = "1\nINC\n3\n5";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands5);
-        assertEquals(dimension, drawPool.size());
-        assertEquals(null, windowFrame.getDice(2, 5));
+        assertThrows(InvalidFaceException.class,()-> toolCard.useAbility(draftPool, roundTrack, diceBag, player1, playerTurns, commands));
+        assertEquals(dimension , draftPool.size());
+        assertEquals(6, dice4.valueOf());
     }
 
     @Test
     public void toolCard2Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player = new Player("player");
         player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
+        RoundTrack roundTrack = new RoundTrack();
 
+        playerTurns.add(new PlayerTurn(player, draftPool, roundTrack, diceBag));
+        playerTurns.get(0).setPlayerTurns(playerTurns);
 
-        ToolCard toolCard = new ToolCard2();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        drawPool.get(1).setColor(Color.ANSI_GREEN);
+        Move move1 = new Move(draftPool, player, playerTurns);
+        Move move2 = new Move(draftPool, player, playerTurns);
+
+        playerTurns.get(0).addMove(move1);
+        playerTurns.get(0).addMove(move2);
+        SpecialMove specialMove = new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns);
+        specialMove.setToolCard(new ToolCard2());
+        playerTurns.get(0).addMove(specialMove);
+        draftPool.get(0).setColor(Color.ANSI_BLUE);
+        draftPool.get(1).setColor(Color.ANSI_GREEN);
         try {
-            drawPool.get(0).setFace(2);
-            drawPool.get(1).setFace(3);
+            draftPool.get(0).setFace(2);
+            draftPool.get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        String commands = new String();
-        Dice dice = null;
-        Dice dice1 = null;
-
+        Dice dice1 = draftPool.get(1);
+        ArrayList<String> commands = new ArrayList<>();
         try {
-            commands = "1\n1\n3\n";
-            dice = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice, drawPool, commands.substring(2));
-            commands = "1\n2\n2\n";
-            dice1 = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice1, drawPool, commands.substring(2));
-        } catch (InvalidNeighboursException | InvalidFirstMoveException | MismatchedRestrictionException | OccupiedCellException e) {
+            commands.add("1"); commands.add("1"); commands.add("3");
+            move1.performMove(commands);
+            commands.add("1"); commands.add("2"); commands.add("2");
+            move2.performMove(commands);
+            windowFrame.dump();
+        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        int dimension = drawPool.size();
+
+        int dimension = draftPool.size();
 
         //funzionamento base
-        commands = "2\n2\n1\n2\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("2"); commands.add("2"); commands.add("1"); commands.add("2");
+        try {
+            specialMove.performMove(commands);
+            windowFrame.dump();
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(1, 2));
 
 
         //verifica che devo rispettare restrizione numero
-        commands = "1\n2\n2\n3\n1\n2\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("1"); commands.add("2"); commands.add("2"); commands.add("3");
+        playerTurns.get(0).addMove(specialMove);
+
+        try {
+            specialMove.performMove(commands);
+        } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException | InvalidFaceException | DiceNotFoundException e) {
+            e.printStackTrace();
+        }
+        windowFrame.dump();
+
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(1, 2));
+        assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
+        assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(1,2));
 
         //verifica che devo rispettare restrizione posizione
-        commands = "1\n2\n3\n2\n1\n2\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("1"); commands.add("2"); commands.add("3"); commands.add("2");
+        playerTurns.get(0).addMove(specialMove);
+        try {
+            specialMove.performMove(commands);
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(1, 2));
-
+        assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
+        assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(1,2));
     }
 
 
@@ -184,64 +180,83 @@ public class TestToolCards {
     public void toolCard3Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player = new Player("player");
         player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
+        RoundTrack roundTrack = new RoundTrack();
+        Move move1 = new Move(draftPool, player, playerTurns);
+        Move move2 = new Move(draftPool, player, playerTurns);
+        SpecialMove move3 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        playerTurns.add(new PlayerTurn(player, draftPool, roundTrack, diceBag));
+        playerTurns.get(0).setPlayerTurns(playerTurns);
+        playerTurns.get(0).addMove(move1);
+        playerTurns.get(0).addMove(move2);
 
         ToolCard toolCard = new ToolCard3();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        drawPool.get(1).setColor(Color.ANSI_GREEN);
+        move3.setToolCard(toolCard);
+        draftPool.get(0).setColor(Color.ANSI_BLUE);
+        draftPool.get(1).setColor(Color.ANSI_GREEN);
         try {
-            drawPool.get(0).setFace(2);
-            drawPool.get(1).setFace(3);
+            draftPool.get(0).setFace(2);
+            draftPool.get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        String commands = new String();
-        Dice dice = null;
-        Dice dice1 = null;
-
+        Dice dice1 = draftPool.get(1);
+        ArrayList<String> commands = new ArrayList<>();
         try {
-            commands = "1\n1\n3\n";
-            dice = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice, drawPool, commands.substring(2));
-            commands = "1\n2\n2\n";
-            dice1 = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice1, drawPool, commands.substring(2));
-        } catch (InvalidNeighboursException | InvalidFirstMoveException | MismatchedRestrictionException | OccupiedCellException e) {
+            commands.add("1"); commands.add("1"); commands.add("3");
+            move1.performMove(commands);
+            commands.add("1"); commands.add("2"); commands.add("2");
+            move2.performMove(commands);
+            windowFrame.dump();
+        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
             e.printStackTrace();
         }
-
-        int dimension = drawPool.size();
+        int dimension = draftPool.size();
 
         //funzionamento base
-        commands = "2\n2\n2\n3\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("2"); commands.add("2"); commands.add("2"); commands.add("3");
+        try {
+            move3.performMove(commands);
+            windowFrame.dump();
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(2, 3));
 
 
         //verifica che devo rispettare restrizione colore
-        commands = "2\n3\n1\n2\n2\n3\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("2"); commands.add("3"); commands.add("1"); commands.add("2");
+        playerTurns.get(0).addMove(move3);
+        try {
+            move3.performMove(commands);
+            windowFrame.dump();
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(2, 3));
 
         //verifica che devo rispettare restrizione posizione
-        commands = "2\n3\n4\n3\n2\n3\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
-        assertEquals(dimension, drawPool.size());
+        commands.add("WINDOW");commands.add("2"); commands.add("3"); commands.add("4"); commands.add("3");
+        playerTurns.get(0).addMove(move3);
+        try {
+            move3.performMove(commands);
+            windowFrame.dump();
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension, draftPool.size());
         assertEquals(dice1, windowFrame.getDice(2, 3));
 
     }
@@ -250,385 +265,456 @@ public class TestToolCards {
     public void ToolCard4Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player = new Player("player");
         player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
+        RoundTrack roundTrack = new RoundTrack();
+        Move move1 = new Move(draftPool, player, playerTurns);
+        Move move2 = new Move(draftPool, player, playerTurns);
+        SpecialMove move3 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        SpecialMove move4 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        playerTurns.add(new PlayerTurn(player, draftPool, roundTrack, diceBag));
+        playerTurns.get(0).setPlayerTurns(playerTurns);
+        playerTurns.get(0).addMove(move1);
+        playerTurns.get(0).addMove(move2);
 
         ToolCard toolCard = new ToolCard4();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        drawPool.get(1).setColor(Color.ANSI_GREEN);
+        move3.setToolCard(toolCard);
+        move4.setToolCard(toolCard);
+        draftPool.get(0).setColor(Color.ANSI_BLUE);
+        draftPool.get(1).setColor(Color.ANSI_GREEN);
         try {
-            drawPool.get(0).setFace(2);
-            drawPool.get(1).setFace(3);
+            draftPool.get(0).setFace(2);
+            draftPool.get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        String commands = new String();
-        Dice dice = null;
-        Dice dice1 = null;
+        Dice dice1 = draftPool.get(0);
+        Dice dice2 = draftPool.get(1);
 
+        ArrayList<String> commands = new ArrayList<>();
         try {
-            commands = "1\n1\n3\n";
-            dice = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice, drawPool, commands.substring(2));
-            commands = "1\n2\n2\n";
-            dice1 = move.chooseDiceFromDP(drawPool, commands);
-            move.ordinaryMove(windowFrame, dice1, drawPool, commands.substring(2));
-        } catch (InvalidNeighboursException | InvalidFirstMoveException | MismatchedRestrictionException | OccupiedCellException e) {
+            commands.add("1"); commands.add("1"); commands.add("3");
+            move1.performMove(commands);
+            commands.add("1"); commands.add("2"); commands.add("2");
+            move2.performMove(commands);
+            windowFrame.dump();
+        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        int dimension = drawPool.size();
-
         //Test funzionamento base
-        commands = "1\n3\n3\n2\n2\n2\n4\n3\n";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player, playerTurns, commands);
+        commands.add("WINDOW");commands.add("1"); commands.add("3"); commands.add("3"); commands.add("2");
+        commands.add("WINDOW");commands.add("2"); commands.add("2"); commands.add("4"); commands.add("3");
+
+        try {
+            move3.performMove(commands);
+            windowFrame.dump();
+            move4.performMove(commands);
+            windowFrame.dump();
+        } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException | DiceNotFoundException | InvalidFaceException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(dice1, windowFrame.getDice(3,2));
+        assertEquals(dice2, windowFrame.getDice(4,3));
     }
 
     @Test
     public void ToolCard5Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player = new Player("player");
         player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
+        RoundTrack roundTrack = new RoundTrack();
+        Move move1 = new Move(draftPool, player, playerTurns);
+        Move move2 = new Move(draftPool, player, playerTurns);
+        SpecialMove move3 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        playerTurns.add(new PlayerTurn(player, draftPool, roundTrack, diceBag));
+        playerTurns.get(0).setPlayerTurns(playerTurns);
+        playerTurns.get(0).addMove(move1);
+        playerTurns.get(0).addMove(move2);
+        playerTurns.get(0).addMove(move3);
 
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
 
         for (int i=0; i<10; i++) {
-                roundTrack.add(new ArrayList<>());
-            for (int j=0;j<2;j++) {
-                roundTrack.get(i).add(diceBag.draw());
+            for (int j=0; j<2; j++) {
+                roundTrack.getRoundDices(i).add(diceBag.draw());
             }
         }
 
         ToolCard toolCard = new ToolCard5();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
+        move3.setToolCard(toolCard);
+        draftPool.get(0).setColor(Color.ANSI_BLUE);
         try {
-            drawPool.get(0).setFace(2);
+            draftPool.get(0).setFace(2);
 
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        Dice diceDrawPool = drawPool.get(0);
-        Dice diceRoundTrack = roundTrack.get(3).get(1);
-        int dimension = drawPool.size();
+        Dice diceDrawPool = draftPool.get(0);
+        Dice diceRoundTrack = roundTrack.getRoundDices(3).get(1);
 
-        String commands = "1\n4\n2\n1\n3\n";
-        //test funzionamento base
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
+        ArrayList<String> commands = new ArrayList<>();
+
+        //Test funzionamento base
+        commands.add("DRAFTPOOL");commands.add("1"); commands.add("4"); commands.add("2");
+        commands.add("1"); commands.add("3");
+        try {
+            move3.performMove(commands);
+            windowFrame.dump();
+        } catch (DiceNotFoundException | InvalidFaceException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException | InvalidNeighboursException e) {
+            e.printStackTrace();
+        }
 
         assertEquals(diceRoundTrack,windowFrame.getDice(1,3));
-        assertEquals(diceDrawPool, roundTrack.get(3).get(1));
-
+        assertEquals(diceDrawPool, roundTrack.getRoundDices(3).get(1));
     }
 
     @Test
-    public void ToolCard6Test() throws WrongRoundException {
+    public void ToolCard6Test() {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player = new Player("player");
         player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-
+        RoundTrack roundTrack = new RoundTrack();
+        Move move1 = new Move(draftPool, player, playerTurns);
+        SpecialMove move2 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        SpecialMove move3 = new SpecialMove(draftPool,player, roundTrack, diceBag,playerTurns);
+        playerTurns.add(new PlayerTurn(player, draftPool, roundTrack, diceBag));
+        playerTurns.get(0).setPlayerTurns(playerTurns);
+        playerTurns.get(0).addMove(move1);
+        playerTurns.get(0).addMove(move2);
+        playerTurns.get(0).addMove(move3);
 
         ToolCard toolCard = new ToolCard6();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
+        ToolCard toolCard1 = new ToolCard6();
+        move2.setToolCard(toolCard);
+        move3.setToolCard(toolCard1);
+
+        draftPool.get(0).setColor(Color.ANSI_GREEN);
         try {
-            drawPool.get(0).setFace(2);
+            draftPool.get(0).setFace(2);
 
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        Dice dice = drawPool.get(0);
-        int dimension = drawPool.size();
+        Dice dice = draftPool.get(0);
+        int dimension = draftPool.size();
+
+        for (Dice d: draftPool) {
+            System.out.print(d);
+        }
+        System.out.print("\n\n");
 
         //funzionamento base
-        String commands = "1\n1\n3\n";
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-        assertEquals(dimension-1, drawPool.size());
-
+        ArrayList<String> commands = new ArrayList<>();
+        try {
+            commands.add("DRAFTPOOL");commands.add("1");
+            move2.performMove(commands);
+            commands.add("4"); commands.add("2");
+            move2.performMove(commands);
+            windowFrame.dump();
+            for (Dice d: draftPool) {
+                System.out.print(d);
+            }
+            System.out.print("\n\n");
+        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException | WrongRoundException e) {
+            e.printStackTrace();
+        }
+        assertEquals(dimension-1, draftPool.size());
+        assertEquals(dice, windowFrame.getDice(4,2));
 
         //riposizionamento in riserva
-        dimension = drawPool.size();
-        drawPool.get(0).setColor(Color.ANSI_RED);
+        dimension = draftPool.size();
         try {
-            drawPool.get(0).setFace(1);
+            draftPool.get(0).setFace(1);
+            draftPool.get(0).setColor(Color.ANSI_PURPLE);
+
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        Dice dice2 = drawPool.get(0);
-        commands = "1\n1\n2\n";
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-        assertEquals(dimension, drawPool.size());
-        assertEquals(dice2,drawPool.get(drawPool.size()-1));
+        Dice dice2 = draftPool.get(0);
+        for (Dice d: draftPool) {
+            System.out.print(d);
+        }
+        System.out.print("\n\n");
+        windowFrame.dump();
+        System.out.println(commands.size());
+        for (String s: commands) {
+            System.out.println(s);
+        }
+        try {
+            commands.add("DRAFTPOOL");commands.add("1");
+            move3.performMove(commands);
+            commands.add("3"); commands.add("3");
+            move3.performMove(commands);
+        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException | WrongRoundException e) {
+            e.printStackTrace();
+        }
+
+        for (Dice d: draftPool) {
+            System.out.print(d);
+        }
+        System.out.print("\n\n");
+
+        assertEquals(dimension, draftPool.size());
+        assertEquals(dice2 , draftPool.get(0));
     }
 
     @Test
-    public void ToolCard7Test() throws WrongRoundException {
+    public void ToolCard7Test() throws WrongRoundException, InvalidFaceException, InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, DiceNotFoundException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+        RoundTrack roundTrack = new RoundTrack();
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        Player player = new Player("player");
-        player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-
-
+        ArrayList<Dice> draftPool = diceBag.draw(9);
+        Player player1 = new Player("Gamer1");
+        Player player2 = new Player("Gamer2");
+        player1.setWindowFrame(windowFrame);
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        playerTurns.add(new PlayerTurn(player2, draftPool, roundTrack, diceBag));
+        ArrayList<Move> moves = new ArrayList<>();
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
+        playerTurns.get(0).setMoves(moves);
         ToolCard toolCard = new ToolCard7();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        try {
-            drawPool.get(0).setFace(2);
+        playerTurns.get(0).getMoves().get(0).setToolCard(toolCard);
+        ArrayList<String> commands = new ArrayList<>();
+        Dice dice = new Dice(Color.ANSI_BLUE);
+        dice.setFace(3);
+        windowFrame.setDice(4, 3, dice);
 
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
+        //test funzionamento base
+        //commands.add("NULL");
+        int dim = draftPool.size();
+        playerTurns.get(0).getMoves().get(0).performMove(commands);
+        assertEquals(dim, draftPool.size());
+        commands.add("DRAFTPOOL"); commands.add("1"); commands.add("3"); commands.add("2");
+        playerTurns.get(0).getMoves().get(0).performMove(commands);
+        assertNotEquals(null, windowFrame.getDice(3, 2));
 
-        Dice dice = drawPool.get(0);
-        int dimension = drawPool.size();
-        String commands = "1\n1\n3\n";
+        //test chiamata alla ToolCard durante il primo turno
+        playerTurns.add(new PlayerTurn(player2, draftPool, roundTrack, diceBag));
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        ToolCard toolCard1 = new ToolCard7();
+        moves.add(specialMove1);
+        moves.get(0).setToolCard(toolCard1);
+        //commands.add("NULL");
+        assertThrows(WrongRoundException.class, ()->playerTurns.get(0).getMoves().get(0).performMove(commands));
 
-        //test primo round
-        assertThrows(WrongRoundException.class, ()->toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands));
-        //test secondo round: 0 mosse effettuate
-        playerTurns.get(0).setActionPerformed(ActionPerformed.COMPLETED);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-        assertThrows(WrongRoundException.class, ()->toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands));
-        //test secondo round: prima mossa effettuata
+        //test chiamata alla ToolCard durante il secondo turno, prima di scegliere il primo dado
+        playerTurns.remove(3);
+        playerTurns.remove(2);
+        moves.add(0, new Move(draftPool, player1, playerTurns));
+        //commands.add("NULL");
+        assertThrows(WrongRoundException.class, ()->playerTurns.get(0).getMoves().get(1).performMove(commands));
 
-        playerTurns.get(0).setActionPerformed(ActionPerformed.COMPLETED);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.DEFAULT);
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-        assertEquals(dice,windowFrame.getDice(1,3));
     }
 
     @Test
     public void ToolCard8Test() throws WrongRoundException, InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException {
         WindowFrame windowFrame = new WindowFrame();
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+        RoundTrack roundTrack = new RoundTrack();
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        Player player = new Player("player");
-        player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-
-
-        ToolCard toolCard = new ToolCard8();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        try {
-            drawPool.get(0).setFace(2);
-
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
-
-        Dice dice = drawPool.get(0);
-        int dimension = drawPool.size();
-        String commands = "1\n1\n3\n";
-        move.chooseDiceFromDP(drawPool,commands);
-        move.ordinaryMove(windowFrame,dice,drawPool,commands.substring(2));
-
-        //test funzionamento base
-        int numOfTurns = playerTurns.size();
-        commands = "1\n2\n2\n";
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-        assertEquals(numOfTurns-1, playerTurns.size());
-
-        int count = 0;
-
-        for (PlayerTurn c: playerTurns) {
-            if (c.getPlayer().getName().equals(player.getName())) {
-                count++;
+        ArrayList<Dice> draftPool = diceBag.draw(9);
+        Player player1 = new Player("Gamer1");
+        Player player2 = new Player("Gamer2");
+        player1.setWindowFrame(windowFrame);
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        playerTurns.add(new PlayerTurn(player2, draftPool, roundTrack, diceBag));
+        playerTurns.add(new PlayerTurn(player2, draftPool, roundTrack, diceBag));
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        for(int i=0; i<4; i++){
+            ArrayList<Move> moves = new ArrayList<>();
+            if(i==0 || i==3){
+                moves.add(new Move(draftPool, player1, playerTurns));
+                SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+                moves.add(specialMove1);
+                playerTurns.get(0).setMoves(moves);
+            } else {
+                moves.add(new Move(draftPool, player2, playerTurns));
+                SpecialMove specialMove2 = new SpecialMove(draftPool, player2, roundTrack, diceBag, playerTurns);
+                moves.add(specialMove2);
+                playerTurns.get(0).setMoves(moves);
             }
         }
-        assertEquals(1, count);
+        ToolCard toolCard = new ToolCard8();
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard);
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add("DRAFTPOOL"); commands.add("1"); commands.add("1"); commands.add("3");
+
+        //lancia eccezione se non ho ancora piazzato nessun dado
+        assertThrows(WrongRoundException.class, ()->{playerTurns.get(0).getMoves().get(1).performMove(commands);});
+
+        //funzionamento base
+        playerTurns.get(0).getMoves().remove(0);
+        ArrayList<String> commands1 = new ArrayList<>();
+        commands1.add("DRAFTPOOL"); commands1.add("1"); commands1.add("1"); commands1.add("3");
+        try {
+            playerTurns.get(0).getMoves().get(0).performMove(commands1);
+        } catch (DiceNotFoundException | InvalidFaceException e) {
+            e.printStackTrace();
+        }
+        assertNotEquals(null, windowFrame.getDice(1,3));
+
+        //lancia eccezione se sono la mio secondo turno
+        ArrayList moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player1, playerTurns));
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
+        playerTurns.get(0).setMoves(moves);
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard);
+        ArrayList<String> commands3 = new ArrayList<>();
+        commands3.add("DRAFTPOOL"); commands3.add("1");
+        assertThrows(WrongRoundException.class, ()->{playerTurns.get(0).getMoves().get(1).performMove(commands3);});
     }
 
     @Test
     public void ToolCard9Test() throws InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
+        Dice dice = new Dice(Color.ANSI_BLUE);
+        try {
+            dice.setFace(2);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+        windowFrame.setDice(1,2, dice);
+        RoundTrack roundTrack = new RoundTrack();
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        Player player = new Player("player");
-        player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-
-
+        ArrayList<Dice> draftPool = diceBag.draw(9);
+        Player player1 = new Player("Gamer1");
+        player1.setWindowFrame(windowFrame);
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player1, playerTurns));
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
+        playerTurns.get(0).setMoves(moves);
         ToolCard toolCard = new ToolCard9();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        try {
-            drawPool.get(0).setFace(2);
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard);
+        ArrayList<String> commands = new ArrayList<>();
 
-        } catch (InvalidFaceException e) {
+        //test funzionamento base
+        commands.add("DRAFTPOOL");commands.add("1");commands.add("3");commands.add("4");
+        try {
+            playerTurns.get(0).getMoves().get(1).performMove(commands);
+        } catch (DiceNotFoundException | InvalidFaceException e) {
             e.printStackTrace();
         }
-
-        Dice dice = drawPool.get(0);
-        int dimension = drawPool.size();
-        String commands = "1\n1\n3\n";
-        move.chooseDiceFromDP(drawPool,commands);
-        move.ordinaryMove(windowFrame,dice,drawPool,commands.substring(2));
-
-        Dice dice1 = drawPool.get(0);
-        //test funzionamento base
-        commands = "1\n4\n3\n";
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-
-        assertEquals(dice1, windowFrame.getDice(4,3));
-
+        assertNotEquals(null, windowFrame.getDice(3, 4));
     }
 
     @Test
     public void ToolCard10Test() throws InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
+        Dice dice = new Dice(Color.ANSI_BLUE);
+        try {
+            dice.setFace(2);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
         PatternDeck patternDeck = new PatternDeck();
-        Move move = new Move();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(1));
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+        windowFrame.setDice(1,2, dice);
+        RoundTrack roundTrack = new RoundTrack();
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        Player player = new Player("player");
-        player.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.add(new PlayerTurn(player, drawPool));
-        playerTurns.get(0).setActionPerformed(ActionPerformed.DEFAULT);
-        playerTurns.get(1).setActionPerformed(ActionPerformed.NOTHING);
-
-
+        ArrayList<Dice> draftPool = diceBag.draw(9);
+        Player player1 = new Player("Gamer1");
+        player1.setWindowFrame(windowFrame);
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player1, playerTurns));
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
+        playerTurns.get(0).setMoves(moves);
         ToolCard toolCard = new ToolCard10();
-        drawPool.get(0).setColor(Color.ANSI_BLUE);
-        try {
-            drawPool.get(0).setFace(2);
-
-        } catch (InvalidFaceException e) {
-            e.printStackTrace();
-        }
-
-        int face = drawPool.get(0).valueOf();
-        int dimension = drawPool.size();
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard);
+        ArrayList<String> commands = new ArrayList<>();
 
         //test funzionamento base
-        String commands = "1\n1\n3\n";
-        toolCard.useAbility(drawPool,roundTrack,diceBag,player,playerTurns,commands);
-
-        assertEquals(7-face, windowFrame.getDice(1,3).valueOf());
-
-    }
-
-    @Test
-    public void toolCard11Test() throws WrongRoundException {
-        WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
-            windowFrame.setPatternCard(patternDeck.getPatternCard(1));
-        } catch (NotValidInputException e) {
-            e.printStackTrace();
-        }
-        DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
-        Player player1 = new Player("Gamer1");
-        player1.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = null;
-        Dice dice = new Dice(Color.ANSI_GREEN);
-        try {
-            dice.setFace(6);
+            draftPool.get(0).setFace(2);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        ToolCard toolCard = new ToolCard11();
-        String commands = "1\n6\n1\n3";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands);
+        commands.add("DRAFTPOOL"); commands.add("1"); commands.add("2"); commands.add("3");
+        try {
+            playerTurns.get(0).getMoves().get(1).performMove(commands);
+        } catch (DiceNotFoundException | InvalidFaceException e) {
+            e.printStackTrace();
+        }
+        assertEquals("\u2684", windowFrame.getDice(2, 3).getFace());
 
-        //funzionamento base
-        assertEquals(dice.getFace(), windowFrame.getDice(1, 3).getFace());
+        //test posizionamento senza vicini
+        int dim = draftPool.size();
+        specialMove1.setToolCard(toolCard);
+        playerTurns.get(0).getMoves().add(specialMove1);
+        commands.add("DRAFTPOOL"); commands.add("1"); commands.add("4"); commands.add("3");
+        assertDoesNotThrow(()->playerTurns.get(0).getMoves().get(1).performMove(commands));
+        assertEquals(dim, draftPool.size());
     }
 
     @Test
-    public void toolCard12Test() throws WrongRoundException {
+    public void toolCard11Test() throws WrongRoundException, InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, InvalidFaceException, DiceNotFoundException {
         WindowFrame windowFrame = new WindowFrame();
+        Dice dice = new Dice(Color.ANSI_BLUE);
+        try {
+            dice.setFace(2);
+        } catch (InvalidFaceException e) {
+            e.printStackTrace();
+        }
         PatternDeck patternDeck = new PatternDeck();
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
@@ -636,50 +722,108 @@ public class TestToolCards {
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+        windowFrame.setDice(1,2, dice);
+        RoundTrack roundTrack = new RoundTrack();
         DiceBag diceBag = new DiceBag();
-        ArrayList<Dice> drawPool = diceBag.draw(9);
+        ArrayList<Dice> draftPool = diceBag.draw(9);
         Player player1 = new Player("Gamer1");
         player1.setWindowFrame(windowFrame);
-        ArrayList<ArrayList<Dice>> roundTrack = new ArrayList<>();
-        Dice dice;
-        for (int i=0; i<10; i++) {
-            roundTrack.add(new ArrayList<>());
-            for (int j=0;j<2;j++) {
-                dice = diceBag.draw();
-                if(dice.getColor().equals(Color.ANSI_BLUE)) dice.setColor(Color.ANSI_GREEN);
-                roundTrack.get(i).add(dice);
-            }
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player1, playerTurns));
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
+        playerTurns.get(0).setMoves(moves);
+        ToolCard toolCard = new ToolCard11();
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard);
+        ArrayList<String> commands = new ArrayList<>();
+
+        //test funzionamento base
+        commands.add("DRAFTPOOL"); commands.add("1");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        /*commands.add("NULL");*/ commands.add("5"); commands.add("2"); commands.add("3");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        assertEquals("\u2684", windowFrame.getDice(2, 3).getFace());
+
+        //test posizionamento senza vicini
+        int dim = draftPool.size();
+        playerTurns.get(0).getMoves().add(specialMove1);
+        ToolCard toolCard1 = new ToolCard11();
+        playerTurns.get(0).getMoves().get(1).setToolCard(toolCard1);
+        commands.add("DRAFTPOOL"); commands.add("1");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        /*commands.add("NULL");*/ commands.add("5"); commands.add("4"); commands.add("2");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        assertEquals(null, windowFrame.getDice(4,2));
+        assertEquals(dim, draftPool.size());
+
+    }
+
+    @Test
+    public void toolCard12Test() throws InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, DiceNotFoundException, InvalidFaceException, WrongRoundException {
+        WindowFrame windowFrame = new WindowFrame();
+        PatternDeck patternDeck = new PatternDeck();
+        try {
+            windowFrame.setPatternCard(patternDeck.getPatternCard(1));
+        } catch (NotValidInputException e) {
+            e.printStackTrace();
         }
-        roundTrack.get(0).get(0).setColor(Color.ANSI_GREEN);
-        dice = new Dice(Color.ANSI_GREEN);
-        Dice dice1 = new Dice(Color.ANSI_GREEN);
+        Dice dice1 = new Dice(Color.ANSI_BLUE);
         Dice dice2 = new Dice(Color.ANSI_BLUE);
         try {
-            dice.setFace(3);
             dice1.setFace(2);
-            dice2.setFace(4);
+            dice2.setFace(5);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        try {
-            windowFrame.setDice(3, 1, dice);
-            windowFrame.setDice(2, 2, dice1);
-            windowFrame.setDice(1, 2, dice2);
-        } catch (MismatchedRestrictionException
-                |InvalidNeighboursException
-                |InvalidFirstMoveException
-                |OccupiedCellException e) {
-            e.printStackTrace();
+        windowFrame.setDice(1,2, dice1);
+        windowFrame.setDice(2,3, dice2);
+        RoundTrack roundTrack = new RoundTrack();
+        DiceBag diceBag = new DiceBag();
+        for(int i=0; i<10; i++){
+            ArrayList<Dice> dices = new ArrayList<>();
+            for(int j=0; j<2; j++){
+                Dice dice = diceBag.draw();
+                if(dice.getColor().equals(Color.ANSI_RED)) dice.setColor(Color.ANSI_BLUE);
+                dices.add(dice);
+            }
+            roundTrack.setRoundDices(dices, i);
         }
+        Dice dice = new Dice(Color.ANSI_BLUE);
+        roundTrack.getRoundDices(9).add(dice);  //in the RT there is a dice blue but not red dices
+        ArrayList<Dice> draftPool = new ArrayList<>();
+        draftPool = diceBag.draw(1);
+        Player player1 = new Player("Gamer1");
+        player1.setWindowFrame(windowFrame);
 
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
+        playerTurns.add(new PlayerTurn(player1, draftPool, roundTrack, diceBag));
+        ArrayList<Move> moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player1, playerTurns));
+        SpecialMove specialMove1 = new SpecialMove(draftPool, player1, roundTrack, diceBag, playerTurns);
+        moves.add(specialMove1);
         ToolCard toolCard = new ToolCard12();
-        String commands = "3\n1\n1\n3\n2\n2\n2\n4";
-        toolCard.useAbility(drawPool, roundTrack, diceBag, player1, playerTurns, commands);
+        moves.get(1).setToolCard(toolCard);
+        playerTurns.get(0).setMoves(moves);
+        ArrayList<String> commands = new ArrayList<>();
 
-        //funzionamento base
-        assertEquals(dice, windowFrame.getDice(1, 3));
-        assertEquals(dice1, windowFrame.getDice(2, 4));
-        assertEquals(dice2, windowFrame.getDice(1, 2));
+        //Test funzionamento base
+        commands.add("WINDOW"); commands.add("1"); commands.add("2"); commands.add("3"); commands.add("2");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        assertEquals("\u2681", windowFrame.getDice(3, 2).getFace());
+        playerTurns.get(0).getMoves().add(specialMove1);
+        commands.add("WINDOW"); commands.add("2"); commands.add("3"); commands.add("4"); commands.add("3");
+        playerTurns.get(0).getMoves().get(1).performMove(commands);
+        assertEquals("\u2684", windowFrame.getDice(4, 3).getFace());
+
+        //spostamento di dado col colore non presente nel RT
+        Dice dice3 = new Dice(Color.ANSI_RED);
+        dice3.setFace(5);
+        windowFrame.setDice(2, 3, dice3);
+        ToolCard toolCard1 = new ToolCard12();
+        specialMove1.setToolCard(toolCard1);
+        playerTurns.get(0).getMoves().add(specialMove1);
+        commands.add("WINDOW"); commands.add("2"); commands.add("3"); commands.add("3"); commands.add("4");
+        assertThrows(DiceNotFoundException.class, ()->playerTurns.get(0).getMoves().get(1).performMove(commands));
     }
-
 }

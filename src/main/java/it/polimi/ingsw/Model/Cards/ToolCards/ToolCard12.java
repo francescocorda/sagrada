@@ -8,35 +8,51 @@ import java.util.HashSet;
 
 public class ToolCard12 extends ToolCard {
 
-    public void ToolCard12(){
+    int countMoves;
+    Color color;
+
+    public ToolCard12(){
         ID = 12;
         name = "Tap Wheel";
-        description = "Move up to dice of the same\ncolor that match the color of a die\non the RoundTrack\n\nYou must obey all\nplacement restrictions.";
+        description = "Move up to 2 dice of the same\ncolor that match the color of a die\non the RoundTrack\n\nYou must obey all\nplacement restrictions.";
         numOfTokens = 0;
+        countMoves = 0;
+        color = null;
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        HashSet<Color> temp = new HashSet<>();
-        Dice dice;
-        for(ArrayList<Dice> round : roundTrack){
-            for(Dice turn : round){
-                temp.add(turn.getColor());
-            }
-        }
-        int index = 0;
-        for(int i=0; i<2; i++){
-            dice = specialMove.chooseDicefromWindow(player.getWindowFrame(), commands.substring(index));
-            index += 4;
-            Color color = null;
-            if(temp.contains(dice.getColor())) {
-                try {
-                    specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(index));
-                    index += 4;
-                } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException e) {
-                    e.printStackTrace();
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws DiceNotFoundException {
+        int row = Integer.parseInt(commands.remove(0));
+        int col = Integer.parseInt(commands.remove(0));
+
+        if(countMoves==0) {
+
+            HashSet<Color> colorsRT = new HashSet<>();
+            for (int i = 0; i < roundTrack.size(); i++) {
+                ArrayList<Dice> roundDices = roundTrack.getRoundDices(i);
+                for (Dice d : roundDices) {
+                    colorsRT.add(d.getColor());
                 }
             }
+            if (colorsRT.contains(player.getWindowFrame().getDice(row, col).getColor())) {
+                color = player.getWindowFrame().getDice(row, col).getColor();
+                countMoves++;
+                SpecialMove specialMove = new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns);
+                specialMove.setToolCard(this);
+                playerTurns.get(0).getMoves().add(specialMove);
+                return player.getWindowFrame().removeDice(row, col);
+            } else {
+                throw new DiceNotFoundException(); //forse sarebbe meglio un'eccezione ad hoc
+            }
+
+        } else {
+
+            if(color.equals(player.getWindowFrame().getDice(row, col).getColor())) {
+                return player.getWindowFrame().removeDice(row, col);
+            }else {
+                throw new DiceNotFoundException(); //forse sarebbe meglio un'eccezione ad hoc
+            }
+
         }
     }
 }

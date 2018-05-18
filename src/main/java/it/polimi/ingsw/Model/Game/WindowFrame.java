@@ -16,9 +16,9 @@ public class WindowFrame {
     }
 
     public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
-                                                            InvalidNeighboursException,
-                                                            InvalidFirstMoveException,
-                                                            OccupiedCellException{
+            InvalidNeighboursException,
+            InvalidFirstMoveException,
+            OccupiedCellException{
 
         if(row<1 || row>4 || col<1 || col>5) {
             patternCard.setFalseExceptions();
@@ -54,6 +54,7 @@ public class WindowFrame {
 
             if(patternCard.getExceptionPosition(row, col) && checkNeighboursRestriction(row, col, dice)) {       //exception on position is actived by a toolcard
                 if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
+                        || patternCard.getExceptionRestriction(row,col)
                         || patternCard.getRestriction(row, col).compare(dice.getColor())
                         || patternCard.getRestriction(row, col).compare(dice.getFace())) {
                     this.dices[row - 1][col - 1] = dice;
@@ -109,7 +110,7 @@ public class WindowFrame {
     }
 
     public boolean checkNeighboursRestriction(int row, int col, Dice dice) {    //checks that all the horizontal and vertical neighbours
-                                                                                // don't have the same face or color as the dice
+        // don't have the same face or color as the dice
 
         if(row<1 || row>4 || col<1 || col>5) {
             throw new IndexOutOfBoundsException();
@@ -166,6 +167,24 @@ public class WindowFrame {
             return temp;
         } else {
             throw new DiceNotFoundException();
+        }
+    }
+
+    public void enableRestriction(String restrictionToIgnore){
+        for(int i=1; i<=4; i++){
+            for(int j=1; j<=5; j++){
+                if(restrictionToIgnore.compareTo("VALUE")==0){
+                    if(patternCard.getRestriction(i,j).escape().compareTo(Restriction.ONE.escape())>=0){
+                        patternCard.setExceptionRestriction(i, j, true);
+                    }
+                }else if(restrictionToIgnore.compareTo("COLOR")==0){
+                    if(patternCard.getRestriction(i,j).escape().compareTo(Restriction.ONE.escape())<0){
+                        patternCard.setExceptionRestriction(i, j, true);
+                    }
+                }else if(restrictionToIgnore.compareTo("POSITION")==0){
+                    patternCard.setExceptionPosition(i, j, true);
+                }
+            }
         }
     }
 

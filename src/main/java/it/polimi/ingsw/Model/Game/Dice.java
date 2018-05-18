@@ -32,7 +32,7 @@ public class Dice {
     }
 
     public void setFace(int value) throws InvalidFaceException{
-        if(0<value && value<7){
+        if(value>0 && value<7){
             this.face=faces[value-1];
         }
         else

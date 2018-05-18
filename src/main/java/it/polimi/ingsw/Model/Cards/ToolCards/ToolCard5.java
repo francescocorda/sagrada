@@ -1,15 +1,12 @@
 package it.polimi.ingsw.Model.Cards.ToolCards;
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.Model.Game.*;
 
 import java.util.ArrayList;
 
 public class ToolCard5 extends ToolCard {
-    public void ToolCard5(){
+
+    public ToolCard5(){
         ID = 5;
         name = "Lens Cutter";
         description = "After drafting, swap the drafted\ndie with a die from the\nRound Track";
@@ -17,14 +14,14 @@ public class ToolCard5 extends ToolCard {
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        Dice dice;
-        dice = specialMove.chooseDiceFromDP(drawPool, commands);
-        dice = specialMove.exchangeDiceRT(roundTrack, dice, commands.substring(2));
-        try {
-            specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(5));
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | InvalidFirstMoveException e) {
-            e.printStackTrace();
-        }
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) {
+        int indexDP = Integer.parseInt(commands.remove(0));
+        Dice dice = draftPool.remove(indexDP-1);
+        //inedxRT and indexDice starts from value 1
+        int indexRT = Integer.parseInt(commands.remove(0));
+        int indexDice = Integer.parseInt(commands.remove(0));
+        Dice temp = roundTrack.getRoundDices(indexRT-1).remove(indexDice-1);
+        roundTrack.getRoundDices(indexRT-1).add(dice);
+        return temp;
     }
 }

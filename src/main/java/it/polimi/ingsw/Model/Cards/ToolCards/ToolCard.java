@@ -2,12 +2,8 @@ package it.polimi.ingsw.Model.Cards.ToolCards;
 
 
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.SpecialMove;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
-import it.polimi.ingsw.exceptions.WrongRoundException;
+import it.polimi.ingsw.Model.Game.*;
+import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 
@@ -16,7 +12,6 @@ public abstract class ToolCard {
     protected String name;
     protected String description;
     protected int numOfTokens;
-    protected SpecialMove specialMove = new SpecialMove();
 
 
     public int getID(){
@@ -46,5 +41,5 @@ public abstract class ToolCard {
         System.out.println("Number of tokens: "+numOfTokens);
     }
 
-    public abstract void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) throws WrongRoundException;
+    public abstract Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws DiceNotFoundException, InvalidFaceException, WrongRoundException, InvalidNeighboursException, MismatchedRestrictionException, OccupiedCellException, InvalidFirstMoveException;
 }

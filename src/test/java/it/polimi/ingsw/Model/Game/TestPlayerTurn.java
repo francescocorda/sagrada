@@ -13,6 +13,9 @@ public class TestPlayerTurn {
     @Test
     void myTest() {
         Player player = new Player("fra");
+        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
+        RoundTrack roundTrack = new RoundTrack();
+        DiceBag diceBag = new DiceBag();
 
         try {
             player.setNumOfTokens(6);
@@ -20,17 +23,15 @@ public class TestPlayerTurn {
             e.printStackTrace();
         }
 
-        ArrayList<Dice> drawpool = new ArrayList<>();
+        ArrayList<Dice> draftpool = new ArrayList<>();
         for(int i=0; i<9;i++) {
-            drawpool.add(new Dice(Color.ANSI_BLUE));
-            drawpool.get(i).roll();
+            draftpool.add(new Dice(Color.ANSI_BLUE));
+            draftpool.get(i).roll();
         }
-        PlayerTurn turn = new PlayerTurn(player, drawpool);
+        PlayerTurn turn = new PlayerTurn(player, draftpool, roundTrack, diceBag);
 
         assertEquals(player, turn.getPlayer());
 
-        turn.setActionPerformed(ActionPerformed.NOTHING);
-        assertEquals(ActionPerformed.NOTHING, turn.getActionPerformed());
 
         try {
             turn.payTokens(6);

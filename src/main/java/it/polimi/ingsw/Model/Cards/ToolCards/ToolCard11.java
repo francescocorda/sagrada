@@ -1,31 +1,36 @@
 package it.polimi.ingsw.Model.Cards.ToolCards;
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
+import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 
 public class ToolCard11 extends ToolCard {
+    int counter;
+    Dice dice;
 
-    public void ToolCard11(){
+    public ToolCard11(){
         ID = 11;
         name = "Flux Remover";
         description = "After drafting, return the die to the\nDice Bag and pull 1 die from the bag\n\nChoose a value and place the new die,\nobeying all placement restrictions, or\nreturns it to the Draft Pool";
         numOfTokens = 0;
+        counter = 0;
+        dice=null;
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        diceBag.addDice(specialMove.chooseDiceFromDP(drawPool, commands));
-        Dice dice = diceBag.draw();
-        specialMove.setFace(dice,commands.substring(2));
-        try {
-            specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(4));
-        } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-            e.printStackTrace();
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws InvalidFaceException {
+        if(counter == 0) {
+            int indexDP = Integer.parseInt(commands.remove(0));
+            dice = draftPool.remove(indexDP - 1);
+            diceBag.addDice(dice);
+            dice = diceBag.draw();
+            counter++;
+            return null;
+        }else if(counter == 1) {
+            int face = Integer.parseInt(commands.remove(0));
+            dice.setFace(face);
         }
+        return dice;
     }
 }

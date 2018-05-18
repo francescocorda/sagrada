@@ -2,53 +2,33 @@ package it.polimi.ingsw.Model.Cards.ToolCards;
 
 
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
+import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 
 public class ToolCard4 extends ToolCard {
+    int countMoves;
 
-    public void ToolCard4(){  //Cos'ì com'è permette di spostare due volte lo stesso dado(da aggiustare)
+    public ToolCard4(){  //Cos'ì com'è permette di spostare due volte lo stesso dado(da aggiustare)
         ID = 4;
         name = "Lathekin";
         description = "Move exactly two dice, obeying\nall placement restrictions";
         numOfTokens = 0;
+        countMoves = 0;
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-
-        int index = 4;
-
-
-        boolean done1 = false;
-
-        Dice dice1 = specialMove.chooseDicefromWindow(player.getWindowFrame(), commands);
-        while (!done1) {
-            try {
-                specialMove.ordinaryMove(player.getWindowFrame(), dice1, drawPool, commands.substring(index));
-                done1=true;
-            } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-                e.printStackTrace();
-                index=index+4;
-            }
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws DiceNotFoundException {
+        int row = Integer.parseInt(commands.remove(0));
+        int col = Integer.parseInt(commands.remove(0));
+        Dice dice = player.getWindowFrame().removeDice(row, col);
+        countMoves++;
+        if(countMoves==1){
+            SpecialMove specialMove = new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns);
+            specialMove.setToolCard(this);
+            playerTurns.get(0).getMoves().add(specialMove);
         }
-
-        boolean done2 = false;
-        index = index+4;
-        Dice dice2 = specialMove.chooseDicefromWindow(player.getWindowFrame(), commands.substring(index));
-        index = index+4;
-        while(!done2) {
-            try {
-                specialMove.ordinaryMove(player.getWindowFrame(), dice2, drawPool, commands.substring(index));
-                done2=true;
-            } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-                index = index + 4;
-            }
-        }
+        return dice;
     }
 }

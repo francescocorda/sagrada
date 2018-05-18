@@ -1,49 +1,44 @@
 package it.polimi.ingsw.Model.Game;
 
-
-
-import it.polimi.ingsw.exceptions.InvalidFirstMoveException;
-import it.polimi.ingsw.exceptions.InvalidNeighboursException;
-import it.polimi.ingsw.exceptions.MismatchedRestrictionException;
-import it.polimi.ingsw.exceptions.OccupiedCellException;
+import it.polimi.ingsw.Model.Cards.ToolCards.ToolCard;
+import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Move {
+    protected ArrayList<Dice> draftPool;
+    protected Player player;
+    protected ArrayList<PlayerTurn> playerTurns;
+    protected ToolCard toolCard;
 
-    public Dice chooseDiceFromDP(ArrayList<Dice> drawPool, String commands){  //chiamato in TC1, TC5, TC9
-        int index;
-        try (Scanner in = new Scanner(commands)) {
-            index = 0;
-            int n = 1;
-            System.out.println("Quale dado vuoi prendere?");
-            for (Dice d : drawPool) {
-                System.out.println("Dado " + n + " :" + d);
-                n++;
-            }
-            while (1 > index || index > drawPool.size()) {
-                index = in.nextInt();
-                if (index < 1 || index > drawPool.size())
-                    System.out.println("Inserimento non valido, inserisci un altro dado.");
-            }
-        }
 
-        return drawPool.remove(index-1);
+    public Move(ArrayList<Dice> draftPool, Player player, ArrayList<PlayerTurn> playerTurns) {
+        this.draftPool = draftPool;
+        this.player = player;
+        this.playerTurns = playerTurns;
+        toolCard = null;
     }
 
-    public void ordinaryMove(WindowFrame windowFrame, Dice dice, ArrayList<Dice> drawPool, String commands) throws InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException {
-        int row, col;
-        try (Scanner in = new Scanner(commands)) {
-            windowFrame.dump();
-            System.out.println("In quale riga vuoi inserire il dado " + dice.toString() + " ?");
-            row = in.nextInt();
-            System.out.println("In quale colonna vuoi inserire il dado?");
-            col = in.nextInt();
+    public ToolCard getToolCard() {
+        return toolCard;
+    }
+
+    public void setToolCard(ToolCard toolCard) {
+        this.toolCard = toolCard;
+    }
+
+    //indexDP starts from value 1
+    public void performMove(ArrayList<String> commands) throws DiceNotFoundException, InvalidFaceException, MismatchedRestrictionException, InvalidNeighboursException, OccupiedCellException, InvalidFirstMoveException, WrongRoundException {
+        int indexDP=Integer.parseInt(commands.remove(0));
+        Dice dice = draftPool.remove(indexDP-1);
+        int row = Integer.parseInt(commands.remove(0));
+        int col = Integer.parseInt(commands.remove(0));
+        try {
+            player.getWindowFrame().setDice(row, col, dice);
+            playerTurns.get(0).getMoves().remove(this);
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | InvalidFirstMoveException | OccupiedCellException e) {
+            //rollback
+            draftPool.add(indexDP-1, dice);
         }
-
-        windowFrame.setDice(row, col, dice);
-
-        windowFrame.dump();
     }
 }

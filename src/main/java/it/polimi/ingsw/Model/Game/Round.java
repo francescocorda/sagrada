@@ -5,24 +5,26 @@ import it.polimi.ingsw.exceptions.NotValidInputException;
 import java.util.ArrayList;
 
 public class Round {
-    private ArrayList<ArrayList<Dice>> roundTrack;
+    private RoundTrack roundTrack;
     private DiceBag diceBag;
-    private ArrayList<Dice> drawPool;
+    private ArrayList<Dice> draftPool;
     private ArrayList<Player> players;
     private ArrayList<PlayerTurn> playerTurns;
 
 
-    public Round(ArrayList<Player> players, int first, DiceBag diceBag, ArrayList<ArrayList<Dice>> roundTrack) {
+    public Round(ArrayList<Player> players, int first, DiceBag diceBag, RoundTrack roundTrack) {
         this.roundTrack=roundTrack;
         this.diceBag=diceBag;
-        this.drawPool = null;
+        this.draftPool = null;
         this.players =  players;
         playerTurns = new ArrayList<>();
 
         int indexPlayers = first;
-        int indexTurns = 0;
-        while (indexTurns<players.size()) {
-            playerTurns.add(indexTurns, new PlayerTurn(players.get(indexPlayers), drawPool));
+        int indexTurn = 0;
+        while (indexTurn<players.size()) {
+            PlayerTurn turn = new PlayerTurn(players.get(indexPlayers), draftPool, this.roundTrack, this.diceBag);
+            turn.setPlayerTurns(playerTurns);
+            playerTurns.add(indexTurn, turn);
 
             if(indexPlayers==players.size()-1) {
                 indexPlayers=0;
@@ -30,11 +32,13 @@ public class Round {
                 indexPlayers++;
             }
 
-            indexTurns++;
+            indexTurn++;
         }
 
-        while (indexTurns<players.size()*2) {
-            playerTurns.add(indexTurns, new PlayerTurn(players.get(indexPlayers), drawPool));
+        while (indexTurn<players.size()*2) {
+            PlayerTurn turn = new PlayerTurn(players.get(indexPlayers), draftPool, this.roundTrack, this.diceBag);
+            turn.setPlayerTurns(playerTurns);
+            playerTurns.add(indexTurn, turn);
 
             if(indexPlayers==0) {
                 indexPlayers=players.size()-1;
@@ -42,7 +46,7 @@ public class Round {
                 indexPlayers--;
             }
 
-            indexTurns++;
+            indexTurn++;
         }
     }
 
@@ -54,57 +58,35 @@ public class Round {
         }
     }
 
-    public void twoTurnsInARow(Player player) throws NotValidInputException {
-
-        if(!players.contains(player)) {
-            throw new NotValidInputException();
-        }
-
-        int i = 0;
-        while(!playerTurns.get(i).getPlayer().equals(player) && i<playerTurns.size()) {
-            i++;
-        }
-        int j = i+1;
-        while (!playerTurns.get(j).getPlayer().equals(player) && j<playerTurns.size()) {
-            j++;
-        }
-
-        if(j<playerTurns.size()) {
-            playerTurns.add(i+1, playerTurns.remove(j));
-        } else {
-            throw new IndexOutOfBoundsException();
-        }
-
-    }
-
     public void setDrawPool(){
-        drawPool=diceBag.draw(2*players.size()+1);
+        draftPool=diceBag.draw(2*players.size()+1);
     }
 
     public ArrayList<Dice> getDrawPool(){
-        return this.drawPool;
+        return this.draftPool;
     }
 
     public void insertDice(Dice dice){
         if(dice==null) throw new NullPointerException();
-        drawPool.add(dice);
+        draftPool.add(dice);
     }
 
     public Dice removeDice(int index) throws IndexOutOfBoundsException{
-        if (index<0 || index> drawPool.size()-1) throw new IndexOutOfBoundsException();
-        return drawPool.remove(index);
+        if (index<0 || index> draftPool.size()-1) throw new IndexOutOfBoundsException();
+        return draftPool.remove(index);
     }
 
     public Dice getDice(int index)throws IndexOutOfBoundsException{
-        if (index<0 || index> drawPool.size()-1) throw new IndexOutOfBoundsException();
-        return drawPool.get(index);
+        if (index<0 || index> draftPool.size()-1) throw new IndexOutOfBoundsException();
+        return draftPool.get(index);
     }
 
-    public void updateRoundTrack(){
-        roundTrack.add(drawPool);
+    public void updateRoundTrack(int indexRT){
+        ArrayList<Dice> roundDices = roundTrack.getRoundDices(indexRT);
+        roundDices = draftPool;
     }
 
-    public ArrayList<ArrayList<Dice>> getRoundTrack(){
+    public RoundTrack getRoundTrack(){
         return this.roundTrack;
     }
 
@@ -112,7 +94,7 @@ public class Round {
         return this.diceBag;
     }
 
-    public ArrayList<PlayerTurn> getPlayerTurn(){
+    public ArrayList<PlayerTurn> getPlayerTurns(){
         return this.playerTurns;
     }
 
@@ -122,8 +104,8 @@ public class Round {
         String string="";
         for(int i=0; i<roundTrack.size(); i++){
             string=string.concat("ROUND "+(i<10 ? " " : "")+i+1+": ");
-            for(int j=0; roundTrack.get(i).get(j)!=null; j++)
-                string=string.concat(roundTrack.get(i).get(j).toString()+" ");
+            for(int j=0; roundTrack.getRoundDices(i).get(j) != null; j++)
+                string=string.concat(roundTrack.getRoundDices(i).get(j).toString()+ " ");
             string=string.concat("\n");
         }
         return string;
@@ -141,10 +123,10 @@ public class Round {
             string=string.concat(player.toString()+"\n");
         }
         string=string.concat("\nDrawPool: ");
-        if(drawPool==null)
+        if(draftPool==null)
             string=string.concat("NOT ADDED YET");
         else
-            for(Dice dice : drawPool)
+            for(Dice dice : draftPool)
                 string=string.concat(dice.toString()+" ");
         string=string.concat("\n\nPLAYER TURNS:\n");
         index=0;

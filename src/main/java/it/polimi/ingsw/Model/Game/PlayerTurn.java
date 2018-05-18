@@ -8,74 +8,65 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class PlayerTurn {
-    private ArrayList<Dice> drawPool;
+    private ArrayList<Dice> draftPool;
     private Player player;
-    private ActionPerformed actionPerformed;
+    private ArrayList<Move> moves;
+    private ArrayList<PlayerTurn> playerTurns;
+    private RoundTrack roundTrack;
+    private DiceBag diceBag;
 
-    public PlayerTurn(Player player, ArrayList<Dice> drawPool) {
-        this.drawPool=drawPool;
+    public PlayerTurn(Player player, ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag) {
+        this.draftPool = draftPool;
         this.player = player;
-        this.actionPerformed = ActionPerformed.NOTHING;
+        this.playerTurns = null;
+        this.roundTrack = roundTrack;
+        this.diceBag = diceBag;
+        moves = new ArrayList<>();
+        moves.add(new Move(draftPool, player, playerTurns));
+        moves.add(new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns));
+    }
+
+    public ArrayList<PlayerTurn> getPlayerTurns() {
+        return playerTurns;
+    }
+
+    public void setPlayerTurns(ArrayList<PlayerTurn> playerTurns) {
+        this.playerTurns = playerTurns;
+    }
+
+    public ArrayList<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(ArrayList<Move> moves) {
+        this.moves = moves;
+    }
+
+    public void addMove(Move move) {
+        this.moves.add(move);
+    }
+
+    public boolean removeMove(Move move) {
+        return moves.remove(move);
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public void setActionPerformed(ActionPerformed actionPerformed) {
-        this.actionPerformed = actionPerformed;
-    }
-
-    public ActionPerformed getActionPerformed() {
-        return actionPerformed;
-    }
-
-    public void move() {
-
-        Logger logger = Logger.getLogger(PatternDeck.class.getName());
-
-        //Observer mossa normale
-        int index=1;
-        int row=1;
-        int col=1;
-        try {
-            player.getWindowFrame().setDice(row, col, drawPool.remove(index));
-        } catch (MismatchedRestrictionException e) {
-            logger.log(Level.SEVERE, "context", e);
-        } catch (InvalidNeighboursException e) {
-            logger.log(Level.SEVERE, "context", e);
-        } catch (InvalidFirstMoveException e) {
-            logger.log(Level.SEVERE, "context", e);
-        } catch (OccupiedCellException e) {
-            logger.log(Level.SEVERE, "context", e);
-        }
-
-        //Observer mossa toolcard
-
-        //Observer salta turno
-
-        //Observer timer 90 secondi
-
-    }
-
     public void payTokens(int toPay) throws  NotValidInputException{
         player.setNumOfTokens(player.getNumOfTokens()-toPay);
     }
 
-    public void useToolCard() {
-
-    }
-
     @Override
     public String toString(){
-        String string="DrawPool:\n";
-        if(drawPool==null)
+        String string="DraftPool:\n";
+        if(draftPool==null)
             string=string.concat("NOT ADDED YET");
         else
-            for(Dice dice: drawPool)
+            for(Dice dice: draftPool)
                 string=string.concat(dice.toString());
         string=string.concat("\nPlayer: "+player.getName());
-        string=string.concat("\nAction Performed: "+actionPerformed);
         return string;
     }
 

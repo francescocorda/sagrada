@@ -1,16 +1,13 @@
 package it.polimi.ingsw.Model.Cards.ToolCards;
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.Model.Game.*;
+import it.polimi.ingsw.exceptions.InvalidFaceException;
 
 import java.util.ArrayList;
 
 public class ToolCard1 extends ToolCard {
 
-    public void ToolCard1(){
+    public ToolCard1(){
         ID = 1;
         name = "Grozing Pliers";
         description = "After drafting,\nincrease or decrease the value\nof the drafted die by 1\n\n1 may not change to 6, or 6 to 1";
@@ -18,16 +15,13 @@ public class ToolCard1 extends ToolCard {
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        Dice dice;
-        dice = specialMove.chooseDiceFromDP(drawPool, commands);
-        dice = specialMove.incOrDec(dice, commands.substring(2));
-        boolean done = false;
-        try {
-            specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(6));
-        } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-            drawPool.add(dice);
-        }
-
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws InvalidFaceException {
+        int indexDP = Integer.parseInt(commands.remove(0));
+        Dice dice = draftPool.get(indexDP-1);
+        String command = commands.remove(0);
+        if(command.equals("INC")) dice.setFace(dice.valueOf()+1);
+        else if(command.equals("DEC")) dice.setFace(dice.valueOf()-1);
+        draftPool.remove(indexDP-1);
+        return dice;  //controller has to send "INC" or "DEC" commands
     }
 }

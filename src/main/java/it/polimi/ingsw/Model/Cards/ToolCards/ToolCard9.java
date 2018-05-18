@@ -1,15 +1,13 @@
 package it.polimi.ingsw.Model.Cards.ToolCards;
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.PlayerTurn;
+import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.exceptions.*;
 
 import java.util.ArrayList;
 
 public class ToolCard9 extends ToolCard {
-    public void ToolCard9(){
+
+    public ToolCard9(){
         ID = 9;
         name = "Cork-backed Straightedge";
         description = "After drafting, place the\ndie in a spot that is not adjacent to\nanother die\n\nYou must obey all other\nplacement restrictions";
@@ -17,14 +15,9 @@ public class ToolCard9 extends ToolCard {
     }
 
     @Override
-    public void useAbility(ArrayList<Dice> drawPool, ArrayList<ArrayList<Dice>> roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, String commands) {
-        Dice dice;
-        dice = specialMove.chooseDiceFromDP(drawPool, commands);
-        specialMove.enableRestriction(player.getWindowFrame(), "POSITION");
-        try {
-            specialMove.ordinaryMove(player.getWindowFrame(), dice, drawPool, commands.substring(2));
-        } catch (InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | MismatchedRestrictionException e) {
-            e.printStackTrace();
-        }
+    public Dice useAbility(ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag, Player player, ArrayList<PlayerTurn> playerTurns, ArrayList<String> commands) throws DiceNotFoundException {
+        int indexDP = Integer.valueOf(commands.remove(0));
+        player.getWindowFrame().enableRestriction("POSITION");
+        return draftPool.remove(indexDP-1);
     }
 }

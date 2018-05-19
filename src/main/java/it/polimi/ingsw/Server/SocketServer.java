@@ -37,8 +37,8 @@ public class SocketServer {
             while (ServerMain.getStatus()) {
                 socket = serverSocket.accept();
                 clientCounter++;
-                System.out.println("\nClient number: " + clientCounter + " has connected");
-                System.out.println("Players connected: "+players.onlinePlayersNumber());
+                System.out.println("\nClient number: " + clientCounter + " has connected through Socket");
+                System.out.println("Connected players: "+players.onlinePlayersNumber());
                 Connection connection = new ConnectionSocket(socket);
                 Runnable client = new ClientController(connection , ConnectionMode.SOCKET, players);
                 new Thread(client).start();

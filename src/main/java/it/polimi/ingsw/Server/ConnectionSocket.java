@@ -24,7 +24,6 @@ public class ConnectionSocket implements Connection {
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e) {
-            System.out.println("Exception: e=" + e);
             LOGGER.log( Level.SEVERE, e.toString(), e);
 
             try {
@@ -44,8 +43,7 @@ public class ConnectionSocket implements Connection {
         try {
             message=inSocket.readLine();
         } catch (IOException e) {
-            LOGGER.log( Level.SEVERE, e.toString(), e);
-            message="";
+            message="quit";
         }
         return message;
     }
@@ -55,15 +53,6 @@ public class ConnectionSocket implements Connection {
             socket.close();
         } catch (IOException e) {
             LOGGER.log( Level.SEVERE, e.toString(), e);
-        }
-    }
-
-    public boolean isConnected(){
-        try{
-            inSocket.read();
-            return true;
-        } catch (Exception e){
-            return  false;
         }
     }
 }

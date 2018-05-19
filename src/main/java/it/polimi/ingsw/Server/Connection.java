@@ -4,5 +4,4 @@ public interface Connection {
     void sendMessage(String message);
     String getMessage();
     void close();
-    boolean isConnected();
 }

@@ -1,7 +1,11 @@
 package it.polimi.ingsw;
 
+import com.sun.media.jfxmedia.logging.Logger;
 import it.polimi.ingsw.Server.Connection;
 import it.polimi.ingsw.Server.ConnectionMode;
+
+import java.net.SocketException;
+import java.util.Timer;
 
 public class ClientController implements Runnable {
 
@@ -35,35 +39,41 @@ public class ClientController implements Runnable {
 
     @Override
     public void run() {
-        do {
-            sendMessage("login<connection_established><Please login: >");
-        } while (!login() && status == Status.ONLINE);
+        login();
         if (status == Status.ONLINE) {
             System.out.println("User: " + username + " has signed in");
-            nextPhase();
-            Lobby.getLobby().joinLobby(this);
+            System.out.println("Connected players: " + players.onlinePlayersNumber());
         }
+        nextPhase();
+        if (status == Status.ONLINE)
+            Lobby.getLobby().joinLobby(this);
+        if(phase != Phase.GAME && status == Status.OFFLINE)
+            close();
     }
 
-    private boolean login() {
+    private void login() {
         MessageReader messageReader;
-        messageReader = getMessage();
-        if (messageReader.hasNext()) {
-            String tempUsername = messageReader.getNext();
+        sendImportantMessage("login<insert_credentials>");
+        while (status == Status.ONLINE) {
+            messageReader = getMessage();
             if (messageReader.hasNext()) {
-                String password = messageReader.getNext();
-                if (!messageReader.hasNext() && players.check(tempUsername, password)) {
-                    sendMessage("login<true><Now you are logged>");
-                    this.username = tempUsername;
-                    return true;
+                String tempUsername = messageReader.getNext();
+                if (messageReader.hasNext()) {
+                    String password = messageReader.getNext();
+                    if (!messageReader.hasNext() && players.check(tempUsername, password)) {
+                        sendMessage("login<success>");
+                        this.username = tempUsername;
+                        return;
+                    } else {
+                        sendMessage("login<failed>");
+                    }
                 } else {
-                    sendMessage("login<false><Username not available>");
-                    return false;
+                    sendMessage("login<invalid_command>");
                 }
-            }
+            } else
+                sendMessage("login<invalid_command>");
+            sendImportantMessage("login<insert_credentials>");
         }
-        sendMessage("login<invalid_command>");
-        return false;
     }
 
     private void changeConnectionMode() {
@@ -77,9 +87,13 @@ public class ClientController implements Runnable {
         System.out.println(username + " has changed connection to: " + connectionMode);
     }
 
-    public void sendMessage(String message) {
-        if (status == Status.ONLINE)
+    public void sendImportantMessage(String message) {
+        if (isOnline())
             connection.sendMessage(message);
+    }
+
+    public void sendMessage(String message){
+        connection.sendMessage(message);
     }
 
     public MessageReader getMessage() {
@@ -88,42 +102,45 @@ public class ClientController implements Runnable {
             try {
                 messageReader = new MessageReader(connection.getMessage());
             } catch (NullPointerException e) {
-                connection.close();
-                status = Status.OFFLINE;
-                break;
+                messageReader = new MessageReader("quit");
             }
             if (messageReader.hasNext()) {
                 String declaredTAG = messageReader.getNext();
                 switch (declaredTAG) {
-                    case "changeCommunicationMode":
+                    case "change_communication_mode":
                         changeConnectionMode();
                         break;
                     case "quit":
                         connection.close();
-                        this.status = Status.OFFLINE;
+                        status = Status.OFFLINE;
                         break;
-                    default:
-                        if (getTag().equals(declaredTAG)) {
+                    case "pong":
+                        if (!messageReader.hasNext())
+                            return new MessageReader("pong");
+                        else
                             return messageReader;
-                        } else {
-                            sendMessage(getTag() + "<Invalid command>");
-                        }
+                    default:
+                        if (declaredTAG.equals(getTag()))
+                            return messageReader;
+                        else
+                            return new MessageReader(declaredTAG);
                 }
             }
         }
+        return playerOffline();
+    }
+
+    private MessageReader playerOffline(){
         if (username.equals("")) {
             System.out.println("Client closed connection");
-            close();
         } else {
             players.disconnect(username);
             System.out.println("User: " + username + " logged out");
             if (phase == Phase.GAME) {
-                messageReader = new MessageReader("<end_turn>");
-                return messageReader;
+                return new MessageReader("<end_turn>");
             }
         }
-        messageReader = new MessageReader("quit");
-        return messageReader;
+        return new MessageReader("quit");
     }
 
     public String getUsername() {
@@ -149,10 +166,7 @@ public class ClientController implements Runnable {
     }
 
     public boolean isOnline() {
-        if(connection.isConnected())
-            status = Status.ONLINE;
-        else
-            status = Status.OFFLINE;
+        checkConnection();
         return (status == Status.ONLINE);
     }
 
@@ -170,6 +184,15 @@ public class ClientController implements Runnable {
             case END_GAME:
                 phase = Phase.LOGIN;
                 break;
+        }
+    }
+
+    private void checkConnection() {
+        sendMessage("ping");
+        MessageReader messageReader = getMessage();
+        while (!messageReader.getNext().equals("pong") && status == Status.ONLINE) {
+            sendMessage("ping");
+            messageReader = getMessage();
         }
     }
 }

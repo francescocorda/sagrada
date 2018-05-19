@@ -26,11 +26,11 @@ public class Lobby {
     }
 
     public void joinLobby(ClientController player) {
-        String invalidCommand = "lobby<Invalid command>";
+        String invalidCommand = "lobby<invalid_command>";
         int systemTime = (int) System.currentTimeMillis() / 1000; //current unix time
         String tempMessage;
         while (true) {
-            player.sendMessage("lobby<last_access><When was your last access to the Cathedral?>");
+            player.sendImportantMessage("lobby<last_access><insert_last_access>");
             MessageReader messageReader = player.getMessage();
             if (messageReader.hasNext()) {
                 tempMessage = messageReader.getNext();
@@ -46,10 +46,10 @@ public class Lobby {
                         }
                         if (isValid && systemTime > time) {
                             addPlayer(player, time);
-                            player.sendMessage("lobby<last_access><Welcome back>\n");
+                            player.sendMessage("lobby<last_access><welcome_back>");
                             break;
                         } else {
-                            player.sendMessage("lobby<last_access><Invalid time>");
+                            player.sendMessage("lobby<last_access><invalid_time>");
                         }
                     } else {
                         player.sendMessage(invalidCommand);
@@ -69,7 +69,8 @@ public class Lobby {
     private synchronized void addPlayer(ClientController player, int time) {
         connectedPlayers.add(player);
         connectedPlayersLastTime.add(time);
-        broadcast("lobby<player_join><" + player.getUsername() + ">");
+        toTerminal("player: "+player.getUsername()+" singed in");
+        broadcast("lobby<player_joined><" + player.getUsername() + ">");
         player.sendMessage(listOfPlayers());
         trigger();
         notifyAll();
@@ -102,13 +103,13 @@ public class Lobby {
                             startGame();
                         }
                     }, (long) 2 * 60 * 1000);
-                    broadcast("lobby<timer><Timer restarted>");
+                    broadcast("lobby<timer_restarted>");
                 }
                 break;
             case 2:
                 if (!isTimerSet) {
                     isTimerSet = true;
-                    broadcast("lobby<timer><Timer started>");
+                    broadcast("lobby<timer_started>");
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -128,8 +129,13 @@ public class Lobby {
     private int size(){
         for(ClientController clientController : connectedPlayers){
             if(!clientController.isOnline()){
-                System.out.println("User: "+clientController.getUsername()+" has logged out");
-                removePlayer(clientController);
+                toTerminal("user: "+clientController.getUsername()+" has logged out");
+                if(connectedPlayers.size() == 1){
+                    removePlayer(clientController);
+                    break;
+                } else {
+                    removePlayer(clientController);
+                }
             }
         }
         return connectedPlayers.size();
@@ -139,7 +145,8 @@ public class Lobby {
         if (size() > 1) {
             isTimerSet = false;
             timer.cancel();
-            broadcast("lobby<game_start>");
+            toTerminal("game start");
+            broadcast("lobby<start_game>");
             ArrayList<ClientController> playersInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
                 int indexOfMax = 0;
@@ -163,7 +170,10 @@ public class Lobby {
         String message = "lobby<list_of_players>";
         for (ClientController player : connectedPlayers)
             message = message.concat("<" + player.getUsername() + ">");
-        message = message.concat("<end_list_of_players>");
         return message;
+    }
+
+    private void toTerminal(String  message){
+        System.out.println("Lobby: "+message);
     }
 }

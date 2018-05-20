@@ -3,6 +3,9 @@ package it.polimi.ingsw.Server;
 import it.polimi.ingsw.ClientController;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.PlayerData;
+import it.polimi.ingsw.connection.Connection;
+import it.polimi.ingsw.connection.ConnectionMode;
+import it.polimi.ingsw.connection.ConnectionSocket;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -37,20 +40,18 @@ public class SocketServer {
             while (ServerMain.getStatus()) {
                 socket = serverSocket.accept();
                 clientCounter++;
-                System.out.println("\nClient number: " + clientCounter + " has connected through Socket");
+                System.out.println("\nclient number: " + clientCounter + " has connected through Socket");
                 System.out.println("Connected players: "+players.onlinePlayersNumber());
                 Connection connection = new ConnectionSocket(socket);
                 Runnable client = new ClientController(connection , ConnectionMode.SOCKET, players);
                 new Thread(client).start();
             }
         } catch(Exception e) {
-            System.out.println(e);
+            LOGGER.log( Level.SEVERE, e.toString(), e);
             try {
                 serverSocket.close();
-            } catch(NullPointerException ex) {
-                System.out.println(ex);
-            } catch ( IOException ioe){
-                System.out.println(ioe);
+            } catch(NullPointerException | IOException ex) {
+                LOGGER.log( Level.SEVERE, ex.toString(), ex);
             }
         } finally {
             try {

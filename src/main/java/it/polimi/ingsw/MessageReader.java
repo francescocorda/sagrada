@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class MessageReader {
     private ArrayList<String> parts;
 
-    MessageReader(String message){
+    public MessageReader(String message){
         if(message==null)
             throw new NullPointerException();
         int lastSymbol=0;

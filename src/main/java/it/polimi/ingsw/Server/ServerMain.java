@@ -15,10 +15,12 @@ public class ServerMain {
 
         //Initialize all the structure for the game/server
         SERVER_UP=true;
-        socketServerPort=3000;
+        socketServerPort=3001;
         Lobby.getLobby();
         start();
     }
+
+
 
 
     private static void start(){

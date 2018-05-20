@@ -1,4 +1,4 @@
-package it.polimi.ingsw.Server;
+package it.polimi.ingsw.connection;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 
@@ -13,7 +13,7 @@ public class ConnectionSocket implements Connection {
     private Socket socket;
     private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
-    ConnectionSocket(Socket socket) {
+    public ConnectionSocket(Socket socket) {
         this.socket = socket;
         connectionSocketHandler();
     }

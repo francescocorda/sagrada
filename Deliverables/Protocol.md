@@ -43,7 +43,7 @@ Login:
   
 Lobby:
  * lobby<invalid_command>  
- * lobby<last_access><welcome_back>  
+ * lobby< welcome>
  * lobby<last_access><invalid_time>  
  * lobby<last_access><insert_last_access>  
  * lobby< timer><timer_started>  

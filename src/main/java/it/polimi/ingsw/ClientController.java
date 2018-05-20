@@ -1,11 +1,10 @@
 package it.polimi.ingsw;
 
-import com.sun.media.jfxmedia.logging.Logger;
-import it.polimi.ingsw.Server.Connection;
-import it.polimi.ingsw.Server.ConnectionMode;
+import it.polimi.ingsw.connection.Connection;
+import it.polimi.ingsw.connection.ConnectionMode;
 
-import java.net.SocketException;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class ClientController implements Runnable {
 
@@ -53,7 +52,7 @@ public class ClientController implements Runnable {
 
     private void login() {
         MessageReader messageReader;
-        sendImportantMessage("login<insert_credentials>");
+        sendMessage("login<insert_credentials>");
         while (status == Status.ONLINE) {
             messageReader = getMessage();
             if (messageReader.hasNext()) {
@@ -72,7 +71,7 @@ public class ClientController implements Runnable {
                 }
             } else
                 sendMessage("login<invalid_command>");
-            sendImportantMessage("login<insert_credentials>");
+            sendMessage("login<insert_credentials>");
         }
     }
 
@@ -87,13 +86,9 @@ public class ClientController implements Runnable {
         System.out.println(username + " has changed connection to: " + connectionMode);
     }
 
-    public void sendImportantMessage(String message) {
-        if (isOnline())
+    public void sendMessage(String message) {
+        if (status==Status.ONLINE && isOnline())
             connection.sendMessage(message);
-    }
-
-    public void sendMessage(String message){
-        connection.sendMessage(message);
     }
 
     public MessageReader getMessage() {
@@ -132,7 +127,7 @@ public class ClientController implements Runnable {
 
     private MessageReader playerOffline(){
         if (username.equals("")) {
-            System.out.println("Client closed connection");
+            System.out.println("client closed connection");
         } else {
             players.disconnect(username);
             System.out.println("User: " + username + " logged out");
@@ -162,7 +157,7 @@ public class ClientController implements Runnable {
 
     public void close() {
         this.connection.close();
-        Thread.currentThread().isInterrupted();
+        Thread.currentThread().interrupt();
     }
 
     public boolean isOnline() {
@@ -188,11 +183,19 @@ public class ClientController implements Runnable {
     }
 
     private void checkConnection() {
-        sendMessage("ping");
+        connection.sendMessage("ping");
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                status=Status.OFFLINE;
+            }
+        }, (long) 30 * 1000);
         MessageReader messageReader = getMessage();
         while (!messageReader.getNext().equals("pong") && status == Status.ONLINE) {
-            sendMessage("ping");
+            connection.sendMessage("ping");
             messageReader = getMessage();
         }
+        timer.cancel();
     }
 }

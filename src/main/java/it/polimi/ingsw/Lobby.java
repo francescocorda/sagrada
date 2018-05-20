@@ -26,11 +26,11 @@ public class Lobby {
     }
 
     public void joinLobby(ClientController player) {
-        String invalidCommand = "lobby<invalid_command>";
+        final String invalidCommand = "lobby<invalid_command>";
         int systemTime = (int) System.currentTimeMillis() / 1000; //current unix time
         String tempMessage;
         while (true) {
-            player.sendImportantMessage("lobby<last_access><insert_last_access>");
+            player.sendMessage("lobby<last_access><insert_last_access>");
             MessageReader messageReader = player.getMessage();
             if (messageReader.hasNext()) {
                 tempMessage = messageReader.getNext();
@@ -46,7 +46,7 @@ public class Lobby {
                         }
                         if (isValid && systemTime > time) {
                             addPlayer(player, time);
-                            player.sendMessage("lobby<last_access><welcome_back>");
+                            player.sendMessage("lobby<welcome>");
                             break;
                         } else {
                             player.sendMessage("lobby<last_access><invalid_time>");

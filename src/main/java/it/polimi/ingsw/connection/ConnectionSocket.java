@@ -43,7 +43,7 @@ public class ConnectionSocket implements Connection {
         try {
             message=inSocket.readLine();
         } catch (IOException e) {
-            message="quit";
+            message=null;
         }
         return message;
     }

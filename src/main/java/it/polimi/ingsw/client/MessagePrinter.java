@@ -19,15 +19,12 @@ public class MessagePrinter extends Thread {
             String message = connection.getMessage();
             if ( message == null ) {
                 loop = false;
+                System.out.println("Server closed.");
                 connection.close();
 
             } else{
                 if(message.equals("ping"))
                     connection.sendMessage("pong");
-                /*else if(message.equals("quit")){
-                    System.out.println("Server OFFLINE");
-                    loop=false;
-                }*/
                 else
                     System.out.println(message);
             }

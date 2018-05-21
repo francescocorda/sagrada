@@ -4,8 +4,16 @@ import java.util.ArrayList;
 
 public class PlayerData{
     private ArrayList<Data> players;
+    private static PlayerData instance;
 
-    public PlayerData() {
+    public static synchronized PlayerData getPlayerData() {
+        if (instance == null) {
+            instance = new PlayerData();
+        }
+        return instance;
+    }
+
+    private PlayerData() {
         players = new ArrayList<>();
     }
 
@@ -30,6 +38,15 @@ public class PlayerData{
         }
     }
 
+    public boolean contain(String user){
+        for(Data data: players){
+            if(data.getUsername().equals(user)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public int onlinePlayersNumber(){
         int number=0;
         for(Data data: players){
@@ -38,34 +55,5 @@ public class PlayerData{
             }
         }
         return  number;
-    }
-}
-
-
-class Data {
-    private String username;
-    private String password;
-    private boolean isConnected;
-
-    Data(String username, String password){
-        this.username=username;
-        this.password=password;
-        this.isConnected=true;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean isConnected() {
-        return isConnected;
-    }
-
-    public void changeStatus(){
-        isConnected = !isConnected;
     }
 }

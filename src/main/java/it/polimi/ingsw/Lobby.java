@@ -8,7 +8,7 @@ public class Lobby {
 
     private static Lobby instance = null;
     private ArrayList<ClientController> connectedPlayers;
-    private ArrayList<Integer> connectedPlayersLastTime;
+    private ArrayList<Long> connectedPlayersLastTime;
     private Timer timer;
     private boolean isTimerSet = false;
 
@@ -27,7 +27,7 @@ public class Lobby {
 
     public void joinLobby(ClientController player) {
         final String invalidCommand = "lobby<invalid_command>";
-        int systemTime = (int) System.currentTimeMillis() / 1000; //current unix time
+        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
         String tempMessage;
         while (true) {
             player.sendMessage("lobby<last_access><insert_last_access>");
@@ -38,9 +38,9 @@ public class Lobby {
                     if (messageReader.hasNext()) {
                         String timeString = messageReader.getNext();
                         boolean isValid = true;
-                        int time = 0;
+                        long time = 0;
                         try {
-                            time = Integer.parseInt(timeString);
+                            time = Long.parseLong(timeString);
                         } catch (NumberFormatException e) {
                             isValid = false;
                         }
@@ -66,7 +66,7 @@ public class Lobby {
         }
     }
 
-    private synchronized void addPlayer(ClientController player, int time) {
+    private synchronized void addPlayer(ClientController player, long time) {
         connectedPlayers.add(player);
         connectedPlayersLastTime.add(time);
         toTerminal("player: "+player.getUsername()+" singed in");
@@ -81,6 +81,7 @@ public class Lobby {
         String username = connectedPlayers.get(index).getUsername();
         connectedPlayers.remove(index);
         connectedPlayersLastTime.remove(index);
+        toTerminal("User: "+player.getUsername()+" has logged out");
         broadcast("lobby<player_left><" + username + ">");
         trigger();
         notifyAll();
@@ -129,7 +130,6 @@ public class Lobby {
     private int size(){
         for(ClientController clientController : connectedPlayers){
             if(!clientController.isOnline()){
-                toTerminal("user: "+clientController.getUsername()+" has logged out");
                 if(connectedPlayers.size() == 1){
                     removePlayer(clientController);
                     break;
@@ -150,7 +150,7 @@ public class Lobby {
             ArrayList<ClientController> playersInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
                 int indexOfMax = 0;
-                for (int lastTimeVisit : connectedPlayersLastTime) {
+                for (Long lastTimeVisit : connectedPlayersLastTime) {
                     if (lastTimeVisit > connectedPlayersLastTime.get(indexOfMax)) {
                         indexOfMax = connectedPlayersLastTime.indexOf(lastTimeVisit);
                     }

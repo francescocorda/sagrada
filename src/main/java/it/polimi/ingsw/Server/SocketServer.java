@@ -27,7 +27,7 @@ public class SocketServer {
         this.PORT = PORT;
         serverSocket = null;
         Socket socket;
-        players = new PlayerData();
+        players = PlayerData.getPlayerData();
         try {
             serverSocket = new java.net.ServerSocket(PORT);
         } catch (IOException e) {

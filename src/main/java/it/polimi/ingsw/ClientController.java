@@ -57,9 +57,9 @@ public class ClientController implements Runnable {
             messageReader = getMessage();
             if (messageReader.hasNext()) {
                 String tempUsername = messageReader.getNext();
-                if (messageReader.hasNext()) {
+                if (!tempUsername.equals("") && messageReader.hasNext()) {
                     String password = messageReader.getNext();
-                    if (!messageReader.hasNext() && players.check(tempUsername, password)) {
+                    if (!password.equals("") && !messageReader.hasNext() && players.check(tempUsername, password)) {
                         sendMessage("login<success>");
                         this.username = tempUsername;
                         return;

@@ -4,7 +4,7 @@ import it.polimi.ingsw.connection.Connection;
 
 public class MessagePrinter extends Thread {
 
-    Connection connection;
+    private Connection connection;
 
     public MessagePrinter(Connection connection) {
         this.connection = connection;

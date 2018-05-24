@@ -7,15 +7,17 @@ import java.util.TimerTask;
 public class Lobby {
 
     private static Lobby instance = null;
-    private ArrayList<ClientController> connectedPlayers;
+    private ArrayList<PlayerData> connectedPlayers;
     private ArrayList<Long> connectedPlayersLastTime;
     private Timer timer;
     private boolean isTimerSet = false;
+    private PlayerDatabase players;
 
     private Lobby() {
         connectedPlayers = new ArrayList<>();
         connectedPlayersLastTime = new ArrayList<>();
         timer = new Timer();
+        players = PlayerDatabase.getPlayerDatabase();
     }
 
     public static synchronized Lobby getLobby() {
@@ -25,58 +27,22 @@ public class Lobby {
         return instance;
     }
 
-    public void joinLobby(ClientController player) {
-        final String invalidCommand = "lobby<invalid_command>";
-        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
-        String tempMessage;
-        while (true) {
-            player.sendMessage("lobby<last_access><insert_last_access>");
-            MessageReader messageReader = player.getMessage();
-            if (messageReader.hasNext()) {
-                tempMessage = messageReader.getNext();
-                if (tempMessage.equals("last_access")) {
-                    if (messageReader.hasNext()) {
-                        String timeString = messageReader.getNext();
-                        boolean isValid = true;
-                        long time = 0;
-                        try {
-                            time = Long.parseLong(timeString);
-                        } catch (NumberFormatException e) {
-                            isValid = false;
-                        }
-                        if (isValid && systemTime > time) {
-                            addPlayer(player, time);
-                            player.sendMessage("lobby<welcome>");
-                            break;
-                        } else {
-                            player.sendMessage("lobby<last_access><invalid_time>");
-                        }
-                    } else {
-                        player.sendMessage(invalidCommand);
-                    }
-                } else {
-                    if (tempMessage.equals("quit"))
-                        break;
-                    else
-                        player.sendMessage(invalidCommand);
-                }
-            } else {
-                player.sendMessage(invalidCommand);
-            }
-        }
-    }
-
-    private synchronized void addPlayer(ClientController player, long time) {
+    public synchronized void addPlayer(String username, long time) {
+        PlayerData player = players.getPlayerData(username);
         connectedPlayers.add(player);
         connectedPlayersLastTime.add(time);
         toTerminal("player: "+player.getUsername()+" singed in");
+        /*
         broadcast("lobby<player_joined><" + player.getUsername() + ">");
         player.sendMessage(listOfPlayers());
         trigger();
-        notifyAll();
+        notifyAll();*/
+        PlayerDatabase.getPlayerDatabase().nextPhase(username);
+        trigger();
     }
 
-    public synchronized void removePlayer(ClientController player) {
+
+    public synchronized void removePlayer(PlayerData player) {
         int index = connectedPlayers.indexOf(player);
         String username = connectedPlayers.get(index).getUsername();
         connectedPlayers.remove(index);
@@ -87,23 +53,30 @@ public class Lobby {
         notifyAll();
     }
 
-    private void broadcast(String message) {
-        for (ClientController player : connectedPlayers) {
-            player.sendMessage(message);
-        }
+    private void broadcast(String message) { /*
+        for (PlayerData player : connectedPlayers) {
+            if(player.getCurrentConnectionMode() == SOCKET)
+                player.
+
+        } */
     }
 
     private void trigger() {
-        switch (size()) {
+        switch (PlayerDatabase.getPlayerDatabase().sizeLobby()) {
             case 1:
                 if (isTimerSet) {
                     timer.cancel();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            startGame();
-                        }
-                    }, (long) 2 * 60 * 1000);
+                    timer.purge();
+                    try {
+                        timer.schedule(new TimerTask() {  //perchè il timer non parte da quando ci sono due giocatori?
+                            @Override
+                            public void run() {
+                                startGame();
+                            }
+                        }, (long) 2 * 60 * 1000);
+                    }catch (IllegalStateException e){
+                        toTerminal("Error: timer already cancelled");
+                    }
                     broadcast("lobby<timer_restarted>");
                 }
                 break;
@@ -128,26 +101,27 @@ public class Lobby {
     }
 
     private int size(){
-        for(ClientController clientController : connectedPlayers){
+        /*
+        ArrayList<PlayerData> playerToBeRemoved = new ArrayList<>();
+        for(PlayerData clientController : connectedPlayers){
             if(!clientController.isOnline()){
-                if(connectedPlayers.size() == 1){
-                    removePlayer(clientController);
-                    break;
-                } else {
-                    removePlayer(clientController);
-                }
+                playerToBeRemoved.add(clientController);
             }
         }
+        if(!playerToBeRemoved.isEmpty())
+            for(PlayerData player : playerToBeRemoved)
+                removePlayer(player); */
         return connectedPlayers.size();
     }
 
     private synchronized void startGame() {
-        if (size() > 1) {
+        if (connectedPlayers.size() > 1) {
+            ArrayList<PlayerData> gamePlayers = PlayerDatabase.getPlayerDatabase().getGamePlayers();
             isTimerSet = false;
             timer.cancel();
             toTerminal("game start");
-            broadcast("lobby<start_game>");
-            ArrayList<ClientController> playersInTheRightOrder = new ArrayList<>();
+            broadcast("lobby<start_game>"+listOfPlayers());
+            ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
                 int indexOfMax = 0;
                 for (Long lastTimeVisit : connectedPlayersLastTime) {
@@ -167,8 +141,8 @@ public class Lobby {
     }
 
     private String listOfPlayers() {
-        String message = "lobby<list_of_players>";
-        for (ClientController player : connectedPlayers)
+        String message = "<list_of_players>";
+        for (PlayerData player : connectedPlayers)
             message = message.concat("<" + player.getUsername() + ">");
         return message;
     }

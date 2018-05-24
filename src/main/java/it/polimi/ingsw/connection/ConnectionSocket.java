@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ConnectionSocket implements Connection {
+public class ConnectionSocket {
     private BufferedReader inSocket;
     private PrintWriter outSocket;
     private Socket socket;

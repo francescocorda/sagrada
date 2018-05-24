@@ -1,12 +1,13 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.connection.Connection;
+import it.polimi.ingsw.connection.ConnectionSocket;
 
 public class MessagePrinter extends Thread {
 
-    private Connection connection;
+    private ConnectionSocket connection;
 
-    public MessagePrinter(Connection connection) {
+    public MessagePrinter(ConnectionSocket connection) {
         this.connection = connection;
         start();
     }

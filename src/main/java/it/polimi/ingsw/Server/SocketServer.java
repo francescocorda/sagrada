@@ -1,12 +1,8 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.ClientController;
+import it.polimi.ingsw.ClientHandlerSocket;
+import it.polimi.ingsw.ClientSocketInterpreter;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
-import it.polimi.ingsw.PlayerData;
-import it.polimi.ingsw.connection.Connection;
-import it.polimi.ingsw.connection.ConnectionMode;
-import it.polimi.ingsw.connection.ConnectionSocket;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.net.ServerSocket;
@@ -15,19 +11,18 @@ import java.util.logging.Logger;
 
 public class SocketServer {
 
-    private static int PORT;
-    private PlayerData players;
+    private int PORT;
+    private ClientHandlerSocket handler;
     private ServerSocket serverSocket;
-    private int clientCounter=0;
     private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
 
     SocketServer(int PORT)
     {
         this.PORT = PORT;
+        this.handler = new ClientHandlerSocket();
         serverSocket = null;
         Socket socket;
-        players = PlayerData.getPlayerData();
         try {
             serverSocket = new java.net.ServerSocket(PORT);
         } catch (IOException e) {
@@ -39,11 +34,7 @@ public class SocketServer {
             // server infinite loop
             while (ServerMain.getStatus()) {
                 socket = serverSocket.accept();
-                clientCounter++;
-                System.out.println("\nclient number: " + clientCounter + " has connected through Socket");
-                System.out.println("Connected players: "+players.onlinePlayersNumber());
-                Connection connection = new ConnectionSocket(socket);
-                Runnable client = new ClientController(connection , ConnectionMode.SOCKET, players);
+                Runnable client = new ClientSocketInterpreter(socket, handler);
                 new Thread(client).start();
             }
         } catch(Exception e) {

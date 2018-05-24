@@ -1,59 +1,77 @@
 package it.polimi.ingsw;
 
-import java.util.ArrayList;
+import it.polimi.ingsw.connection.ConnectionMode;
 
-public class PlayerData{
-    private ArrayList<Data> players;
-    private static PlayerData instance;
+import static it.polimi.ingsw.Phase.*;
 
-    public static synchronized PlayerData getPlayerData() {
-        if (instance == null) {
-            instance = new PlayerData();
+public class PlayerData {
+
+
+    private ConnectionMode connectionMode;
+    private String username;
+    private String password;
+    private Phase phase;
+    private Status status;
+
+    PlayerData(String username, String password, ConnectionMode connectionMode){
+        this.username=username;
+        this.password=password;
+        this.phase= Phase.LOGIN;
+        this.status= Status.ONLINE;
+        this.connectionMode = connectionMode;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Phase getPhase() {
+        return this.phase;
+    }
+
+    public void setPhase(Phase phase){
+        this.phase=phase;
+    }
+
+    public ConnectionMode getCurrentConnectionMode() {
+        return connectionMode;
+    }
+
+    public void nextPhase() {
+        switch (phase) {
+            case GAME:
+                phase = END_GAME;
+                break;
+            case LOBBY:
+                phase = GAME;
+                break;
+            case LOGIN:
+                phase = LOBBY;
+                break;
+            case END_GAME:
+                phase = LOGIN;
+                break;
+            default:
+                phase = LOGIN;
+                break;
         }
-        return instance;
     }
 
-    private PlayerData() {
-        players = new ArrayList<>();
+    public boolean isConnected(){
+        if(this.status==Status.ONLINE)
+            return true;
+        else
+            return false;
     }
 
-    public boolean check(String user, String password){
-        for(Data data : players)
-            if(data.getUsername().equals(user))
-                if((data.getPassword().equals(password)) && !data.isConnected()){
-                    data.changeStatus();
-                    return true;
-                } else {
-                    return false;
-                }
-        players.add(new Data(user, password));
-        return true;
-    }
-
-    public void disconnect(String username){
-        for(Data data: players){
-            if(data.getUsername().equals(username)){
-                data.changeStatus();
-            }
-        }
-    }
-
-    public boolean contain(String user){
-        for(Data data: players){
-            if(data.getUsername().equals(user)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public int onlinePlayersNumber(){
-        int number=0;
-        for(Data data: players){
-            if(data.isConnected()){
-                number++;
-            }
-        }
-        return  number;
+    public void changeStatus() {
+        if (this.status == Status.ONLINE)
+            this.status = Status.OFFLINE;
+        else
+            this.status = Status.OFFLINE;
     }
 }

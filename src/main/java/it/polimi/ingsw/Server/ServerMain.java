@@ -1,6 +1,10 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.ClientHandlerInterface;
+import it.polimi.ingsw.ClientHandlerRMI;
 import it.polimi.ingsw.Lobby;
+import it.polimi.ingsw.PlayerDatabase;
+import org.apache.maven.settings.Server;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -11,9 +15,21 @@ import java.util.Scanner;
 public class ServerMain {
 
     private static boolean SERVER_UP;
-    private static SocketServer serverSoket;
+    private static SocketServer serverSocket;
     private static int SOCKET_PORT;
     private static int RMI_PORT;
+    private static ServerMain instance = null;
+    private int numberOfClient  = -1;
+
+    private ServerMain(){
+    }
+
+    public static synchronized ServerMain getServerMain() {
+        if (instance == null) {
+            instance = new ServerMain();
+        }
+        return instance;
+    }
 
     public static void main( String[] args ) {
 
@@ -39,7 +55,7 @@ public class ServerMain {
 
     private static void start(){
         rmiServer();
-        serverSoket = new SocketServer(SOCKET_PORT);
+        serverSocket = new SocketServer(SOCKET_PORT);
 
     }
 
@@ -58,13 +74,19 @@ public class ServerMain {
         }
 
         try {
-            RMIServerImplementation rmiServer = new RMIServerImplementation();
-            Naming.rebind("//localhost/SagradaRMIServer", rmiServer);
+            //RMIServerImplementation rmiServer = new RMIServerImplementation();
+            ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI(PlayerDatabase.getPlayerDatabase());
+            Naming.rebind("//localhost/SagradaRMIServer", clientHandlerRMI);
 
         } catch (MalformedURLException e) {
             System.err.println("Impossible object registration!");
         } catch (RemoteException e) {
             System.err.println("Connection error: " + e.getMessage() + "!");
         }
+    }
+
+    public int getNewClientNumber(){
+        numberOfClient++;
+        return numberOfClient;
     }
 }

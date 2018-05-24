@@ -7,4 +7,6 @@ public interface RMIClientInterface extends Remote {
 
     public void send(String message) throws RemoteException;
 
+    public void checkConnection() throws RemoteException;
+
 }

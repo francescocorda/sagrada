@@ -1,18 +1,21 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Server.ServerMain;
+import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+
+import java.rmi.RemoteException;
 
 import static it.polimi.ingsw.connection.ConnectionMode.SOCKET;
 
-public class ClientHandlerSocket implements ClientHandlerInterface {
+public class ClientHandlerSocket /*implements ClientHandlerInterface*/ {
     private PlayerDatabase playerDatabase;
 
     public ClientHandlerSocket() {
         this.playerDatabase = PlayerDatabase.getPlayerDatabase();
     }
 
-    @Override
+    //@Override
     public void login(String username, String password) throws NotValidInputException {
         System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through Socket");
         if (playerDatabase.check(username, password, SOCKET)) {
@@ -22,7 +25,7 @@ public class ClientHandlerSocket implements ClientHandlerInterface {
         }
     }
 
-    @Override
+    //@Override
     public void joinLobby(String username, long time) throws NotValidInputException {
         long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
         if (systemTime > time) {

@@ -1,11 +1,14 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.connection.ConnectionMode;
-
+import org.omg.CosNaming.NamingContextPackage.NotFound;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerDatabase {
     private ArrayList<PlayerData> players;
+    private HashMap<String, RMIClientInterface> clientsRMI;  //Added 24/05
     private static PlayerDatabase instance;
 
     public static synchronized PlayerDatabase getPlayerDatabase() {
@@ -17,6 +20,7 @@ public class PlayerDatabase {
 
     private PlayerDatabase() {
         players = new ArrayList<>();
+        clientsRMI = new HashMap<>();
     }
 
     public boolean check(String user, String password, ConnectionMode connectionMode){
@@ -30,6 +34,28 @@ public class PlayerDatabase {
                 }
         players.add(new PlayerData(user, password, connectionMode));
         return true;
+    }
+
+    public void addRMIClient(String username, RMIClientInterface client){
+        if(clientsRMI==null){
+            clientsRMI.put(username, client);
+        } else if(!clientsRMI.containsKey(username)){
+            clientsRMI.put(username, client);
+        }
+    }
+
+    public void removeRMIClient(String username){
+        System.out.println("Client " + username + " disconnected.");
+       removeRMIClient(username);
+        disconnect(username);
+    }
+
+    public HashMap<String, RMIClientInterface> getClientsRMI(){
+        return clientsRMI;
+    }
+
+    public RMIClientInterface getClient(String username) throws NotFound{
+        return clientsRMI.get(username);
     }
 
     public void disconnect(String username){

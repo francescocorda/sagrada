@@ -4,8 +4,6 @@ import it.polimi.ingsw.ClientHandlerInterface;
 import it.polimi.ingsw.ClientHandlerRMI;
 import it.polimi.ingsw.Lobby;
 import it.polimi.ingsw.PlayerDatabase;
-import org.apache.maven.settings.Server;
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -74,7 +72,6 @@ public class ServerMain {
         }
 
         try {
-            //RMIServerImplementation rmiServer = new RMIServerImplementation();
             ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI(PlayerDatabase.getPlayerDatabase());
             Naming.rebind("//localhost/SagradaRMIServer", clientHandlerRMI);
 

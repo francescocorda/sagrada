@@ -4,7 +4,7 @@ import it.polimi.ingsw.ClientHandlerRMI;
 import it.polimi.ingsw.connection.Connection;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-
+/*
 public class ConnectionRMIClient implements Connection, RMIClientInterface {
 
     private ArrayList<String> buffer;
@@ -24,7 +24,7 @@ public class ConnectionRMIClient implements Connection, RMIClientInterface {
         } catch (RemoteException e) {
             close();
             System.out.println("Server connection closed");
-        }*/
+        }
     }
 
     @Override
@@ -48,3 +48,4 @@ public class ConnectionRMIClient implements Connection, RMIClientInterface {
         }
     }
 }
+*/

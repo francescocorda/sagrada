@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.ClientHandlerInterface;
+import it.polimi.ingsw.client.RMI.RMIClientImplementation;
+import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.connection.Connection;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NotValidInputException;
@@ -12,6 +14,7 @@ import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public class Client {
@@ -36,6 +39,12 @@ public class Client {
         String password = new String();
         boolean logged = false;
         ClientHandlerInterface server=null;
+        RMIClientInterface client = null;
+        try {
+            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(), 0);  //added 24/05
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         Scanner in = new Scanner(System.in);
         System.out.println("Insert server IP address: (type 0 for default value: localhost)");
         String address = in.nextLine();
@@ -48,7 +57,7 @@ public class Client {
                 System.out.println("Insert password: ");
                 password = in.nextLine();
                 try {
-                    server.login(username, password);
+                    server.login(username, password, client);
                     System.out.println("Login success.");
                     logged = true;
                 } catch (NotValidInputException e) {
@@ -69,7 +78,6 @@ public class Client {
             try {
                 server.joinLobby(username, time);
                 lobby=true;
-                System.out.println("Joined to the lobby.");
             } catch (RemoteException e) {
                 System.out.println("Player disconneted.");
             } catch (NotValidInputException e) {

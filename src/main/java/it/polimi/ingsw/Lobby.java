@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -7,7 +8,7 @@ import java.util.TimerTask;
 public class Lobby {
 
     private static Lobby instance = null;
-    private ArrayList<PlayerData> connectedPlayers;
+    private ArrayList<PlayerData> connectedPlayers;  //maybe is better to use PlayerDatabase?
     private ArrayList<Long> connectedPlayersLastTime;
     private Timer timer;
     private boolean isTimerSet = false;
@@ -32,11 +33,14 @@ public class Lobby {
         connectedPlayers.add(player);
         connectedPlayersLastTime.add(time);
         toTerminal("player: "+player.getUsername()+" singed in");
-        /*
         broadcast("lobby<player_joined><" + player.getUsername() + ">");
-        player.sendMessage(listOfPlayers());
+        try {
+            players.getClientsRMI().get(username).send(listOfPlayers());
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         trigger();
-        notifyAll();*/
+        notifyAll();
         PlayerDatabase.getPlayerDatabase().nextPhase(username);
         trigger();
     }
@@ -53,12 +57,17 @@ public class Lobby {
         notifyAll();
     }
 
-    private void broadcast(String message) { /*
+    private void broadcast(String message) {
         for (PlayerData player : connectedPlayers) {
-            if(player.getCurrentConnectionMode() == SOCKET)
-                player.
-
-        } */
+            //broadcast for all RMI Clients
+            if(players.getClientsRMI().containsKey(player.getUsername())){
+                try {
+                    players.getClientsRMI().get(player.getUsername()).send(message);
+                } catch (RemoteException e) {
+                    players.removeRMIClient(player.getUsername());
+                }
+            }
+        }
     }
 
     private void trigger() {
@@ -68,7 +77,7 @@ public class Lobby {
                     timer.cancel();
                     timer.purge();
                     try {
-                        timer.schedule(new TimerTask() {  //perchè il timer non parte da quando ci sono due giocatori?
+                        timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
                                 startGame();
@@ -101,16 +110,6 @@ public class Lobby {
     }
 
     private int size(){
-        /*
-        ArrayList<PlayerData> playerToBeRemoved = new ArrayList<>();
-        for(PlayerData clientController : connectedPlayers){
-            if(!clientController.isOnline()){
-                playerToBeRemoved.add(clientController);
-            }
-        }
-        if(!playerToBeRemoved.isEmpty())
-            for(PlayerData player : playerToBeRemoved)
-                removePlayer(player); */
         return connectedPlayers.size();
     }
 

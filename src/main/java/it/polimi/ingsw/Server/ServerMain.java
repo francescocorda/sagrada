@@ -14,6 +14,7 @@ public class ServerMain {
 
     private static boolean SERVER_UP;
     private static SocketServer serverSocket;
+    private static RMIServer rmiServer;
     private static int SOCKET_PORT;
     private static int RMI_PORT;
     private static ServerMain instance = null;
@@ -52,34 +53,13 @@ public class ServerMain {
     }
 
     private static void start(){
-        rmiServer();
+        rmiServer = new RMIServer(RMI_PORT);
         serverSocket = new SocketServer(SOCKET_PORT);
 
     }
 
     public static boolean getStatus(){
         return SERVER_UP;
-    }
-
-    private static void rmiServer(){
-
-        try {
-            LocateRegistry.createRegistry(RMI_PORT);
-            System.out.println("RMI Registry listening on port "+RMI_PORT);
-
-        } catch (RemoteException e) {
-            System.out.println("Registry already up");
-        }
-
-        try {
-            ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI(PlayerDatabase.getPlayerDatabase());
-            Naming.rebind("//localhost/SagradaRMIServer", clientHandlerRMI);
-
-        } catch (MalformedURLException e) {
-            System.err.println("Impossible object registration!");
-        } catch (RemoteException e) {
-            System.err.println("Connection error: " + e.getMessage() + "!");
-        }
     }
 
     public int getNewClientNumber(){

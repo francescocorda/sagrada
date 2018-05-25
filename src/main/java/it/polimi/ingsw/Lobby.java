@@ -1,5 +1,8 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.connection.ConnectionMode;
+import org.omg.CosNaming.NamingContextPackage.NotFound;
+
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -8,7 +11,7 @@ import java.util.TimerTask;
 public class Lobby {
 
     private static Lobby instance = null;
-    private ArrayList<PlayerData> connectedPlayers;  //maybe is better to use PlayerDatabase?
+    private ArrayList<PlayerData> connectedPlayers;
     private ArrayList<Long> connectedPlayersLastTime;
     private Timer timer;
     private boolean isTimerSet = false;
@@ -34,19 +37,14 @@ public class Lobby {
         connectedPlayersLastTime.add(time);
         toTerminal("player: "+player.getUsername()+" singed in");
         broadcast("lobby<player_joined><" + player.getUsername() + ">");
-        try {
-            players.getClientsRMI().get(username).send(listOfPlayers());
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-        trigger();
+        send(username, listOfPlayers());
         notifyAll();
         PlayerDatabase.getPlayerDatabase().nextPhase(username);
         trigger();
     }
 
 
-    public synchronized void removePlayer(PlayerData player) {
+    public synchronized void removePlayer(PlayerData player) {  //remove player only from connectedPlayers. This method is called from removeRMIClient in PlayerDatabase
         int index = connectedPlayers.indexOf(player);
         String username = connectedPlayers.get(index).getUsername();
         connectedPlayers.remove(index);
@@ -57,19 +55,28 @@ public class Lobby {
         notifyAll();
     }
 
-    private void broadcast(String message) {
+    private void broadcast(String message) {  //To be DEFINE for socket clients
         for (PlayerData player : connectedPlayers) {
             //broadcast for all RMI Clients
             if(players.getClientsRMI().containsKey(player.getUsername())){
                 try {
                     players.getClientsRMI().get(player.getUsername()).send(message);
                 } catch (RemoteException e) {
-                    players.removeRMIClient(player.getUsername());
+                    //Disconnection already handled.
                 }
             }
         }
     }
 
+    public void send(String username, String message){  //To be DEFINE for socket clients
+        if(players.findPlayer(username).getCurrentConnectionMode()== ConnectionMode.RMI){
+            try {
+                players.getClient(username).send(message);
+                } catch (RemoteException | NotFound e) {
+                    //Disconnection already handled.
+                }
+        }
+    }
     private void trigger() {
         switch (PlayerDatabase.getPlayerDatabase().sizeLobby()) {
             case 1:

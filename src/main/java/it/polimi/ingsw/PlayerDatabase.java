@@ -46,8 +46,9 @@ public class PlayerDatabase {
 
     public void removeRMIClient(String username){
         System.out.println("Client " + username + " disconnected.");
-       removeRMIClient(username);
-        disconnect(username);
+        Lobby.getLobby().removePlayer(findPlayer(username));
+        clientsRMI.remove(username);
+        disconnect(username);  //Maybe to restart lobby's timer
     }
 
     public HashMap<String, RMIClientInterface> getClientsRMI(){
@@ -121,7 +122,7 @@ public class PlayerDatabase {
         return null;
     }
 
-    private PlayerData findPlayer(String username){
+    public PlayerData findPlayer(String username){
         for(PlayerData c : players){
             if(c.getUsername().equals(username)){
                 return c;

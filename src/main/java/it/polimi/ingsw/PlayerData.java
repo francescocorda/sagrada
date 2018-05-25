@@ -1,7 +1,6 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.connection.ConnectionMode;
-
 import static it.polimi.ingsw.Phase.*;
 
 public class PlayerData {

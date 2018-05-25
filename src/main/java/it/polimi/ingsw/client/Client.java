@@ -25,7 +25,7 @@ public class Client {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("What communication technology do you wont to use? (type \"RMI\" for RMI  and \"socket\" for socket ...");
+        System.out.println("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...");
         String technology = in.nextLine();
         if(technology.equals("RMI"))
             rmi();

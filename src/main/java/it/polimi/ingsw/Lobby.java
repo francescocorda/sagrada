@@ -44,7 +44,7 @@ public class Lobby {
     }
 
 
-    public synchronized void removePlayer(PlayerData player) {  //remove player only from connectedPlayers. This method is called from removeRMIClient in PlayerDatabase
+    public synchronized void removePlayer(PlayerData player) {  //remove player only from connectedPlayers. This method is called from removeRMIClient in PlayerDatabase4
         int index = connectedPlayers.indexOf(player);
         String username = connectedPlayers.get(index).getUsername();
         connectedPlayers.remove(index);

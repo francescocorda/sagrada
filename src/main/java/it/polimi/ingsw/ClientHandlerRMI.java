@@ -3,6 +3,8 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import static it.polimi.ingsw.connection.ConnectionMode.RMI;
@@ -35,7 +37,7 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
         } else throw new NotValidInputException();
     }
 
-    public class Timer extends Thread{
+    public class Timer extends Thread {
         String username;
         RMIClientInterface client;
         Timer(String username, RMIClientInterface client){
@@ -49,7 +51,6 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
                     client.checkConnection();
                 } catch (RemoteException e) {
                     playerDatabase.removeRMIClient(username);
-                    Timer.interrupted();
                     flag=false;
                 }
                 try {

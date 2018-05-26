@@ -21,7 +21,7 @@ private int RMI_PORT;
                 System.out.println("Registry already up");
             }
             try {
-                ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI(PlayerDatabase.getPlayerDatabase());
+                ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI();
                 Naming.rebind("//localhost/SagradaRMIServer", clientHandlerRMI);
             } catch (MalformedURLException e) {
                 System.err.println("Impossible object registration!");

@@ -7,7 +7,6 @@ import java.rmi.RemoteException;
 import java.util.Timer;
 
 public interface ClientHandlerInterface extends Remote {
-    Timer timer=new Timer();
     void login(String username, String password, RMIClientInterface client) throws RemoteException, NotValidInputException;
     void joinLobby(String username, long time) throws RemoteException, NotValidInputException;
 }

@@ -8,7 +8,9 @@ import java.util.HashMap;
 
 public class PlayerDatabase {
     private ArrayList<PlayerData> players;
-    private HashMap<String, RMIClientInterface> clientsRMI;  //Added 24/05
+    private HashMap<String, RMIClientInterface> clientsRMI;
+    private HashMap<String, ClientSocketInterpreter> clientsSocket;
+
     private static PlayerDatabase instance;
 
     public static synchronized PlayerDatabase getPlayerDatabase() {
@@ -21,6 +23,7 @@ public class PlayerDatabase {
     private PlayerDatabase() {
         players = new ArrayList<>();
         clientsRMI = new HashMap<>();
+        clientsSocket = new HashMap<>();
     }
 
     public boolean check(String user, String password, ConnectionMode connectionMode){
@@ -28,11 +31,13 @@ public class PlayerDatabase {
             if(playerData.getUsername().equals(user))
                 if((playerData.getPassword().equals(password)) && !playerData.isConnected()){
                     playerData.changeStatus();
+                    playerData.setConnectionMode(connectionMode);
                     return true;
                 } else {
                     return false;
                 }
         players.add(new PlayerData(user, password, connectionMode));
+        System.out.println("Connected players: " + onlinePlayersNumber());
         return true;
     }
 
@@ -45,26 +50,46 @@ public class PlayerDatabase {
     }
 
     public void removeRMIClient(String username){
-        System.out.println("Client " + username + " disconnected.");
-        Lobby.getLobby().removePlayer(findPlayer(username));
+        System.out.println("Client: " + username + " disconnected.");
         clientsRMI.remove(username);
-        disconnect(username);  //Maybe to restart lobby's timer
+        PlayerData player = findPlayer(username);
+        phaseDisconnection(player);
     }
 
-    public HashMap<String, RMIClientInterface> getClientsRMI(){
-        return clientsRMI;
+    public void addSocketClient(String username, ClientSocketInterpreter client){
+        if(clientsSocket==null){
+            clientsSocket.put(username, client);
+        } else if(!clientsSocket.containsKey(username)){
+            clientsSocket.put(username, client);
+        }
     }
 
-    public RMIClientInterface getClient(String username) throws NotFound{
-        return clientsRMI.get(username);
+    public void removeSocketClient(String username){
+        System.out.println("Client: " + username + " disconnected.");
+        clientsSocket.remove(username);
+        PlayerData player = findPlayer(username);
+        phaseDisconnection(player);
+    }
+
+    public RMIClientInterface getClientRMI(String username) throws NotFound{
+        RMIClientInterface client =  clientsRMI.get(username);
+        if(client == null)
+            throw new NotFound();
+        return client;
+    }
+
+    public ClientSocketInterpreter getClientSocket(String username) throws NotFound{
+        ClientSocketInterpreter client = clientsSocket.get(username);
+        if(client == null)
+            throw new NotFound();
+        return client;
     }
 
     public void disconnect(String username){
         for(PlayerData playerData : players){
-            if(playerData.getUsername().equals(username)){
-                playerData.changeStatus();
+            if(playerData.getUsername().equals(username) && playerData.isConnected())
+                    playerData.changeStatus();
             }
-        }
     }
 
     public boolean contain(String user){
@@ -133,5 +158,18 @@ public class PlayerDatabase {
 
     public PlayerData getPlayerData(String username){
         return findPlayer(username);
+    }
+
+    private void phaseDisconnection(PlayerData player){
+        switch(player.getPhase()){
+            case GAME:
+                break;
+            case LOBBY:
+                Lobby.getLobby().removePlayer(player);
+                disconnect(player.getUsername());
+                break;
+            default:
+                disconnect(player.getUsername());
+        }
     }
 }

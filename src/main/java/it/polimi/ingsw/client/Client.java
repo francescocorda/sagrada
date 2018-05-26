@@ -3,7 +3,6 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.ClientHandlerInterface;
 import it.polimi.ingsw.client.RMI.RMIClientImplementation;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
-import it.polimi.ingsw.connection.Connection;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import java.io.BufferedReader;
@@ -15,6 +14,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
@@ -41,7 +41,7 @@ public class Client {
         ClientHandlerInterface server=null;
         RMIClientInterface client = null;
         try {
-            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(), 0);  //added 24/05
+            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(), 0);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -74,14 +74,17 @@ public class Client {
         System.out.println("Insert last time you visited a cathedral: ");
         boolean lobby = false;
         while(!lobby){
-            long time = in.nextLong();
             try {
+                long time = in.nextLong();
                 server.joinLobby(username, time);
                 lobby=true;
             } catch (RemoteException e) {
                 System.out.println("Player disconneted.");
             } catch (NotValidInputException e) {
                 System.out.println("Invalid time. Please insert a correct time: ");
+            } catch (InputMismatchException e){
+                System.out.println("Insert last time you visited a cathedral: ");
+                in.nextLine();
             }
         }
         in.close();
@@ -104,10 +107,14 @@ public class Client {
         private static void initialize() {
         try {
             Scanner in = new Scanner(System.in);
-            System.out.println("Insert server IP address: ");
+            System.out.println("Insert server IP address: (Type 0 for default: \"localhost\") ");
             String address = in.nextLine();
-            System.out.println("Insert server port: ");
+            if(address.equals("0"))
+                address = "localhost";
+            System.out.println("Insert server port: (Type 0 for default: \"3001\") ");
             int port = in.nextInt();
+            if(port == 0)
+                port = 3001;
             socket = new Socket(address, port);
             System.out.println("Connected.");
             connection = new ConnectionSocket(socket);

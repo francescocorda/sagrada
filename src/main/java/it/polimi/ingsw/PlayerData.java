@@ -67,10 +67,14 @@ public class PlayerData {
             return false;
     }
 
+    public void setConnectionMode(ConnectionMode connectionMode){
+        this.connectionMode = connectionMode;
+    }
+
     public void changeStatus() {
         if (this.status == Status.ONLINE)
             this.status = Status.OFFLINE;
         else
-            this.status = Status.OFFLINE;
+            this.status = Status.ONLINE;
     }
 }

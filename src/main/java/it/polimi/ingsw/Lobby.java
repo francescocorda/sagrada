@@ -16,6 +16,7 @@ public class Lobby {
     private Timer timer;
     private boolean isTimerSet = false;
     private PlayerDatabase players;
+    private static final String LOCATION = "lobby";
 
     private Lobby() {
         connectedPlayers = new ArrayList<>();
@@ -35,50 +36,59 @@ public class Lobby {
         PlayerData player = players.getPlayerData(username);
         connectedPlayers.add(player);
         connectedPlayersLastTime.add(time);
-        toTerminal("player: "+player.getUsername()+" singed in");
-        broadcast("lobby<player_joined><" + player.getUsername() + ">");
+        toTerminal("player: " + player.getUsername() + " singed in");
+        broadcast("<player_joined><" + player.getUsername() + ">");
+        send(username, "<welcome>");
         send(username, listOfPlayers());
         notifyAll();
-        PlayerDatabase.getPlayerDatabase().nextPhase(username);
+        players.setPhase(username, Phase.LOBBY);
         trigger();
     }
 
 
-    public synchronized void removePlayer(PlayerData player) {  //remove player only from connectedPlayers. This method is called from removeRMIClient in PlayerDatabase4
+    public synchronized void removePlayer(PlayerData player) {
         int index = connectedPlayers.indexOf(player);
         String username = connectedPlayers.get(index).getUsername();
         connectedPlayers.remove(index);
         connectedPlayersLastTime.remove(index);
-        toTerminal("User: "+player.getUsername()+" has logged out");
-        broadcast("lobby<player_left><" + username + ">");
+        toTerminal("User: " + player.getUsername() + " has logged out");
+        broadcast("<player_left><" + username + ">");
         trigger();
         notifyAll();
     }
 
-    private void broadcast(String message) {  //To be DEFINE for socket clients
+    private void broadcast(String message) {
         for (PlayerData player : connectedPlayers) {
-            //broadcast for all RMI Clients
-            if(players.getClientsRMI().containsKey(player.getUsername())){
-                try {
-                    players.getClientsRMI().get(player.getUsername()).send(message);
-                } catch (RemoteException e) {
-                    //Disconnection already handled.
+            try {
+                if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
+                    //broadcast for RMI Clients
+                    players.getClientRMI(player.getUsername()).send(LOCATION +message);
+                } else {
+                    //broadcast for Socket Clients
+                    players.getClientSocket(player.getUsername()).sendMessage(LOCATION +message);
                 }
+            } catch (RemoteException | NotFound e) {
+                //Disconnection already handled.
             }
+
         }
     }
 
-    public void send(String username, String message){  //To be DEFINE for socket clients
-        if(players.findPlayer(username).getCurrentConnectionMode()== ConnectionMode.RMI){
-            try {
-                players.getClient(username).send(message);
-                } catch (RemoteException | NotFound e) {
-                    //Disconnection already handled.
-                }
+    public void send(String username, String message) {  //To be DEFINE for socket clients
+        PlayerData player = players.findPlayer(username);
+        try {
+            if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
+                players.getClientRMI(username).send(LOCATION +message);
+            } else {
+                players.getClientSocket(username).sendMessage(LOCATION +message);
+            }
+        } catch (RemoteException | NotFound e) {
+            //Disconnection already handled.
         }
     }
+
     private void trigger() {
-        switch (PlayerDatabase.getPlayerDatabase().sizeLobby()) {
+        switch (size()) {
             case 1:
                 if (isTimerSet) {
                     timer.cancel();
@@ -90,16 +100,16 @@ public class Lobby {
                                 startGame();
                             }
                         }, (long) 2 * 60 * 1000);
-                    }catch (IllegalStateException e){
+                    } catch (IllegalStateException e) {
                         toTerminal("Error: timer already cancelled");
                     }
-                    broadcast("lobby<timer_restarted>");
+                    broadcast("<timer_restarted>");
                 }
                 break;
             case 2:
                 if (!isTimerSet) {
                     isTimerSet = true;
-                    broadcast("lobby<timer_started>");
+                    broadcast("<timer_started>");
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -116,7 +126,37 @@ public class Lobby {
         }
     }
 
-    private int size(){
+    private int size() {
+        ArrayList<PlayerData> playerToBeChecked = new ArrayList<>(connectedPlayers);
+        for(PlayerData player : playerToBeChecked){
+            try {
+                if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
+                    players.getClientRMI(player.getUsername()).checkConnection();
+                } else {
+                    players.getClientSocket(player.getUsername()).isOnline();
+                }
+            } catch (RemoteException | NotFound e){
+                if(player.getCurrentConnectionMode() == ConnectionMode.RMI)
+                    players.removeRMIClient(player.getUsername());
+                //Disconnection Socket already handled
+            }
+        }
+        /*
+        ArrayList<PlayerData> playerToBeRemoved = new ArrayList<>();
+        for(PlayerData player : connectedPlayers){
+            try {
+                if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
+                    players.getClientRMI(player.getUsername()).checkConnection();
+                } else {
+                    if (!players.getClientSocket(player.getUsername()).isOnline())
+                        playerToBeRemoved.add(player);
+                }
+            } catch (RemoteException | NotFound e){
+                playerToBeRemoved.add(player);
+            }
+        }
+        for(PlayerData player : playerToBeRemoved)
+            removePlayer(player);*/
         return connectedPlayers.size();
     }
 
@@ -126,7 +166,7 @@ public class Lobby {
             isTimerSet = false;
             timer.cancel();
             toTerminal("game start");
-            broadcast("lobby<start_game>"+listOfPlayers());
+            broadcast("<start_game>" + listOfPlayers());
             ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
                 int indexOfMax = 0;
@@ -138,6 +178,9 @@ public class Lobby {
                 playersInTheRightOrder.add(connectedPlayers.get(indexOfMax));
                 connectedPlayers.remove(indexOfMax);
                 connectedPlayersLastTime.remove(indexOfMax);
+            }
+            for(PlayerData player : playersInTheRightOrder){
+                player.nextPhase();
             }
             //Games.add(new GameController(playersInTheRightOrder));
             notifyAll();
@@ -153,7 +196,7 @@ public class Lobby {
         return message;
     }
 
-    private void toTerminal(String  message){
-        System.out.println("Lobby: "+message);
+    private void toTerminal(String message) {
+        System.out.println("Lobby: " + message);
     }
 }

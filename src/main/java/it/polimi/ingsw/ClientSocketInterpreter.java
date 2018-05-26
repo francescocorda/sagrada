@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NotValidInputException;
-import static it.polimi.ingsw.Phase.*;
+import it.polimi.ingsw.connection.ConnectionSocket;
 import static it.polimi.ingsw.Status.*;
+import static it.polimi.ingsw.Phase.*;
 import java.util.TimerTask;
 import java.net.Socket;
 import java.util.Timer;
@@ -30,10 +30,6 @@ public class ClientSocketInterpreter implements Runnable {
     @Override
     public void run() {
         login();
-        if (status == Status.ONLINE) {
-            System.out.println("User: " + username + " has signed in");
-            System.out.println("Connected players: " + players.onlinePlayersNumber());
-        }
         nextPhase();
         if (status == Status.ONLINE)
             joinLobby();
@@ -52,7 +48,7 @@ public class ClientSocketInterpreter implements Runnable {
                     String password = messageReader.getNext();
                     if (!password.equals("") && !messageReader.hasNext()) {
                         try{
-                            handler.login(tempUsername, password);
+                            handler.login(tempUsername, password, this);
                             sendMessage("login<success>");
                             this.username = tempUsername;
                             return;
@@ -93,7 +89,6 @@ public class ClientSocketInterpreter implements Runnable {
                         if (isValid && systemTime > time) {
                             try {
                                 handler.joinLobby(username, time);
-                                sendMessage("lobby<welcome>");
                                 break;
                             } catch (NotValidInputException e) {
                                 sendMessage(invalidCommand);
@@ -135,7 +130,7 @@ public class ClientSocketInterpreter implements Runnable {
                     case "quit":
                         connection.close();
                         status = Status.OFFLINE;
-                        //change player status
+                        players.disconnect(username);
                         break;
                     case "pong":
                         if (!messageReader.hasNext())
@@ -190,6 +185,8 @@ public class ClientSocketInterpreter implements Runnable {
 
     public boolean isOnline() {
         checkConnection();
+        if(status == OFFLINE)
+            players.removeSocketClient(username);
         return (status == ONLINE);
     }
 

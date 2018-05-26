@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.connection.Connection;
 import it.polimi.ingsw.connection.ConnectionSocket;
 
 public class MessagePrinter extends Thread {
@@ -22,13 +21,33 @@ public class MessagePrinter extends Thread {
                 loop = false;
                 System.out.println("Server closed.");
                 connection.close();
-
-            } else{
-                if(message.equals("ping"))
-                    connection.sendMessage("pong");
-                else
-                    System.out.println(message);
+            } else {
+                switch(message){
+                    case "ping":
+                        connection.sendMessage("pong");
+                        break;
+                    case "login<insert_credentials>":
+                        login();
+                        break;
+                    case "lobby<last_access><insert_last_access>":
+                        lobby();
+                        break;
+                    default:
+                        System.out.println(message);
+                }
             }
         }
+    }
+
+    private void lobby(){
+        System.out.println("lobby<last_access><insert_last_access>");
+    }
+
+    private void login(){
+        System.out.println("login<insert_credentials>");
+    }
+
+    private void game(){
+        //GAME
     }
 }

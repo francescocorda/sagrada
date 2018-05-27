@@ -149,7 +149,7 @@ public class ClientSocketInterpreter implements Runnable {
     }
 
     private MessageReader playerOffline(){
-        if (username.equals("")) {
+        if (username == null || username.equals("")) {
             System.out.println("client closed connection");
         } else {
             players.disconnect(username);
@@ -185,7 +185,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     public boolean isOnline() {
         checkConnection();
-        if(status == OFFLINE)
+        if(status == OFFLINE && players.contain(username))
             players.removeSocketClient(username);
         return (status == ONLINE);
     }

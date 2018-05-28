@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Cards.Patterns;
 import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 
+
 public class PatternCard extends Card {
     private int difficulty;
     private Cell[][] patternCard;

@@ -15,14 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestRound {
     @Test
     public void removeTurnTest() {
-        DiceBag diceBag = new DiceBag();
-        RoundTrack roundTrack = new RoundTrack();
+        Table table = new Table();
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player("player1"));
         players.add(new Player("player2"));
         players.add(new Player("player3"));
         players.add(new Player("player4"));
-        Round round = new Round(players, 0, diceBag, roundTrack);
+        Round round = new Round(players, 0, table);
 
         PlayerTurn turn = round.getPlayerTurns().get(3);
         int size = round.getPlayerTurns().size();

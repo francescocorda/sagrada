@@ -1,6 +1,8 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.connection.ConnectionMode;
+import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.view.VirtualView;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 
 import java.rmi.RemoteException;
@@ -10,6 +12,7 @@ import java.util.TimerTask;
 
 public class Lobby {
 
+    private ArrayList<VirtualView> views;
     private static Lobby instance = null;
     private ArrayList<PlayerData> connectedPlayers;
     private ArrayList<Long> connectedPlayersLastTime;
@@ -17,12 +20,16 @@ public class Lobby {
     private boolean isTimerSet = false;
     private PlayerDatabase players;
     private static final String LOCATION = "lobby";
+    ArrayList<Controller> games;
+    private static final Object countLock = new Object();
 
     private Lobby() {
         connectedPlayers = new ArrayList<>();
         connectedPlayersLastTime = new ArrayList<>();
         timer = new Timer();
         players = PlayerDatabase.getPlayerDatabase();
+        views = new ArrayList<>();
+        games = new ArrayList<>();
     }
 
     public static synchronized Lobby getLobby() {
@@ -33,28 +40,31 @@ public class Lobby {
     }
 
     public synchronized void addPlayer(String username, long time) {
-        PlayerData player = players.getPlayerData(username);
-        connectedPlayers.add(player);
-        connectedPlayersLastTime.add(time);
-        toTerminal("player: " + player.getUsername() + " singed in");
-        broadcast("<player_joined><" + player.getUsername() + ">");
-        send(username, "<welcome>");
-        send(username, listOfPlayers());
-        notifyAll();
-        players.setPhase(username, Phase.LOBBY);
-        trigger();
+            PlayerData player = players.getPlayerData(username);
+            VirtualView virtualView = new VirtualView(player);
+            views.add(virtualView);
+            VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
+            connectedPlayers.add(player);
+            connectedPlayersLastTime.add(time);
+            toTerminal("player: " + player.getUsername() + " singed in");
+            broadcast("<player_joined><" + player.getUsername() + ">");
+            send(username, "<welcome>");
+            send(username, listOfPlayers());
+            players.setPhase(username, Phase.LOBBY);
+            trigger();
     }
 
 
     public synchronized void removePlayer(PlayerData player) {
-        int index = connectedPlayers.indexOf(player);
-        String username = connectedPlayers.get(index).getUsername();
-        connectedPlayers.remove(index);
-        connectedPlayersLastTime.remove(index);
-        toTerminal("User: " + player.getUsername() + " has logged out");
-        broadcast("<player_left><" + username + ">");
-        trigger();
-        notifyAll();
+            int index = connectedPlayers.indexOf(player);
+            String username = connectedPlayers.get(index).getUsername();
+            views.remove(index);
+            connectedPlayers.remove(index);
+            connectedPlayersLastTime.remove(index);
+            toTerminal("User: " + player.getUsername() + " has logged out");
+            broadcast("<player_left><" + username + ">");
+            trigger();
+
     }
 
     private void broadcast(String message) {
@@ -62,10 +72,10 @@ public class Lobby {
             try {
                 if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
                     //broadcast for RMI Clients
-                    players.getClientRMI(player.getUsername()).send(LOCATION +message);
+                    players.getClientRMI(player.getUsername()).send(LOCATION + message);
                 } else {
                     //broadcast for Socket Clients
-                    players.getClientSocket(player.getUsername()).sendMessage(LOCATION +message);
+                    players.getClientSocket(player.getUsername()).sendMessage(LOCATION + message);
                 }
             } catch (RemoteException | NotFound e) {
                 //Disconnection already handled.
@@ -78,22 +88,23 @@ public class Lobby {
         PlayerData player = players.findPlayer(username);
         try {
             if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
-                players.getClientRMI(username).send(LOCATION +message);
+                players.getClientRMI(username).send(LOCATION + message);
             } else {
-                players.getClientSocket(username).sendMessage(LOCATION +message);
+                players.getClientSocket(username).sendMessage(LOCATION + message);
             }
         } catch (RemoteException | NotFound e) {
             //Disconnection already handled.
         }
     }
 
-    private void trigger() {
+    private synchronized void trigger() {
         switch (size()) {
             case 1:
                 if (isTimerSet) {
                     timer.cancel();
                     timer.purge();
                     try {
+                        timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
                             public void run() {
@@ -106,10 +117,12 @@ public class Lobby {
                     broadcast("<timer_restarted>");
                 }
                 break;
-            case 2:
+            case 2: startGame();
+                /*
                 if (!isTimerSet) {
                     isTimerSet = true;
                     broadcast("<timer_started>");
+                    timer = new Timer();
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
@@ -122,9 +135,10 @@ public class Lobby {
                 startGame();
                 break;
             default:
-                break;
+                break;*/
         }
     }
+
 
     private int size() {
         ArrayList<PlayerData> playerToBeChecked = new ArrayList<>(connectedPlayers);
@@ -141,33 +155,19 @@ public class Lobby {
                 //Disconnection Socket already handled
             }
         }
-        /*
-        ArrayList<PlayerData> playerToBeRemoved = new ArrayList<>();
-        for(PlayerData player : connectedPlayers){
-            try {
-                if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
-                    players.getClientRMI(player.getUsername()).checkConnection();
-                } else {
-                    if (!players.getClientSocket(player.getUsername()).isOnline())
-                        playerToBeRemoved.add(player);
-                }
-            } catch (RemoteException | NotFound e){
-                playerToBeRemoved.add(player);
-            }
-        }
-        for(PlayerData player : playerToBeRemoved)
-            removePlayer(player);*/
         return connectedPlayers.size();
     }
 
     private synchronized void startGame() {
         if (connectedPlayers.size() > 1) {
-            ArrayList<PlayerData> gamePlayers = PlayerDatabase.getPlayerDatabase().getGamePlayers();
             isTimerSet = false;
             timer.cancel();
             toTerminal("game start");
             broadcast("<start_game>" + listOfPlayers());
+
+            //Order players and views by cathedral time FROM HERE
             ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
+            ArrayList<VirtualView> viewsInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
                 int indexOfMax = 0;
                 for (Long lastTimeVisit : connectedPlayersLastTime) {
@@ -176,13 +176,20 @@ public class Lobby {
                     }
                 }
                 playersInTheRightOrder.add(connectedPlayers.get(indexOfMax));
+                viewsInTheRightOrder.add(views.get(indexOfMax));
                 connectedPlayers.remove(indexOfMax);
                 connectedPlayersLastTime.remove(indexOfMax);
+                views.remove(indexOfMax);
             }
-            for(PlayerData player : playersInTheRightOrder){
+
+            //TO HERE
+            for (PlayerData player : playersInTheRightOrder) {
                 player.nextPhase();
             }
-            //Games.add(new GameController(playersInTheRightOrder));
+            games.add(new Controller(games.size() + 1, viewsInTheRightOrder));
+            connectedPlayers = new ArrayList<>();
+            connectedPlayersLastTime = new ArrayList<>();
+            views = new ArrayList<>();
             notifyAll();
         } else {
             trigger();

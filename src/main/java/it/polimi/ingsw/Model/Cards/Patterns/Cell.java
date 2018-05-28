@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.Cards.Patterns;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     private Restriction restriction;
     private boolean exceptionRestriction;
     private boolean exceptionPosition;

@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.Cards;
 
 import it.polimi.ingsw.Model.Game.WindowFrame;
 
-public abstract class ObjectiveCard extends Card {
+public abstract class ObjectiveCard extends Card{
 
     private String description;
 

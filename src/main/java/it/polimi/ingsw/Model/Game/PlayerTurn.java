@@ -1,30 +1,25 @@
 package it.polimi.ingsw.Model.Game;
 
-import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.exceptions.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class PlayerTurn {
-    private ArrayList<Dice> draftPool;
+public class PlayerTurn implements Serializable {
+    private Table table;
     private Player player;
     private ArrayList<Move> moves;
     private ArrayList<PlayerTurn> playerTurns;
-    private RoundTrack roundTrack;
-    private DiceBag diceBag;
 
-    public PlayerTurn(Player player, ArrayList<Dice> draftPool, RoundTrack roundTrack, DiceBag diceBag) {
-        this.draftPool = draftPool;
+    public PlayerTurn(Player player, Table table) {
+        this.table = table;
         this.player = player;
-        this.playerTurns = null;
-        this.roundTrack = roundTrack;
-        this.diceBag = diceBag;
+        this.playerTurns = new ArrayList<>();
         moves = new ArrayList<>();
-        moves.add(new Move(draftPool, player, playerTurns));
-        moves.add(new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns));
+        moves.add(new Move(table, player));
+        //moves.add(new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns));
     }
+
 
     public ArrayList<PlayerTurn> getPlayerTurns() {
         return playerTurns;
@@ -32,6 +27,9 @@ public class PlayerTurn {
 
     public void setPlayerTurns(ArrayList<PlayerTurn> playerTurns) {
         this.playerTurns = playerTurns;
+        for(Move move: moves) {
+            move.setPlayerTurns(playerTurns);
+        }
     }
 
     public ArrayList<Move> getMoves() {
@@ -40,6 +38,10 @@ public class PlayerTurn {
 
     public void setMoves(ArrayList<Move> moves) {
         this.moves = moves;
+    }
+
+    public Move getMove(int index) {
+        return moves.get(index);
     }
 
     public void addMove(Move move) {
@@ -61,14 +63,19 @@ public class PlayerTurn {
     @Override
     public String toString(){
         String string="DraftPool:\n";
-        if(draftPool==null)
+        if(table.getDraftPool()==null)
             string=string.concat("NOT ADDED YET");
         else
-            for(Dice dice: draftPool)
+            for(Dice dice: table.getDraftPool())
                 string=string.concat(dice.toString());
         string=string.concat("\nPlayer: "+player.getName());
         return string;
     }
+
+    public int size() {
+        return moves.size();
+    }
+
 
     public void dump(){
         System.out.println(toString());

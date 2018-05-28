@@ -7,17 +7,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static java.lang.Integer.valueOf;
 
 
-public class PatternDeck {
+public class PatternDeck implements Serializable {
 
     private ArrayList<PatternCard> deck;
-    private final Logger LOGGER = Logger.getLogger(PatternDeck.class.getName());
 
     public PatternDeck() {
         deck=new ArrayList<>();
@@ -26,9 +24,9 @@ public class PatternDeck {
         try {
             obj = parser.parse(new FileReader("src/main/resources/patterns.json"));
         } catch (IOException e) {
-            LOGGER.log( Level.SEVERE, e.toString(), e);
+            System.out.println(e);
         } catch (ParseException e) {
-            LOGGER.log( Level.SEVERE, e.toString(), e);
+            System.out.println(e);
         }
         JSONObject jsonObject = (JSONObject) obj;
         JSONArray jpatternDeck;
@@ -43,7 +41,7 @@ public class PatternDeck {
             try {
                 patternCard.setDifficulty(valueOf((String)jpatternCard.get("difficulty")));
             } catch (NotValidInputException e) {
-                LOGGER.log( Level.SEVERE, e.toString(), e);
+                System.out.println(e);
             }
             JSONArray card = (JSONArray) jpatternCard.get("patternCard");
             int length = card.size();
@@ -64,11 +62,11 @@ public class PatternDeck {
         return this.deck;
     }
 
-    public PatternCard getPatternCard(int id) throws NotValidInputException {   //l'ho aggiunta per avere un controllo sul parametro
-        if (id<0 || id>=deck.size()){                                 // ma non so se può servire, ho visto che per ora
+    public PatternCard getPatternCard(int index) throws NotValidInputException {   //l'ho aggiunta per avere un controllo sul parametro
+        if (index<0 || index>=deck.size()){                                 // ma non so se può servire, ho visto che per ora
             throw new NotValidInputException();                                    //avete usato la getPatternDeck().get(index).
         }                                                                          //Nel caso non serva toglietela pure
-        return this.deck.get(id-1);
+        return this.deck.get(index);
     }
 
     public PatternCard removePatternCard(int index) {

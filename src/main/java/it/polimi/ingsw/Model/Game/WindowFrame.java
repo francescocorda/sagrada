@@ -5,7 +5,10 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.exceptions.*;
 
-public class WindowFrame {
+import java.io.Serializable;
+import java.rmi.RemoteException;
+
+public class WindowFrame implements Serializable {
 
     private Dice[][] dices;
     private PatternCard patternCard;
@@ -186,6 +189,10 @@ public class WindowFrame {
                 }
             }
         }
+    }
+
+    public void update() throws RemoteException {
+
     }
 
     @Override

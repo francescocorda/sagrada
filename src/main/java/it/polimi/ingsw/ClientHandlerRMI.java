@@ -3,10 +3,11 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+import it.polimi.ingsw.view.VirtualView;
+
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import static it.polimi.ingsw.connection.ConnectionMode.RMI;
 
@@ -37,11 +38,15 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
                     }
                 }
             }, 1000, 1000);
-            /*Timer timer = new Timer(username, client);
-            timer.start();*/
         } else {
             throw new NotValidInputException();
         }
+    }
+
+    public void update(String message) throws RemoteException{
+        ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*,\\s*")));
+        VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(commands.get(0));
+        virtualView.notifyObservers(message);
     }
 
     public void joinLobby(String username, long time) throws NotValidInputException, RemoteException {
@@ -50,32 +55,4 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
             Lobby.getLobby().addPlayer(username, time);
         } else throw new NotValidInputException();
     }
-
-    /*
-    public class Timer extends Thread {
-        String username;
-        RMIClientInterface client;
-        Timer(String username, RMIClientInterface client){
-            this.username=username;
-            this.client=client;
-        }
-        public void run() {
-            boolean flag=true;
-            while (flag) {
-                try {
-                    client.checkConnection();
-                } catch (RemoteException e) {
-                    playerDatabase.removeRMIClient(username);
-                    flag=false;
-                    Thread.currentThread().interrupt();
-                }
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    //
-                }
-            }
-        }
-    }
-    */
 }

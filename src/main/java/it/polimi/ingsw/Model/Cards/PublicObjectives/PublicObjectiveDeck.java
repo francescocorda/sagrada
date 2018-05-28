@@ -9,13 +9,11 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class PublicObjectiveDeck {
+public class PublicObjectiveDeck implements Serializable {
     private ArrayList<PublicObjectiveCard> puODeck;
-    private static final Logger LOGGER = Logger.getLogger(PublicObjectiveDeck.class.getName());
 
     public PublicObjectiveDeck() {
         puODeck = new ArrayList<>();
@@ -24,9 +22,9 @@ public class PublicObjectiveDeck {
         try {
             obj = parser.parse(new FileReader("src/main/resources/objectives.json"));
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, e.toString(), e);
+            System.out.println(e);
         } catch (ParseException e) {
-            LOGGER.log(Level.SEVERE, e.toString(), e);
+            System.out.println(e);
         }
         JSONObject jsonObject = (JSONObject) obj;
         JSONObject jPuODeck;

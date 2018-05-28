@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.*;
 import java.util.ArrayList;
 
 public class SpecialMove extends Move{
+    private ArrayList<Dice> draftPool;
     private RoundTrack roundTrack;
     private DiceBag diceBag;
     int old_index1;
@@ -14,6 +15,9 @@ public class SpecialMove extends Move{
 
     public SpecialMove(ArrayList<Dice> draftPool, Player player, RoundTrack roundTrack, DiceBag diceBag, ArrayList<PlayerTurn> playerTurns) {
         super(draftPool, player, playerTurns);
+        this.draftPool = draftPool;
+        this.player = player;
+        this.playerTurns = playerTurns;
         this.toolCard = null;
         this.roundTrack = roundTrack;
         this.diceBag = diceBag;

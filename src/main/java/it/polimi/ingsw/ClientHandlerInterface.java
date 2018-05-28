@@ -9,4 +9,5 @@ import java.util.Timer;
 public interface ClientHandlerInterface extends Remote {
     void login(String username, String password, RMIClientInterface client) throws RemoteException, NotValidInputException;
     void joinLobby(String username, long time) throws RemoteException, NotValidInputException;
+    void update(String message) throws RemoteException;
 }

@@ -74,7 +74,7 @@ public class TestPublicObjectiveDeck {
         DiceBag diceBag = new DiceBag();
         ArrayList<Dice> dices;
         try {
-            card= deck.getPatternCard(5);
+            card= deck.getPatternCard(4);
             window.setPatternCard(card);
 
             Dice dice1 = new Dice(Color.ANSI_PURPLE);

@@ -22,7 +22,7 @@ private int RMI_PORT;
             }
             try {
                 ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI();
-                Naming.rebind("//localhost/SagradaRMIServer", clientHandlerRMI);
+                Naming.rebind("//localhost/ClientHandler", clientHandlerRMI);
             } catch (MalformedURLException e) {
                 System.err.println("Impossible object registration!");
             } catch (RemoteException e) {

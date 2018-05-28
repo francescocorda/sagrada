@@ -2,7 +2,9 @@ package it.polimi.ingsw.Model.Cards.Patterns;
 
 import it.polimi.ingsw.Model.Game.Color;
 
-public enum Restriction {
+import java.io.Serializable;
+
+public enum Restriction implements Serializable {
     ANSI_WHITE("\u001B[37m"),
     ANSI_RED("\u001B[31m"),
     ANSI_GREEN("\u001B[32m"),

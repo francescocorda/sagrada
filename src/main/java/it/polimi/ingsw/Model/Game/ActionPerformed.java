@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.Game;
 
-public enum ActionPerformed {
+import java.io.Serializable;
+
+public enum ActionPerformed implements Serializable {
     NOTHING,
     DEFAULT,
     TOOLCARD,

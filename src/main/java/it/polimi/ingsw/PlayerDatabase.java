@@ -42,7 +42,7 @@ public class PlayerDatabase {
     }
 
     public void addRMIClient(String username, RMIClientInterface client){
-        if(clientsRMI==null){
+        if (clientsRMI==null){
             clientsRMI.put(username, client);
         } else if(!clientsRMI.containsKey(username)){
             clientsRMI.put(username, client);

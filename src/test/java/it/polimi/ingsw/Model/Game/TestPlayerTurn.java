@@ -13,9 +13,7 @@ public class TestPlayerTurn {
     @Test
     void myTest() {
         Player player = new Player("fra");
-        ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
-        RoundTrack roundTrack = new RoundTrack();
-        DiceBag diceBag = new DiceBag();
+        Table table = new Table();
 
         try {
             player.setNumOfTokens(6);
@@ -28,7 +26,7 @@ public class TestPlayerTurn {
             draftpool.add(new Dice(Color.ANSI_BLUE));
             draftpool.get(i).roll();
         }
-        PlayerTurn turn = new PlayerTurn(player, draftpool, roundTrack, diceBag);
+        PlayerTurn turn = new PlayerTurn(player, table);
 
         assertEquals(player, turn.getPlayer());
 

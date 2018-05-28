@@ -5,6 +5,8 @@ import it.polimi.ingsw.client.RMI.RMIClientImplementation;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+import it.polimi.ingsw.view.CLIView;
+import it.polimi.ingsw.view.View;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,6 +17,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -27,7 +30,7 @@ public class Client {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...");
+        System.out.println("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...)");
         String technology = in.nextLine();
         if (technology.equals("RMI"))
             rmi();
@@ -40,24 +43,26 @@ public class Client {
     }
 
 
-    private static void rmi() {
+    private static void rmi(){
+        View view = new CLIView();
         String username = new String();
         String password = new String();
         boolean logged = false;
-        ClientHandlerInterface server = null;
+        ClientHandlerInterface server=null;
         RMIClientInterface client = null;
         try {
-            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(), 0);
+            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);  //added 24/05
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         Scanner in = new Scanner(System.in);
         System.out.println("Insert server IP address: (type 0 for default value: localhost)");
         String address = in.nextLine();
-        if (0 == Integer.parseInt(address)) address = "localhost";
+        if(0==Integer.parseInt(address)) address = "localhost";
         try {
-            server = (ClientHandlerInterface) Naming.lookup("//" + address + "/SagradaRMIServer");
-            while (!logged) {
+            server = (ClientHandlerInterface) Naming.lookup("//" + address + "/ClientHandler");
+
+            while(!logged) {
                 System.out.println("Insert username: ");
                 username = in.nextLine();
                 System.out.println("Insert password: ");
@@ -77,25 +82,42 @@ public class Client {
         } catch (NotBoundException e) {
             System.err.println("Passed reference is null!");
         }
+        ((CLIView) view).setUsername(username);
         System.out.println("Insert last time you visited a cathedral: ");
         boolean lobby = false;
-        while (!lobby) {
+        while(!lobby && server != null){
             try {
-                long time = in.nextLong();
+                long time = Long.parseLong(in.nextLine());
                 server.joinLobby(username, time);
-                lobby = true;
+                lobby=true;
             } catch (RemoteException e) {
                 System.out.println("Player disconneted.");
             } catch (NotValidInputException e) {
                 System.out.println("Invalid time. Please insert a correct time: ");
-            } catch (InputMismatchException e) {
+            }  catch (InputMismatchException | NumberFormatException e) {
                 System.out.println("Insert last time you visited a cathedral: ");
-                in.nextLine();
+            }
+            boolean end_game =  false;
+            ArrayList<String> commands = new ArrayList<>();
+            commands.add(username);
+            while (!end_game) {
+                String command = in.nextLine();
+                if (!command.equals("")) {
+                    commands.add(command);
+                } else {
+                    String message = String.join(", ", commands);
+                    try {
+                        server.update(message);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    commands = new ArrayList<>();
+                    commands.add(username);
+                }
             }
         }
         in.close();
     }
-
 
     private static void socket() {
         md = new MessageDealer();

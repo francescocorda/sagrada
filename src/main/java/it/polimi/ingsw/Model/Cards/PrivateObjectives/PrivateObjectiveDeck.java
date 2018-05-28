@@ -3,9 +3,10 @@ package it.polimi.ingsw.Model.Cards.PrivateObjectives;
 import it.polimi.ingsw.Model.Game.Color;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PrivateObjectiveDeck {
+public class PrivateObjectiveDeck implements Serializable {
     private ArrayList<PrivateObjectiveCard> privateObjectiveDeck;
 
     private PrivateObjectiveCard red;

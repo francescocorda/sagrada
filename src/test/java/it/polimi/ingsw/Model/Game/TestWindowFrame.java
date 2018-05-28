@@ -165,7 +165,7 @@ class TestWindowFrame {
         PatternDeck patternDeck = new PatternDeck();
         PatternCard pattern = null;
         try {
-            pattern = patternDeck.getPatternCard(10);
+            pattern = patternDeck.getPatternCard(9);
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
@@ -218,7 +218,7 @@ class TestWindowFrame {
         PatternDeck patternDeck = new PatternDeck();
         PatternCard pattern = null;
         try {
-            pattern = patternDeck.getPatternCard(10);
+            pattern = patternDeck.getPatternCard(9);
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
@@ -365,7 +365,7 @@ class TestWindowFrame {
         ArrayList<Dice> dices;
         Dice dice;
         try {
-            card= deck.getPatternCard(5);
+            card= deck.getPatternCard(4);
             window.setPatternCard(card);
             dices = diceBag.draw(4);
 

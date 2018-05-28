@@ -2,15 +2,21 @@ package it.polimi.ingsw.Model.Game;
 
 import it.polimi.ingsw.exceptions.InvalidFaceException;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Dice {
+public class Dice implements Serializable {
     private Color color;
     private String face;
 
     public Dice(Color color) {
         this.color = color;
         this.face=null;
+    }
+
+    public Dice(Dice dice) {
+        this.color = dice.getColor();
+        this.face = dice.getFace();
     }
 
     public Color getColor() {

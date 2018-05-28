@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Model.Cards;
 
-public abstract class Card {
+import java.io.Serializable;
+
+public abstract class Card implements Serializable {
     String name;
     int ID;
 

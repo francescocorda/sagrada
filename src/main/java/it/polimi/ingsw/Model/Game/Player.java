@@ -4,7 +4,9 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 
-public class Player {
+import java.io.Serializable;
+
+public class Player implements Serializable {
     private String name;
     private int numOfTokens;
     private int score;
@@ -75,11 +77,11 @@ public class Player {
     public String toString(){
         String string="";
         string=string.concat("Name: "+name+"\n"+
-        "Number of tokens: "+ numOfTokens+"\n"+
-        "Score: "+score+"\n"+
-        "\nPrivate Objective Card:\n"+
+                "Number of tokens: "+ numOfTokens+"\n"+
+                "Score: "+score+"\n"+
+                "\nPrivate Objective Card:\n"+
                 (privateObjectiveCard == null ? "NOT ADDED YET\n" : privateObjectiveCard.toString()+"\n")+
-        "WindowFrame:\n"+
+                "WindowFrame:\n"+
                 (windowFrame==null ? "NOT ADDED YET\n" : windowFrame.toString()));
         return string;
     }

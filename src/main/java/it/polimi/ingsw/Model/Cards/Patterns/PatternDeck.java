@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
 import static java.lang.Integer.valueOf;
 
 
 public class PatternDeck implements Serializable {
 
+    public static final int PATTERN_CARD_NUMBER = 24;
     private ArrayList<PatternCard> deck;
 
     public PatternDeck() {
@@ -35,7 +38,7 @@ public class PatternDeck implements Serializable {
         } else {
             throw new NullPointerException();
         }
-        for(int j=0; j<24; j++){
+        for(int j=0; j<PATTERN_CARD_NUMBER; j++){
             JSONObject jpatternCard = (JSONObject) jpatternDeck.get(j);
             PatternCard patternCard = new PatternCard((String) jpatternCard.get("name"), j+1);
             try {
@@ -48,8 +51,8 @@ public class PatternDeck implements Serializable {
             String [] patterns = new String [length];
 
             if (length > 0) {
-                for (int i = 0; i < 4; i++) {
-                    for(int k=0; k<5; k++){
+                for (int i = 0; i < ROW; i++) {
+                    for(int k=0; k<COLUMN; k++){
                         patternCard.setRestriction(i+1, k+1, Restriction.valueOf((String)card.get(i*5+k)));
                     }
                 }

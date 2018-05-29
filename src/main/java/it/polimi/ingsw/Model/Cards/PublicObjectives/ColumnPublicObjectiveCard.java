@@ -4,6 +4,9 @@ import it.polimi.ingsw.Model.Game.WindowFrame;
 
 import java.util.HashSet;
 
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
+
 public class ColumnPublicObjectiveCard extends PublicObjectiveCard {
 
     String restriction;
@@ -17,9 +20,9 @@ public class ColumnPublicObjectiveCard extends PublicObjectiveCard {
     public int countScore(WindowFrame windowFrame) {
         int score = 0;
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= COLUMN; i++) {
             HashSet<String> set = new HashSet<String>();
-            for (int j = 1; j <= 4; j++) {
+            for (int j = 1; j <= ROW; j++) {
                 if(windowFrame.getDice(j, i) != null) {
                     if (restriction.equals("color")) {
                         set.add(windowFrame.getDice(j, i).getColor().escape());

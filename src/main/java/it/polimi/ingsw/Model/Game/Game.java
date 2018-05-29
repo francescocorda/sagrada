@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
+import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUND;
+
 public class Game extends Observable implements Serializable {
     int matchID;
     ArrayList<Player> players;
-    DiceBag diceBag;
-    RoundTrack roundTrack;
     PrivateObjectiveDeck privateObjectiveDeck;
     PublicObjectiveDeck publicObjectiveDeck;
     PatternDeck patternDeck;
@@ -25,9 +25,8 @@ public class Game extends Observable implements Serializable {
     ArrayList<PatternCard> matchPatternDeck;
     //ToolCardDeck toolCardDeck;
     ArrayList<Round> rounds;
-
-    //aggiunto 25/05
     private Table table;
+    private static final String INVALID_MOVE_BY_PLAYER = "Invalid move by player: ";
 
     public Game(int matchID, ArrayList<String> names ){
         this.matchID = matchID;
@@ -48,7 +47,7 @@ public class Game extends Observable implements Serializable {
         table.setDiceBag(new DiceBag());
         table.setRoundTrack(new RoundTrack());
         table.setPlayers(players);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < NUMBER_OF_ROUND; i++) {
             rounds.add(new Round(this.players,i%players.size(), table));
         }
     }
@@ -144,38 +143,38 @@ public class Game extends Observable implements Serializable {
         } catch (DiceNotFoundException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Dice not found.");
         } catch (InvalidFaceException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Value not compatible with any dice's face.");
         } catch (MismatchedRestrictionException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "The dice doesn't match the pattern restriction.");
         } catch (InvalidNeighboursException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "The position isn't near any valid neighbour.");
         } catch (OccupiedCellException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Position already occupied.");
         } catch (InvalidFirstMoveException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Each player’s first dice of the game must be placed on an edge or corner space,\n" +
                     "respecting all the other restrictions");
         } catch (IndexOutOfBoundsException e) {
             table.getDraftPool().add(indexDP-1, dice);
             notifyObservers(table);
-            notifyObservers("Invalid move by player " + getCurrentPlayer() + ":\n" +
+            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Invalid window coordinates.");
         } catch (WrongRoundException e) {
             e.printStackTrace();

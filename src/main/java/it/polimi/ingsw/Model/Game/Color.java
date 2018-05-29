@@ -10,6 +10,7 @@ public enum Color implements Serializable {
     ANSI_PURPLE("\u001B[35m");
     public static final String RESET = "\u001B[0m";
     private String escape;
+    public static final int NUMBER_OF_COLORS = 5;
 
     Color(String escape) {
         this.escape = escape;

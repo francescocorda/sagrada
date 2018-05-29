@@ -5,6 +5,9 @@ import it.polimi.ingsw.Model.Game.WindowFrame;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
+
 public class SetPublicObjectiveCard extends PublicObjectiveCard {
 
     String restriction;
@@ -22,8 +25,8 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
     public int countScore(WindowFrame windowFrame) {
         int score = 0;
 
-        for (int i = 1; i <= 4; i++) {
-            for (int j = 1; j <= 5; j++) {
+        for (int i = 1; i <= ROW; i++) {
+            for (int j = 1; j <= COLUMN; j++) {
                 if(windowFrame.getDice(i, j) != null) {
                     if(restriction.equals("color")){
                         if (elements.contains(windowFrame.getDice(i,j).getColor().escape())) {

@@ -30,6 +30,14 @@ public class PlayerData {
         this.clientRMI = clientRMI;
     }
 
+    public ClientSocketInterpreter getClientSocket(){
+        return clientSocket;
+    }
+
+    public void setClientSocket(ClientSocketInterpreter clientSocket){
+        this.clientSocket = clientSocket;
+    }
+
     public String getPassword() {
         return password;
     }

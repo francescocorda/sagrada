@@ -3,14 +3,16 @@ package it.polimi.ingsw.Model.Cards.Patterns;
 import it.polimi.ingsw.Model.Cards.Card;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 
-
 public class PatternCard extends Card {
+
+    public static final int ROW = 4;
+    public static final int COLUMN = 5;
     private int difficulty;
     private Cell[][] patternCard;
 
     public PatternCard(String name, int ID) {
         super(name, ID);
-        patternCard = new Cell[4][5];
+        patternCard = new Cell[ROW][COLUMN];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 patternCard[i][j] = new Cell();
@@ -32,7 +34,7 @@ public class PatternCard extends Card {
     }
 
     public void setRestriction(int row, int col, Restriction restriction) {
-        if(row<1 || row>4 || col<1 || col>5) {
+        if(row<1 || row>ROW || col<1 || col>COLUMN) {
             throw new IndexOutOfBoundsException();
         }
         this.patternCard[row - 1][col - 1].setRestriction(restriction);
@@ -43,7 +45,7 @@ public class PatternCard extends Card {
     }
 
     public void setExceptionRestriction(int row, int col, boolean exception) {
-        if(row<1 || row>4 || col<1 || col>5) {
+        if(row<1 || row>ROW || col<1 || col>COLUMN) {
             throw new IndexOutOfBoundsException();
         }
         this.patternCard[row - 1][col - 1].setExceptionRestriction(exception);
@@ -55,7 +57,7 @@ public class PatternCard extends Card {
     }
 
     public void setExceptionPosition(int row, int col, boolean exception) {
-        if(row<1 || row>4 || col<1 || col>5) {
+        if(row<1 || row>ROW || col<1 || col>COLUMN) {
             throw new IndexOutOfBoundsException();
         }
         this.patternCard[row - 1][col - 1].setExceptionPosition(exception);
@@ -65,8 +67,8 @@ public class PatternCard extends Card {
     public String toString() {
         String string = "";
         string = string.concat(super.toString()+"\nDifficulty: " +getDifficulty()+"\n");
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
                 string = string.concat(patternCard[i][j].toString());
             }
             string = string.concat("\n");
@@ -80,8 +82,8 @@ public class PatternCard extends Card {
     }
 
     public void setFalseExceptions(){
-        for(int i=1; i<=4; i++){
-            for(int j=1; j<=5; j++){
+        for(int i=1; i<=ROW; i++){
+            for(int j=1; j<=COLUMN; j++){
                 this.setExceptionPosition(i,j, false);
                 this.setExceptionRestriction(i,j, false);
             }

@@ -4,16 +4,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static it.polimi.ingsw.Model.Game.Color.NUMBER_OF_COLORS;
+
 public class DiceBag implements Serializable {
+    public static final int MAX_NUMBER_OF_DICES = 90;
     private ArrayList<Dice> dices;
 
     public DiceBag() {
-        dices = new ArrayList<Dice>();
+        dices = new ArrayList<>();
         fill();
     }
 
     private void fill() {
-        for (int i = 0; i < 90 / 5; i++)
+        for (int i = 0; i < MAX_NUMBER_OF_DICES / NUMBER_OF_COLORS; i++)
             for (Color c : Color.values()) {
                 Dice d = new Dice(c);
                 this.dices.add(d);

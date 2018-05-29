@@ -6,6 +6,9 @@ import it.polimi.ingsw.Model.Game.WindowFrame;
 
 import java.util.HashSet;
 
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
+
 public class RowPublicObjectiveCard extends PublicObjectiveCard {
 
     int points;
@@ -22,9 +25,9 @@ public class RowPublicObjectiveCard extends PublicObjectiveCard {
     public int countScore(WindowFrame windowFrame) {
         int score = 0;
 
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= ROW; i++) {
             HashSet<String> set = new HashSet<String>();
-            for (int j = 1; j <= 5; j++) {
+            for (int j = 1; j <= COLUMN; j++) {
                 if(windowFrame.getDice(i, j) != null) {
                     if (restriction.equals("color")) {
                         set.add(windowFrame.getDice(i, j).getColor().escape());

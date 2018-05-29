@@ -4,6 +4,9 @@ import it.polimi.ingsw.Model.Game.Color;
 import it.polimi.ingsw.Model.Cards.ObjectiveCard;
 import it.polimi.ingsw.Model.Game.WindowFrame;
 
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
+
 public class PrivateObjectiveCard extends ObjectiveCard {
 
     Color color;
@@ -26,8 +29,8 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
         int score = 0;
 
-        for (int i=1; i<=4; i++) {
-            for (int j=1; j<=5; j++) {
+        for (int i=1; i<=ROW; i++) {
+            for (int j=1; j<=COLUMN; j++) {
                 if (windowFrame.getDice(i,j) != null && windowFrame.getDice(i,j).getColor().equals(color)) {
                     score += windowFrame.getDice(i,j).valueOf();
                 }

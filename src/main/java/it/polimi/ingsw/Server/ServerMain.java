@@ -1,13 +1,6 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.ClientHandlerInterface;
-import it.polimi.ingsw.ClientHandlerRMI;
 import it.polimi.ingsw.Lobby;
-import it.polimi.ingsw.PlayerDatabase;
-import java.net.MalformedURLException;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.util.Scanner;
 
 public class ServerMain {
@@ -19,6 +12,7 @@ public class ServerMain {
     private static int RMI_PORT;
     private static ServerMain instance = null;
     private int numberOfClient  = -1;
+    private static int timerSeconds = 2*60;
 
     private ServerMain(){
     }
@@ -48,6 +42,12 @@ public class ServerMain {
             RMI_PORT = 1099;
         else
             RMI_PORT = temp;
+        System.out.println("Set startGame timer[seconds] (0 for default 2*60): ");
+        text = scanner.nextLine();
+        int seconds = Integer.valueOf(text);
+        if(seconds>0)
+            setTimerSeconds(seconds);
+
         Lobby.getLobby();
         start();
     }
@@ -65,5 +65,13 @@ public class ServerMain {
     public int getNewClientNumber(){
         numberOfClient++;
         return numberOfClient;
+    }
+
+    private static void setTimerSeconds(int seconds){
+        timerSeconds = seconds;
+    }
+
+    public int getTimerSeconds(){
+        return timerSeconds;
     }
 }

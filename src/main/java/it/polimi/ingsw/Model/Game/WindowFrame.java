@@ -244,6 +244,38 @@ public class WindowFrame implements Serializable {
         return string;
     }
 
+
+    public String toGameString(){
+        //Used Symbols:
+        String emptyDiceSymbol =  "\uD83E\uDD76";
+        String verticalSeparatorSymbol = "|";
+        String horizontalLine = "-----------------\t";
+        String horizontalSeparator = "--"+verticalSeparatorSymbol+horizontalLine;
+        String horizontalCoordinates = "  1  2  3  4  5  ";
+
+        String string="";
+        string=string.concat(" Pattern Card:\n -Name: "+patternCard.getName()+"\n -Difficulty: "+patternCard.getDifficulty()+"\n");
+        string=string.concat("  "+verticalSeparatorSymbol+horizontalCoordinates+"\n" + horizontalSeparator + "\n");
+        for(int i =0; i<4; i++){
+            string=string.concat((i+1)+" " + verticalSeparatorSymbol);
+            for (int j = 0; j < 5; j++) {
+                if(dices[i][j] == null){
+                    String escape = patternCard.getRestriction(i+1, j+1).escape();
+                    int face = escape.compareTo("\u2680") + 1;
+                    if (face > 0) {
+                        string=string.concat(Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
+                    } else {
+                        string=string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
+                    }
+                }
+                else
+                    string = string.concat(dices[i][j].toString());
+            }
+            string=string.concat("\n");
+        }
+        return string;
+    }
+
     public void dump(){
         System.out.println(toString());
     }

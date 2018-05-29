@@ -125,6 +125,9 @@ public class Controller implements Observer {
                                 break;
                             case "toolcard":
                                 useToolCard();
+                                break;
+                            default:
+                                yourTurn();
                         }
                     }
                     break;

@@ -58,7 +58,7 @@ public class CLIView extends Observable implements View {
             if(!p.getName().equals(username)) {
                 System.out.println("Name: " + p.getName());
                 System.out.println("Number of Tokens: " + p.getNumOfTokens());
-                p.getWindowFrame().dump();
+                System.out.println(p.getWindowFrame().toGameString());
             } else {
                 myPlayer = p;
             }
@@ -71,7 +71,7 @@ public class CLIView extends Observable implements View {
         System.out.println("Number of Tokens: " + myPlayer.getNumOfTokens());
         System.out.println("Private Objective Card: ");
         myPlayer.getPrivateObjectiveCard().dump();
-        myPlayer.getWindowFrame().dump();
+        System.out.println(myPlayer.getWindowFrame().toGameString());
     }
 
     public void displayPrivateObjectiveCard() {

@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.view.VirtualView;
@@ -22,6 +23,7 @@ public class Lobby {
     private static final String LOCATION = "lobby";
     ArrayList<Controller> games;
     private static final Object countLock = new Object();
+    private int timerSeconds;
 
     private Lobby() {
         connectedPlayers = new ArrayList<>();
@@ -30,6 +32,7 @@ public class Lobby {
         players = PlayerDatabase.getPlayerDatabase();
         views = new ArrayList<>();
         games = new ArrayList<>();
+        timerSeconds = ServerMain.getServerMain().getTimerSeconds();
     }
 
     public static synchronized Lobby getLobby() {
@@ -110,15 +113,14 @@ public class Lobby {
                             public void run() {
                                 startGame();
                             }
-                        }, (long) 2 * 60 * 1000);
+                        }, (long) timerSeconds * 1000);
                     } catch (IllegalStateException e) {
                         toTerminal("Error: timer already cancelled");
                     }
                     broadcast("<timer_restarted>");
                 }
                 break;
-            case 2: startGame();
-                /*
+            case 2:
                 if (!isTimerSet) {
                     isTimerSet = true;
                     broadcast("<timer_started>");
@@ -128,14 +130,14 @@ public class Lobby {
                         public void run() {
                             startGame();
                         }
-                    }, (long) 2 * 60 * 1000);
+                    }, (long) timerSeconds * 1000);
                 }
                 break;
             case 4:
                 startGame();
                 break;
             default:
-                break;*/
+                break;
         }
     }
 

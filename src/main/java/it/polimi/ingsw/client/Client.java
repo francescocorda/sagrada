@@ -51,7 +51,7 @@ public class Client {
         ClientHandlerInterface server=null;
         RMIClientInterface client = null;
         try {
-            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);  //added 24/05
+            client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
         } catch (RemoteException e) {
             e.printStackTrace();
         }

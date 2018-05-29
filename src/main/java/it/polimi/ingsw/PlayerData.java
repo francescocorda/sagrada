@@ -6,14 +6,13 @@ import static it.polimi.ingsw.Phase.*;
 
 public class PlayerData {
 
-
     private ConnectionMode connectionMode;
     private String username;
     private String password;
     private Phase phase;
     private Status status;
     private RMIClientInterface clientRMI;
-    //private Socket clientSocket;
+    private ClientSocketInterpreter clientSocket;
 
     PlayerData(String username, String password, ConnectionMode connectionMode){
         this.username=username;
@@ -30,6 +29,7 @@ public class PlayerData {
     public void setClientRMI(RMIClientInterface clientRMI) {
         this.clientRMI = clientRMI;
     }
+
     public String getPassword() {
         return password;
     }

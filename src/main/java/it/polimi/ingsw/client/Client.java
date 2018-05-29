@@ -30,7 +30,7 @@ public class Client {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        System.out.println("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...)");
+        toScreen("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...)");
         String technology = in.nextLine();
         if (technology.equals("RMI"))
             rmi();
@@ -56,66 +56,74 @@ public class Client {
             e.printStackTrace();
         }
         Scanner in = new Scanner(System.in);
-        System.out.println("Insert server IP address: (type 0 for default value: localhost)");
+        toScreen("Insert server IP address: (type 0 for default value: localhost)");
         String address = in.nextLine();
-        if(0==Integer.parseInt(address)) address = "localhost";
+        if(address.length()<2) address = "localhost";
         try {
             server = (ClientHandlerInterface) Naming.lookup("//" + address + "/ClientHandler");
 
             while(!logged) {
-                System.out.println("Insert username: ");
+                toScreen("Insert username: ");
                 username = in.nextLine();
-                System.out.println("Insert password: ");
+                toScreen("Insert password: ");
                 password = in.nextLine();
                 try {
                     server.login(username, password, client);
-                    System.out.println("Login success.");
+                    toScreen("Login success.");
                     logged = true;
                 } catch (NotValidInputException e) {
-                    System.out.println("Login failed.");
+                    toScreen("Login failed.");
                 }
             }
         } catch (MalformedURLException e) {
-            System.err.println("URL not found!");
+            toScreen("URL not found!");
         } catch (RemoteException e) {
-            System.err.println("Connection error: " + e.getMessage() + "!");
+            toScreen("Connection error: " + e.getMessage() + "!");
         } catch (NotBoundException e) {
-            System.err.println("Passed reference is null!");
+            toScreen("Passed reference is null!");
         }
         ((CLIView) view).setUsername(username);
-        System.out.println("Insert last time you visited a cathedral: ");
+        toScreen("Insert last time you visited a cathedral: ");
         boolean lobby = false;
-        while(!lobby && server != null){
+        String text;
+        long time;
+        while(!lobby && server != null) {
             try {
-                long time = Long.parseLong(in.nextLine());
+                text = in.nextLine();
+                time = Long.parseLong(text);
                 server.joinLobby(username, time);
-                lobby=true;
+                lobby = true;
             } catch (RemoteException e) {
-                System.out.println("Player disconneted.");
-            } catch (NotValidInputException e) {
-                System.out.println("Invalid time. Please insert a correct time: ");
-            }  catch (InputMismatchException | NumberFormatException e) {
-                System.out.println("Insert last time you visited a cathedral: ");
+                toScreen("Player disconneted.");
+            } catch (NotValidInputException | NumberFormatException e) {
+                toScreen("Invalid time. Please insert a correct time: ");
+            } catch (InputMismatchException e) {
+                toScreen("Insert last time you visited a cathedral: ");
             }
-            boolean end_game =  false;
+        }
+            boolean endGame = false;
             ArrayList<String> commands = new ArrayList<>();
             commands.add(username);
-            while (!end_game) {
+            while (!endGame) {
                 String command = in.nextLine();
                 if (!command.equals("")) {
                     commands.add(command);
                 } else {
                     String message = String.join(", ", commands);
+                    commands.clear();
                     try {
-                        server.update(message);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
+                        if(server != null)
+                            server.update(message);
+                        else
+                            throw new NullPointerException();
+                    } catch (RemoteException | NullPointerException e) {
+                        toScreen("Server Closed");
+                        endGame = true;
                     }
                     commands = new ArrayList<>();
                     commands.add(username);
                 }
             }
-        }
         in.close();
     }
 
@@ -128,33 +136,40 @@ public class Client {
             String message = in.nextLine();
             if(message.equals("quit")){
                 connection.sendMessage(message);
-                Thread.currentThread().interrupt();
+                online = false;
             } else {
                 md.setMessage(message);
             }
         }
+        Thread.currentThread().interrupt();
     }
 
     private static void initialize() {
         try {
             Scanner in = new Scanner(System.in);
-            System.out.println("Insert server IP address: (Type 0 for default: \"localhost\") ");
+            toScreen("Insert server IP address: (Type 0 for default: \"localhost\") ");
             String address = in.nextLine();
             if (address.equals("0"))
                 address = "localhost";
-            System.out.println("Insert server port: (Type 0 for default: \"3001\") ");
+            toScreen("Insert server port: (Type 0 for default: \"3001\") ");
             int port = in.nextInt();
             if (port == 0)
                 port = 3001;
             socket = new Socket(address, port);
-            System.out.println("Connected.");
+            toScreen("Connected.");
             connection = new ConnectionSocket(socket);
             mp = new MessagePrinter(connection, md);
             is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         } catch (IOException e) {
-            System.out.println("Connection Error.");
-            e.printStackTrace();
+            toScreen("Connection Error.");
+            if(mp != null)
+                mp.interrupt();
+            Thread.currentThread().interrupt();
         }
+    }
+
+    private static void toScreen(String message){
+        System.out.println(message);
     }
 }

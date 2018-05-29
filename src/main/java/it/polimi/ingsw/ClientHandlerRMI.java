@@ -51,6 +51,7 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
 
     public void joinLobby(String username, long time) throws NotValidInputException, RemoteException {
         long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
+        System.out.println("JOIN LOBBY: username: "+username+"\n \t time: "+time);
         if (systemTime > time) {
             Lobby.getLobby().addPlayer(username, time);
         } else throw new NotValidInputException();

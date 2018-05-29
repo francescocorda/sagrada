@@ -10,6 +10,7 @@ import java.rmi.RemoteException;
 
 public class WindowFrame implements Serializable {
 
+
     private Dice[][] dices;
     private PatternCard patternCard;
 

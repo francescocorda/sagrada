@@ -43,7 +43,6 @@ public class VirtualView extends Observable implements View {
         } catch (NotFound notFound) {
             notFound.printStackTrace();
         }
-
     }
 
 

@@ -8,7 +8,6 @@ import java.util.HashMap;
 
 public class PlayerDatabase {
     private ArrayList<PlayerData> players;
-    private HashMap<String, RMIClientInterface> clientsRMI;
     private HashMap<String, ClientSocketInterpreter> clientsSocket;
 
     private static PlayerDatabase instance;
@@ -22,7 +21,6 @@ public class PlayerDatabase {
 
     private PlayerDatabase() {
         players = new ArrayList<>();
-        clientsRMI = new HashMap<>();
         clientsSocket = new HashMap<>();
     }
 
@@ -42,16 +40,14 @@ public class PlayerDatabase {
     }
 
     public void addRMIClient(String username, RMIClientInterface client){
-        if (clientsRMI==null){
-            clientsRMI.put(username, client);
-        } else if(!clientsRMI.containsKey(username)){
-            clientsRMI.put(username, client);
+        PlayerData player = findPlayer(username);
+        if(player != null && player.getCurrentConnectionMode() == ConnectionMode.RMI){
+            player.setClientRMI(client);
         }
     }
 
     public void removeRMIClient(String username){
         System.out.println("Client: " + username + " disconnected.");
-        clientsRMI.remove(username);
         PlayerData player = findPlayer(username);
         phaseDisconnection(player);
     }
@@ -72,10 +68,10 @@ public class PlayerDatabase {
     }
 
     public RMIClientInterface getClientRMI(String username) throws NotFound{
-        RMIClientInterface client =  clientsRMI.get(username);
+        PlayerData client = findPlayer(username);
         if(client == null)
             throw new NotFound();
-        return client;
+        return client.getClientRMI();
     }
 
     public ClientSocketInterpreter getClientSocket(String username) throws NotFound{

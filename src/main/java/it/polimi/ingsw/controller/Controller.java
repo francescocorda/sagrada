@@ -95,48 +95,50 @@ public class Controller implements Observer {
     }
 
     private void eventListener(ArrayList<String> commands) {
-        String username = commands.remove(0);
-        if (names.contains(username)) {
-            if (commands.get(0).equals("quit")) {
-                //TODO
-                return;
-            } else if(commands.get(0).equals("join")) {
-                //TODO
-                return;
-            }
-            switch (state) {
-                case START:
-                    assignPatternCard(username, commands);
-                    //if (commands.get(0).equals("PATTERN")) {
-                      //  commands.remove(0);
+        if(commands.size()>1){
+            String username = commands.remove(0);
+            if (names.contains(username)) {
+                if (commands.get(0).equals("quit")) {
+                    //TODO
+                    return;
+                } else if(commands.get(0).equals("join")) {
+                    //TODO
+                    return;
+                }
+                switch (state) {
+                    case START:
+                        assignPatternCard(username, commands);
+                        //if (commands.get(0).equals("PATTERN")) {
+                        //  commands.remove(0);
                         //assignPatternCard(username, commands);
-                    //}
-                    break;
-                case CHOOSE_ACTION:
-                    if(game.isCurrentPlayer(username)) {
-                        switch (commands.remove(0)) {
-                            case "move":
-                                sendMessage(username, "Choose the dice to place in the window: insert draft pool index and window coordinates");
-                                state = STATES.MOVE;
-                                break;
-                            case "skip":
-                                sendMessage(username, "Turn skipped.");
-                                skipTurn();
-                                break;
-                            case "toolcard":
-                                useToolCard();
-                                break;
-                            default:
-                                yourTurn();
+                        //}
+                        break;
+                    case CHOOSE_ACTION:
+                        if(game.isCurrentPlayer(username)) {
+                            switch (commands.remove(0)) {
+                                case "move":
+                                    sendMessage(username, "Choose the dice to place in the window: insert draft pool index and window coordinates");
+                                    state = STATES.MOVE;
+                                    break;
+                                case "skip":
+                                    sendMessage(username, "Turn skipped.");
+                                    skipTurn();
+                                    break;
+                                case "toolcard":
+                                    useToolCard();
+                                    break;
+                                default:
+                                    yourTurn();
+                            }
                         }
-                    }
-                    break;
-                case MOVE:
-                    performMove(commands);
-                    state = STATES.CHOOSE_ACTION;
-                    break;
-                case END:
-                    game.countScores();
+                        break;
+                    case MOVE:
+                        performMove(commands);
+                        state = STATES.CHOOSE_ACTION;
+                        break;
+                    case END:
+                        game.countScores();
+                }
             }
         }
     }

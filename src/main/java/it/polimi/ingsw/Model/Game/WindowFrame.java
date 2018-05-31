@@ -126,7 +126,7 @@ public class WindowFrame implements Serializable {
         for (int i = row - 2; i <= row; i++) {
             for (int j = col - 2; j <= col; j++) {
 
-                if (i >= 0 && i <= 3 && j >= 0 && j <= ROW) {
+                if (i >= 0 && i < ROW && j >= 0 && j < COLUMN) {
                     if (dices[i][j] != null) {
                         if ((i == row - 1 && (j == col - 2 || j == col)) || (j == col - 1 && (i == row - 2 || i == row))) {
                             if (dices[i][j].getColor().equals(dice.getColor()) || dices[i][j].getFace().equals(dice.getFace())) {

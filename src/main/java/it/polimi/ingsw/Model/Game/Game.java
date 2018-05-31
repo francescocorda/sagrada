@@ -11,11 +11,12 @@ import it.polimi.ingsw.exceptions.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 
 import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUND;
 
-public class Game extends Observable implements Serializable {
+public class Game implements Serializable {
     int matchID;
     ArrayList<Player> players;
     PrivateObjectiveDeck privateObjectiveDeck;
@@ -26,7 +27,7 @@ public class Game extends Observable implements Serializable {
     //ToolCardDeck toolCardDeck;
     ArrayList<Round> rounds;
     private Table table;
-    private static final String INVALID_MOVE_BY_PLAYER = "Invalid move by player: ";
+    private static final String INVALID_MOVE_BY_PLAYER = "Invalid move by player ";
 
     public Game(int matchID, ArrayList<String> names ){
         this.matchID = matchID;
@@ -113,9 +114,8 @@ public class Game extends Observable implements Serializable {
                 return false;
             }
         }
-        setChanged();
-        notifyObservers(table);
-        notifyObservers("Play Game.");
+        //table.notifyObservers();
+        table.notifyObservers("Play Game.");
         return true;
     }
 
@@ -138,46 +138,17 @@ public class Game extends Observable implements Serializable {
             if(rounds.get(0).getPlayerTurn(0).size() != 0) {
                 rounds.get(0).getPlayerTurn(0).getMove(0).performMove(commands);
                 moveDone = true;
-                notifyObservers(table);
+                table.notifyObservers();
             }
-        } catch (DiceNotFoundException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "Dice not found.");
-        } catch (InvalidFaceException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "Value not compatible with any dice's face.");
-        } catch (MismatchedRestrictionException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "The dice doesn't match the pattern restriction.");
-        } catch (InvalidNeighboursException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "The position isn't near any valid neighbour.");
-        } catch (OccupiedCellException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "Position already occupied.");
-        } catch (InvalidFirstMoveException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "Each player’s first dice of the game must be placed on an edge or corner space,\n" +
-                    "respecting all the other restrictions");
         } catch (IndexOutOfBoundsException e) {
             table.getDraftPool().add(indexDP-1, dice);
-            notifyObservers(table);
-            notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
+            //table.notifyObservers();
+            table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Invalid window coordinates.");
-        } catch (WrongRoundException e) {
-            e.printStackTrace();
+        }catch (DiceNotFoundException | WrongRoundException | InvalidNeighboursException | InvalidFaceException | MismatchedRestrictionException | OccupiedCellException | InvalidFirstMoveException e) {
+            table.getDraftPool().add(indexDP-1, dice);
+            //table.notifyObservers();
+            table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" + e.getMessage());
         }
         return moveDone;
     }
@@ -210,7 +181,7 @@ public class Game extends Observable implements Serializable {
 
     public boolean isGameEnded() {
         if (rounds.isEmpty()) {
-            notifyObservers("Game end.");
+            table.notifyObservers("Game end.");
             return true;
         } else {
             return false;}
@@ -222,8 +193,8 @@ public class Game extends Observable implements Serializable {
             rounds.remove(0);
             table.getDraftPool().clear();
             drawDices();
-            notifyObservers(table);
-            notifyObservers("New round, draftpool extracted.\nNewTurn.");
+            //table.notifyObservers();
+            table.notifyObservers("New round, draftpool extracted.\nNewTurn.");
             return true;
         }
         return false;
@@ -231,19 +202,14 @@ public class Game extends Observable implements Serializable {
     public boolean isTurnEnded() {
         if (rounds.get(0).getPlayerTurn(0).size()==0) {
             rounds.get(0).removeTurn(0);
-            notifyObservers("New Turn.");
+            table.notifyObservers("New Turn.");
             return true;
         }
         return false;
     }
 
-    public Table getTable() {
-        return table;
+    public void addObserver (Observer o) {
+        table.addObserver(o);
     }
 
-    @Override
-    public void notifyObservers(Object arg) {
-        setChanged();
-        super.notifyObservers(arg);
-    }
 }

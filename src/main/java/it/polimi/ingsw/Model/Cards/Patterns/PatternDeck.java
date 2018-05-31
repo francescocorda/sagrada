@@ -21,7 +21,7 @@ public class PatternDeck implements Serializable {
     private ArrayList<PatternCard> deck;
 
     public PatternDeck() {
-        deck=new ArrayList<>();
+        deck = new ArrayList<>();
         JSONParser parser = new JSONParser();
         Object obj=null;
         try {

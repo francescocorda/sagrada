@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.Table;
 
-import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 
@@ -26,12 +25,11 @@ public class CLIView extends Observable implements View {
 
     @Override
     public void update(Observable o, Object arg) {
-        if(o instanceof Game) {
-            if (arg instanceof Table) {
-                Table table = (Table) arg;
-                this.table = table;
-                displayGame();
-            } else if(arg instanceof String) {
+        if(o instanceof Table) {
+            Table table = (Table) o;
+            this.table = table;
+            displayGame();
+            if(arg instanceof String) {
                 String message = (String) arg;
                 displayMessage(message);
             }

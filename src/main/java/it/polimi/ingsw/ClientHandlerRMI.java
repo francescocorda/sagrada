@@ -34,6 +34,8 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
                         client.checkConnection();
                     } catch (RemoteException e) {
                         playerDatabase.removeRMIClient(username);
+                        //da eliminare... just for testing
+                        System.out.println("Check del menga!");
                         this.cancel();
                     }
                 }

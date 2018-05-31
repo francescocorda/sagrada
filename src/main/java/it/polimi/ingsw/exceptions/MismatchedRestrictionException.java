@@ -2,6 +2,6 @@ package it.polimi.ingsw.exceptions;
 
 public class MismatchedRestrictionException extends Exception {
     public MismatchedRestrictionException() {
-        super("You can't place the dice here.");
+        super("The dice doesn't match the pattern restriction.");
     }
 }

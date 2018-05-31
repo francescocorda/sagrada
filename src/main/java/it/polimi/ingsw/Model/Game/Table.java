@@ -5,8 +5,9 @@ import it.polimi.ingsw.Model.Cards.ToolCards.ToolCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 
-public class Table implements Serializable {
+public class Table extends Observable implements Serializable {
     private ArrayList<Player> players;
     private RoundTrack roundTrack;
     private DiceBag diceBag;
@@ -109,5 +110,11 @@ public class Table implements Serializable {
 
     public void dumpDraftPool() {
         System.out.println(toStringDraftPool());
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        setChanged();
+        super.notifyObservers(arg);
     }
 }

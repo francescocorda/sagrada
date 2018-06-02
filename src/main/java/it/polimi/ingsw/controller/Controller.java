@@ -3,11 +3,10 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.VirtualView;
-
 import java.util.*;
-
 
 public class Controller implements Observer {
 
@@ -20,19 +19,23 @@ public class Controller implements Observer {
         END
     }
 
+    private static final int TIMER_SECONDS = 60;
+
     private ArrayList<VirtualView> views;
     Timer timer;
     ArrayList<String> names;
     private Game game;
-    private static final int NUM_OF_ROUNDS = 10;
     private STATES state;
 
     public Controller(int matchID, ArrayList<VirtualView> views) {
+        ParserManager pm = ParserManager.getParserManager();
         names = new ArrayList<>();
         for (VirtualView view: views) {
             names.add(view.getUsername());
         }
         game = new Game(matchID, names);
+        game.setPatternDeck(pm.getPatternDeck());
+        game.setPublicObjectiveDeck(pm.getPublicObjectiveDeck());
         this.views = views;
         for (VirtualView virtualView: views) {
             game.addObserver(virtualView);
@@ -51,7 +54,7 @@ public class Controller implements Observer {
                 privateObjectiveCard = game.assignPrivateObjectiveCard(view.getUsername());
                 ArrayList<PatternCard> patterns = game.drawPatternCards();
                 view.setPrivateObjectiveCard(privateObjectiveCard);
-                view.displayMessage("Scegli tra una delle seguenti PatternCard: (0/1)");
+                view.displayMessage("Scegli tra una delle seguenti PatternCard: (0-1)");
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
@@ -70,7 +73,7 @@ public class Controller implements Observer {
                 game.doneAssignPatternCards();
                 state = STATES.CHOOSE_ACTION;
                 yourTurn();
-            }}, 60*1000);
+            }}, TIMER_SECONDS*1000);
     }
 
 

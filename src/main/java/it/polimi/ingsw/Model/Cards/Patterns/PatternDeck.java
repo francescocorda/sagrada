@@ -20,45 +20,8 @@ public class PatternDeck implements Serializable {
     public static final int PATTERN_CARD_NUMBER = 24;
     private ArrayList<PatternCard> deck;
 
-    public PatternDeck() {
-        deck = new ArrayList<>();
-        JSONParser parser = new JSONParser();
-        Object obj=null;
-        try {
-            obj = parser.parse(new FileReader("src/main/resources/patterns.json"));
-        } catch (IOException e) {
-            System.out.println(e);
-        } catch (ParseException e) {
-            System.out.println(e);
-        }
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONArray jpatternDeck;
-        if (jsonObject != null) {
-            jpatternDeck = (JSONArray) jsonObject.get("patternDeck");
-        } else {
-            throw new NullPointerException();
-        }
-        for(int j=0; j<PATTERN_CARD_NUMBER; j++){
-            JSONObject jpatternCard = (JSONObject) jpatternDeck.get(j);
-            PatternCard patternCard = new PatternCard((String) jpatternCard.get("name"), j+1);
-            try {
-                patternCard.setDifficulty(valueOf((String)jpatternCard.get("difficulty")));
-            } catch (NotValidInputException e) {
-                System.out.println(e);
-            }
-            JSONArray card = (JSONArray) jpatternCard.get("patternCard");
-            int length = card.size();
-            String [] patterns = new String [length];
-
-            if (length > 0) {
-                for (int i = 0; i < ROW; i++) {
-                    for(int k=0; k<COLUMN; k++){
-                        patternCard.setRestriction(i+1, k+1, Restriction.valueOf((String)card.get(i*5+k)));
-                    }
-                }
-            }
-            deck.add(patternCard);
-        }
+    public PatternDeck(ArrayList<PatternCard> deck){
+        this.deck = deck;
     }
 
     public ArrayList<PatternCard> getPatternDeck(){

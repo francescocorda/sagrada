@@ -5,12 +5,15 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveDeck;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestPlayer {
+
+    private ParserManager pm = ParserManager.getParserManager();
 
     @Test
     void setNumberOfTokensTest() {
@@ -97,7 +100,7 @@ class TestPlayer {
     void setPatternCardTest() {
         String name = "player";
         Player player = new Player(name);
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         PatternCard card = null;
         try {
             card = deck.getPatternCard(5);

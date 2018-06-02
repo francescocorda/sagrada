@@ -3,7 +3,6 @@ package it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.exceptions.NotValidInputException;
-
 import java.io.Serializable;
 
 public class Player implements Serializable {

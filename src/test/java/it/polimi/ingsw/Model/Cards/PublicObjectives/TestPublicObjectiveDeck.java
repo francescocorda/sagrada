@@ -8,6 +8,7 @@ import it.polimi.ingsw.Model.Game.WindowFrame;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.Test;
 
@@ -18,10 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TestPublicObjectiveDeck {
+    private ParserManager pm = ParserManager.getParserManager();
 
     @Test
     void removePuOCTest(){
-        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck();
+
+        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck(pm.getPublicObjectiveDeck());
         assertEquals(10, publicObjectiveDeck.size());
         assertThrows(IndexOutOfBoundsException.class, ()-> publicObjectiveDeck.removePuOC(10));
 
@@ -34,7 +37,7 @@ public class TestPublicObjectiveDeck {
 
     @Test
     void getPuOCTest() {
-        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck();
+        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck(pm.getPublicObjectiveDeck());
         publicObjectiveDeck.dump();
 
         try {
@@ -46,7 +49,7 @@ public class TestPublicObjectiveDeck {
 
     @Test
     void sizeTest() {
-        PublicObjectiveDeck deck = new PublicObjectiveDeck();
+        PublicObjectiveDeck deck = new PublicObjectiveDeck(pm.getPublicObjectiveDeck());
         assertEquals(10, deck.size());
         deck.removePuOC(2);
         assertEquals(9, deck.size());
@@ -54,7 +57,7 @@ public class TestPublicObjectiveDeck {
 
     @Test
     public void ZeroPointsTest() {
-        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck();
+        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck(pm.getPublicObjectiveDeck());
         WindowFrame windowFrame = new WindowFrame();
             for (int j = 0; j< publicObjectiveDeck.size(); j++) {
                 try {
@@ -67,9 +70,9 @@ public class TestPublicObjectiveDeck {
 
     @Test
     public void FullSunCatcherTest() {
-        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck();
+        PublicObjectiveDeck publicObjectiveDeck = new PublicObjectiveDeck(pm.getPublicObjectiveDeck());
         WindowFrame window = new WindowFrame();
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         PatternCard card;
         DiceBag diceBag = new DiceBag();
         ArrayList<Dice> dices;

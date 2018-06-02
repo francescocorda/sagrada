@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Game.DiceBag;
 import it.polimi.ingsw.Model.Game.WindowFrame;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestWindowFrame {
 
+    private ParserManager pm = ParserManager.getParserManager();
 
     @Test
     void setDiceTest() {
@@ -162,7 +164,7 @@ class TestWindowFrame {
     @Test
     void hasNeighboursTest() {
         WindowFrame window = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         PatternCard pattern = null;
         try {
             pattern = patternDeck.getPatternCard(9);
@@ -215,7 +217,7 @@ class TestWindowFrame {
     @Test
     void checkNeighboursRestrictionTest() {
         WindowFrame window = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         PatternCard pattern = null;
         try {
             pattern = patternDeck.getPatternCard(9);
@@ -313,7 +315,7 @@ class TestWindowFrame {
     @Test
     void dumpTest(){
         WindowFrame window = new WindowFrame();
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         //deck.createPatternDeck();
         Random rand=new Random();
         int index = rand.nextInt(deck.getPatternDeck().size());
@@ -326,7 +328,7 @@ class TestWindowFrame {
     @Test
     void firstGameDemoTest() {
         WindowFrame window = new WindowFrame();
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         PatternCard pattern = deck.getPatternDeck().get(10);
         window.setPatternCard(pattern);
         window.dump();
@@ -359,7 +361,7 @@ class TestWindowFrame {
     @Test
     void sun_catcherTest(){  //Test di riempimento del pattern sun_catcher
         WindowFrame window = new WindowFrame();
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         PatternCard card;
         DiceBag diceBag = new DiceBag();
         ArrayList<Dice> dices;

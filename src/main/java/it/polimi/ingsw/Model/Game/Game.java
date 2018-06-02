@@ -7,10 +7,8 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.exceptions.*;
-
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
@@ -36,8 +34,6 @@ public class Game implements Serializable {
             this.players.add(new Player(names.get(i)));
         }
         privateObjectiveDeck = new PrivateObjectiveDeck();
-        patternDeck = new PatternDeck();
-        publicObjectiveDeck = new PublicObjectiveDeck();
         matchPublicObjectiveDeck = new ArrayList<>();
         matchPatternDeck = new ArrayList<>();
         rounds = new ArrayList<>();
@@ -56,6 +52,14 @@ public class Game implements Serializable {
 
     public void drawDices() {
         table.setDraftPool(2*players.size()+1);
+    }
+
+    public void setPatternDeck(ArrayList<PatternCard> deck){
+        patternDeck = new PatternDeck(deck);
+    }
+
+    public void setPublicObjectiveDeck(ArrayList<PublicObjectiveCard> deck){
+        publicObjectiveDeck = new PublicObjectiveDeck(deck);
     }
 
     public PrivateObjectiveCard assignPrivateObjectiveCard(String player) throws NotValidInputException {
@@ -114,7 +118,6 @@ public class Game implements Serializable {
                 return false;
             }
         }
-        //table.notifyObservers();
         table.notifyObservers("Play Game.");
         return true;
     }
@@ -142,12 +145,10 @@ public class Game implements Serializable {
             }
         } catch (IndexOutOfBoundsException e) {
             table.getDraftPool().add(indexDP-1, dice);
-            //table.notifyObservers();
             table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
                     "Invalid window coordinates.");
         }catch (DiceNotFoundException | WrongRoundException | InvalidNeighboursException | InvalidFaceException | MismatchedRestrictionException | OccupiedCellException | InvalidFirstMoveException e) {
             table.getDraftPool().add(indexDP-1, dice);
-            //table.notifyObservers();
             table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" + e.getMessage());
         }
         return moveDone;
@@ -193,7 +194,6 @@ public class Game implements Serializable {
             rounds.remove(0);
             table.getDraftPool().clear();
             drawDices();
-            //table.notifyObservers();
             table.notifyObservers("New round, draftpool extracted.\nNewTurn.");
             return true;
         }

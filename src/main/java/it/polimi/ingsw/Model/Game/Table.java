@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Game;
 
+import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.ToolCards.ToolCard;
 
@@ -16,12 +17,23 @@ public class Table extends Observable implements Serializable {
     private ArrayList<ToolCard> gameToolCards;
 
     public Table() {
-        this.players = new ArrayList<>();
+        players = new ArrayList<>();
         roundTrack = new RoundTrack();
         diceBag = new DiceBag();
         draftPool = new ArrayList<>();
         gamePOC = new ArrayList<>();
         gameToolCards = new ArrayList<>();
+    }
+
+    public String toJson(){
+        Table table = new Table();
+        table.setPlayers(players);
+        table.setRoundTrack(roundTrack);
+        table.setDiceBag(diceBag);
+        table.setDraftPool(draftPool);
+        table.setGamePublicObjectiveCards(gamePOC);
+        table.setGameToolCards(gameToolCards);
+        return (new Gson()).toJson(table);
     }
 
     public ArrayList<Player> getPlayers() {

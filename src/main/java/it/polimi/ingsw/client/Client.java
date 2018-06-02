@@ -25,30 +25,31 @@ public class Client {
     private static ConnectionSocket connection;
     private static Socket socket;
     private static BufferedReader is;
-    private static  MessagePrinter mp;
+    private static MessagePrinter mp;
     private static MessageDealer md;
+    private static View view;
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
         toScreen("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...)");
         String technology = in.nextLine();
+        view = new CLIView();
         if (technology.equals("RMI"))
             rmi();
         else
             socket();
     }
 
-    public Client getClient(){
+    public Client getClient() {
         return this;
     }
 
 
-    private static void rmi(){
-        View view = new CLIView();
+    private static void rmi() {
         String username = new String();
         String password = new String();
         boolean logged = false;
-        ClientHandlerInterface server=null;
+        ClientHandlerInterface server = null;
         RMIClientInterface client = null;
         try {
             client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
@@ -58,11 +59,11 @@ public class Client {
         Scanner in = new Scanner(System.in);
         toScreen("Insert server IP address: (type 0 for default value: localhost)");
         String address = in.nextLine();
-        if(address.length()<2) address = "localhost";
+        if (address.length() < 2) address = "localhost";
         try {
             server = (ClientHandlerInterface) Naming.lookup("//" + address + "/ClientHandler");
 
-            while(!logged) {
+            while (!logged) {
                 toScreen("Insert username: ");
                 username = in.nextLine();
                 toScreen("Insert password: ");
@@ -87,7 +88,7 @@ public class Client {
         boolean lobby = false;
         String text;
         long time;
-        while(!lobby && server != null) {
+        while (!lobby && server != null) {
             try {
                 text = in.nextLine();
                 time = Long.parseLong(text);
@@ -101,46 +102,57 @@ public class Client {
                 toScreen("Insert last time you visited a cathedral: ");
             }
         }
-            boolean endGame = false;
-            ArrayList<String> commands = new ArrayList<>();
-            commands.add(username);
-            while (!endGame) {
-                String command = in.nextLine();
-                if (!command.equals("")) {
-                    commands.add(command);
-                } else {
-                    String message = String.join(", ", commands);
-                    commands.clear();
-                    try {
-                        if(server != null)
-                            server.update(message);
-                        else
-                            throw new NullPointerException();
-                    } catch (RemoteException | NullPointerException e) {
-                        toScreen("Server Closed");
-                        endGame = true;
-                    }
-                    commands = new ArrayList<>();
-                    commands.add(username);
+        boolean endGame = false;
+        ArrayList<String> commands = new ArrayList<>();
+        commands.add(username);
+        while (!endGame) {
+            String command = in.nextLine();
+            if (!command.equals("")) {
+                commands.add(command);
+            } else {
+                String message = String.join(", ", commands);
+                commands.clear();
+                try {
+                    if (server != null)
+                        server.update(message);
+                    else
+                        throw new NullPointerException();
+                } catch (RemoteException | NullPointerException e) {
+                    toScreen("Server Closed");
+                    endGame = true;
                 }
+                commands = new ArrayList<>();
+                commands.add(username);
             }
+        }
         in.close();
     }
 
     private static void socket() {
         md = new MessageDealer();
-        boolean online = true;
         initialize();
         Scanner in = new Scanner(System.in);
-        while(online){
-            String message = in.nextLine();
-            if(message.equals("quit")){
+        //new method
+        boolean endGame = false;
+        ArrayList<String> commands = new ArrayList<>();
+        while (!endGame) {
+            String command = in.nextLine();
+            if (command.equals("")) {
+                String message = String.join("/", commands);
                 connection.sendMessage(message);
-                online = false;
+                commands = new ArrayList<>();
             } else {
-                md.setMessage(message);
+                if (command.equals("quit")) {
+                    connection.sendMessage(command);
+                    endGame = true;
+                } else if (command.length() > 1) {
+                    md.setMessage(command);
+                } else {
+                    commands.add(command);
+                }
             }
         }
+        in.close();
         Thread.currentThread().interrupt();
     }
 
@@ -158,18 +170,18 @@ public class Client {
             socket = new Socket(address, port);
             toScreen("Connected.");
             connection = new ConnectionSocket(socket);
-            mp = new MessagePrinter(connection, md);
+            mp = new MessagePrinter(connection, md, view);
             is = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
         } catch (IOException e) {
             toScreen("Connection Error.");
-            if(mp != null)
+            if (mp != null)
                 mp.interrupt();
             Thread.currentThread().interrupt();
         }
     }
 
-    private static void toScreen(String message){
+    private static void toScreen(String message) {
         System.out.println(message);
     }
 }

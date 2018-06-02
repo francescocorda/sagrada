@@ -2,8 +2,13 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.connection.ConnectionSocket;
+import it.polimi.ingsw.view.VirtualView;
+
 import static it.polimi.ingsw.Status.*;
 import static it.polimi.ingsw.Phase.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TimerTask;
 import java.net.Socket;
 import java.util.Timer;
@@ -33,7 +38,8 @@ public class ClientSocketInterpreter implements Runnable {
         nextPhase();
         if (status == Status.ONLINE)
             joinLobby();
-        if(players.getPhase(username) != Phase.GAME && status == Status.OFFLINE)
+        game();
+        if (players.getPhase(username) != Phase.GAME && status == Status.OFFLINE)
             close();
     }
 
@@ -47,12 +53,12 @@ public class ClientSocketInterpreter implements Runnable {
                 if (!tempUsername.equals("") && messageReader.hasNext()) {
                     String password = messageReader.getNext();
                     if (!password.equals("") && !messageReader.hasNext()) {
-                        try{
+                        try {
                             handler.login(tempUsername, password, this);
                             sendMessage("login<success>");
                             this.username = tempUsername;
                             return;
-                        } catch (NotValidInputException e){
+                        } catch (NotValidInputException e) {
                             sendMessage("login<failed>");
                         }
                     } else {
@@ -69,7 +75,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     public void joinLobby() {
         final String invalidCommand = "lobby<invalid_command>";
-        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
+        long systemTime = System.currentTimeMillis() / 1000; //current unix time in seconds
         String tempMessage;
         while (true) {
             sendMessage("lobby<last_access><insert_last_access>");
@@ -112,7 +118,7 @@ public class ClientSocketInterpreter implements Runnable {
     }
 
     public void sendMessage(String message) {
-        if (status== ONLINE && isOnline())
+        if (status == ONLINE && isOnline())
             connection.sendMessage(message);
     }
 
@@ -148,7 +154,7 @@ public class ClientSocketInterpreter implements Runnable {
         return playerOffline();
     }
 
-    private MessageReader playerOffline(){
+    private MessageReader playerOffline() {
         if (username == null || username.equals("")) {
             System.out.println("client closed connection");
         } else {
@@ -185,7 +191,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     public boolean isOnline() {
         checkConnection();
-        if(status == OFFLINE && players.contain(username))
+        if (status == OFFLINE && players.contain(username))
             players.removeSocketClient(username);
         return (status == ONLINE);
     }
@@ -196,7 +202,7 @@ public class ClientSocketInterpreter implements Runnable {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                status=Status.OFFLINE;
+                status = Status.OFFLINE;
             }
         }, (long) 30 * 1000);
         MessageReader messageReader = getMessage();
@@ -207,7 +213,7 @@ public class ClientSocketInterpreter implements Runnable {
         timer.cancel();
     }
 
-    private void nextPhase() {
+    public void nextPhase() {
         switch (phase) {
             case GAME:
                 phase = END_GAME;
@@ -224,6 +230,23 @@ public class ClientSocketInterpreter implements Runnable {
             default:
                 phase = LOGIN;
                 break;
+        }
+    }
+
+    private void game() {
+        MessageReader reader;
+        String message;
+        while (status == ONLINE) {
+            if (phase == GAME) {
+                message = "" + username + "/";
+                reader = getMessage();
+                if (reader.hasNext()){
+                    message = message + reader.getNext();
+                    ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
+                    VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(commands.get(0));
+                    virtualView.notifyObservers(message);
+                }
+            }
         }
     }
 }

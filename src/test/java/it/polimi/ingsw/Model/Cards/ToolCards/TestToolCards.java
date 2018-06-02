@@ -2,6 +2,7 @@ package it.polimi.ingsw.Model.Cards.ToolCards;
 
 import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.*;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TestToolCards {
 
+    private ParserManager pm = ParserManager.getParserManager();
+
     @Test
     public void toolCard1Test() throws WrongRoundException, InvalidNeighboursException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -84,7 +87,7 @@ public class TestToolCards {
     @Test
     public void toolCard2Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -178,7 +181,7 @@ public class TestToolCards {
     @Test
     public void toolCard3Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -262,7 +265,7 @@ public class TestToolCards {
     @Test
     public void ToolCard4Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -329,7 +332,7 @@ public class TestToolCards {
     @Test
     public void ToolCard5Test() throws WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -388,7 +391,7 @@ public class TestToolCards {
     @Test
     public void ToolCard6Test() {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -487,7 +490,7 @@ public class TestToolCards {
     @Test
     public void ToolCard7Test() throws WrongRoundException, InvalidFaceException, InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, DiceNotFoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -542,7 +545,7 @@ public class TestToolCards {
     @Test
     public void ToolCard8Test() throws WrongRoundException, InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -612,7 +615,7 @@ public class TestToolCards {
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -653,7 +656,7 @@ public class TestToolCards {
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -707,7 +710,7 @@ public class TestToolCards {
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         ArrayList<PlayerTurn> playerTurns = new ArrayList<PlayerTurn>();
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
@@ -753,7 +756,7 @@ public class TestToolCards {
     @Test
     public void toolCard12Test() throws InvalidNeighboursException, OccupiedCellException, MismatchedRestrictionException, InvalidFirstMoveException, DiceNotFoundException, InvalidFaceException, WrongRoundException {
         WindowFrame windowFrame = new WindowFrame();
-        PatternDeck patternDeck = new PatternDeck();
+        PatternDeck patternDeck = new PatternDeck(pm.getPatternDeck());
         try {
             windowFrame.setPatternCard(patternDeck.getPatternCard(0));
         } catch (NotValidInputException e) {

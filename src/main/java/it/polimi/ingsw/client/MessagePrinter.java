@@ -1,14 +1,29 @@
 package it.polimi.ingsw.client;
 
+import com.google.gson.Gson;
+import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
+import it.polimi.ingsw.view.CLIView;
+import it.polimi.ingsw.view.View;
+import org.omg.CORBA.Object;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Observable;
 
 public class MessagePrinter extends Thread {
     private ConnectionSocket connection;
     private MessageDealer md;
+    private View view;
+    private Gson gson;
+    private String username;
 
-    public MessagePrinter(ConnectionSocket connection, MessageDealer md) {
+    public MessagePrinter(ConnectionSocket connection, MessageDealer md, View view) {
         this.connection = connection;
         this.md = md;
+        this.view = view;
+        gson = new Gson();
         start();
     }
 
@@ -31,11 +46,41 @@ public class MessagePrinter extends Thread {
                         login();
                         break;
                     case "lobby<last_access><insert_last_access>":
+                        ((CLIView) view).setUsername(username);
                         lobby();
                         break;
                     default:
                         toScreen(message);
+                        handleCommands(new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*"))));
                 }
+            }
+        }
+    }
+
+    private void handleCommands(ArrayList<String> commands) {
+        if (commands.remove(0).equals("game")) {
+            switch (commands.remove(0)) {
+                case "message":
+                    toScreen(commands.remove(0));
+                    break;
+                case "displayGame":
+                    view.displayGame();
+                    break;
+                case "pattern_card":
+                    PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
+                    view.displayPatternCard(patternCard);
+                    break;
+                case "update":
+                    String observer = commands.remove(0);
+                    String object = commands.remove(0);
+                    Table table = gson.fromJson(observer, Table.class);
+                    String message = gson.fromJson(object, String.class);
+                    view.update(table, message);
+                    break;
+                default:
+                    for (String command : commands) {
+                        toScreen(command);
+                    }
             }
         }
     }
@@ -55,7 +100,6 @@ public class MessagePrinter extends Thread {
     }
 
     private void login() {
-        String username;
         String password;
         toScreen("Insert username: ");
         username = readFromInputStream();
@@ -72,15 +116,15 @@ public class MessagePrinter extends Thread {
         System.out.println(message);
     }
 
-    private String readFromInputStream(){
-        while(md.checkWait()) {
+    private String readFromInputStream() {
+        while (md.checkWait()) {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                toScreen("Error: "+e);
+                toScreen("Error: " + e);
             }
         }
-        return  md.getMessage();
+        return md.getMessage();
     }
 }

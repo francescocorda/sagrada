@@ -50,7 +50,7 @@ public class PlayerDatabase {
 
     public void addSocketClient(String username, ClientSocketInterpreter client){
         PlayerData player = findPlayer(username);
-        if(player != null && player.getCurrentConnectionMode() == ConnectionMode.RMI){
+        if(player != null && player.getCurrentConnectionMode() == ConnectionMode.SOCKET){
             player.setClientSocket(client);
         }
     }

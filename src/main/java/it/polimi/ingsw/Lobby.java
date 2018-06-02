@@ -5,7 +5,6 @@ import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.view.VirtualView;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -22,7 +21,6 @@ public class Lobby {
     private PlayerDatabase players;
     private static final String LOCATION = "lobby";
     ArrayList<Controller> games;
-    private static final Object countLock = new Object();
     private int timerSeconds;
 
     private Lobby() {
@@ -78,12 +76,11 @@ public class Lobby {
                     players.getClientRMI(player.getUsername()).send(LOCATION + message);
                 } else {
                     //broadcast for Socket Clients
-                    players.getClientSocket(player.getUsername()).sendMessage(LOCATION + message);
+                    player.getClientSocket().sendMessage(LOCATION + message);
                 }
             } catch (RemoteException | NotFound e) {
                 //Disconnection already handled.
             }
-
         }
     }
 
@@ -93,7 +90,7 @@ public class Lobby {
             if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
                 players.getClientRMI(username).send(LOCATION + message);
             } else {
-                players.getClientSocket(username).sendMessage(LOCATION + message);
+                player.getClientSocket().sendMessage(LOCATION + message);
             }
         } catch (RemoteException | NotFound e) {
             //Disconnection already handled.
@@ -166,8 +163,6 @@ public class Lobby {
             timer.cancel();
             toTerminal("game start");
             broadcast("<start_game>" + listOfPlayers());
-
-            //Order players and views by cathedral time FROM HERE
             ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
             ArrayList<VirtualView> viewsInTheRightOrder = new ArrayList<>();
             while (!connectedPlayersLastTime.isEmpty()) {
@@ -183,10 +178,10 @@ public class Lobby {
                 connectedPlayersLastTime.remove(indexOfMax);
                 views.remove(indexOfMax);
             }
-
-            //TO HERE
             for (PlayerData player : playersInTheRightOrder) {
                 player.nextPhase();
+                if(player.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+                    player.nextPhase();
             }
             games.add(new Controller(games.size() + 1, viewsInTheRightOrder));
             connectedPlayers = new ArrayList<>();

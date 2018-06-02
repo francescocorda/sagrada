@@ -6,6 +6,7 @@ import it.polimi.ingsw.Model.Game.WindowFrame;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.InvalidFirstMoveException;
 import it.polimi.ingsw.exceptions.InvalidNeighboursException;
 import it.polimi.ingsw.exceptions.MismatchedRestrictionException;
@@ -16,10 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestPrivateObjectiveCard  {
 
+    private ParserManager pm = ParserManager.getParserManager();
+
     @Test
     void countScoreTest() {
         WindowFrame window = new WindowFrame();
-        PatternDeck deck = new PatternDeck();
+        PatternDeck deck = new PatternDeck(pm.getPatternDeck());
         //deck.createPatternDeck();
         PatternCard pattern = deck.getPatternDeck().get(10);
         pattern.dump();

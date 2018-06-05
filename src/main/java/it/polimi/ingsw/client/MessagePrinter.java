@@ -1,16 +1,15 @@
 package it.polimi.ingsw.client;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.CLIView;
 import it.polimi.ingsw.view.View;
-import org.omg.CORBA.Object;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
 
 public class MessagePrinter extends Thread {
     private ConnectionSocket connection;
@@ -30,6 +29,7 @@ public class MessagePrinter extends Thread {
     @Override
     public void run() {
         boolean loop = true;
+        boolean inGame = false;
         while (loop) {
 
             String message = connection.getMessage();
@@ -49,8 +49,12 @@ public class MessagePrinter extends Thread {
                         ((CLIView) view).setUsername(username);
                         lobby();
                         break;
+                    case "lobby<welcome>":
+                        inGame = true;
+                        break;
                     default:
-                        toScreen(message);
+                        if(!inGame)
+                            toScreen(message);
                         handleCommands(new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*"))));
                 }
             }

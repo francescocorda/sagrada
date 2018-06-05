@@ -20,7 +20,7 @@ public class RMIClientImplementation implements RMIClientInterface {
     }
 
     public void send(String message) throws RemoteException{
-        view.displayMessage(message);
+        view.displayGameMessage(message);
     }
 
     public View getView() {

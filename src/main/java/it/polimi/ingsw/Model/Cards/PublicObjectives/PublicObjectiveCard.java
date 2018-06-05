@@ -1,14 +1,22 @@
 package it.polimi.ingsw.Model.Cards.PublicObjectives;
 
 import it.polimi.ingsw.Model.Cards.ObjectiveCard;
+import it.polimi.ingsw.Model.Game.WindowFrame;
 
-public abstract class PublicObjectiveCard extends ObjectiveCard {
+public class PublicObjectiveCard extends ObjectiveCard {
 
     int points;
 
     public PublicObjectiveCard(String name, int ID, int points) {
         super(name, ID);
         this.points = points;
+    }
+
+    public PublicObjectiveCard(){}
+
+    @Override
+    public int countScore(WindowFrame windowFrame) {
+        return 0;
     }
 
     public int getPoints() {

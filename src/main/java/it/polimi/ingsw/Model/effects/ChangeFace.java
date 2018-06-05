@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Model.effects;
 
 public enum ChangeFace {
-    SEQUENTIAL("sequential"),
-    OPPOSITE("opposite"),
-    RANDOM("random"),
-    CHOOSE("choose");
+    SEQUENTIAL("SEQUENTIAL"),
+    OPPOSITE("OPPOSITE"),
+    RANDOM("RANDOM"),
+    CHOOSE("CHOOSE");
 
     private String changeFace;
 

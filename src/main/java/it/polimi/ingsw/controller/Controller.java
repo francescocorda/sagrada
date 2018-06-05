@@ -4,6 +4,9 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.ParserManager;
+import it.polimi.ingsw.PlayerData;
+import it.polimi.ingsw.PlayerDatabase;
+import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.VirtualView;
 import java.util.*;
@@ -19,7 +22,7 @@ public class Controller implements Observer {
         END;
     }
 
-    private static final int TIMER_SECONDS = 60;
+    public static final int TIMER_SECONDS = 60;
     private static final String INVALID_FORMAT = "Command of invalid format.";
     private static final String WAIT_YOUR_TURN = "Wait your turn.";
     private static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (0-1-2)";
@@ -52,6 +55,7 @@ public class Controller implements Observer {
     }
 
     private void startGame() {
+        ArrayList<PlayerData> socketPlayer = new ArrayList<>();
         game.drawPublicObjectiveCards();
         game.drawToolCards();
         for (VirtualView view: views) {
@@ -65,10 +69,15 @@ public class Controller implements Observer {
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
+                PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(view.getUsername());
+                if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+                    socketPlayer.add(pd);
             } catch (NotValidInputException e) {
                 System.out.println("Player Inesistente.");
             }
         }
+        for(PlayerData player : socketPlayer)
+            player.getClientSocket().game();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -87,7 +96,7 @@ public class Controller implements Observer {
     public void sendMessage(String name, String message) {
         for (VirtualView virtualView: views) {
             if (virtualView.getUsername().equals(name)) {
-                virtualView.displayMessage(message);
+                virtualView.displayGameMessage(message);
             }
         }
     }
@@ -98,7 +107,7 @@ public class Controller implements Observer {
         if(o instanceof VirtualView) {
             if(arg instanceof String) {
                 String message = (String) arg;
-                commands = new ArrayList<>(Arrays.asList(message.split("\\s*,\\s*")));
+                commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
                 eventListener(commands);
             }
         }
@@ -126,6 +135,9 @@ public class Controller implements Observer {
                                         case "move":
                                             sendMessage(username, "Choose the dice to place in the window: insert draft pool index and window coordinates");
                                             state = STATES.MOVE;
+                                            PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(game.getCurrentPlayer());
+                                            if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+                                                pd.getClientSocket().game();
                                             break;
                                         case "skip":
                                             sendMessage(username, "Turn skipped.");
@@ -239,7 +251,10 @@ public class Controller implements Observer {
     }
 
     private void yourTurn() {
-        sendMessage(game.getCurrentPlayer(), "It's your turn! Choose Action: move / toolcard / skip");
+        sendMessage(game.getCurrentPlayer(), "It's your turn! Choose Action: move, toolcard, skip");
+        PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(game.getCurrentPlayer());
+        if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+            pd.getClientSocket().game();
     }
 
     private boolean checkFormat(ArrayList<String> commands) {
@@ -263,9 +278,15 @@ public class Controller implements Observer {
                 sendMessage(username, "Pattern card assigned.");
             } catch (NotValidInputException e) {
                 sendMessage(username, INVALID_FORMAT);
+                PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(username);
+                if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+                    pd.getClientSocket().game();
             }
         } else {
             sendMessage(username, INVALID_FORMAT);
+            PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(username);
+            if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
+                pd.getClientSocket().game();
         }
         if (game.doneAssignPatternCards()) {
             timer.cancel();

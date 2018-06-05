@@ -55,6 +55,19 @@ public class VirtualView extends Observable implements View {
         }
     }
 
+    @Override
+    public void displayGameMessage(String message) {
+        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
+            try {
+                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).send(message);
+            } catch (RemoteException | NotFound e) {
+                e.printStackTrace();
+            }
+        } else {
+            playerData.getClientSocket().sendMessage("game/message/"+message);
+        }
+    }
+
 
     @Override
     public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
@@ -90,9 +103,12 @@ public class VirtualView extends Observable implements View {
                 e.printStackTrace();
             }
         } else {
-            String observable = ((Table) o).toJson();
-            String object = gson.toJson(arg);
-            playerData.getClientSocket().sendMessage("game/update/"+observable+"/"+object);
+            if(o instanceof Table){
+                String observable = ((Table) o).toJson();
+                System.out.println("OBSERVABLE: "+observable);
+                String object = gson.toJson(arg);
+                playerData.getClientSocket().sendMessage("game/update/"+observable+"/"+object);
+            }
         }
     }
 

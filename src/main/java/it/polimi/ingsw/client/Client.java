@@ -110,20 +110,18 @@ public class Client {
             if (!command.equals("")) {
                 commands.add(command);
             } else {
-                String message = String.join(", ", commands);
+                String message = String.join("/ ", commands);
+                commands.clear();
                 try {
                     if (server != null)
                         server.update(message);
                     else
                         throw new NullPointerException();
-                } catch (RemoteException e) {
-                    toScreen("Remote - Server Closed");
-                    endGame = true;
-                } catch(NullPointerException e) {
-                    toScreen("Null - Server Closed");
+                } catch (RemoteException | NullPointerException e) {
+                    toScreen("Server Closed");
                     endGame = true;
                 }
-                commands.clear();
+                commands = new ArrayList<>();
                 commands.add(username);
             }
         }
@@ -139,19 +137,28 @@ public class Client {
         ArrayList<String> commands = new ArrayList<>();
         while (!endGame) {
             String command = in.nextLine();
-            if (command.equals("")) {
-                String message = String.join("/", commands);
-                connection.sendMessage(message);
-                commands = new ArrayList<>();
-            } else {
-                if (command.equals("quit")) {
+            switch(command){
+                case "quit":
                     connection.sendMessage(command);
                     endGame = true;
-                } else if (command.length() > 1) {
-                    md.setMessage(command);
-                } else {
+                    break;
+                case "":
+                    String message = String.join("/", commands);
+                    connection.sendMessage(message);
+                    commands.clear();
+                    commands = new ArrayList<>();
+                    break;
+                case "move":
+                case "skip":
+                case "toolcard":
                     commands.add(command);
-                }
+                    break;
+                default:
+                    if (command.length() > 1) {
+                        md.setMessage(command);
+                    } else {
+                        commands.add(command);
+                    }
             }
         }
         in.close();

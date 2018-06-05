@@ -18,7 +18,7 @@ public class EnableException extends Effect{
         temp.put(COLOR, "The color restrictions in the window will be ignored in the next placement.");
         temp.put(FACE, "The number restrictions in the window will be ignored in the next placement.");
         temp.put(POSITION, "The position restrictions in the window will be ignored in the next placement.");
-        return descriptions;
+        return temp;
     }
 
     private RestrictionException exception;
@@ -37,6 +37,6 @@ public class EnableException extends Effect{
 
     @Override
     public void explainEffect(Table table, Round round) {
-        //table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(exception));
+        table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(exception));
     }
 }

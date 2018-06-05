@@ -1,10 +1,10 @@
 package it.polimi.ingsw.Model.effects;
 
 public enum Element {
-    DRAFTPOOL("draftpool"),
-    WINDOW("window"),
-    ROUNDTRACK("roundtrack"),
-    DICEBAG("dicebag");
+    DRAFTPOOL("DRAFTPOOL"),
+    WINDOW("WINDOW"),
+    ROUNDTRACK("ROUNDTRACK"),
+    DICEBAG("DICEBAG");
 
     private String element;
 

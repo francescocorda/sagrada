@@ -25,8 +25,9 @@ public class SwapWith extends Effect{
         HashMap<Element, String> temp = new HashMap<>();
         temp.put(ROUNDTRACK, "Choose the dice in the round track to swap.");
         temp.put(DICEBAG, "The dice will be swapped with one in the dice bag.");
-        return descriptions;
+        return temp;
     }
+
     static HashMap<Element, Boolean> stops() {
         HashMap<Element, Boolean> temp = new HashMap<>();
         temp.put(ROUNDTRACK, true);
@@ -76,7 +77,7 @@ public class SwapWith extends Effect{
 
     @Override
     public void explainEffect(Table table, Round round) {
-        //table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(element));
+        table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(element));
     }
 
 }

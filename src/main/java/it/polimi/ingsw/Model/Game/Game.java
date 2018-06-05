@@ -202,7 +202,7 @@ public class Game implements Serializable {
     }
 
     public boolean buyToolCard(int indexTC) {
-        if(toolCards.get(indexTC).payTokens(rounds.get(0).getPlayerTurn(0).getPlayer())) {
+        if(table.getGameToolCards().get(indexTC).payTokens(rounds.get(0).getPlayerTurn(0).getPlayer())) {
             rounds.get(0).getPlayerTurn(0).setToolCardActive(true);
             table.setActiveToolCard(indexTC);
             table.notifyObservers(getCurrentPlayer() + "'s turn: acquired tool card " + table.getGameToolCards().get(indexTC).getName());
@@ -224,8 +224,10 @@ public class Game implements Serializable {
         if(rounds.get(0).getPlayerTurn(0) != null) {
             rounds.get(0).getPlayerTurn(0).setMovesLeft(0);
             rounds.get(0).getPlayerTurn(0).setToolCardUsed(true);
+            if(table.getActiveToolCard() != null){
+                table.getActiveToolCard().resetToolCard(table, rounds.get(0));
+            }
         }
-
     }
 
     public ArrayList<Integer> countScores(){
@@ -287,7 +289,6 @@ public class Game implements Serializable {
         PlayerTurn playerTurn = rounds.get(0).getPlayerTurn(0);
         return playerTurn.isToolCardActive();
     }
-
 
     public void addObserver (Observer o) {
         table.addObserver(o);

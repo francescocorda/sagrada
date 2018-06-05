@@ -10,6 +10,8 @@ public abstract class ObjectiveCard extends Card{
         super(name, ID);
     }
 
+    public ObjectiveCard(){}
+
     public void setDescription(String description) {
         this.description = description;
     }

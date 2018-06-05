@@ -16,6 +16,8 @@ public class ColumnPublicObjectiveCard extends PublicObjectiveCard {
         this.restriction = restriction;
     }
 
+    public ColumnPublicObjectiveCard(){}
+
     @Override
     public int countScore(WindowFrame windowFrame) {
         int score = 0;

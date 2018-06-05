@@ -14,6 +14,8 @@ public class DiagonalPublicObjectiveCard extends PublicObjectiveCard {
         this.restriction = restriction;
     }
 
+    public DiagonalPublicObjectiveCard(){}
+
     @Override
     public int countScore(WindowFrame windowFrame) {
         int score = 0;

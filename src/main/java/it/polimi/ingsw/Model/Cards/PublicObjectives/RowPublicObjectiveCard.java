@@ -11,14 +11,14 @@ import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
 
 public class RowPublicObjectiveCard extends PublicObjectiveCard {
 
-    int points;
     String restriction;
 
     public RowPublicObjectiveCard(String name, int ID, int points, String restriction) {
         super(name, ID, points);
         this.points = points;
         this.restriction = restriction;
-    }
+    }public RowPublicObjectiveCard(){}
+
 
 
     @Override

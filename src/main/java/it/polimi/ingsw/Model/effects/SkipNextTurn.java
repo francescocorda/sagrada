@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class SkipNextTurn extends Effect {
     private static String description = "It's possible to make an additional placement in this turn." +
-            "\n The next turn will be skipped.";
+            "\nThe next turn will be skipped.";
 
     public SkipNextTurn() {
         this.stop = false;

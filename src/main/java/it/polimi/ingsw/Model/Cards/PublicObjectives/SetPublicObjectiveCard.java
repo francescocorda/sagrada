@@ -21,6 +21,8 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
         this.numPerElement = new int[elements.size()];
     }
 
+    public SetPublicObjectiveCard(){}
+
     @Override
     public int countScore(WindowFrame windowFrame) {
         int score = 0;

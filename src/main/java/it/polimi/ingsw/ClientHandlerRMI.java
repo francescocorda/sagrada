@@ -46,7 +46,7 @@ public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandl
     }
 
     public void update(String message) throws RemoteException{
-        ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*,\\s*")));
+        ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
         VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(commands.get(0));
         virtualView.notifyObservers(message);
     }

@@ -14,20 +14,20 @@ import static it.polimi.ingsw.Model.Game.Game.INVALID_MOVE_BY_PLAYER;
 
 public class ToolCard implements Serializable {
 
-    private static final int INITIAL_PRICE = 1;
-    private static final int ORDINARY_PRICE = 2;
+    private transient static final int INITIAL_PRICE = 1;
+    private transient static final int ORDINARY_PRICE = 2;
     private int ID;
     private String name;
     private String description;
-    private int numOfTokens;
-    private int price;
-    private ArrayList<Integer> usableInTurns;
-    private ArrayList<Integer> movesLeft;
-    private ArrayList<Effect> effects;
-    private ArrayList<Integer> stops;
-    private int index;
-    private int stopIndex;
-    private int stop;
+    private transient int numOfTokens;
+    private transient int price;
+    private transient ArrayList<Integer> usableInTurns;
+    private transient ArrayList<Integer> movesLeft;
+    private transient ArrayList<Effect> effects;
+    private transient ArrayList<Integer> stops;
+    private transient int index;
+    private transient int stopIndex;
+    private transient int stop;
 
     public ToolCard(int ID, String name, String description, ArrayList<Integer> usableInTurns, ArrayList<Integer> movesLeft) {
         this.ID = ID;
@@ -202,6 +202,7 @@ public class ToolCard implements Serializable {
             } catch (NotValidInputException e) {
 
             }
+            price = ORDINARY_PRICE;
             return true;
         }
         return false;

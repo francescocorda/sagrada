@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.Player;
@@ -54,6 +55,11 @@ public class CLIView extends Observable implements View {
 
     public void displayGame() {
         Player myPlayer = null;
+
+        for (PublicObjectiveCard publicObjectiveCard: table.getGamePublicObjectiveCards()) {
+            publicObjectiveCard.dump();
+        }
+
         for(Player p: table.getPlayers()) {
             if(!p.getName().equals(username)) {
                 System.out.println("Name: " + p.getName());
@@ -92,6 +98,11 @@ public class CLIView extends Observable implements View {
     }
 
     public void displayMessage(String message) {
+        System.out.println(message);
+    }
+
+    @Override
+    public void displayGameMessage(String message) {
         System.out.println(message);
     }
 

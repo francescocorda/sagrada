@@ -11,6 +11,8 @@ public abstract class Card implements Serializable {
         this.ID=ID;
     }
 
+    public Card(){}
+
     public void setID(int ID) {
         this.ID = ID;
     }

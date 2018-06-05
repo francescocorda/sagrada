@@ -6,6 +6,7 @@ import it.polimi.ingsw.view.VirtualView;
 
 import static it.polimi.ingsw.Status.*;
 import static it.polimi.ingsw.Phase.*;
+import static it.polimi.ingsw.controller.Controller.TIMER_SECONDS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,6 @@ public class ClientSocketInterpreter implements Runnable {
     private String username;
     private Phase phase;
 
-
     public ClientSocketInterpreter(Socket socket, ClientHandlerSocket handler) {
         this.connection = new ConnectionSocket(socket);
         this.handler = handler;
@@ -38,7 +38,6 @@ public class ClientSocketInterpreter implements Runnable {
         nextPhase();
         if (status == Status.ONLINE)
             joinLobby();
-        game();
         if (players.getPhase(username) != Phase.GAME && status == Status.OFFLINE)
             close();
     }
@@ -189,6 +188,10 @@ public class ClientSocketInterpreter implements Runnable {
         Thread.currentThread().interrupt();
     }
 
+    public Phase getPhase() {
+        return phase;
+    }
+
     public boolean isOnline() {
         checkConnection();
         if (status == OFFLINE && players.contain(username))
@@ -233,20 +236,18 @@ public class ClientSocketInterpreter implements Runnable {
         }
     }
 
-    private void game() {
-        MessageReader reader;
-        String message;
-        while (status == ONLINE) {
-            if (phase == GAME) {
-                message = "" + username + "/";
-                reader = getMessage();
-                if (reader.hasNext()){
-                    message = message + reader.getNext();
-                    ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-                    VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(commands.get(0));
-                    virtualView.notifyObservers(message);
+    public void game() {
+        Timer timer = new Timer();
+        Thread thread = new SocketReader(connection, username);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    thread.interrupt();
+                } catch (Exception e){
+                    //Thread already interrupted
                 }
             }
-        }
+        }, TIMER_SECONDS * 1000);
     }
 }

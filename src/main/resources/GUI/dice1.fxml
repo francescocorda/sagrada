@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Rectangle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Circle>
+   </children>
+</StackPane>

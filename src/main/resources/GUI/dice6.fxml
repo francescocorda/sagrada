@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="60.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2197ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Rectangle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
+         <StackPane.margin>
+            <Insets left="12.0" top="15.0" />
+         </StackPane.margin>
+      </Circle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="TOP_RIGHT">
+         <StackPane.margin>
+            <Insets right="12.0" top="15.0" />
+         </StackPane.margin>
+      </Circle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="15.0" />
+         </StackPane.margin></Circle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="BOTTOM_LEFT">
+         <StackPane.margin>
+            <Insets bottom="15.0" left="12.0" />
+         </StackPane.margin>
+      </Circle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT">
+         <StackPane.margin>
+            <Insets bottom="15.0" right="12.0" />
+         </StackPane.margin>
+      </Circle>
+      <Circle radius="4.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="BOTTOM_CENTER">
+         <StackPane.margin>
+            <Insets bottom="15.0" />
+         </StackPane.margin>
+      </Circle>
+   </children>
+</StackPane>

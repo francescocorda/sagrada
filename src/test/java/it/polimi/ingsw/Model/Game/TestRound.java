@@ -21,15 +21,12 @@ class TestRound {
         players.add(new Player("player2"));
         players.add(new Player("player3"));
         players.add(new Player("player4"));
-        Round round = new Round(players, 0, table);
+        Round round = new Round(players, 0);
 
         PlayerTurn turn = round.getPlayerTurns().get(3);
         int size = round.getPlayerTurns().size();
-        try {
-            round.removeTurn(round.getPlayerTurns().get(3));
-        } catch (NotValidInputException e) {
-            e.printStackTrace();
-        }
+        round.removeTurn(round.getPlayerTurns().get(3));
+
 
         assertEquals(size-1, round.getPlayerTurns().size());
         assertTrue(!round.getPlayerTurns().contains(turn));

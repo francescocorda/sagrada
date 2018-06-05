@@ -8,44 +8,40 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Round implements Serializable {
-    private Table table;
+    private static final int INITIAL_TURN_NUMBER = 1;
     private ArrayList<Player> players;
     private ArrayList<PlayerTurn> playerTurns;
 
 
-    public Round(ArrayList<Player> players, int first, Table table){
-        this.table = table;
+    public Round(ArrayList<Player> players, int first){
         this.players =  players;
         playerTurns = new ArrayList<>();
 
         int indexPlayers = first;
+        int turnNumber = INITIAL_TURN_NUMBER;
 
         for (int indexTurn = 0; indexTurn<players.size()*2; indexTurn++) {
-            PlayerTurn turn = new PlayerTurn(players.get(indexPlayers), table);
+            PlayerTurn turn = new PlayerTurn(players.get(indexPlayers), turnNumber);
             playerTurns.add(turn);
             if (indexTurn < players.size()-1) {
                 indexPlayers = (indexPlayers+1)%players.size();
             } else if(indexTurn> players.size()-1) {
+                turnNumber++;
                 indexPlayers = (abs(indexPlayers-1))%players.size();
             }
         }
+    }
 
-        for (PlayerTurn playerTurn: playerTurns) {
-            playerTurn.setPlayerTurns(playerTurns);
-        }
-
+    public Player getCurrentPlayer() {
+        return playerTurns.get(0).getPlayer();
     }
 
     public int size() {
         return playerTurns.size();
     }
 
-    public void removeTurn(PlayerTurn playerTurn) throws NotValidInputException {
-        if(playerTurns.contains(playerTurn)) {
-            this.playerTurns.remove(playerTurn);
-        } else {
-            throw new NotValidInputException();
-        }
+    public void removeTurn(PlayerTurn playerTurn) {
+        this.playerTurns.remove(playerTurn);
     }
 
     public void removeTurn(int index) {

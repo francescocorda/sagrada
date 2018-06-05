@@ -13,20 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestPlayer {
 
-    private ParserManager pm = ParserManager.getParserManager();
-
     @Test
-    void setNumberOfTokensTest() {
+    void setNumberOfTokensTest() throws NotValidInputException {
         Player player1 = new Player("player");
-        try {
-            player1.setNumOfTokens(1);
-        } catch (NotValidInputException e) {
-            e.printStackTrace();
-        }
+        player1.setNumOfTokens(1);
+
 
         assertEquals(1, player1.getNumOfTokens());
 
-        assertThrows(NotValidInputException.class, ()->player1.setNumOfTokens(-1));
 
 
         /*player1.dump();
@@ -85,19 +79,21 @@ class TestPlayer {
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+
         assertEquals(6, player.getNumOfTokens());
         try {
             player.setNumOfTokens(1);
         } catch (NotValidInputException e) {
             e.printStackTrace();
         }
+
         assertEquals(1, player.getNumOfTokens());
-        assertThrows(NotValidInputException.class,()->{player.setNumOfTokens(-1);});
         assertDoesNotThrow(()->{player.setNumOfTokens(3);});
     }
 
     @Test
     void setPatternCardTest() {
+        ParserManager pm = ParserManager.getParserManager();
         String name = "player";
         Player player = new Player(name);
         PatternDeck deck = new PatternDeck(pm.getPatternDeck());

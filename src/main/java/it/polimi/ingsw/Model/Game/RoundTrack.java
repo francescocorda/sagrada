@@ -14,6 +14,16 @@ public class RoundTrack implements Serializable {
         }
     }
 
+    public RoundTrack(RoundTrack roundTrack) {
+        this.roundTrack = new ArrayList<>();
+        for (int i=0; i<roundTrack.size(); i++) {
+            this.roundTrack.add(new ArrayList<>());
+            for (int j=0; j<roundTrack.getRoundDices(i).size(); j++) {
+                this.roundTrack.get(i).add(new Dice(roundTrack.getRoundDices(i).get(j)));
+            }
+        }
+    }
+
     public ArrayList<Dice> getRoundDices(int indexRT) {
         //indexRT start from value 0
         return roundTrack.get(indexRT);

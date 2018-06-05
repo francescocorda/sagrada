@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.Table;
@@ -29,15 +30,15 @@ public class CLIView extends Observable implements View {
         if(o instanceof Table) {
             Table table = (Table) o;
             this.table = table;
-            displayGame();
-            if(arg instanceof String) {
+            if(arg == null) {
+                displayGame();
+            }
+            else if(arg instanceof String) {
                 String message = (String) arg;
                 displayMessage(message);
             }
         }
     }
-
-
 
     public void performMove() {
         System.out.println("Scegli un dado dalla draftPool: ");
@@ -65,12 +66,21 @@ public class CLIView extends Observable implements View {
 
         table.getRoundTrack().dump();
         table.dumpDraftPool();
+        for (ToolCard toolCard: table.getGameToolCards()) {
+            toolCard.dump();
+        }
 
         System.out.println("Name: " + myPlayer.getName());
         System.out.println("Number of Tokens: " + myPlayer.getNumOfTokens());
         System.out.println("Private Objective Card: ");
         myPlayer.getPrivateObjectiveCard().dump();
         System.out.println(myPlayer.getWindowFrame().toGameString());
+        if (table.getActiveToolCard() != null) {
+            table.getActiveToolCard().dump();
+        }
+        if (table.getActiveDice()!=null) {
+            System.out.println(table.getActiveDice().toString());
+        }
     }
 
     public void displayPrivateObjectiveCard() {

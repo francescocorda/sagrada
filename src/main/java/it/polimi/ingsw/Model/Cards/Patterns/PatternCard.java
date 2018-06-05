@@ -11,13 +11,27 @@ public class PatternCard extends Card {
     private Cell[][] patternCard;
 
     public PatternCard(String name, int ID) {
-        super(name, ID);
+        super(name,ID);
         patternCard = new Cell[ROW][COLUMN];
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
                 patternCard[i][j] = new Cell();
             }
         }
+    }
+
+    public PatternCard(PatternCard patternCard) {
+        super(patternCard.getName(), patternCard.getID());
+        this.patternCard = new Cell[ROW][COLUMN];
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                this.patternCard[i][j] = new Cell(patternCard.getCell(i,j));
+            }
+        }
+    }
+
+    public Cell getCell (int row, int col) {
+        return patternCard[row][col];
     }
 
     public int getDifficulty() {
@@ -52,7 +66,6 @@ public class PatternCard extends Card {
     }
 
     public boolean getExceptionPosition(int row, int col) {
-
         return patternCard[row - 1][col - 1].getExceptionPosition();
     }
 

@@ -2,7 +2,7 @@ package it.polimi.ingsw.Model.Game;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
-import it.polimi.ingsw.Model.Cards.ToolCards.ToolCard;
+import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,15 +15,33 @@ public class Table extends Observable implements Serializable {
     private ArrayList<Dice> draftPool;
     private ArrayList<PublicObjectiveCard> gamePOC;
     private ArrayList<ToolCard> gameToolCards;
+    private Dice activeDice;
+    private ToolCard activeToolCard;
 
     public Table() {
-        players = new ArrayList<>();
+        this.players = new ArrayList<>();
         roundTrack = new RoundTrack();
         diceBag = new DiceBag();
         draftPool = new ArrayList<>();
         gamePOC = new ArrayList<>();
         gameToolCards = new ArrayList<>();
+        activeDice = null;
+        activeToolCard = null;
     }
+
+    public ToolCard getActiveToolCard() {
+        return activeToolCard;
+    }
+
+    public void setActiveToolCard(int index) {
+        this.activeToolCard = gameToolCards.get(index);
+    }
+
+    public void removeActiveToolCard() {
+        activeToolCard = null;
+    }
+
+
 
     public String toJson(){
         Table table = new Table();
@@ -34,6 +52,15 @@ public class Table extends Observable implements Serializable {
         table.setGamePublicObjectiveCards(gamePOC);
         table.setGameToolCards(gameToolCards);
         return (new Gson()).toJson(table);
+    }
+
+    public Player getPlayer(String username) {
+        for(Player player: players) {
+            if (player.getName().equals(username)) {
+                return player;
+            }
+        }
+        return null;
     }
 
     public ArrayList<Player> getPlayers() {
@@ -73,8 +100,22 @@ public class Table extends Observable implements Serializable {
         this.draftPool = draftPool;
     }
 
+    public void rollDraftPool() {
+        for (Dice dice: draftPool) {
+            dice.roll();
+        }
+    }
+
     public ArrayList<Dice> getDraftPool() {
         return draftPool;
+    }
+
+    public ArrayList<Dice> cloneDraftPool() {
+        ArrayList<Dice> dices = new ArrayList<>();
+        for (Dice dice: draftPool) {
+            dices.add(new Dice(dice));
+        }
+        return dices;
     }
 
     public void insertDiceDraftPool(Dice dice){
@@ -108,9 +149,17 @@ public class Table extends Observable implements Serializable {
         this.gameToolCards = gameToolCards;
     }
 
+    public Dice getActiveDice() {
+        return activeDice;
+    }
+
+    public void setActiveDice(Dice activeDice) {
+        this.activeDice = activeDice;
+    }
+
     public String toStringDraftPool() {
         String string = new String();
-        if(draftPool==null)
+        if(draftPool==null || draftPool.isEmpty())
             string = "NOT ADDED YET";
         else {
             string = "DRAFTPOOL:\n";
@@ -119,6 +168,7 @@ public class Table extends Observable implements Serializable {
         }
         return string;
     }
+
 
     public void dumpDraftPool() {
         System.out.println(toStringDraftPool());

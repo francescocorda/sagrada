@@ -111,17 +111,19 @@ public class Client {
                 commands.add(command);
             } else {
                 String message = String.join(", ", commands);
-                commands.clear();
                 try {
                     if (server != null)
                         server.update(message);
                     else
                         throw new NullPointerException();
-                } catch (RemoteException | NullPointerException e) {
-                    toScreen("Server Closed");
+                } catch (RemoteException e) {
+                    toScreen("Remote - Server Closed");
+                    endGame = true;
+                } catch(NullPointerException e) {
+                    toScreen("Null - Server Closed");
                     endGame = true;
                 }
-                commands = new ArrayList<>();
+                commands.clear();
                 commands.add(username);
             }
         }

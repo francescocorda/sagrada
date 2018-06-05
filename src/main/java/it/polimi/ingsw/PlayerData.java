@@ -14,7 +14,7 @@ public class PlayerData {
     private RMIClientInterface clientRMI;
     private ClientSocketInterpreter clientSocket;
 
-    PlayerData(String username, String password, ConnectionMode connectionMode){
+    public PlayerData(String username, String password, ConnectionMode connectionMode){
         this.username=username;
         this.password=password;
         this.phase= Phase.LOGIN;

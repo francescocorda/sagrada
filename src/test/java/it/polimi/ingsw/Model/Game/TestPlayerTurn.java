@@ -21,12 +21,13 @@ public class TestPlayerTurn {
             e.printStackTrace();
         }
 
+
         ArrayList<Dice> draftpool = new ArrayList<>();
         for(int i=0; i<9;i++) {
             draftpool.add(new Dice(Color.ANSI_BLUE));
             draftpool.get(i).roll();
         }
-        PlayerTurn turn = new PlayerTurn(player, table);
+        PlayerTurn turn = new PlayerTurn(player, 1);
 
         assertEquals(player, turn.getPlayer());
 

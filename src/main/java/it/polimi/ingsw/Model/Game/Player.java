@@ -3,6 +3,7 @@ package it.polimi.ingsw.Model.Game;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+
 import java.io.Serializable;
 
 public class Player implements Serializable {
@@ -28,12 +29,12 @@ public class Player implements Serializable {
         return name;
     }
 
-    public void setNumOfTokens(int numOfTokens) throws NotValidInputException{
-
-        if(numOfTokens<0 || numOfTokens>6) {
+    public void setNumOfTokens(int numOfTokens) throws NotValidInputException {
+        if(numOfTokens>=0 && numOfTokens<=6) {
+            this.numOfTokens = numOfTokens;
+        } else {
             throw new NotValidInputException();
         }
-        this.numOfTokens = numOfTokens;
     }
 
     public int getNumOfTokens() {

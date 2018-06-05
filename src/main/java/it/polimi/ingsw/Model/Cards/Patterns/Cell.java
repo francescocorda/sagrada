@@ -13,6 +13,12 @@ public class Cell implements Serializable {
         this.exceptionPosition = false;
     }
 
+    public Cell(Cell cell) {
+        this.restriction = cell.getRestriction();
+        this.exceptionRestriction = cell.getExceptionRestriction();
+        this.exceptionPosition = cell.getExceptionPosition();
+    }
+
     public void setRestriction(Restriction restriction) {
         this.restriction = restriction;
     }

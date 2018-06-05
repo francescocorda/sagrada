@@ -41,30 +41,30 @@ public class Lobby {
     }
 
     public synchronized void addPlayer(String username, long time) {
-            PlayerData player = players.getPlayerData(username);
-            VirtualView virtualView = new VirtualView(player);
-            views.add(virtualView);
-            VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
-            connectedPlayers.add(player);
-            connectedPlayersLastTime.add(time);
-            toTerminal("player: " + player.getUsername() + " singed in");
-            broadcast("<player_joined><" + player.getUsername() + ">");
-            send(username, "<welcome>");
-            send(username, listOfPlayers());
-            players.setPhase(username, Phase.LOBBY);
-            trigger();
+        PlayerData player = players.getPlayerData(username);
+        VirtualView virtualView = new VirtualView(player);
+        views.add(virtualView);
+        VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
+        connectedPlayers.add(player);
+        connectedPlayersLastTime.add(time);
+        toTerminal("player: " + player.getUsername() + " singed in");
+        broadcast("<player_joined><" + player.getUsername() + ">");
+        send(username, "<welcome>");
+        send(username, listOfPlayers());
+        players.setPhase(username, Phase.LOBBY);
+        trigger();
     }
 
 
     public synchronized void removePlayer(PlayerData player) {
-            int index = connectedPlayers.indexOf(player);
-            String username = connectedPlayers.get(index).getUsername();
-            views.remove(index);
-            connectedPlayers.remove(index);
-            connectedPlayersLastTime.remove(index);
-            toTerminal("User: " + player.getUsername() + " has logged out");
-            broadcast("<player_left><" + username + ">");
-            trigger();
+        int index = connectedPlayers.indexOf(player);
+        String username = connectedPlayers.get(index).getUsername();
+        views.remove(index);
+        connectedPlayers.remove(index);
+        connectedPlayersLastTime.remove(index);
+        toTerminal("User: " + player.getUsername() + " has logged out");
+        broadcast("<player_left><" + username + ">");
+        trigger();
 
     }
 
@@ -118,7 +118,8 @@ public class Lobby {
                 }
                 break;
             case 2:
-                if (!isTimerSet) {
+                startGame();
+                /*if (!isTimerSet) {
                     isTimerSet = true;
                     broadcast("<timer_started>");
                     timer = new Timer();
@@ -128,11 +129,11 @@ public class Lobby {
                             startGame();
                         }
                     }, (long) timerSeconds * 1000);
-                }
+                }*/
                 break;
-            case 4:
+            /*case 4:
                 startGame();
-                break;
+                break;*/
             default:
                 break;
         }

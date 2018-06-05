@@ -6,74 +6,131 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class PlayerTurn implements Serializable {
-    private Table table;
+
+    public static final int MOVES = 1;
+
+    final private int turnNumber;
     private Player player;
-    private ArrayList<Move> moves;
-    private ArrayList<PlayerTurn> playerTurns;
+    private int movesLeft;
+    private boolean toolCardUsed;
+    private ArrayList<Integer> originCoordinates;
+    private Color colorRoundTrack;
+    private boolean skipEffect;
+    private boolean moveActive;
+    private boolean toolCardActive;
 
-    public PlayerTurn(Player player, Table table) {
-        this.table = table;
+    public PlayerTurn(Player player, int turnNumber) {
         this.player = player;
-        this.playerTurns = new ArrayList<>();
-        moves = new ArrayList<>();
-        moves.add(new Move(table, player));
-        //moves.add(new SpecialMove(draftPool, player, roundTrack, diceBag, playerTurns));
+        this.turnNumber = turnNumber;
+        movesLeft = MOVES;
+        toolCardUsed = false;
+        originCoordinates = new ArrayList<>();
+        colorRoundTrack = null;
+        skipEffect = false;
+        moveActive = false;
+        toolCardActive = false;
+    }
+
+    public boolean isMoveActive() {
+        return moveActive;
+    }
+
+    public void setMoveActive(boolean moveActive) {
+        this.moveActive = moveActive;
+    }
+
+    public boolean isToolCardActive() {
+        return toolCardActive;
+    }
+
+    public void setToolCardActive(boolean toolCardActive) {
+        this.toolCardActive = toolCardActive;
+    }
+
+    public Color getColorRoundTrack() {
+        return colorRoundTrack;
+    }
+
+    public void setColorRoundTrack(Color colorRoundTrack) {
+        this.colorRoundTrack = colorRoundTrack;
+    }
+
+    public boolean isSkipEffect() {
+        return skipEffect;
+    }
+
+    public void setSkipEffect(boolean skipEffect) {
+        this.skipEffect = skipEffect;
+    }
+
+    public ArrayList<Integer> getOriginCoordinates() {
+        return originCoordinates;
+    }
+
+    public int getOriginCoordinate(int index) {
+        return originCoordinates.get(index);
+    }
+
+    public int removeOriginCoordinate(int index) {
+        return originCoordinates.remove(index);
+    }
+
+    public void setOriginCoordinates(ArrayList<Integer> originCoordinates) {
+        this.originCoordinates = originCoordinates;
+    }
+
+    public void addOriginCoordinate(int originCoordinate) {
+        originCoordinates.add(originCoordinate);
     }
 
 
-    public ArrayList<PlayerTurn> getPlayerTurns() {
-        return playerTurns;
-    }
-
-    public void setPlayerTurns(ArrayList<PlayerTurn> playerTurns) {
-        this.playerTurns = playerTurns;
-        for(Move move: moves) {
-            move.setPlayerTurns(playerTurns);
-        }
-    }
-
-    public ArrayList<Move> getMoves() {
-        return moves;
-    }
-
-    public void setMoves(ArrayList<Move> moves) {
-        this.moves = moves;
-    }
-
-    public Move getMove(int index) {
-        return moves.get(index);
-    }
-
-    public void addMove(Move move) {
-        this.moves.add(move);
-    }
-
-    public boolean removeMove(Move move) {
-        return moves.remove(move);
+    public int getTurnNumber() {
+        return turnNumber;
     }
 
     public Player getPlayer() {
         return player;
     }
 
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public int getMovesLeft() {
+        return movesLeft;
+    }
+
+    public void setMovesLeft(int movesLeft) {
+        this.movesLeft = movesLeft;
+    }
+
+    public boolean isToolCardUsed() {
+        return toolCardUsed;
+    }
+
+    public void setToolCardUsed(boolean toolCardUsed) {
+        this.toolCardUsed = toolCardUsed;
+    }
+
     public void payTokens(int toPay) throws  NotValidInputException{
         player.setNumOfTokens(player.getNumOfTokens()-toPay);
     }
 
-    @Override
-    public String toString(){
-        String string="DraftPool:\n";
-        if(table.getDraftPool()==null)
-            string=string.concat("NOT ADDED YET");
-        else
-            for(Dice dice: table.getDraftPool())
-                string=string.concat(dice.toString());
-        string=string.concat("\nPlayer: "+player.getName());
-        return string;
+    public boolean isEnded() {
+        if (movesLeft==0 && toolCardUsed) {
+            return true;
+        }
+        return false;
     }
 
-    public int size() {
-        return moves.size();
+    @Override
+    public String toString() {
+        return "PlayerTurn{" +
+                "turnNumber=" + turnNumber +
+                ", player=" + player +
+                ", movesLeft=" + movesLeft +
+                ", toolCardUsed=" + toolCardUsed +
+                '}';
     }
 
 

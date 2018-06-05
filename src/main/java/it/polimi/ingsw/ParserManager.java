@@ -1,8 +1,13 @@
 package it.polimi.ingsw;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.*;
+import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.Model.effects.Effect;
+import it.polimi.ingsw.Model.effects.EffectFactory;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -36,6 +41,16 @@ public class ParserManager {
     private static final String JSON_PUB_OBJ_PARAMETER_8 = "set";
     private static final String JSON_PUB_OBJ_PARAMETER_9 = "elements";
     private static final String JSON_PUB_OBJ_PARAMETER_10 = "diagonal";
+    private static final String JSON_TOOLCARDS_PATH = "src/main/resources/toolcards.json";
+    private static final String JSON_TOOLCARDS_PARAMETER_1 = "toolcards";
+    private static final String JSON_TOOLCARDS_PARAMETER_2 = "ID";
+    private static final String JSON_TOOLCARDS_PARAMETER_3 = "name";
+    private static final String JSON_TOOLCARDS_PARAMETER_4 = "description";
+    private static final String JSON_TOOLCARDS_PARAMETER_5 = "usableInTurns";
+    private static final String JSON_TOOLCARDS_PARAMETER_6 = "movesLeft";
+    private static final String JSON_TOOLCARDS_PARAMETER_7 = "classes";
+    private static final String JSON_TOOLCARDS_PARAMETER_8 = "parameters";
+
 
     private ParserManager(){
         parser = new JSONParser();
@@ -151,4 +166,49 @@ public class ParserManager {
         puODeck.add(diagonal);
         return  puODeck;
     }
+
+    public ArrayList<ToolCard> getToolCards() {
+        ArrayList<ToolCard> toolCards = new ArrayList<>();
+        Gson gson = new Gson();
+        try {
+            JsonReader reader = new JsonReader(new FileReader(JSON_TOOLCARDS_PATH));
+            JsonParser parser = new JsonParser();
+            JsonObject object = parser.parse(reader).getAsJsonObject();
+            JsonArray deck = object.getAsJsonArray(JSON_TOOLCARDS_PARAMETER_1);
+            for(JsonElement obj: deck) {
+                JsonObject card = obj.getAsJsonObject();
+                int ID = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_2), Integer.class);
+                String name = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_3), String.class);
+                String description = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_4), String.class);
+                int[] turnsArray = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_5), int[].class);
+                ArrayList<Integer> turnsList = new ArrayList<>();
+                for (int i : turnsArray) {
+                    turnsList.add(i);
+                }
+                int[] movesArray = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_6), int[].class);
+                ArrayList<Integer> movesList = new ArrayList<>();
+                for (int i : movesArray) {
+                    movesList.add(i);
+                }
+
+                String[] classes = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_7), String[].class);
+                String[] parameters = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_8), String[].class);
+                EffectFactory factory = new EffectFactory();
+                ArrayList<Effect> effects = new ArrayList<>();
+                for (int i = 0; i < classes.length; i++) {
+                    effects.add(factory.createEffect(classes[i], parameters[i]));
+                }
+                ToolCard toolCard = new ToolCard(ID, name, description, turnsList, movesList);
+                toolCard.setEffects(effects);
+                toolCards.add(toolCard);
+            }
+
+            return toolCards;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
+

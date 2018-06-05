@@ -7,19 +7,34 @@ import it.polimi.ingsw.exceptions.*;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.Set;
 
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
 
 public class WindowFrame implements Serializable {
 
-
     private Dice[][] dices;
     private PatternCard patternCard;
+    private String exception;
 
     public WindowFrame(){
         dices = new Dice[ROW][COLUMN];
         patternCard=null;
+        this.exception = new String();
+    }
+
+    public WindowFrame(WindowFrame windowFrame) {
+        this.patternCard = new PatternCard(windowFrame.getPatternCard());
+        this.dices = new Dice[ROW][COLUMN];
+        this.exception = windowFrame.getActiveException();
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                if(windowFrame.getDice(i+1,j+1)!=null) {
+                    dices[i][j] = new Dice(windowFrame.getDice(i + 1, j + 1));
+                }
+            }
+        }
     }
 
     public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
@@ -177,10 +192,11 @@ public class WindowFrame implements Serializable {
         }
     }
 
-    public void enableRestriction(String restrictionToIgnore){
+    public void enableException(String restrictionToIgnore){
+        this.exception = restrictionToIgnore;
         for(int i=1; i<=ROW; i++){
             for(int j=1; j<=COLUMN; j++){
-                if(restrictionToIgnore.compareTo("VALUE")==0){
+                if(restrictionToIgnore.compareTo("FACE")==0){
                     if(patternCard.getRestriction(i,j).escape().compareTo(Restriction.ONE.escape())>=0){
                         patternCard.setExceptionRestriction(i, j, true);
                     }
@@ -195,9 +211,10 @@ public class WindowFrame implements Serializable {
         }
     }
 
-    public void update() throws RemoteException {
-
+    public String getActiveException() {
+        return exception;
     }
+
 
     @Override
     public String toString(){
@@ -278,6 +295,17 @@ public class WindowFrame implements Serializable {
             string=string.concat("\n");
         }
         return string;
+    }
+
+    public boolean containsColors(Set<Color> colors) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                if (dices[i][j]!= null && colors.contains(dices[i][j].getColor())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void dump(){

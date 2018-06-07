@@ -1,6 +1,8 @@
-package it.polimi.ingsw.client.GUI.completeTable;
+package it.polimi.ingsw.client.GUI.table;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.GUI.GUIData;
+import it.polimi.ingsw.client.GUI.GUIManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -13,7 +15,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 
-public class TableController {
+public class TableManager implements GUIManager{
     private Rectangle source = null;
     private int idPool = 0;
     private boolean sourceSelectedWindow = false;
@@ -23,6 +25,8 @@ public class TableController {
     private int destrow;
     private int destcol;
     private Image image;
+    boolean endGame = false;
+    String message;
     @FXML
     GridPane draftPool;
     @FXML
@@ -332,6 +336,7 @@ public class TableController {
             destcol = col;
             if(sourceSelectedPool){
                 text.setText("IDPool: "+idPool+"\ndestination row: "+destrow+"\ndestination col: "+destcol);
+                //server.update(message);
                 sourceSelectedWindow = false;
                 sourceSelectedPool=false;
             } else{
@@ -378,6 +383,7 @@ public class TableController {
         }
     }
     public void initialize() throws IOException {
+        GUIData.getGUIData().getView().setGUIManager(this);
         StackPane dice;
         text.setEditable(false);
         dice= FXMLLoader.load(Client.class.getResource("/GUI/dice1.fxml"));
@@ -432,5 +438,13 @@ public class TableController {
         publicObj3.setImage(image);
         image = new Image(Client.class.getResourceAsStream("/GUI/privateObj.PNG"));
         privateObj.setImage(image);
+    }
+
+    public void notify(String message){
+
+    }
+
+    public void editMessage(String message) {
+        this.message = message;
     }
 }

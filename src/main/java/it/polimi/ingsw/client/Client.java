@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.ClientHandlerInterface;
+import it.polimi.ingsw.client.GUI.login.Login;
 import it.polimi.ingsw.client.RMI.RMIClientImplementation;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.connection.ConnectionSocket;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -27,17 +29,34 @@ public class Client {
     private static BufferedReader is;
     private static MessagePrinter mp;
     private static MessageDealer md;
-    private static View view;
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
+        toScreen("Would you like to play in GUI or CLI?");
+        String mode = in.nextLine();
+        boolean temp = true;
+        while (temp) {
+            if (mode.equals("GUI")) {
+                temp = false;
+                Login login = new Login();
+                login.showGUI();
+            } else if (mode.equals("CLI")) {
+                temp = false;
+                startCLI();
+            }
+        }
+    }
+
+    public static void startCLI() {
         toScreen("What communication technology do you want to use? (type \"RMI\" for RMI  and \"socket\" for socket ...)");
+        Scanner in = new Scanner(System.in);
         String technology = in.nextLine();
-        view = new CLIView();
+        View view = new CLIView();
         if (technology.equals("RMI"))
-            rmi();
+            rmi(view);
         else
-            socket();
+            socket(view);
+
     }
 
     public Client getClient() {
@@ -45,7 +64,7 @@ public class Client {
     }
 
 
-    private static void rmi() {
+    private static void rmi(View view) {
         String username = new String();
         String password = new String();
         boolean logged = false;
@@ -110,7 +129,7 @@ public class Client {
             if (!command.equals("")) {
                 commands.add(command);
             } else {
-                String message = String.join("/ ", commands);
+                String message = String.join("/", commands);
                 commands.clear();
                 try {
                     if (server != null)
@@ -128,16 +147,16 @@ public class Client {
         in.close();
     }
 
-    private static void socket() {
+    private static void socket(View view) {
         md = new MessageDealer();
-        initialize();
+        initialize(view);
         Scanner in = new Scanner(System.in);
         //new method
         boolean endGame = false;
         ArrayList<String> commands = new ArrayList<>();
         while (!endGame) {
             String command = in.nextLine();
-            switch(command){
+            switch (command) {
                 case "quit":
                     connection.sendMessage(command);
                     endGame = true;
@@ -165,7 +184,7 @@ public class Client {
         Thread.currentThread().interrupt();
     }
 
-    private static void initialize() {
+    private static void initialize(View view) {
         try {
             Scanner in = new Scanner(System.in);
             toScreen("Insert server IP address: (Type 0 for default: \"localhost\") ");
@@ -193,4 +212,5 @@ public class Client {
     private static void toScreen(String message) {
         System.out.println(message);
     }
+
 }

@@ -1,16 +1,18 @@
-#login {  /*AnchorPane*/
-}
 #connection {  /*MenuButton*/
 }
 #socket {  /*MenuItem*/
 }
 #RMI {  /*MenuItem*/
 }
-#label {  /*Label*/
-}
 #username {  /*TextField*/
 }
 #password {  /*PasswordField*/
 }
 #connection {  /*connectionMenu*/
+}
+#IPaddress {
+}
+#serverPort {
+}
+#login {
 }

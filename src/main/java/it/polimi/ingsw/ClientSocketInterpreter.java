@@ -22,6 +22,7 @@ public class ClientSocketInterpreter implements Runnable {
     private Status status;
     private String username;
     private Phase phase;
+    private SocketReader reader;
 
     public ClientSocketInterpreter(Socket socket, ClientHandlerSocket handler) {
         this.connection = new ConnectionSocket(socket);
@@ -117,8 +118,14 @@ public class ClientSocketInterpreter implements Runnable {
     }
 
     public void sendMessage(String message) {
-        if (status == ONLINE && isOnline())
-            connection.sendMessage(message);
+        if (status == ONLINE) {
+            if (phase == GAME) {
+                reader.waitForPong();
+                connection.sendMessage(message);
+            } else if (isOnline()) {
+                connection.sendMessage(message);
+            }
+        }
     }
 
     public MessageReader getMessage() {
@@ -186,10 +193,7 @@ public class ClientSocketInterpreter implements Runnable {
     public void close() {
         this.connection.close();
         Thread.currentThread().interrupt();
-    }
-
-    public Phase getPhase() {
-        return phase;
+        reader.interrupt();
     }
 
     public boolean isOnline() {
@@ -236,18 +240,13 @@ public class ClientSocketInterpreter implements Runnable {
         }
     }
 
+    private void setPhase(Phase phase) {
+        this.phase = phase;
+    }
+
     public void game() {
-        Timer timer = new Timer();
-        Thread thread = new SocketReader(connection, username);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    thread.interrupt();
-                } catch (Exception e){
-                    //Thread already interrupted
-                }
-            }
-        }, TIMER_SECONDS * 1000);
+        if (phase != GAME)
+            setPhase(GAME);
+        reader = new SocketReader(connection, username);
     }
 }

@@ -6,12 +6,9 @@ import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.view.VirtualView;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Lobby {
-
         private ArrayList<VirtualView> views;
         private static Lobby instance = null;
         private ArrayList<PlayerData> connectedPlayers;
@@ -182,6 +179,8 @@ public class Lobby {
                 }
                 for (PlayerData player : playersInTheRightOrder) {
                     player.nextPhase();
+                    if(player.getCurrentConnectionMode()==ConnectionMode.SOCKET)
+                        player.getClientSocket().game();
                 }
                 games.add(new Controller(games.size() + 1, viewsInTheRightOrder));
                 connectedPlayers = new ArrayList<>();

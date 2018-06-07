@@ -55,7 +55,6 @@ public class Controller implements Observer {
     }
 
     private void startGame() {
-        ArrayList<PlayerData> socketPlayer = new ArrayList<>();
         game.drawPublicObjectiveCards();
         game.drawToolCards();
         for (VirtualView view: views) {
@@ -69,15 +68,10 @@ public class Controller implements Observer {
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
-                PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(view.getUsername());
-                if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
-                    socketPlayer.add(pd);
             } catch (NotValidInputException e) {
                 System.out.println("Player Inesistente.");
             }
         }
-        for(PlayerData player : socketPlayer)
-            player.getClientSocket().game();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -135,9 +129,6 @@ public class Controller implements Observer {
                                         case "move":
                                             sendMessage(username, "Choose the dice to place in the window: insert draft pool index and window coordinates");
                                             state = STATES.MOVE;
-                                            PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(game.getCurrentPlayer());
-                                            if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
-                                                pd.getClientSocket().game();
                                             break;
                                         case "skip":
                                             sendMessage(username, "Turn skipped.");
@@ -252,9 +243,6 @@ public class Controller implements Observer {
 
     private void yourTurn() {
         sendMessage(game.getCurrentPlayer(), "It's your turn! Choose Action: move, toolcard, skip");
-        PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(game.getCurrentPlayer());
-        if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
-            pd.getClientSocket().game();
     }
 
     private boolean checkFormat(ArrayList<String> commands) {
@@ -278,15 +266,9 @@ public class Controller implements Observer {
                 sendMessage(username, "Pattern card assigned.");
             } catch (NotValidInputException e) {
                 sendMessage(username, INVALID_FORMAT);
-                PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(username);
-                if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
-                    pd.getClientSocket().game();
             }
         } else {
             sendMessage(username, INVALID_FORMAT);
-            PlayerData pd = PlayerDatabase.getPlayerDatabase().findPlayer(username);
-            if(pd.getCurrentConnectionMode() == ConnectionMode.SOCKET)
-                pd.getClientSocket().game();
         }
         if (game.doneAssignPatternCards()) {
             timer.cancel();

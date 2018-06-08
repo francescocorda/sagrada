@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.lobby;
 
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.Comunicator;
 import it.polimi.ingsw.client.GUI.GUIData;
@@ -269,4 +270,5 @@ public class LobbyManager implements GUIManager{
             }
         }
     }
+    public void updateTable(Table table){}
 }

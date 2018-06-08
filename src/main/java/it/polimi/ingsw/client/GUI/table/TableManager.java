@@ -1,8 +1,14 @@
 package it.polimi.ingsw.client.GUI.table;
 
-import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
+import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.Model.Game.Color;
+import it.polimi.ingsw.Model.Game.Dice;
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
@@ -14,8 +20,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class TableManager implements GUIManager{
+public class TableManager implements GUIManager {
+    private HashMap<Integer, String> PUOCs = null;
+    private HashMap<Integer, String> tools = null;
+    private HashMap<Integer, String> PVOCs = null;
+    private HashMap<Integer, String> dices = null;
+    private HashMap<Color, String> colors = null;
+    private Table table = null;
     private Rectangle source = null;
     private int idPool = 0;
     private boolean sourceSelectedWindow = false;
@@ -24,7 +38,6 @@ public class TableManager implements GUIManager{
     private int sourcecol;
     private int destrow;
     private int destcol;
-    private Image image;
     boolean endGame = false;
     String message;
     @FXML
@@ -243,6 +256,7 @@ public class TableManager implements GUIManager{
     ImageView publicObj3;
     @FXML
     ImageView privateObj;
+
     @FXML
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
@@ -334,15 +348,15 @@ public class TableManager implements GUIManager{
         } else {
             destrow = row;
             destcol = col;
-            if(sourceSelectedPool){
-                text.setText("IDPool: "+idPool+"\ndestination row: "+destrow+"\ndestination col: "+destcol);
+            if (sourceSelectedPool) {
+                text.setText("IDPool: " + idPool + "\ndestination row: " + destrow + "\ndestination col: " + destcol);
                 //server.update(message);
                 sourceSelectedWindow = false;
-                sourceSelectedPool=false;
-            } else{
-                text.setText("source row: "+sourcerow+"\nsource col: "+sourcecol+"\ndestination row: "+destrow+"\ndestination col: "+destcol);
+                sourceSelectedPool = false;
+            } else {
+                text.setText("source row: " + sourcerow + "\nsource col: " + sourcecol + "\ndestination row: " + destrow + "\ndestination col: " + destcol);
                 sourceSelectedWindow = false;
-                sourceSelectedPool=false;
+                sourceSelectedPool = false;
             }
         }
         e.consume();
@@ -350,7 +364,7 @@ public class TableManager implements GUIManager{
 
     @FXML
     public void mousePressedPool(MouseEvent e) {
-        if(!sourceSelectedPool && !sourceSelectedWindow){
+        if (!sourceSelectedPool && !sourceSelectedWindow) {
             source = (Rectangle) e.getSource();
             if (source == dice1) {
                 idPool = 1;
@@ -379,14 +393,93 @@ public class TableManager implements GUIManager{
             if (source == dice9) {
                 idPool = 9;
             }
-            sourceSelectedPool=true;
+            sourceSelectedPool = true;
         }
     }
+
     public void initialize() throws IOException {
         GUIData.getGUIData().getView().setGUIManager(this);
         StackPane dice;
         text.setEditable(false);
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice1.fxml"));
+        PUOCs = new HashMap<Integer, String>();
+        String image;
+        image = "/GUI/publicObj1.PNG";
+        PUOCs.put(1, image);
+        image = "/GUI/publicObj3.PNG";
+        PUOCs.put(2, image);
+        image = "/GUI/publicObj2.PNG";
+        PUOCs.put(3, image);
+        image = "/GUI/publicObj4.PNG";
+        PUOCs.put(4, image);
+        image = "/GUI/publicObj5.PNG";
+        PUOCs.put(5, image);
+        image = "/GUI/publicObj6.PNG";
+        PUOCs.put(6, image);
+        image = "/GUI/publicObj7.PNG";
+        PUOCs.put(7, image);
+        image = "/GUI/publicObj8.PNG";
+        PUOCs.put(8, image);
+        image = "/GUI/publicObj9.PNG";
+        PUOCs.put(9, image);
+        image = "/GUI/publicObj10.PNG";
+        PUOCs.put(10, image);
+        tools = new HashMap<Integer, String>();
+        image = "/GUI/tool1.PNG";
+        tools.put(1, image);
+        image = "/GUI/tool2.PNG";
+        tools.put(2, image);
+        image = "/GUI/tool3.PNG";
+        tools.put(3, image);
+        image = "/GUI/tool4.PNG";
+        tools.put(4, image);
+        image = "/GUI/tool5.PNG";
+        tools.put(5, image);
+        image = "/GUI/tool6.PNG";
+        tools.put(6, image);
+        image = "/GUI/tool7.PNG";
+        tools.put(7, image);
+        image = "/GUI/tool8.PNG";
+        tools.put(8, image);
+        image = "/GUI/tool9.PNG";
+        tools.put(9, image);
+        image = "/GUI/tool10.PNG";
+        tools.put(10, image);
+        image = "/GUI/tool11.PNG";
+        tools.put(11, image);
+        image = "/GUI/tool12.PNG";
+        tools.put(12, image);
+        PVOCs = new HashMap<Integer, String>();
+        image = "/GUI/privateObj1.PNG";
+        PVOCs.put(1, image);
+        image = "/GUI/privateObj2.PNG";
+        PVOCs.put(2, image);
+        image = "/GUI/privateObj3.PNG";
+        PVOCs.put(3, image);
+        image = "/GUI/privateObj4.PNG";
+        PVOCs.put(4, image);
+        image = "/GUI/privateObj5.PNG";
+        PVOCs.put(5, image);
+        dices = new HashMap<Integer, String>();
+        image = "/GUI/dice1.fxml";
+        dices.put(1, image);
+        image = "/GUI/dice2.fxml";
+        dices.put(2, image);
+        image = "/GUI/dice3.fxml";
+        dices.put(3, image);
+        image = "/GUI/dice4.fxml";
+        dices.put(4, image);
+        image = "/GUI/dice5.fxml";
+        dices.put(5, image);
+        image = "/GUI/dice6.fxml";
+        dices.put(6, image);
+        colors = new HashMap<>();
+        colors.put(Color.ANSI_YELLOW, "-fx-background-color: rgba(255, 230, 0, 1);");
+        colors.put(Color.ANSI_BLUE, "-fx-background-color: rgba(0, 160, 225, 1);");
+        colors.put(Color.ANSI_RED, "-fx-background-color: rgba(255, 31, 53, 1);");
+        colors.put(Color.ANSI_PURPLE, "-fx-background-color: rgba(255, 50, 255, 1);");
+        colors.put(Color.ANSI_GREEN, "-fx-background-color: rgba(0, 160, 0, 1);");
+
+        /*dice= FXMLLoader.load(Client.class.getResource("/GUI/dice1.fxml"));
         dice.setStyle("-fx-background-color: rgba(255, 230, 0, 1);");  //yellow
         draftPool.add(dice, 0,0);
         dice1.toFront();
@@ -437,15 +530,135 @@ public class TableManager implements GUIManager{
         publicObj2.setImage(image);
         publicObj3.setImage(image);
         image = new Image(Client.class.getResourceAsStream("/GUI/privateObj.PNG"));
-        privateObj.setImage(image);
+        privateObj.setImage(image);*/
     }
 
-    public void notify(String message){
+    public void notify(String message) {
 
     }
 
     public void editMessage(String message) {
         this.message = message;
     }
-    public void showPattern(int ID){}
+
+    public void showPattern(int ID) {
+    }
+
+    public void updateTable(Table table) {
+        this.table = table;
+        showPUOCs(table.getGamePublicObjectiveCards());
+        showTools(table.getGameToolCards());
+        showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
+        showDraftPool(table.getDraftPool());
+    }
+
+    public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
+        Image image;
+        int i = 0;
+        for (PublicObjectiveCard card : cards) {
+            image = new Image(PUOCs.get((Integer) card.getID()));
+            switch (i) {
+                case (0):
+                    publicObj1.setImage(image);
+                    break;
+                case (1):
+                    publicObj2.setImage(image);
+                    break;
+                case (2):
+                    publicObj3.setImage(image);
+                    break;
+            }
+            i++;
+        }
+    }
+
+    public void showTools(ArrayList<ToolCard> cards) {
+        Image image;
+        int i = 0;
+        for (ToolCard card : cards) {
+            image = new Image(tools.get((Integer) card.getID()));
+            switch (i) {
+                case (0):
+                    tool1.setImage(image);
+                    break;
+                case (1):
+                    tool2.setImage(image);
+                    break;
+                case (2):
+                    tool3.setImage(image);
+                    break;
+            }
+            i++;
+        }
+    }
+
+    public void showPVOC(PrivateObjectiveCard card) {
+        Image image;
+        image = new Image(PVOCs.get((Integer) card.getID()));
+        privateObj.setImage(image);
+    }
+
+    public void showDraftPool(ArrayList<Dice> pool) {  //we have to remove all dices before adding new dices
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    StackPane dice = null;
+                    int i = 0;
+                    for (Dice elem : pool) {
+                        try {
+                            dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        switch (i) {
+                            case (0):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 0, 0);
+                                dice1.toFront();
+                                break;
+                            case (1):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 1, 0);
+                                dice2.toFront();
+                                break;
+                            case (2):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 2, 0);
+                                dice3.toFront();
+                                break;
+                            case (3):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 3, 0);
+                                dice4.toFront();
+                                break;
+                            case (4):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 4, 0);
+                                dice5.toFront();
+                                break;
+                            case (5):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 5, 0);
+                                dice6.toFront();
+                                break;
+                            case (6):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 6, 0);
+                                dice7.toFront();
+                                break;
+                            case (7):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 7, 0);
+                                dice8.toFront();
+                                break;
+                            case (8):
+                                dice.setStyle(colors.get(elem.getColor()));
+                                draftPool.add(dice, 8, 0);
+                                dice9.toFront();
+                                break;
+                        }
+                        i++;
+                    }
+                }
+        );
+    }
 }

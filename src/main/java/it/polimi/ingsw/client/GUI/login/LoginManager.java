@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.login;
 
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Comunicator;
 import it.polimi.ingsw.client.ComunicatorRMI;
 import it.polimi.ingsw.client.GUI.GUIData;
@@ -91,5 +92,6 @@ public class LoginManager implements GUIManager{
     }
     public void editMessage(String message){}
     public void showPattern(int ID){}
+    public void updateTable(Table table){};
 }
 

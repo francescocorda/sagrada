@@ -2,13 +2,14 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.GUI.GUIManager;
 
 import java.util.Observable;
 
 public class GUIView extends Observable implements View  {
     private GUIManager manager;
-
+    private Table table;
     @Override
     public void displayGame() {
 
@@ -41,6 +42,17 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void update(Observable o, Object arg) {
+        if(o instanceof Table) {
+            Table table = (Table) o;
+            this.table = table;
+            if(arg == null) {
+                manager.updateTable(table);
+            }
+            else if(arg instanceof String) {
+                String message = (String) arg;
+                manager.editMessage(message);
+            }
+        }
     }
     public void setGUIManager(GUIManager manager){
         this.manager = manager;

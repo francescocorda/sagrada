@@ -2,11 +2,12 @@ package it.polimi.ingsw.client.GUI.lobby;
 
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.Comunicator;
+import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
 import it.polimi.ingsw.client.GUI.table.TableManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
+import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -17,7 +18,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -45,11 +45,13 @@ public class LobbyManager implements GUIManager{
     Button joinLobby;
     @FXML
     public void joinLobby(javafx.event.ActionEvent event){
-        Comunicator comunicator = GUIData.getGUIData().getComunicator();
+        Communicator comunicator = GUIData.getGUIData().getCommunicator();
         String username = GUIData.getGUIData().getUsername();
         try {
             comunicator.lobby(username, Long.parseLong("20"));
         } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        } catch (NotValidInputException e) {
             e.printStackTrace();
         }
     }
@@ -86,7 +88,7 @@ public class LobbyManager implements GUIManager{
             card = card.concat("/").concat("3");
         }
         try {
-            GUIData.getGUIData().getComunicator().sendMessage(card);
+            GUIData.getGUIData().getCommunicator().sendMessage(card);
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }

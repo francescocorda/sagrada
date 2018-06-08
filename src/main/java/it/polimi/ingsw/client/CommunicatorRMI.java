@@ -14,16 +14,16 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class ComunicatorRMI implements Comunicator {
+public class CommunicatorRMI implements Communicator {
     private View view;
     private RMIClientInterface client;
     private ClientHandlerInterface server;
-    public ComunicatorRMI(View view) {
+    public CommunicatorRMI(View view) {
         this.view = view;
     }
 
     @Override
-    public void inizialize(ArrayList<String> parameters) throws NetworkErrorException{
+    public void initialize(ArrayList<String> parameters) throws NetworkErrorException{
         String address = parameters.remove(0);
         try {
             this.client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
@@ -43,11 +43,13 @@ public class ComunicatorRMI implements Comunicator {
     }
 
     @Override
-    public void lobby(String username, Long time) throws NetworkErrorException {
+    public void lobby(String username, Long time) throws NetworkErrorException, NotValidInputException {
         try {
             server.joinLobby(username, time);
-        } catch (RemoteException | NotValidInputException e) {
+        } catch (RemoteException e) {
             throw new NetworkErrorException();
+        } catch (NotValidInputException e) {
+            throw new NotValidInputException();
         }
     }
 

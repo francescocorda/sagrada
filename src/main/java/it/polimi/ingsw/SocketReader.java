@@ -28,6 +28,12 @@ public class SocketReader extends Thread {
         start();
     }
 
+    /**
+     * Keeps listening on socketInput and checks if Client is still connected.
+     * If Client is connected notify all the observers of the {@link #view} with
+     * the message gotten from the socket,
+     * else it disconnects the client
+     */
     @Override
     public void run() {
         String message;
@@ -58,6 +64,9 @@ public class SocketReader extends Thread {
         Thread.currentThread().interrupt();
     }
 
+    /**
+     * Cancels the scheduled timer
+     */
     private void cancelTimer() {
         try {
             timer.cancel();
@@ -68,11 +77,22 @@ public class SocketReader extends Thread {
         }
     }
 
+
+    /**
+     * Closes this thread
+     */
     private void kill() {
         flag = false;
         Thread.currentThread().interrupt();
     }
 
+    /**
+     * Triggers the checking of Client connection.
+     * It accomplish that by sending a "ping" message and incrementing the variable {@link #missingPong}
+     * to predispose the method {@link #run()} for checking Client connection.
+     * It also starts a timer of {@link it.polimi.ingsw.controller.Controller#TIMER_SECONDS}
+     * if it is not already started by checking boolean variable {@link #timerOn}
+     */
     public void waitForPong() {
         connection.sendMessage("ping");
         missingPong++;

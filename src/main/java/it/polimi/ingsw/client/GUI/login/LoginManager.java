@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client.GUI.login;
 
 import it.polimi.ingsw.Model.Game.Table;
-import it.polimi.ingsw.client.Comunicator;
-import it.polimi.ingsw.client.ComunicatorRMI;
+import it.polimi.ingsw.client.Communicator;
+import it.polimi.ingsw.client.CommunicatorRMI;
+import it.polimi.ingsw.client.CommunicatorSocket;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class LoginManager implements GUIManager{
-    private Comunicator comunicator;
+    private Communicator communicator;
 
     private static GUIView view;
     @FXML
@@ -42,13 +43,13 @@ public class LoginManager implements GUIManager{
         if (connection.getText().equals("RMI")) {
             view = new GUIView();
             view.setGUIManager(this);
-            comunicator = new ComunicatorRMI(view);
+            communicator = new CommunicatorRMI(view);
             ArrayList<String> parameters = new ArrayList();
             parameters.add(IPaddress.getText());
             try {
-                comunicator.inizialize(parameters);
-                comunicator.login(username.getText(), password.getText());
-                GUIData.getGUIData().setComunicator(comunicator);
+                communicator.initialize(parameters);
+                communicator.login(username.getText(), password.getText());
+                GUIData.getGUIData().setCommunicator(communicator);
                 GUIData.getGUIData().setUsername(username.getText());
                 GUIData.getGUIData().setView(view);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -64,7 +65,30 @@ public class LoginManager implements GUIManager{
                 e.printStackTrace();
             }
         } else if (connection.getText().equals("socket")) {
-            //comunicator = new ComunicatorSocket();
+            view = new GUIView();
+            view.setGUIManager(this);
+            communicator = new CommunicatorSocket(view);
+            ArrayList<String> parameters = new ArrayList();
+            parameters.add(IPaddress.getText());
+            parameters.add(serverPort.getText());
+            try {
+                communicator.initialize(parameters);
+                communicator.login(username.getText(), password.getText());
+                GUIData.getGUIData().setCommunicator(communicator);
+                GUIData.getGUIData().setUsername(username.getText());
+                GUIData.getGUIData().setView(view);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/lobby.fxml"));
+                //initializeLobby();
+                try {
+                    stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                stage.centerOnScreen();
+            } catch (NetworkErrorException | NotValidInputException e) {
+                e.printStackTrace();
+            }
         }
     }
 

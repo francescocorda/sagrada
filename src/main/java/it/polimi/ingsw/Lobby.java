@@ -46,9 +46,9 @@ public class Lobby {
             VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
             connectedPlayers.add(player);
             connectedPlayersLastTime.add(time);
+            send(username, "<welcome>");
             toTerminal("player: " + player.getUsername() + " singed in");
             broadcast("<player_joined><" + player.getUsername() + ">");
-            send(username, "<welcome>");
             send(username, listOfPlayers());
             players.setPhase(username, Phase.LOBBY);
             trigger();

@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.Comunicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.client.GUI.table.TableManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 public class LobbyManager implements GUIManager{
@@ -26,6 +28,7 @@ public class LobbyManager implements GUIManager{
     private ImageView source;
     private Integer count;
     private HashMap<Integer, ImageView> HM;
+    private Table table;
     @FXML
     ImageView card1;
     @FXML
@@ -89,11 +92,15 @@ public class LobbyManager implements GUIManager{
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/table.fxml"))));
+            URL location = getClass().getResource("/GUI/table.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(location);
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setMaximized(true);
+            TableManager TM = fxmlLoader.getController();
+            if(table!=null) TM.updateTable(table);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        stage.setMaximized(true);
     }
 
     public void editMessage(String message){
@@ -270,5 +277,7 @@ public class LobbyManager implements GUIManager{
             }
         }
     }
-    public void updateTable(Table table){}
+    public void updateTable(Table table){
+        this.table=table;
+    }
 }

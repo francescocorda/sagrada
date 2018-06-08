@@ -8,6 +8,7 @@ import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.CLIView;
 import it.polimi.ingsw.view.View;
+import javafx.stage.Stage;
 
 import java.io.BufferedReader;
 import java.io.IOException;

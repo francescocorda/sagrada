@@ -447,4 +447,5 @@ public class TableManager implements GUIManager{
     public void editMessage(String message) {
         this.message = message;
     }
+    public void showPattern(int ID){}
 }

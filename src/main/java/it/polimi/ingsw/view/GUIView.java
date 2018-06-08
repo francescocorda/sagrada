@@ -36,7 +36,7 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void displayPatternCard(PatternCard patternCard) {
-
+        manager.showPattern(patternCard.getID());
     }
 
     @Override

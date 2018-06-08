@@ -52,7 +52,11 @@ public class ComunicatorRMI implements Comunicator {
     }
 
     @Override
-    public void sendMessage() {
-
+    public void sendMessage(String message) throws NetworkErrorException {
+        try {
+            server.update(message);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
     }
 }

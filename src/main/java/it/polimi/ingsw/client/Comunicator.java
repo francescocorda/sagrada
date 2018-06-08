@@ -10,5 +10,5 @@ public interface Comunicator {
     public void inizialize(ArrayList<String> parameters) throws NetworkErrorException;
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException;
     public void lobby(String username, Long time) throws NetworkErrorException;
-    public void sendMessage();
+    public void sendMessage(String message) throws NetworkErrorException;
 }

@@ -89,8 +89,7 @@ public class LoginManager implements GUIManager{
         serverPort.setVisible(false);
         login.setDisable(true);
     }
-    public void editMessage(String message){
-
-    }
+    public void editMessage(String message){}
+    public void showPattern(int ID){}
 }
 

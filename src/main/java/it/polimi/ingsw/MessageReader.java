@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MessageReader {
     private ArrayList<String> parts;
@@ -10,6 +11,9 @@ public class MessageReader {
             throw new NullPointerException();
         int lastSymbol=0;
         int secondLastSymbol;
+
+        parts = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
+        /*
         parts = new ArrayList<>();
         while(lastSymbol<message.length()-1) {
             secondLastSymbol=lastSymbol;
@@ -32,6 +36,7 @@ public class MessageReader {
             else
                 parts.add(message.substring(secondLastSymbol+1, lastSymbol));
         }
+        */
     }
 
     public boolean hasNext(){

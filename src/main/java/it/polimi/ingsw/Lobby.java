@@ -46,9 +46,9 @@ public class Lobby {
             VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
             connectedPlayers.add(player);
             connectedPlayersLastTime.add(time);
-            send(username, "<welcome>");
+            send(username, "/welcome");
             toTerminal("player: " + player.getUsername() + " singed in");
-            broadcast("<player_joined><" + player.getUsername() + ">");
+            broadcast("/player_joined/" + player.getUsername());
             send(username, listOfPlayers());
             players.setPhase(username, Phase.LOBBY);
             trigger();
@@ -62,7 +62,7 @@ public class Lobby {
             connectedPlayers.remove(index);
             connectedPlayersLastTime.remove(index);
             toTerminal("User: " + player.getUsername() + " has logged out");
-            broadcast("<player_left><" + username + ">");
+            broadcast("/player_left/"+username);
             trigger();
 
         }
@@ -113,13 +113,13 @@ public class Lobby {
                         } catch (IllegalStateException e) {
                             toTerminal("Error: timer already cancelled");
                         }
-                        broadcast("<timer_restarted>");
+                        broadcast("/timer_restarted");
                     }
                     break;
                 case 2:
                     if (!isTimerSet) {
                         isTimerSet = true;
-                        broadcast("<timer_started>");
+                        broadcast("/timer_started");
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -160,8 +160,8 @@ public class Lobby {
             if (connectedPlayers.size() > 1) {
                 isTimerSet = false;
                 timer.cancel();
-                toTerminal("game start");
-                broadcast("<start_game>" + listOfPlayers());
+                toTerminal("/game start");
+                broadcast("/start_game" + listOfPlayers());
                 ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
                 ArrayList<VirtualView> viewsInTheRightOrder = new ArrayList<>();
                 while (!connectedPlayersLastTime.isEmpty()) {
@@ -193,9 +193,9 @@ public class Lobby {
         }
 
         private String listOfPlayers() {
-            String message = "<list_of_players>";
+            String message = "/list_of_players";
             for (PlayerData player : connectedPlayers)
-                message = message.concat("<" + player.getUsername() + ">");
+                message = message.concat("/" + player.getUsername());
             return message;
         }
 

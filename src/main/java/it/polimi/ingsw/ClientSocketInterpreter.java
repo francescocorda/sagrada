@@ -45,7 +45,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     private void login() {
         MessageReader messageReader;
-        sendMessage("login<insert_credentials>");
+        sendMessage("login/insert_credentials");
         while (status == ONLINE) {
             messageReader = getMessage();
             if (messageReader.hasNext()) {
@@ -55,30 +55,30 @@ public class ClientSocketInterpreter implements Runnable {
                     if (!password.equals("") && !messageReader.hasNext()) {
                         try {
                             handler.login(tempUsername, password, this);
-                            sendMessage("login<success>");
+                            sendMessage("login/success");
                             this.username = tempUsername;
                             return;
                         } catch (NotValidInputException e) {
-                            sendMessage("login<failed>");
+                            sendMessage("login/failed");
                         }
                     } else {
-                        sendMessage("login<failed>");
+                        sendMessage("login/failed");
                     }
                 } else {
-                    sendMessage("login<invalid_command>");
+                    sendMessage("login/invalid_command");
                 }
             } else
-                sendMessage("login<invalid_command>");
-            sendMessage("login<insert_credentials>");
+                sendMessage("login/invalid_command");
+            sendMessage("login/insert_credentials");
         }
     }
 
     public void joinLobby() {
-        final String invalidCommand = "lobby<invalid_command>";
+        final String invalidCommand = "lobby/invalid_command";
         long systemTime = System.currentTimeMillis() / 1000; //current unix time in seconds
         String tempMessage;
         while (true) {
-            sendMessage("lobby<last_access><insert_last_access>");
+            sendMessage("lobby/last_access/insert_last_access");
             MessageReader messageReader = getMessage();
             if (messageReader.hasNext()) {
                 tempMessage = messageReader.getNext();
@@ -100,7 +100,7 @@ public class ClientSocketInterpreter implements Runnable {
                                 sendMessage(invalidCommand);
                             }
                         } else {
-                            sendMessage("lobby<last_access><invalid_time>");
+                            sendMessage("lobby/last_access/invalid_time");
                         }
                     } else {
                         sendMessage(invalidCommand);
@@ -167,7 +167,7 @@ public class ClientSocketInterpreter implements Runnable {
             players.disconnect(username);
             System.out.println("User: " + username + " logged out");
             if (players.getPhase(username) == GAME) {
-                return new MessageReader("<end_turn>");
+                return new MessageReader("end_turn");
             }
         }
         return new MessageReader("quit");

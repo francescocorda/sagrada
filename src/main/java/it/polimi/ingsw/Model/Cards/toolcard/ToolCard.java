@@ -180,15 +180,11 @@ public class ToolCard implements Serializable {
     }
 
     public boolean payTokens(Player player) {
-        if (numOfTokens>0) {
-            price = ORDINARY_PRICE;
-        }
         if (player.getNumOfTokens() >= price) {
             numOfTokens += price;
             try {
-                player.setNumOfTokens(player.getNumOfTokens()-price);
+                player.setNumOfTokens(player.getNumOfTokens()- price);
             } catch (NotValidInputException e) {
-
             }
             price = ORDINARY_PRICE;
             return true;

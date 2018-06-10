@@ -37,76 +37,43 @@ public class WindowFrame implements Serializable {
         }
     }
 
-    public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
-            InvalidNeighboursException,
-            InvalidFirstMoveException,
-            OccupiedCellException{
+    public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException, InvalidNeighboursException, InvalidFirstMoveException, OccupiedCellException {
 
         if(row<1 || row>ROW || col<1 || col>COLUMN) {
-            //patternCard.disableExceptions();
             throw new IndexOutOfBoundsException();
         }
 
         if(dice == null) {
-            //patternCard.disableExceptions();
             throw new NullPointerException();
         }
 
         if (isEmpty()) {
             if (row == 1 || row == ROW || col == 1 || col == COLUMN) {
-                if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
-                        ||patternCard.getRestriction(row, col).compare(dice.getColor())
-                        ||patternCard.getRestriction(row, col).compare(dice.getFace())
-                        ||patternCard.getExceptionRestriction(row, col)){
-                    this.dices[row-1][col-1] = dice;
-                } else {
-                    //patternCard.disableExceptions();
-                    throw new InvalidFirstMoveException();
-                }
+                insertDice(row, col, dice);
             } else {
-                //patternCard.disableExceptions();
                 throw new InvalidFirstMoveException();
             }
-        } else {   //if is not the first move
-
-            if (dices[row-1][col-1] != null) { //required cell already occupied
-                //patternCard.disableExceptions();
+        } else {    //if is not the first move
+            if (dices[row-1][col-1] != null) {  //required cell already occupied
                 throw new OccupiedCellException();
-            }
-
-            if(patternCard.getExceptionPosition(row, col) && checkNeighboursRestriction(row, col, dice)) {       //exception on position is actived by a toolcard
-                if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
-                        || patternCard.getExceptionRestriction(row,col)
-                        || patternCard.getRestriction(row, col).compare(dice.getColor())
-                        || patternCard.getRestriction(row, col).compare(dice.getFace())) {
-                    this.dices[row - 1][col - 1] = dice;
-                    //patternCard.disableExceptions();
-                }else {
-                    //patternCard.disableExceptions();
-                    throw new MismatchedRestrictionException();
-                }
-            }
-
-            else if (hasNeighbours(row, col) && checkNeighboursRestriction(row, col, dice)) {
-                if (patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
-                        || patternCard.getExceptionRestriction(row,col)
-                        || patternCard.getRestriction(row, col).compare(dice.getColor())
-                        || patternCard.getRestriction(row, col).compare(dice.getFace())
-                        ) {
-                    this.dices[row - 1][col - 1] = dice;
-                    //patternCard.disableExceptions();
-                } else {
-                    //patternCard.disableExceptions();
-                    throw new MismatchedRestrictionException();
-                }
+            } else if ((patternCard.getExceptionPosition(row, col) || hasNeighbours(row, col)) && checkNeighboursRestriction(row, col, dice)) {
+                insertDice(row, col, dice);
             } else {
-                //patternCard.disableExceptions();
                 throw new InvalidNeighboursException();
             }
-
         }
     }
 
+    private void insertDice(int row, int col, Dice dice) throws MismatchedRestrictionException {
+        if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
+                || patternCard.getExceptionRestriction(row, col)
+                || patternCard.getRestriction(row, col).compare(dice.getColor())
+                || patternCard.getRestriction(row, col).compare(dice.getFace())) {
+            this.dices[row-1][col-1] = dice;
+        } else {
+            throw new MismatchedRestrictionException();
+        }
+    }
 
     public boolean isEmpty() {
         for (int i = 0; i < ROW; i++) {
@@ -140,7 +107,6 @@ public class WindowFrame implements Serializable {
 
         for (int i = row - 2; i <= row; i++) {
             for (int j = col - 2; j <= col; j++) {
-
                 if (i >= 0 && i < ROW && j >= 0 && j < COLUMN) {
                     if (dices[i][j] != null) {
                         if ((i == row - 1 && (j == col - 2 || j == col)) || (j == col - 1 && (i == row - 2 || i == row))) {
@@ -150,7 +116,6 @@ public class WindowFrame implements Serializable {
                         }
                     }
                 }
-
             }
         }
         return true;

@@ -370,13 +370,14 @@ class TestWindowFrame {
             card= deck.getPatternCard(4);
             window.setPatternCard(card);
             dices = diceBag.draw(4);
+            window.dump();
 
             //test inserimento primo dado in posizione[4][1]
             dice = dices.remove(0);
             dice.setColor(Color.ANSI_YELLOW);
             dice.setFace(1);
             Dice finalDice = dice;
-            assertThrows(InvalidFirstMoveException.class, ()->window.setDice(4,1, finalDice));
+            assertThrows(MismatchedRestrictionException.class, ()->window.setDice(4,1, finalDice));
             assertNotEquals(dice, window.getDice(4, 1));
             assertEquals(null, window.getDice(4, 1));
 

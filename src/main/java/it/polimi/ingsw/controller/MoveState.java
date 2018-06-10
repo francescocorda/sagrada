@@ -14,15 +14,10 @@ public class MoveState extends State {
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (game.isCurrentPlayer(username)) {
-            if (game.moveAllowed()) {
                 performMove(username, commands);
                 if (!game.isMoveActive()) {
                     controller.checkGameState();
                 }
-            } else {
-                controller.setState(controller.getChooseActionState());
-                controller.itsYourTurn();
-            }
         } else {
             controller.sendMessage(username, WAIT_YOUR_TURN);
         }

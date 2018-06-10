@@ -51,6 +51,7 @@ public class PlaceIn extends Effect {
 
     @Override
     public boolean applyEffect(ArrayList<String> commands, Table table, Round round) {
+        boolean result = false;
         if (element == DRAFTPOOL) {
             int indexDP = -100;
             if(!commands.isEmpty()) {
@@ -63,7 +64,7 @@ public class PlaceIn extends Effect {
                 table.getDraftPool().add(indexDP - 1, table.getActiveDice());
                 table.setActiveDice(null);
                 table.notifyObservers();
-                return true;
+                result = true;
             } catch (IndexOutOfBoundsException e) {
                 table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                         INVALID_COORDINATES);
@@ -78,7 +79,7 @@ public class PlaceIn extends Effect {
                     window.getPatternCard().disableExceptions();
                     table.setActiveDice(null);
                     table.notifyObservers();
-                    return true;
+                    result = true;
                 } catch (MismatchedRestrictionException | InvalidNeighboursException | InvalidFirstMoveException | OccupiedCellException e) {
                     table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" + e.getMessage());
                 } catch (IndexOutOfBoundsException e) {
@@ -87,7 +88,7 @@ public class PlaceIn extends Effect {
                 }
             }
         }
-        return false;
+        return result;
     }
 
     @Override

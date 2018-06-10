@@ -284,6 +284,7 @@ public class Game implements Serializable {
                 table.getDraftPool().add(table.getActiveDice());
                 table.setActiveDice(null);
             }
+            rounds.get(0).getCurrentPlayer().getWindowFrame().getPatternCard().disableExceptions();
             rounds.get(0).removeTurn(0);
             table.notifyObservers("New Turn.");
             return true;

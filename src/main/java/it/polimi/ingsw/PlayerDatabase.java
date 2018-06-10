@@ -21,18 +21,22 @@ public class PlayerDatabase {
     }
 
     public boolean check(String user, String password, ConnectionMode connectionMode){
-        for(PlayerData playerData : players)
-            if(playerData.getUsername().equals(user))
-                if((playerData.getPassword().equals(password)) && !playerData.isConnected()){
-                    playerData.changeStatus();
-                    playerData.setConnectionMode(connectionMode);
-                    return true;
-                } else {
-                    return false;
-                }
-        players.add(new PlayerData(user, password, connectionMode));
-        System.out.println("Connected players: " + onlinePlayersNumber());
-        return true;
+        if(stringCheck(user) && stringCheck(password)){
+            for(PlayerData playerData : players)
+                if(playerData.getUsername().equals(user))
+                    if((playerData.getPassword().equals(password)) && !playerData.isConnected()){
+                        playerData.changeStatus();
+                        playerData.setConnectionMode(connectionMode);
+                        return true;
+                    } else {
+                        return false;
+                    }
+            players.add(new PlayerData(user, password, connectionMode));
+            System.out.println("Connected players: " + onlinePlayersNumber());
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void addRMIClient(String username, RMIClientInterface client){
@@ -138,5 +142,9 @@ public class PlayerDatabase {
             default:
                 disconnect(player.getUsername());
         }
+    }
+
+    private boolean stringCheck(String string){
+        return (string.length()>0 && !string.equals(" "));
     }
 }

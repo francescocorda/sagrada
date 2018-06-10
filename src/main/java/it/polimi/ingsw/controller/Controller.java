@@ -4,35 +4,33 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.ParserManager;
-import it.polimi.ingsw.PlayerData;
-import it.polimi.ingsw.PlayerDatabase;
-import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.VirtualView;
 import java.util.*;
 
 public class Controller implements Observer {
 
-    private enum STATES {
-        START,
-        CHOOSE_ACTION,
-        MOVE,
-        BUY_TOOLCARD,
-        USE_TOOLCARD,
-        END;
-    }
 
-    public static final int TIMER_SECONDS = 60;
-    private static final String INVALID_FORMAT = "Command of invalid format.";
-    private static final String WAIT_YOUR_TURN = "Wait your turn.";
-    private static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (0-1-2)";
-    private static final int CHOOSE_ACTION_DIM = 1;
+    public static final int TIMER_SECONDS = 20*60;
+    public static final String INVALID_FORMAT = "Command of invalid format.";
+    public static final String WAIT_YOUR_TURN = "Wait your turn.";
+    public static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (0-1-2).";
+    public static final int CHOOSE_ACTION_DIM = 1;
+
+    private State startState;
+    private State chooseActionState;
+    private State moveState;
+    private State buyToolCardState;
+    private State useToolCardState;
+    private State endState;
+
+    private State state;
 
     private ArrayList<VirtualView> views;
     Timer timer;
     ArrayList<String> names;
     private Game game;
-    private STATES state;
+    int count = 0;
 
     public Controller(int matchID, ArrayList<VirtualView> views) {
         ParserManager pm = ParserManager.getParserManager();
@@ -49,17 +47,56 @@ public class Controller implements Observer {
             game.addObserver(virtualView);
             virtualView.addObserver(this);
         }
-        state = STATES.START;
         timer = new Timer();
+
+        startState = new StartState(this);
+        chooseActionState = new ChooseActionState(this);
+        moveState = new MoveState(this);
+        buyToolCardState = new BuyToolCardState(this);
+        useToolCardState = new UseToolCardState(this);
+        endState = new EndState(this);
+        state = startState;
         startGame();
     }
 
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public State getStartState() {
+        return startState;
+    }
+
+    public State getChooseActionState() {
+        return chooseActionState;
+    }
+
+    public State getMoveState() {
+        return moveState;
+    }
+
+    public State getBuyToolCardState() {
+        return buyToolCardState;
+    }
+
+    public State getUseToolCardState() {
+        return useToolCardState;
+    }
+
+    public State getEndState() {
+        return endState;
+    }
+
     private void startGame() {
+        game.drawDices();
         game.drawPublicObjectiveCards();
         game.drawToolCards();
         for (VirtualView view: views) {
-            game.drawDices();
-            PrivateObjectiveCard privateObjectiveCard = null;
+            PrivateObjectiveCard privateObjectiveCard;
             try {
                 privateObjectiveCard = game.assignPrivateObjectiveCard(view.getUsername());
                 ArrayList<PatternCard> patterns = game.drawPatternCards();
@@ -76,13 +113,16 @@ public class Controller implements Observer {
             @Override
             public void run() {
                 for (String name: names) {
-                    ArrayList<String> commands = new ArrayList<>();
-                    commands.add("0");
-                    assignPatternCard(name, commands);
+                    try {
+                        game.setPatternCard(name, 0);
+                    } catch (NotValidInputException e) {
+                        //
+                    }
                 }
                 game.doneAssignPatternCards();
-                state = STATES.CHOOSE_ACTION;
-                yourTurn();
+                state = chooseActionState;
+                itsYourTurn();
+                setTimerSkipTurn();
             }}, TIMER_SECONDS*1000);
     }
 
@@ -96,122 +136,31 @@ public class Controller implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        ArrayList<String> commands =  new ArrayList<>();
+    public synchronized void update(Observable o, Object arg) {
+        ArrayList<String> commands;
         if(o instanceof VirtualView) {
             if(arg instanceof String) {
                 String message = (String) arg;
                 commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-                eventListener(commands);
+                handleEvent(commands);
             }
         }
     }
 
-    private void eventListener(ArrayList<String> commands) {
+    private synchronized void handleEvent(ArrayList<String> commands) {
         if(commands.size()>1){
             String username = commands.remove(0);
             if (names.contains(username)) {
-                if (commands.get(0).equals("quit")) {
+                if (commands.get(0).equals("quit") && commands.size()==1) {
                     //TODO
                     return;
-                } else if (commands.get(0).equals("join")) {
+                } else if (commands.get(0).equals("join") && commands.size()==1) {
                     //TODO
                     return;
                 } else {
-                    switch (state) {
-                        case START:
-                            assignPatternCard(username, commands);
-                            break;
-                        case CHOOSE_ACTION:
-                            if (game.isCurrentPlayer(username)) {
-                                if (commands.size() == CHOOSE_ACTION_DIM) {
-                                    switch (commands.remove(0)) {
-                                        case "move":
-                                            sendMessage(username, "Choose the dice to place in the window: insert draft pool index and window coordinates");
-                                            state = STATES.MOVE;
-                                            break;
-                                        case "skip":
-                                            sendMessage(username, "Turn skipped.");
-                                            skipTurn();
-                                            break;
-                                        case "toolcard":
-                                            sendMessage(username, CHOOSE_TOOL_CARD);
-                                            state = STATES.BUY_TOOLCARD;
-                                            break;
-                                        default:
-                                            yourTurn();
-                                            break;
-                                    }
-                                } else {
-                                    sendMessage(username, INVALID_FORMAT);
-                                }
-                            } else {
-                                sendMessage(username, WAIT_YOUR_TURN);
-                            }
-                            break;
-                        case MOVE:
-                            if (game.isCurrentPlayer(username)) {
-                                if (game.moveAllowed()) {
-                                    performMove(username, commands);
-                                } else {
-                                    state = STATES.CHOOSE_ACTION;
-                                    yourTurn();
-                                }
-                            } else {
-                                sendMessage(username, WAIT_YOUR_TURN);
-                            }
-                            break;
-                        case BUY_TOOLCARD:
-                            if (game.isCurrentPlayer(username)) {
-                                buyToolCard(username, commands);
-                            } else {
-                                sendMessage(username, WAIT_YOUR_TURN);
-                            }
-                            break;
-                        case USE_TOOLCARD:
-                            if (game.isCurrentPlayer(username)) {
-                                useToolCard(username, commands);
-                                if (!game.isToolCardActive()) {
-                                    checkGameState();
-                                }
-                            }  else {
-                                sendMessage(username, WAIT_YOUR_TURN);
-                            }
-                            break;
-                        case END:
-                            game.countScores();
-                    }
+                    state.handleEvent(username, commands);
                 }
             }
-        }
-    }
-
-    private void useToolCard(String username, ArrayList<String> commands) {
-        if (commands.size() == game.getToolCardCommandsSize() && checkFormat(commands)) {
-            game.useToolCard(commands);
-        } else {
-            sendMessage(username, INVALID_FORMAT);
-        }
-    }
-
-    private void buyToolCard(String username, ArrayList<String> commands) {
-        if(commands.size() == 1 && checkFormat(commands)) {
-            int index = Integer.parseInt(commands.remove(0));
-            if (game.toolCardUseAllowed(index) && game.buyToolCard(index)) {
-                game.useToolCard(new ArrayList<>());
-                if (game.isToolCardActive()) {
-                    state = STATES.USE_TOOLCARD;
-                } else {
-                    yourTurn();
-                    state = STATES.CHOOSE_ACTION;
-                }
-            } else {
-                state = STATES.CHOOSE_ACTION;
-                yourTurn();
-            }
-        } else {
-            sendMessage(username, INVALID_FORMAT);
-            sendMessage(username, CHOOSE_TOOL_CARD);
         }
     }
 
@@ -220,81 +169,40 @@ public class Controller implements Observer {
         checkGameState();
     }
 
-
-    public void performMove(String username, ArrayList<String> commands) {
-        if (commands.size()==3) {
-            try {
-                for (String command : commands) {
-                    Integer.parseInt(command);
-                }
-                if(!game.performMove(commands)){
-                    yourTurn();
-                }
-            } catch (NumberFormatException e) {
-                sendMessage(username, INVALID_FORMAT);
-                yourTurn();
-            }
-        } else {
-            sendMessage(username, INVALID_FORMAT);
-            yourTurn();
-        }
-        checkGameState();
-    }
-
-    private void yourTurn() {
+    protected void itsYourTurn() {
         sendMessage(game.getCurrentPlayer(), "It's your turn! Choose Action: move, toolcard, skip");
     }
 
-    private boolean checkFormat(ArrayList<String> commands) {
-        try {
-            for (String command : commands) {
-                Integer.parseInt(command);
-            }
-            return true;
-        } catch (NumberFormatException e) {
-            //
-        }
-        return false;
-    }
-
-    private synchronized void assignPatternCard(String username, ArrayList<String> commands) {
-
-        int indexPattern = Integer.parseInt(commands.remove(0));
-        if ((indexPattern == 0 || indexPattern == 1) && commands.isEmpty()) {
-            try {
-                game.setPatternCard(username, indexPattern);
-                sendMessage(username, "Pattern card assigned.");
-            } catch (NotValidInputException e) {
-                sendMessage(username, INVALID_FORMAT);
-            }
-        } else {
-            sendMessage(username, INVALID_FORMAT);
-        }
-        if (game.doneAssignPatternCards()) {
-            timer.cancel();
-            state = STATES.CHOOSE_ACTION;
-            yourTurn();
-            return;
-        }
-    }
 
     public void checkGameState() {
         if (game.isTurnEnded()) {
             if (game.isRoundEnded()) {
                 if (game.isGameEnded()) {
                     game.countScores();
-                    state = STATES.END;
-                } else {
-                    yourTurn();
-                    state = STATES.CHOOSE_ACTION;
+                    state = endState;
+                    timer.cancel();
+                    return;
                 }
-            } else {
-                state = STATES.CHOOSE_ACTION;
-                yourTurn();
             }
-        } else {
-            state = STATES.CHOOSE_ACTION;
-            yourTurn();
+        setTimerSkipTurn();
         }
+        state = chooseActionState;
+        itsYourTurn();
+    }
+
+    public void setTimerSkipTurn() {
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                state = chooseActionState;
+                skipTurn();
+            }
+        }, TIMER_SECONDS*1000);
+    }
+
+    protected Game getGame() {
+        return game;
     }
 }

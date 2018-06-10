@@ -97,18 +97,6 @@ public class ToolCard implements Serializable {
         }
     }
 
-    /*private void nextStop() {
-        while (stopIndex<effects.size() && !effects.get(stopIndex).isStop()) {
-            stopIndex++;
-        }
-        if (stopIndex<effects.size()) {
-            stopIndex++;
-            stop = stopIndex-1;
-        } else {
-            stop = stopIndex;
-        }
-    }*/
-
     public void nextStop() {
         if (stopIndex+1<stops.size()) {
             stopIndex++;

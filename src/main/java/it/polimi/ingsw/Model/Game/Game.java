@@ -26,9 +26,12 @@ public class Game implements Serializable {
     private ArrayList<ToolCard> toolCards;
     private ArrayList<Round> rounds;
     private Table table;
+    private Move move;
     public static final String INVALID_MOVE_BY_PLAYER = "Invalid move by player ";
-    private static final int PUB_OBJ_CARDS_DIMENSION = 3;
-    private static final int TOOL_CARDS_DIMENSION = 3;
+    public static final String PLAY_GAME = "Play Game.";
+    public static final int PUB_OBJ_CARDS_DIMENSION = 3;
+    public static final int TOOL_CARDS_DIMENSION = 3;
+    public static final int PROPOSED_PATTERNS = 4;
 
 
     public Game(int matchID, ArrayList<String> names ){
@@ -44,6 +47,7 @@ public class Game implements Serializable {
         rounds = new ArrayList<>();
         toolCards = new ArrayList<>();
         this.table = new Table();
+        move = null;
         table.setDiceBag(new DiceBag());
         table.setRoundTrack(new RoundTrack());
         table.setPlayers(players);
@@ -52,6 +56,13 @@ public class Game implements Serializable {
         }
     }
 
+    public ArrayList<String> getUserNames() {
+        ArrayList<String> userNames = new ArrayList<>();
+        for (Player player: players) {
+            userNames.add(player.getName());
+        }
+        return userNames;
+    }
 
     public ArrayList<ToolCard> getToolCards() {
         return toolCards;
@@ -107,7 +118,7 @@ public class Game implements Serializable {
     public ArrayList<PatternCard> drawPatternCards() {
         ArrayList<PatternCard> patterns = new ArrayList<>();
         Random rand = new Random();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < PROPOSED_PATTERNS; i++) {
             int index = rand.nextInt(patternDeck.size());
             try {
                 patterns.add(patternDeck.getPatternCard(index));
@@ -121,9 +132,6 @@ public class Game implements Serializable {
 
     public void setPatternCard(String player, int patternIndex) throws NotValidInputException {
         int i=0;
-        if(patternIndex != 0 && patternIndex != 1){
-            throw new NotValidInputException();
-        }
         while(!players.get(i).getName().equals(player)&& i<players.size()){
             i++;
         }
@@ -131,8 +139,8 @@ public class Game implements Serializable {
             throw new NotValidInputException();
         } else {
             if(players.get(i).getPatternCard() == null) {
-                players.get(i).setPatternCard(matchPatternDeck.get(2*i + patternIndex));
-                players.get(i).setNumOfTokens(matchPatternDeck.get(2*i + patternIndex).getDifficulty());
+                players.get(i).setPatternCard(matchPatternDeck.get(PROPOSED_PATTERNS*i + patternIndex));
+                players.get(i).setNumOfTokens(matchPatternDeck.get(PROPOSED_PATTERNS*i + patternIndex).getDifficulty());
             } else {
                 throw new NotValidInputException();
             }
@@ -146,7 +154,7 @@ public class Game implements Serializable {
             }
         }
         table.notifyObservers();
-        table.notifyObservers("Play Game.");
+        table.notifyObservers(PLAY_GAME);
         return true;
     }
 
@@ -161,43 +169,33 @@ public class Game implements Serializable {
             return false;
     }
 
-    public boolean performMove(ArrayList<String> commands) {
-        boolean moveDone = false;
-        int indexDP = Integer.parseInt(commands.get(0));
-        Dice dice = table.getDraftPool().get(indexDP-1);
-        try {
+    public void performMove(ArrayList<String> commands) {
             if(rounds.get(0).getPlayerTurn(0).getMovesLeft() > 0) {
-                Move move = new Move(table, rounds.get(0).getPlayerTurn(0));
+                rounds.get(0).getPlayerTurn(0).setMoveActive(true);
                 move.performMove(commands);
-                moveDone = true;
-                table.notifyObservers();
             }
-        } catch (IndexOutOfBoundsException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            table.notifyObservers();
-            table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" +
-                    "Invalid coordinates.");
-        }catch (DiceNotFoundException | WrongRoundException | InvalidNeighboursException | InvalidFaceException | MismatchedRestrictionException | OccupiedCellException | InvalidFirstMoveException e) {
-            table.getDraftPool().add(indexDP-1, dice);
-            table.notifyObservers();
-            table.notifyObservers(INVALID_MOVE_BY_PLAYER + getCurrentPlayer() + ":\n" + e.getMessage());
-        }
-        return moveDone;
+    }
+
+    public void createMove() {
+        move = new Move(table, rounds.get(0));
+        move.explainEffect(table, rounds.get(0));
     }
 
     public boolean moveAllowed() {
         if (rounds.get(0).getPlayerTurn(0).getMovesLeft()>0) {
+            table.notifyObservers(getCurrentPlayer() + "'s turn: move allowed.");
             return true;
         }
+        table.notifyObservers(getCurrentPlayer() + "'s turn: move not allowed.");
         return false;
     }
 
     public boolean toolCardUseAllowed(int indexTC) {
         if(table.getGameToolCards().get(indexTC).useAllowed(rounds.get(0).getPlayerTurn(0))) {
-            table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + "use allowed.");
+            table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " use allowed.");
             return true;
         }
-        table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + "use not allowed.");
+        table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " use not allowed.");
         return false;
     }
 
@@ -216,6 +214,10 @@ public class Game implements Serializable {
         return table.getActiveToolCard().getCommandsLenght();
     }
 
+    public int getMoveCommandsSize() {
+        return move.getCommandsLenght();
+    }
+
     public void useToolCard(ArrayList<String> commands) {
         table.getActiveToolCard().useToolCard(commands, table, rounds.get(0));
     }
@@ -224,16 +226,13 @@ public class Game implements Serializable {
         if(rounds.get(0).getPlayerTurn(0) != null) {
             rounds.get(0).getPlayerTurn(0).setMovesLeft(0);
             rounds.get(0).getPlayerTurn(0).setToolCardUsed(true);
-            if(table.getActiveToolCard() != null){
-                table.getActiveToolCard().resetToolCard(table, rounds.get(0));
-            }
+            table.notifyObservers(getCurrentPlayer() + "'s turn: Turn skipped.");
         }
     }
 
-    public ArrayList<Integer> countScores(){
-        ArrayList<Integer> scores = new ArrayList<>();
+    public void countScores(){
         int score;
-        for(Player player: players){
+        for(Player player: table.getPlayers()){
             score = 0;
             score += player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
             score += player.getNumOfTokens();
@@ -242,10 +241,17 @@ public class Game implements Serializable {
                 score += pubObjCard.countScore(player.getWindowFrame());
             }
             player.setScore(score);
-            scores.add(score);
         }
+    }
 
-        return scores;
+    public void broadcastRankings(){
+        int score;
+        ArrayList<Player> players;
+        for (int i = 0; i < table.getPlayers().size(); i++) {
+            for(Player player: table.getPlayers()){
+
+            }
+        }
     }
 
     public boolean isGameEnded() {
@@ -270,6 +276,14 @@ public class Game implements Serializable {
     }
     public boolean isTurnEnded() {
         if (rounds.get(0).getPlayerTurn(0).isEnded()) {
+            if(table.getActiveToolCard() != null) {
+                table.getActiveToolCard().resetToolCard(table, rounds.get(0));
+                table.removeActiveToolCard();
+            }
+            if(table.getActiveDice() != null) {
+                table.getDraftPool().add(table.getActiveDice());
+                table.setActiveDice(null);
+            }
             rounds.get(0).removeTurn(0);
             table.notifyObservers("New Turn.");
             return true;
@@ -288,6 +302,10 @@ public class Game implements Serializable {
     public boolean isToolCardActive() {
         PlayerTurn playerTurn = rounds.get(0).getPlayerTurn(0);
         return playerTurn.isToolCardActive();
+    }
+
+    public boolean isToolCardUsed() {
+        return rounds.get(0).getPlayerTurn(0).isToolCardUsed();
     }
 
     public void addObserver (Observer o) {

@@ -63,7 +63,6 @@ public class SwapWith extends Effect{
             } catch (IndexOutOfBoundsException e) {
                 table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                         INVALID_COORDINATES);
-                explainEffect(table, round);
             }
         } else if (element == Element.DICEBAG) {
             table.getDiceBag().addDice(table.getActiveDice());

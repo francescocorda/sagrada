@@ -67,33 +67,25 @@ public class PlaceIn extends Effect {
             } catch (IndexOutOfBoundsException e) {
                 table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                         INVALID_COORDINATES);
-                explainEffect(table, round);
             }
         } else if (element == Element.WINDOW && isPlaceable(table, round)) {
             WindowFrame window = round.getPlayerTurn(0).getPlayer().getWindowFrame();
-            int row = -100;
-            int col = -100;
-            if(!commands.isEmpty()) {
-                row = Integer.parseInt(commands.remove(0));
-                col = Integer.parseInt(commands.remove(0));
-            } else if (round.getPlayerTurn(0).getOriginCoordinates().size()>=2) {
-                int size = round.getPlayerTurn(0).getOriginCoordinates().size()-1;
-                col = round.getPlayerTurn(0).removeOriginCoordinate(size);
-                row = round.getPlayerTurn(0).removeOriginCoordinate(size-1);
+            if (!commands.isEmpty()) {
+                int row = Integer.parseInt(commands.remove(0));
+                int col = Integer.parseInt(commands.remove(0));
+                try {
+                    window.setDice(row, col, table.getActiveDice());
+                    window.getPatternCard().disableExceptions();
+                    table.setActiveDice(null);
+                    table.notifyObservers();
+                    return true;
+                } catch (MismatchedRestrictionException | InvalidNeighboursException | InvalidFirstMoveException | OccupiedCellException e) {
+                    table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" + e.getMessage());
+                } catch (IndexOutOfBoundsException e) {
+                    table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
+                            INVALID_COORDINATES);
+                }
             }
-            try {
-                window.setDice(row, col, table.getActiveDice());
-                table.setActiveDice(null);
-                table.notifyObservers();
-                return true;
-            } catch (MismatchedRestrictionException | InvalidNeighboursException | InvalidFirstMoveException | OccupiedCellException e) {
-                table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" + e.getMessage());
-            } catch (IndexOutOfBoundsException e) {
-                table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
-                        INVALID_COORDINATES);
-                explainEffect(table, round);
-            }
-
         }
         return false;
     }
@@ -104,28 +96,25 @@ public class PlaceIn extends Effect {
     }
 
     public boolean isPlaceable(Table table, Round round) {
-        String activeException;
-        if (round.getPlayerTurn(0).getMovesLeft() == 0) {
-            return false;
-        } else {
-            WindowFrame windowFrame = round.getCurrentPlayer().getWindowFrame();
-            activeException = windowFrame.getActiveException();
-            for (int i = 0; i < PatternCard.ROW; i++) {
-                for (int j = 0; j < PatternCard.COLUMN; j++) {
-                    try {
-                        windowFrame.setDice(i+1, j+1, table.getActiveDice());
-                        windowFrame.removeDice(i+1, j+1);
-                        windowFrame.enableException(activeException);
-                        return true;
-                    } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | DiceNotFoundException e) {
-                        windowFrame.enableException(activeException);
-                    }
+        //String activeException;
 
+        WindowFrame windowFrame = round.getCurrentPlayer().getWindowFrame();
+        //activeException = windowFrame.getActiveException();
+        for (int i = 0; i < PatternCard.ROW; i++) {
+            for (int j = 0; j < PatternCard.COLUMN; j++) {
+                try {
+                    windowFrame.setDice(i+1, j+1, table.getActiveDice());
+                    windowFrame.removeDice(i+1, j+1);
+                    //windowFrame.enableException(activeException);
+                    return true;
+                } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | DiceNotFoundException e) {
+                    //windowFrame.enableException(activeException);
                 }
+
             }
-            table.getDraftPool().add(table.getActiveDice());
-            table.setActiveDice(null);
-            return false;
         }
+        table.getDraftPool().add(table.getActiveDice());
+        table.setActiveDice(null);
+        return false;
     }
 }

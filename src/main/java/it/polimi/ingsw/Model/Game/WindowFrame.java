@@ -16,18 +16,18 @@ public class WindowFrame implements Serializable {
 
     private Dice[][] dices;
     private PatternCard patternCard;
-    private String exception;
+    //private String exception;
 
     public WindowFrame(){
         dices = new Dice[ROW][COLUMN];
         patternCard=null;
-        this.exception = new String();
+        //this.exception = new String();
     }
 
     public WindowFrame(WindowFrame windowFrame) {
         this.patternCard = new PatternCard(windowFrame.getPatternCard());
         this.dices = new Dice[ROW][COLUMN];
-        this.exception = windowFrame.getActiveException();
+        //this.exception = windowFrame.getActiveException();
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
                 if(windowFrame.getDice(i+1,j+1)!=null) {
@@ -43,34 +43,34 @@ public class WindowFrame implements Serializable {
             OccupiedCellException{
 
         if(row<1 || row>ROW || col<1 || col>COLUMN) {
-            patternCard.setFalseExceptions();
+            //patternCard.disableExceptions();
             throw new IndexOutOfBoundsException();
         }
 
-        if(dice==null) {
-            patternCard.setFalseExceptions();
+        if(dice == null) {
+            //patternCard.disableExceptions();
             throw new NullPointerException();
         }
 
         if (isEmpty()) {
             if (row == 1 || row == ROW || col == 1 || col == COLUMN) {
-                if(this.patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
-                        ||this.patternCard.getRestriction(row, col).compare(dice.getColor())
-                        ||this.patternCard.getRestriction(row, col).compare(dice.getFace())
-                        ||this.patternCard.getExceptionRestriction(row, col)){
+                if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
+                        ||patternCard.getRestriction(row, col).compare(dice.getColor())
+                        ||patternCard.getRestriction(row, col).compare(dice.getFace())
+                        ||patternCard.getExceptionRestriction(row, col)){
                     this.dices[row-1][col-1] = dice;
                 } else {
-                    patternCard.setFalseExceptions();
+                    //patternCard.disableExceptions();
                     throw new InvalidFirstMoveException();
                 }
             } else {
-                patternCard.setFalseExceptions();
+                //patternCard.disableExceptions();
                 throw new InvalidFirstMoveException();
             }
         } else {   //if is not the first move
 
             if (dices[row-1][col-1] != null) { //required cell already occupied
-                patternCard.setFalseExceptions();
+                //patternCard.disableExceptions();
                 throw new OccupiedCellException();
             }
 
@@ -80,9 +80,9 @@ public class WindowFrame implements Serializable {
                         || patternCard.getRestriction(row, col).compare(dice.getColor())
                         || patternCard.getRestriction(row, col).compare(dice.getFace())) {
                     this.dices[row - 1][col - 1] = dice;
-                    patternCard.setFalseExceptions();
+                    //patternCard.disableExceptions();
                 }else {
-                    patternCard.setFalseExceptions();
+                    //patternCard.disableExceptions();
                     throw new MismatchedRestrictionException();
                 }
             }
@@ -94,13 +94,13 @@ public class WindowFrame implements Serializable {
                         || patternCard.getRestriction(row, col).compare(dice.getFace())
                         ) {
                     this.dices[row - 1][col - 1] = dice;
-                    patternCard.setFalseExceptions();
+                    //patternCard.disableExceptions();
                 } else {
-                    patternCard.setFalseExceptions();
+                    //patternCard.disableExceptions();
                     throw new MismatchedRestrictionException();
                 }
             } else {
-                patternCard.setFalseExceptions();
+                //patternCard.disableExceptions();
                 throw new InvalidNeighboursException();
             }
 
@@ -193,7 +193,7 @@ public class WindowFrame implements Serializable {
     }
 
     public void enableException(String restrictionToIgnore){
-        this.exception = restrictionToIgnore;
+        //this.exception = restrictionToIgnore;
         for(int i=1; i<=ROW; i++){
             for(int j=1; j<=COLUMN; j++){
                 if(restrictionToIgnore.compareTo("FACE")==0){
@@ -211,9 +211,9 @@ public class WindowFrame implements Serializable {
         }
     }
 
-    public String getActiveException() {
+    /*public String getActiveException() {
         return exception;
-    }
+    }*/
 
 
     @Override

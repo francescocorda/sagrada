@@ -94,7 +94,7 @@ public class PatternCard extends Card {
         System.out.println(toString());
     }
 
-    public void setFalseExceptions(){
+    public void disableExceptions(){
         for(int i=1; i<=ROW; i++){
             for(int j=1; j<=COLUMN; j++){
                 this.setExceptionPosition(i,j, false);

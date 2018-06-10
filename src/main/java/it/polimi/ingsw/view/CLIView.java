@@ -41,13 +41,6 @@ public class CLIView extends Observable implements View {
         }
     }
 
-    public void performMove() {
-        System.out.println("Scegli un dado dalla draftPool: ");
-        Scanner in = new Scanner(System.in);
-        String index = in.nextLine();
-
-    }
-
     public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
         table.getPlayers().get(0).setPrivateObjectiveCard(privateObjectiveCard);
         displayPrivateObjectiveCard();

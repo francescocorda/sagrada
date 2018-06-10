@@ -46,34 +46,34 @@ public class RemoveFrom extends Effect {
     @Override
     public boolean applyEffect(ArrayList<String> commands, Table table, Round round) throws ImpossibleMoveException {
         if (element == DRAFTPOOL) {
-            round.getPlayerTurn(0).addOriginCoordinate(Integer.parseInt(commands.remove(0)));
-            int indexDP = round.getPlayerTurn(0).getOriginCoordinate(0);
+            int indexDP = Integer.parseInt(commands.remove(0));
+            round.getPlayerTurn(0).addOriginCoordinate(indexDP);
             try {
                 table.setActiveDice(table.getDraftPool().get(indexDP - 1));
                 table.getDraftPool().remove(indexDP-1);
                 table.notifyObservers();
                 return true;
             } catch (IndexOutOfBoundsException e) {
+                round.getPlayerTurn(0).removeOriginCoordinate();
                 table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                         INVALID_COORDINATES);
-                explainEffect(table, round);
             }
         } else if (element == WINDOW) {
             WindowFrame window = round.getPlayerTurn(0).getPlayer().getWindowFrame();
             if (!window.isEmpty()) {
-                round.getPlayerTurn(0).addOriginCoordinate(Integer.parseInt(commands.remove(0)));
-                round.getPlayerTurn(0).addOriginCoordinate(Integer.parseInt(commands.remove(0)));
-                int last = round.getPlayerTurn(0).getOriginCoordinates().size()-1;
-                int row = round.getPlayerTurn(0).getOriginCoordinate(last-1);
-                int col = round.getPlayerTurn(0).getOriginCoordinate(last);
+                int row = Integer.parseInt(commands.remove(0));
+                int col = Integer.parseInt(commands.remove(0));
+                round.getPlayerTurn(0).addOriginCoordinate(row);
+                round.getPlayerTurn(0).addOriginCoordinate(col);
                 try {
                     table.setActiveDice(round.getPlayerTurn(0).getPlayer().getWindowFrame().removeDice(row, col));
                     table.notifyObservers();
                     return true;
                 } catch (IndexOutOfBoundsException | DiceNotFoundException e) {
+                    round.getPlayerTurn(0).removeOriginCoordinate();
+                    round.getPlayerTurn(0).removeOriginCoordinate();
                     table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                             INVALID_COORDINATES);
-                    explainEffect(table, round);
                 }
             } else {
                 throw new ImpossibleMoveException();
@@ -86,6 +86,5 @@ public class RemoveFrom extends Effect {
     @Override
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(element));
-
     }
 }

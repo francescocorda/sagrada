@@ -132,10 +132,6 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -146,15 +142,15 @@ public class TestToolCards {
         }
 
         ArrayList<String> commands = new ArrayList<>();
+
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
+
 
 
         int dimension = table.getDraftPool().size();
@@ -226,10 +222,6 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -241,14 +233,12 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
 
         int dimension = table.getDraftPool().size();
@@ -316,11 +306,7 @@ public class TestToolCards {
     public void toolCard41Test() throws WrongRoundException {
 
         ToolCard toolCard = toolCards.get(3);
-
-
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
+        WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
@@ -333,18 +319,16 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
 
         int dimension = table.getDraftPool().size();
 
-        WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         //funzionamento base
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
         ArrayList<String> comm1 = new ArrayList<>();
@@ -377,14 +361,6 @@ public class TestToolCards {
     public void toolCard5Test() {
 
         ToolCard toolCard = toolCards.get(4);
-
-
-        WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
-
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
 
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
@@ -436,13 +412,7 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(5);
 
-
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
-
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
 
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
@@ -455,14 +425,12 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
 
         int dimension = table.getDraftPool().size();
@@ -518,13 +486,6 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(6);
 
-
-
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -556,10 +517,6 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -571,14 +528,12 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
 
         int dimension = table.getDraftPool().size();
@@ -664,11 +619,6 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -680,14 +630,12 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
 
         int dimension = table.getDraftPool().size();
@@ -805,10 +753,6 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        Move move1 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-        Move move2 = new Move(table, game.getRounds().get(0).getPlayerTurn(0));
-
-
         table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
         table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
         try {
@@ -820,14 +764,12 @@ public class TestToolCards {
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            commands.add("1"); commands.add("1"); commands.add("3");
-            move1.performMove(commands);
-            commands.add("1"); commands.add("2"); commands.add("2");
-            move2.performMove(commands);
-            windowFrame.dump();
-        } catch (InvalidNeighboursException | OccupiedCellException | MismatchedRestrictionException | DiceNotFoundException | InvalidFirstMoveException | InvalidFaceException e) {
+            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
+            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+        } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
+        windowFrame.dump();
 
         table.dumpDraftPool();
         int dimension = table.getDraftPool().size();

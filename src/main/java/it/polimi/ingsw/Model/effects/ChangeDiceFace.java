@@ -89,7 +89,6 @@ public class ChangeDiceFace extends Effect {
         } catch (InvalidFaceException e) {
             table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() + ":\n" +
                     INVALID_COORDINATES);
-            explainEffect(table, round);
         }
         return false;
     }

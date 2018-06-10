@@ -11,8 +11,8 @@ class TestMessageReader {
 
     @Test
     void allMethodsTest(){
-        assertDoesNotThrow(()->new MessageReader("login<Username><Password><<PizzoCalabro>"));
-        MessageReader messageReader = new MessageReader("login<Username><Password><<PizzoCalabro>");
+        assertDoesNotThrow(()->new MessageReader("login/Username/Password/PizzoCalabro"));
+        MessageReader messageReader = new MessageReader("login/Username/Password/PizzoCalabro");
         assertEquals(true, messageReader.hasNext());
         String message = messageReader.getNext();
         System.out.println(message);
@@ -29,7 +29,7 @@ class TestMessageReader {
         assertEquals(true, messageReader.hasNext());
         message = messageReader.getNext();
         System.out.println(message);
-        assertEquals("<PizzoCalabro", message);
+        assertEquals("PizzoCalabro", message);
         assertEquals(false, messageReader.hasNext());
         assertThrows(NullPointerException.class, ()->messageReader.getNext());
         assertThrows(NullPointerException.class, ()->new MessageReader(null));

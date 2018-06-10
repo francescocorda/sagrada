@@ -75,6 +75,10 @@ public class PlayerTurn implements Serializable {
         return originCoordinates.remove(index);
     }
 
+    public int removeOriginCoordinate() {
+        return originCoordinates.remove(originCoordinates.size()-1);
+    }
+
     public void setOriginCoordinates(ArrayList<Integer> originCoordinates) {
         this.originCoordinates = originCoordinates;
     }

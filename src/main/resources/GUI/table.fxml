@@ -66,7 +66,7 @@
                         <Rectangle fx:id="dice45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
-                  <GridPane fx:id="window2" gridLinesVisible="true" layoutX="460.0" layoutY="295.0" GridPane.columnIndex="1">
+                  <GridPane fx:id="window2" gridLinesVisible="true" layoutX="460.0" layoutY="295.0" rotate="180.0" GridPane.columnIndex="1">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
@@ -85,26 +85,26 @@
                      </GridPane.margin>
                      <children>
                         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                        <Rectangle fx:id="dice2_44" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" />
-                        <Rectangle fx:id="dice2_45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                        <Rectangle fx:id="dice2_43" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" />
-                        <Rectangle fx:id="dice2_42" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" />
-                        <Rectangle fx:id="dice2_41" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" />
-                        <Rectangle fx:id="dice2_35" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice2_34" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice2_33" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice2_32" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice2_31" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice2_25" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice2_24" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice2_23" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice2_22" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice2_21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice2_15" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice2_14" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice2_13" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice2_12" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice2_11" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice2_12" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" />
+                        <Rectangle fx:id="dice2_11" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
+                        <Rectangle fx:id="dice2_13" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" />
+                        <Rectangle fx:id="dice2_14" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" />
+                        <Rectangle fx:id="dice2_15" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" />
+                        <Rectangle fx:id="dice2_21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice2_22" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice2_23" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice2_24" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice2_25" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice2_31" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice2_32" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice2_33" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice2_34" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice2_35" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice2_41" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice2_42" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice2_43" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice2_44" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice2_45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <GridPane fx:id="window3" gridLinesVisible="true" rotate="90.0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
@@ -219,10 +219,28 @@
                         <Rectangle fx:id="dice9" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedPool" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" />
                      </children>
                   </GridPane>
-                  <TextArea fx:id="text" editable="false" maxHeight="85.0" maxWidth="120.0" prefHeight="85.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextArea fx:id="text" editable="false" maxHeight="140.0" maxWidth="400.0" prefHeight="140.0" prefWidth="400.0" translateX="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin></TextArea>
                   <TextArea fx:id="username3" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.halignment="CENTER" />
                   <TextArea fx:id="username4" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                   <TextArea fx:id="username2" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.valignment="TOP" />
+                  <Button fx:id="moveButton" contentDisplay="CENTER" minWidth="70.0" mnemonicParsing="false" onAction="#moveAction" prefHeight="50.0" prefWidth="70.0" text="move" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="330.0" top="100.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="toolCardButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#toolCardAction" prefHeight="50.0" prefWidth="70.0" text="toolCard" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="260.0" top="100.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="skipButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#skipAction" prefHeight="50.0" prefWidth="70.0" text="skip" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="190.0" top="100.0" />
+                     </GridPane.margin>
+                  </Button>
                </children>
             </GridPane>
          </content>
@@ -241,7 +259,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="tool1" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                  <ImageView fx:id="tool1" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool1" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -249,8 +267,8 @@
                   <ImageView fx:id="publicObj3" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <ImageView fx:id="publicObj2" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                   <ImageView fx:id="publicObj1" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fx:id="tool2" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ImageView fx:id="tool3" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="tool2" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="tool3" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                   <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets top="300.0" />

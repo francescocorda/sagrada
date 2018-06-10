@@ -1,16 +1,20 @@
 package it.polimi.ingsw.client.GUI.table;
 
+import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
-import it.polimi.ingsw.Model.Game.Color;
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.Model.Game.*;
+import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
+import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,11 +28,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TableManager implements GUIManager {
-    private HashMap<Integer, String> PUOCs = null;
-    private HashMap<Integer, String> tools = null;
-    private HashMap<Integer, String> PVOCs = null;
+    private HashMap<String, Integer> comparator = null;
+    private HashMap<Integer, String> PUOCs = null;  //Public Objective Cards
+    private HashMap<Integer, String> tools = null;  //Toolcards
+    private HashMap<Integer, String> PVOCs = null;  //Private Objective Cards
     private HashMap<Integer, String> dices = null;
-    private HashMap<Color, String> colors = null;
+    private HashMap<Color, String> colors = null;  //Restriction of colors
+    private HashMap<String, String> colorsWindow = null;
+    private ArrayList<Rectangle> cells1 = null;  //cells of player one
+    private ArrayList<Rectangle> cells2 = null;  //cells of player two
+    private ArrayList<Rectangle> cells3 = null;  //cells of player three
+    private ArrayList<Rectangle> cells4 = null;  //cells of player four
+    private ArrayList<StackPane> poolItems = null;  //dice of draftPool
+    private ArrayList<Rectangle> cellsPool = null;  //cells of draftPool
     private Table table = null;
     private Rectangle source = null;
     private int idPool = 0;
@@ -38,362 +50,186 @@ public class TableManager implements GUIManager {
     private int sourcecol;
     private int destrow;
     private int destcol;
-    boolean endGame = false;
-    String message;
-    @FXML
-    GridPane draftPool;
-    @FXML
-    Rectangle dice1;
-    @FXML
-    Rectangle dice2;
-    @FXML
-    Rectangle dice3;
-    @FXML
-    Rectangle dice4;
-    @FXML
-    Rectangle dice5;
-    @FXML
-    Rectangle dice6;
-    @FXML
-    Rectangle dice7;
-    @FXML
-    Rectangle dice8;
-    @FXML
-    Rectangle dice9;
+    private Communicator communicator;
+    private boolean endGame = false;
+    private boolean move;
+    private boolean toolCard;
+    @FXML GridPane draftPool;
+    @FXML Rectangle dice1;
+    @FXML Rectangle dice2;
+    @FXML Rectangle dice3;
+    @FXML Rectangle dice4;
+    @FXML Rectangle dice5;
+    @FXML Rectangle dice6;
+    @FXML Rectangle dice7;
+    @FXML Rectangle dice8;
+    @FXML Rectangle dice9;
     //window1
-    @FXML
-    GridPane window1;
-    @FXML
-    Rectangle dice11;
-    @FXML
-    Rectangle dice12;
-    @FXML
-    Rectangle dice13;
-    @FXML
-    Rectangle dice14;
-    @FXML
-    Rectangle dice15;
-    @FXML
-    Rectangle dice21;
-    @FXML
-    Rectangle dice22;
-    @FXML
-    Rectangle dice23;
-    @FXML
-    Rectangle dice24;
-    @FXML
-    Rectangle dice25;
-    @FXML
-    Rectangle dice31;
-    @FXML
-    Rectangle dice32;
-    @FXML
-    Rectangle dice33;
-    @FXML
-    Rectangle dice34;
-    @FXML
-    Rectangle dice35;
-    @FXML
-    Rectangle dice41;
-    @FXML
-    Rectangle dice42;
-    @FXML
-    Rectangle dice43;
-    @FXML
-    Rectangle dice44;
-    @FXML
-    Rectangle dice45;
+    @FXML GridPane window1;
+    @FXML Rectangle dice11;
+    @FXML Rectangle dice12;
+    @FXML Rectangle dice13;
+    @FXML Rectangle dice14;
+    @FXML Rectangle dice15;
+    @FXML Rectangle dice21;
+    @FXML Rectangle dice22;
+    @FXML Rectangle dice23;
+    @FXML Rectangle dice24;
+    @FXML Rectangle dice25;
+    @FXML Rectangle dice31;
+    @FXML Rectangle dice32;
+    @FXML Rectangle dice33;
+    @FXML Rectangle dice34;
+    @FXML Rectangle dice35;
+    @FXML Rectangle dice41;
+    @FXML Rectangle dice42;
+    @FXML Rectangle dice43;
+    @FXML Rectangle dice44;
+    @FXML Rectangle dice45;
     //window2
-    @FXML
-    GridPane window2;
-    @FXML
-    TextArea username2;
-    @FXML
-    Rectangle dice2_11;
-    @FXML
-    Rectangle dice2_12;
-    @FXML
-    Rectangle dice2_13;
-    @FXML
-    Rectangle dice2_14;
-    @FXML
-    Rectangle dice2_15;
-    @FXML
-    Rectangle dice2_21;
-    @FXML
-    Rectangle dice2_22;
-    @FXML
-    Rectangle dice2_23;
-    @FXML
-    Rectangle dice2_24;
-    @FXML
-    Rectangle dice2_25;
-    @FXML
-    Rectangle dice2_31;
-    @FXML
-    Rectangle dice2_32;
-    @FXML
-    Rectangle dice2_33;
-    @FXML
-    Rectangle dice2_34;
-    @FXML
-    Rectangle dice2_35;
-    @FXML
-    Rectangle dice2_41;
-    @FXML
-    Rectangle dice2_42;
-    @FXML
-    Rectangle dice2_43;
-    @FXML
-    Rectangle dice2_44;
-    @FXML
-    Rectangle dice2_45;
-    //window2
-    @FXML
-    GridPane window3;
-    @FXML
-    TextArea username3;
-    @FXML
-    Rectangle dice3_11;
-    @FXML
-    Rectangle dice3_12;
-    @FXML
-    Rectangle dice3_13;
-    @FXML
-    Rectangle dice3_14;
-    @FXML
-    Rectangle dice3_15;
-    @FXML
-    Rectangle dice3_21;
-    @FXML
-    Rectangle dice3_22;
-    @FXML
-    Rectangle dice3_23;
-    @FXML
-    Rectangle dice3_24;
-    @FXML
-    Rectangle dice3_25;
-    @FXML
-    Rectangle dice3_31;
-    @FXML
-    Rectangle dice3_32;
-    @FXML
-    Rectangle dice3_33;
-    @FXML
-    Rectangle dice3_34;
-    @FXML
-    Rectangle dice3_35;
-    @FXML
-    Rectangle dice3_41;
-    @FXML
-    Rectangle dice3_42;
-    @FXML
-    Rectangle dice3_43;
-    @FXML
-    Rectangle dice3_44;
-    @FXML
-    Rectangle dice3_45;
-    //window2
-    @FXML
-    GridPane window4;
-    @FXML
-    TextArea username4;
-    @FXML
-    Rectangle dice4_11;
-    @FXML
-    Rectangle dice4_12;
-    @FXML
-    Rectangle dice4_13;
-    @FXML
-    Rectangle dice4_14;
-    @FXML
-    Rectangle dice4_15;
-    @FXML
-    Rectangle dice4_21;
-    @FXML
-    Rectangle dice4_22;
-    @FXML
-    Rectangle dice4_23;
-    @FXML
-    Rectangle dice4_24;
-    @FXML
-    Rectangle dice4_25;
-    @FXML
-    Rectangle dice4_31;
-    @FXML
-    Rectangle dice4_32;
-    @FXML
-    Rectangle dice4_33;
-    @FXML
-    Rectangle dice4_34;
-    @FXML
-    Rectangle dice4_35;
-    @FXML
-    Rectangle dice4_41;
-    @FXML
-    Rectangle dice4_42;
-    @FXML
-    Rectangle dice4_43;
-    @FXML
-    Rectangle dice4_44;
-    @FXML
-    Rectangle dice4_45;
-    @FXML
-    TextArea text;
-
+    @FXML GridPane window2;
+    @FXML TextArea username2;
+    @FXML Rectangle dice2_11;
+    @FXML Rectangle dice2_12;
+    @FXML Rectangle dice2_13;
+    @FXML Rectangle dice2_14;
+    @FXML Rectangle dice2_15;
+    @FXML Rectangle dice2_21;
+    @FXML Rectangle dice2_22;
+    @FXML Rectangle dice2_23;
+    @FXML Rectangle dice2_24;
+    @FXML Rectangle dice2_25;
+    @FXML Rectangle dice2_31;
+    @FXML Rectangle dice2_32;
+    @FXML Rectangle dice2_33;
+    @FXML Rectangle dice2_34;
+    @FXML Rectangle dice2_35;
+    @FXML Rectangle dice2_41;
+    @FXML Rectangle dice2_42;
+    @FXML Rectangle dice2_43;
+    @FXML Rectangle dice2_44;
+    @FXML Rectangle dice2_45;
+    //window3
+    @FXML GridPane window3;
+    @FXML TextArea username3;
+    @FXML Rectangle dice3_11;
+    @FXML Rectangle dice3_12;
+    @FXML Rectangle dice3_13;
+    @FXML Rectangle dice3_14;
+    @FXML Rectangle dice3_15;
+    @FXML Rectangle dice3_21;
+    @FXML Rectangle dice3_22;
+    @FXML Rectangle dice3_23;
+    @FXML Rectangle dice3_24;
+    @FXML Rectangle dice3_25;
+    @FXML Rectangle dice3_31;
+    @FXML Rectangle dice3_32;
+    @FXML Rectangle dice3_33;
+    @FXML Rectangle dice3_34;
+    @FXML Rectangle dice3_35;
+    @FXML Rectangle dice3_41;
+    @FXML Rectangle dice3_42;
+    @FXML Rectangle dice3_43;
+    @FXML Rectangle dice3_44;
+    @FXML Rectangle dice3_45;
+    //window4
+    @FXML GridPane window4;
+    @FXML TextArea username4;
+    @FXML Rectangle dice4_11;
+    @FXML Rectangle dice4_12;
+    @FXML Rectangle dice4_13;
+    @FXML Rectangle dice4_14;
+    @FXML Rectangle dice4_15;
+    @FXML Rectangle dice4_21;
+    @FXML Rectangle dice4_22;
+    @FXML Rectangle dice4_23;
+    @FXML Rectangle dice4_24;
+    @FXML Rectangle dice4_25;
+    @FXML Rectangle dice4_31;
+    @FXML Rectangle dice4_32;
+    @FXML Rectangle dice4_33;
+    @FXML Rectangle dice4_34;
+    @FXML Rectangle dice4_35;
+    @FXML Rectangle dice4_41;
+    @FXML Rectangle dice4_42;
+    @FXML Rectangle dice4_43;
+    @FXML Rectangle dice4_44;
+    @FXML Rectangle dice4_45;
+    @FXML TextArea text;
     //Cards
-    @FXML
-    ImageView tool1;
-    @FXML
-    ImageView tool2;
-    @FXML
-    ImageView tool3;
-    @FXML
-    ImageView publicObj1;
-    @FXML
-    ImageView publicObj2;
-    @FXML
-    ImageView publicObj3;
-    @FXML
-    ImageView privateObj;
+    @FXML ImageView tool1;
+    @FXML ImageView tool2;
+    @FXML ImageView tool3;
+    @FXML ImageView publicObj1;
+    @FXML ImageView publicObj2;
+    @FXML ImageView publicObj3;
+    @FXML ImageView privateObj;
+    @FXML Button moveButton;
+    @FXML Button toolCardButton;
+    @FXML Button skipButton;
 
     @FXML
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
         source = (Rectangle) e.getSource();
-        if (source.equals(dice11)) {
-            row = 1;
-            col = 1;
-        }
-        if (source.equals(dice12)) {
-            row = 1;
-            col = 2;
-        }
-        if (source.equals(dice13)) {
-            row = 1;
-            col = 3;
-        }
-        if (source.equals(dice14)) {
-            row = 1;
-            col = 4;
-        }
-        if (source.equals(dice15)) {
-            row = 1;
-            col = 5;
-        }
-        if (source.equals(dice21)) {
-            row = 2;
-            col = 1;
-        }
-        if (source.equals(dice22)) {
-            row = 2;
-            col = 2;
-        }
-        if (source.equals(dice23)) {
-            row = 2;
-            col = 3;
-        }
-        if (source.equals(dice24)) {
-            row = 2;
-            col = 4;
-        }
-        if (source.equals(dice25)) {
-            row = 2;
-            col = 5;
-        }
-        if (source.equals(dice31)) {
-            row = 3;
-            col = 1;
-        }
-        if (source.equals(dice32)) {
-            row = 3;
-            col = 2;
-        }
-        if (source.equals(dice33)) {
-            row = 3;
-            col = 3;
-        }
-        if (source.equals(dice34)) {
-            row = 3;
-            col = 4;
-        }
-        if (source.equals(dice35)) {
-            row = 3;
-            col = 5;
-        }
-        if (source.equals(dice41)) {
-            row = 4;
-            col = 1;
-        }
-        if (source.equals(dice42)) {
-            row = 4;
-            col = 2;
-        }
-        if (source.equals(dice43)) {
-            row = 4;
-            col = 3;
-        }
-        if (source.equals(dice44)) {
-            row = 4;
-            col = 4;
-        }
-        if (source.equals(dice45)) {
-            row = 4;
-            col = 5;
-        }
-        if (!sourceSelectedWindow && !sourceSelectedPool) {
-            sourcerow = row;
-            sourcecol = col;
-            sourceSelectedWindow = true;
-        } else {
-            destrow = row;
-            destcol = col;
-            if (sourceSelectedPool) {
-                text.setText("IDPool: " + idPool + "\ndestination row: " + destrow + "\ndestination col: " + destcol);
-                //server.update(message);
-                sourceSelectedWindow = false;
-                sourceSelectedPool = false;
-            } else {
-                text.setText("source row: " + sourcerow + "\nsource col: " + sourcecol + "\ndestination row: " + destrow + "\ndestination col: " + destcol);
-                sourceSelectedWindow = false;
-                sourceSelectedPool = false;
+        for (int j = 1; j < 5; j++) {
+            for (int k = 1; k < 6; k++) {
+                if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
+                    row = j;
+                    col = k;
+                }
             }
+        }
+        try {
+            communicator.sendMessage(row+"/"+col);
+        } catch (NetworkErrorException e1) {
+            e1.printStackTrace();
         }
         e.consume();
     }
-
     @FXML
     public void mousePressedPool(MouseEvent e) {
-        if (!sourceSelectedPool && !sourceSelectedWindow) {
-            source = (Rectangle) e.getSource();
-            if (source == dice1) {
-                idPool = 1;
-            }
-            if (source == dice2) {
-                idPool = 2;
-            }
-            if (source == dice3) {
-                idPool = 3;
-            }
-            if (source == dice4) {
-                idPool = 4;
-            }
-            if (source == dice5) {
-                idPool = 5;
-            }
-            if (source == dice6) {
-                idPool = 6;
-            }
-            if (source == dice7) {
-                idPool = 7;
-            }
-            if (source == dice8) {
-                idPool = 8;
-            }
-            if (source == dice9) {
-                idPool = 9;
-            }
-            sourceSelectedPool = true;
+        source = (Rectangle) e.getSource();
+        for(int i=0; i<9; i++){
+           if (source == cellsPool.get(i)) {
+               idPool = i+1;
+           }
+        }
+        try {
+            communicator.sendMessage(""+idPool);
+        } catch (NetworkErrorException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void moveAction(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("move");
+            move=true;
+            toolCard = false;
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void toolCardAction(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("toolcard");
+            toolCard=true;
+            move=false;
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void skipAction(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("skip");
+            move=false;
+            toolCard=false;
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
     }
 
@@ -478,67 +314,67 @@ public class TableManager implements GUIManager {
         colors.put(Color.ANSI_RED, "-fx-background-color: rgba(255, 31, 53, 1);");
         colors.put(Color.ANSI_PURPLE, "-fx-background-color: rgba(255, 50, 255, 1);");
         colors.put(Color.ANSI_GREEN, "-fx-background-color: rgba(0, 160, 0, 1);");
-
-        /*dice= FXMLLoader.load(Client.class.getResource("/GUI/dice1.fxml"));
-        dice.setStyle("-fx-background-color: rgba(255, 230, 0, 1);");  //yellow
-        draftPool.add(dice, 0,0);
-        dice1.toFront();
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice2.fxml"));
-        dice.setStyle("-fx-background-color: rgba(255, 31, 53, 1);");  //red
-        draftPool.add(dice, 1,0);
-        dice2.toFront();
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice3.fxml"));
-        dice.setStyle("-fx-background-color: rgba(0, 160, 0, 1);");    //green
-        draftPool.add(dice, 2,0);
-        dice.toFront();
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice4.fxml"));
-        dice.setStyle("-fx-background-color: rgba(255, 50, 255, 1);");  //purple
-        draftPool.add(dice, 3,0);
-        dice4.toFront();
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice6.fxml"));
-        dice.setStyle("-fx-background-color: rgba(0, 160, 225, 1);");  //blue
-        draftPool.add(dice, 4,0);
-        dice5.toFront();
-
-        //prove window
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice4.fxml"));
-        dice.setStyle("-fx-background-color: rgba(255, 31, 53, 1);");  //red
-        window1.add(dice, 4, 3);
-        dice45.toFront();
-
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice2.fxml"));
-        dice.setStyle("-fx-background-color: rgba(255, 230, 0, 1);");  //yellow
-        window1.add(dice, 1, 1);
-        dice22.toFront();
-
-        //prova restrizione numero
-        dice= FXMLLoader.load(Client.class.getResource("/GUI/dice3.fxml"));
-        window1.add(dice, 2, 1);
-        dice23.toFront();
-
-        //prova restrizione colore
-        dice34.setStyle("-fx-fill: rgba(255, 31, 53, 0.4);");
-        dice35.setStyle("-fx-fill: rgba(255, 230, 0, 0.4);");  //yellow
-
-        //inserisco carte
-        image = new Image(Client.class.getResourceAsStream("/GUI/tool1.PNG"));
-        tool1.setImage(image);
-        tool2.setImage(image);
-        tool3.setImage(image);
-        image = new Image(Client.class.getResourceAsStream("/GUI/publicObj1.PNG"));
-        publicObj1.setImage(image);
-        publicObj2.setImage(image);
-        publicObj3.setImage(image);
-        image = new Image(Client.class.getResourceAsStream("/GUI/privateObj.PNG"));
-        privateObj.setImage(image);*/
-    }
-
-    public void notify(String message) {
-
+        comparator = new HashMap<>();
+        comparator.put(Restriction.ONE.escape(), 1);
+        comparator.put(Restriction.TWO.escape(), 2);
+        comparator.put(Restriction.THREE.escape(), 3);
+        comparator.put(Restriction.FOUR.escape(), 4);
+        comparator.put(Restriction.FIVE.escape(), 5);
+        comparator.put(Restriction.SIX.escape(), 6);
+        colorsWindow = new HashMap<>();
+        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");
+        colorsWindow.put(Restriction.ANSI_RED.escape(), "-fx-fill: rgba(255, 31, 53, 0.5);");
+        colorsWindow.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: rgba(0, 160, 0, 0.5);");
+        colorsWindow.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: rgba(255, 50, 255, 0.5);");
+        colorsWindow.put(Restriction.ANSI_BLUE.escape(), "-fx-fill: rgba(0, 160, 225, 0.5);");
+        colorsWindow.put(Restriction.ANSI_YELLOW.escape(), "-fx-fill: rgba(255, 230, 0, 0.5);");
+        cells1 = new ArrayList<>(); cells2 = new ArrayList<>(); cells3 = new ArrayList<>(); cells4 = new ArrayList<>();
+        cells1.add(dice11); cells2.add(dice2_11); cells3.add(dice3_11); cells4.add(dice4_11);
+        cells1.add(dice12); cells2.add(dice2_12); cells3.add(dice3_12); cells4.add(dice4_12);
+        cells1.add(dice13); cells2.add(dice2_13); cells3.add(dice3_13); cells4.add(dice4_13);
+        cells1.add(dice14); cells2.add(dice2_14); cells3.add(dice3_14); cells4.add(dice4_14);
+        cells1.add(dice15); cells2.add(dice2_15); cells3.add(dice3_15); cells4.add(dice4_15);
+        cells1.add(dice21); cells2.add(dice2_21); cells3.add(dice3_21); cells4.add(dice4_21);
+        cells1.add(dice22); cells2.add(dice2_22); cells3.add(dice3_22); cells4.add(dice4_22);
+        cells1.add(dice23); cells2.add(dice2_23); cells3.add(dice3_23); cells4.add(dice4_23);
+        cells1.add(dice24); cells2.add(dice2_24); cells3.add(dice3_24); cells4.add(dice4_24);
+        cells1.add(dice25); cells2.add(dice2_25); cells3.add(dice3_25); cells4.add(dice4_25);
+        cells1.add(dice31); cells2.add(dice2_31); cells3.add(dice3_31); cells4.add(dice4_31);
+        cells1.add(dice32); cells2.add(dice2_32); cells3.add(dice3_32); cells4.add(dice4_32);
+        cells1.add(dice33); cells2.add(dice2_33); cells3.add(dice3_33); cells4.add(dice4_33);
+        cells1.add(dice34); cells2.add(dice2_34); cells3.add(dice3_34); cells4.add(dice4_34);
+        cells1.add(dice35); cells2.add(dice2_35); cells3.add(dice3_35); cells4.add(dice4_35);
+        cells1.add(dice41); cells2.add(dice2_41); cells3.add(dice3_41); cells4.add(dice4_41);
+        cells1.add(dice42); cells2.add(dice2_42); cells3.add(dice3_42); cells4.add(dice4_42);
+        cells1.add(dice43); cells2.add(dice2_43); cells3.add(dice3_43); cells4.add(dice4_43);
+        cells1.add(dice44); cells2.add(dice2_44); cells3.add(dice3_44); cells4.add(dice4_44);
+        cells1.add(dice45); cells2.add(dice2_45); cells3.add(dice3_45); cells4.add(dice4_45);
+        communicator = GUIData.getGUIData().getCommunicator();
+        move=false; toolCard=false;
+        text.setText("null");
+        window2.setVisible(false); username2.setVisible(false);
+        window3.setVisible(false); username3.setVisible(false);
+        window4.setVisible(false); username4.setVisible(false);
+        poolItems = new ArrayList<>();
+        cellsPool = new ArrayList<>();
+        cellsPool.add(dice1); cellsPool.add(dice2); cellsPool.add(dice3); cellsPool.add(dice4); cellsPool.add(dice5);
+        cellsPool.add(dice6); cellsPool.add(dice7); cellsPool.add(dice8); cellsPool.add(dice9);
     }
 
     public void editMessage(String message) {
-        this.message = message;
+        if(text.getText().equals("null")) text.setText(message);
+        else{
+            if (message.contains("New Turn.")) {
+                text.setText(message + "\n");
+                toolCard = false;
+            }
+            else {
+                this.text.setText(text.getText().concat(message + "\n"));
+                if(message.equals("Command of invalid format.")) {
+                    if(!toolCard) move=true;
+                }
+            }
+        }
     }
 
     public void showPattern(int ID) {
@@ -550,6 +386,29 @@ public class TableManager implements GUIManager {
         showTools(table.getGameToolCards());
         showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
         showDraftPool(table.getDraftPool());
+        int size = table.getPlayers().size();
+        int i=0;
+        int j=0;
+        for(Player p : table.getPlayers()){
+            if(p.getName().equals(GUIData.getGUIData().getUsername())) {
+                showWindow(p, window1, cells1, text);
+            }
+            else {
+                if(size==2) {showWindow(p, window2, cells2, username2);}
+                else{
+                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3); i++;}
+                    else{
+                        if(size==3 && i==1) showWindow(p, window4, cells4, username4);
+                        else {
+                            if(j==0) {showWindow(p, window2, cells2, username2); j++;}
+                            if(j==1) {showWindow(p, window3, cells3, username3); j++;}
+                            if(j==2) {showWindow(p, window4, cells4, username4); i++;}
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
@@ -603,62 +462,97 @@ public class TableManager implements GUIManager {
                 () -> {
                     StackPane dice = null;
                     int i = 0;
+                    int size = poolItems.size();
+                    for(int k=0; k<size; k++){  //reset draftPool
+                        draftPool.getChildren().remove(poolItems.get(0));
+                        poolItems.remove(0);
+                    }
                     for (Dice elem : pool) {
                         try {
                             dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        switch (i) {
-                            case (0):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 0, 0);
-                                dice1.toFront();
-                                break;
-                            case (1):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 1, 0);
-                                dice2.toFront();
-                                break;
-                            case (2):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 2, 0);
-                                dice3.toFront();
-                                break;
-                            case (3):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 3, 0);
-                                dice4.toFront();
-                                break;
-                            case (4):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 4, 0);
-                                dice5.toFront();
-                                break;
-                            case (5):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 5, 0);
-                                dice6.toFront();
-                                break;
-                            case (6):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 6, 0);
-                                dice7.toFront();
-                                break;
-                            case (7):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 7, 0);
-                                dice8.toFront();
-                                break;
-                            case (8):
-                                dice.setStyle(colors.get(elem.getColor()));
-                                draftPool.add(dice, 8, 0);
-                                dice9.toFront();
-                                break;
+                        dice.setStyle(colors.get(elem.getColor()));
+                        poolItems.add(dice);
+                        draftPool.add(dice, i, 0);
+                        cellsPool.get(i).toFront();
+                        i++;
+                    }
+                }
+        );
+    }
+    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username) {  //we have to remove all dices before adding new dices
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    grid.setVisible(true);
+                    username.setVisible(true);
+                    if(!player.getName().equals(GUIData.getGUIData().getUsername()))username.setText(player.getName());
+                    WindowFrame window = player.getWindowFrame();
+                    PatternCard pattern = player.getPatternCard();
+                    StackPane dice = null;
+                    int i = 0;
+                    for (int j = 1; j < 5; j++) {
+                        for (int k = 1; k < 6; k++) {
+                            dice = null;
+                            if (window.getDice(j, k) != null || pattern.getRestriction(j, k).escape().compareTo("\u2680") >= 0) {  //se la restrizione è un numero oppure c'è un dado nella cella
+                                try {
+                                    if (window.getDice(j, k) != null) { //se c'è un dado nella cella
+                                        dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) window.getDice(j, k).valueOf())));
+                                        dice.setStyle(colors.get(window.getDice(j, k).getColor()));
+                                    } else  //se la restrizione è un numero
+                                        dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) (comparator.get(pattern.getRestriction(j, k).escape())))));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (dice != null) {  //se devo aggiungere alla griglia un dado oppure una restrizione di numero
+                                cells.get((j - 1) * (5) + (k - 1)).setStyle(null);
+                                grid.add(dice, k - 1, j - 1);
+                                cells.get((j - 1) * (5) + (k - 1)).toFront();
+                            } else {  //se devo aggiungere una restrizione di colore
+                                cells.get((j - 1) * (5) + (k - 1)).setStyle(null);
+                                //cells.get((j - 1) * (5) + (k - 1)).getStyleClass().clear();
+                                cells.get((j - 1) * (5) + (k - 1)).setStyle(colorsWindow.get(pattern.getRestriction(j, k).escape()));
+                            }
                         }
                         i++;
                     }
                 }
         );
+    }
+
+    @FXML
+    public void selectedTool1(){
+        if(toolCard) {
+            try {
+                GUIData.getGUIData().getCommunicator().sendMessage("0");
+                toolCard=false;
+            } catch (NetworkErrorException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    public void selectedTool2(){
+        if(toolCard) {
+            try {
+                GUIData.getGUIData().getCommunicator().sendMessage("1");
+                toolCard=false;
+            } catch (NetworkErrorException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @FXML
+    public void selectedTool3(){
+        if(toolCard) {
+            try {
+                GUIData.getGUIData().getCommunicator().sendMessage("2");
+                toolCard=false;
+            } catch (NetworkErrorException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

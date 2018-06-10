@@ -29,6 +29,8 @@ public class LobbyManager implements GUIManager{
     private Integer count;
     private HashMap<Integer, ImageView> HM;
     private Table table;
+    private String temp;
+    private boolean flag=false;
     @FXML
     ImageView card1;
     @FXML
@@ -45,10 +47,10 @@ public class LobbyManager implements GUIManager{
     Button joinLobby;
     @FXML
     public void joinLobby(javafx.event.ActionEvent event){
-        Communicator comunicator = GUIData.getGUIData().getCommunicator();
+        Communicator communicator = GUIData.getGUIData().getCommunicator();
         String username = GUIData.getGUIData().getUsername();
         try {
-            comunicator.lobby(username, Long.parseLong("20"));
+            communicator.lobby(username, Long.parseLong("20"));
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         } catch (NotValidInputException e) {
@@ -73,19 +75,19 @@ public class LobbyManager implements GUIManager{
 
     @FXML
     public void mousePressed(MouseEvent event){
-        String card=GUIData.getGUIData().getUsername();
+        String card=null;
         source = (ImageView) event.getSource();
         if (source == card1) {
-            card = card.concat("/").concat("0");
+            card = "0";
         }
         if (source == card2) {
-            card = card.concat("/").concat("1");
+            card = "1";
         }
         if (source == card3) {  //to modify
-            card = card.concat("/").concat("2");
+            card = "2";
         }
         if (source == card4) {  //to modify
-            card = card.concat("/").concat("3");
+            card = "3";
         }
         try {
             GUIData.getGUIData().getCommunicator().sendMessage(card);
@@ -99,6 +101,7 @@ public class LobbyManager implements GUIManager{
             stage.setScene(new Scene(fxmlLoader.load()));
             stage.setMaximized(true);
             TableManager TM = fxmlLoader.getController();
+            TM.editMessage(temp);
             if(table!=null) TM.updateTable(table);
         } catch (IOException e) {
             e.printStackTrace();
@@ -107,6 +110,13 @@ public class LobbyManager implements GUIManager{
 
     public void editMessage(String message){
         this.message.setText(this.message.getText().concat(message.concat("\n")));
+        if(message.equals("Pattern card assigned.")) {
+            temp = new String();
+            temp = message+"\n";
+            flag = true;
+        } else if(flag){
+            temp = temp.concat(message+"\n");
+        }
     }
 
     public void showPattern(int ID){

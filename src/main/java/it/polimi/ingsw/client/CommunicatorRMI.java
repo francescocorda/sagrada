@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.ClientHandlerInterface;
+import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.RMI.RMIClientImplementation;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
@@ -56,7 +57,7 @@ public class CommunicatorRMI implements Communicator {
     @Override
     public void sendMessage(String message) throws NetworkErrorException {
         try {
-            server.update(message);
+            server.update(GUIData.getGUIData().getUsername().concat("/"+message));
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }

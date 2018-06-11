@@ -19,8 +19,8 @@ public class ToolCard implements Serializable {
     private int ID;
     private String name;
     private String description;
-    private transient int numOfTokens;
-    private transient int price;
+    private int numOfTokens;
+    private int price;
     private transient ArrayList<Integer> usableInTurns;
     private transient ArrayList<Integer> movesLeft;
     private transient ArrayList<Effect> effects;

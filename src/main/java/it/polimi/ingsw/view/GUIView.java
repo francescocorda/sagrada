@@ -10,9 +10,10 @@ import java.util.Observable;
 public class GUIView extends Observable implements View  {
     private GUIManager manager;
     private Table table;
+    private String username;
     @Override
     public void displayGame() {
-
+        manager.updateTable(table);
     }
 
     @Override
@@ -40,13 +41,22 @@ public class GUIView extends Observable implements View  {
         manager.showPattern(patternCard.getID());
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if(o instanceof Table) {
             Table table = (Table) o;
             this.table = table;
             if(arg == null) {
-                manager.updateTable(table);
+                displayGame();
             }
             else if(arg instanceof String) {
                 String message = (String) arg;

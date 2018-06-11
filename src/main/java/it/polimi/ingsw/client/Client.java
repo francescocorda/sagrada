@@ -1,28 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.ClientHandlerInterface;
 import it.polimi.ingsw.client.CLI.CLI;
 import it.polimi.ingsw.client.GUI.login.Login;
-import it.polimi.ingsw.client.RMI.RMIClientImplementation;
-import it.polimi.ingsw.client.RMI.RMIClientInterface;
-import it.polimi.ingsw.connection.ConnectionSocket;
-import it.polimi.ingsw.exceptions.NotValidInputException;
-import it.polimi.ingsw.view.CLIView;
-import it.polimi.ingsw.view.View;
-import javafx.stage.Stage;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.rmi.Naming;
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Client {
@@ -33,13 +12,14 @@ public class Client {
         boolean temp = true;
         while (temp) {
             String mode = in.nextLine();
+            mode = mode.toLowerCase();
             switch(mode){
-                case "GUI":
+                case "gui":
                     temp = false;
                     Login login = new Login();
                     login.showGUI();
                     break;
-                case "CLI":
+                case "cli":
                     temp = false;
                     new CLI().startCLI();
                     break;

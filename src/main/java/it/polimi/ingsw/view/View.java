@@ -13,5 +13,6 @@ public interface View extends Observer {
     void displayPrivateObjectiveCard();
     void displayPatternCard(PatternCard patternCard);
     void notifyObservers(Object arg);
+    String getUsername();
     void addObserver(Observer o);
 }

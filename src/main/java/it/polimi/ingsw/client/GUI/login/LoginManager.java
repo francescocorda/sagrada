@@ -56,6 +56,7 @@ public class LoginManager implements GUIManager{
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/lobby.fxml"));
                 //initializeLobby();
                 try {
+                    view.setUsername(username.getText());
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
                 } catch (IOException e) {
                     e.printStackTrace();

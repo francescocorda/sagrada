@@ -51,6 +51,7 @@ public class Table extends Observable implements Serializable {
         table.setDraftPool(draftPool);
         table.setGamePublicObjectiveCards(gamePOC);
         table.setGameToolCards(gameToolCards);
+        table.setActiveDice(activeDice);
         return (new Gson()).toJson(table);
     }
 

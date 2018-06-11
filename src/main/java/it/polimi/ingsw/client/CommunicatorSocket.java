@@ -84,7 +84,7 @@ public class CommunicatorSocket implements Communicator {
                     if(returnedMessage==null)
                         throw new NetworkErrorException();
                     else
-                        view.displayGameMessage(returnedMessage);
+                        view.displayGameMessage("ERROR: "+returnedMessage);
             }
         }
     }

@@ -21,13 +21,11 @@ public class CLI {
     private static final String DEFAULT_SERVER_PORT = "3001";
     private static final String INPUT_STREAM_SEPARATOR_SYMBOL = " ";
     private static final String MESSAGE_SEPARATOR_SYMBOL = "/";
-    private boolean isRMI;
 
     public CLI() {
         this.view = new CLIView();
         this.in = new Scanner(System.in);
         this.username = new String();
-        this.isRMI = false;
     }
 
     public void startCLI() {
@@ -40,12 +38,10 @@ public class CLI {
             switch(mode){
                 case "rmi":
                     temp = false;
-                    isRMI = true;
                     startRMI();
                     break;
                 case "socket":
                     temp = false;
-                    isRMI = false;
                     startSocket();
                     break;
                 default:
@@ -167,14 +163,13 @@ public class CLI {
             try {
                 if(message.equals("quit"))
                     temp = false;
-                communicator.sendMessage(isRMI ? username+"/"+message : message);
+                communicator.sendMessage(message);
             } catch (NetworkErrorException e) {
                 toScreen("Server Offline / Network Error");
                 temp = false;
             }
         }
         startCLI();
-        //comment
     }
 
     private static void toScreen(String message) {

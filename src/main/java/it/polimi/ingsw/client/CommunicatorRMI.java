@@ -38,7 +38,7 @@ public class CommunicatorRMI implements Communicator {
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException {
         try {
             server.login(username, password, client);
-        } catch (RemoteException e) {
+        } catch (RemoteException | NullPointerException e) {
             throw new NetworkErrorException();
         }
     }
@@ -47,7 +47,7 @@ public class CommunicatorRMI implements Communicator {
     public void lobby(String username, Long time) throws NetworkErrorException, NotValidInputException {
         try {
             server.joinLobby(username, time);
-        } catch (RemoteException e) {
+        } catch (RemoteException | NullPointerException e) {
             throw new NetworkErrorException();
         } catch (NotValidInputException e) {
             throw new NotValidInputException();
@@ -57,8 +57,8 @@ public class CommunicatorRMI implements Communicator {
     @Override
     public void sendMessage(String message) throws NetworkErrorException {
         try {
-            server.update(GUIData.getGUIData().getUsername().concat("/"+message));
-        } catch (RemoteException e) {
+            server.update(view.getUsername()+"/"+message);
+        } catch (RemoteException | NullPointerException e) {
             throw new NetworkErrorException();
         }
     }

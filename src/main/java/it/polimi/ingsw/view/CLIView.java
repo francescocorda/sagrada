@@ -1,16 +1,12 @@
 package it.polimi.ingsw.view;
 
-import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
-import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.Table;
-
 import java.util.Observable;
-import java.util.Scanner;
 
 public class CLIView extends Observable implements View {
 

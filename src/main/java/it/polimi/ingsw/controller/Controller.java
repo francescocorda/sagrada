@@ -27,12 +27,13 @@ public class Controller implements Observer {
     private State state;
 
     private ArrayList<VirtualView> views;
-    Timer timer;
-    ArrayList<String> names;
+    private Timer timer;
+    private ArrayList<String> names;
+    private ArrayList<String> offlinePlayers;
     private Game game;
-    int count = 0;
 
     public Controller(int matchID, ArrayList<VirtualView> views) {
+        offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
         names = new ArrayList<>();
         for (VirtualView view: views) {
@@ -48,7 +49,6 @@ public class Controller implements Observer {
             virtualView.addObserver(this);
         }
         timer = new Timer();
-
         startState = new StartState(this);
         chooseActionState = new ChooseActionState(this);
         moveState = new MoveState(this);
@@ -91,6 +91,10 @@ public class Controller implements Observer {
         return endState;
     }
 
+    public boolean contains(String username){
+        return (offlinePlayers.contains(username));
+    }
+
     private void startGame() {
         game.drawDices();
         game.drawPublicObjectiveCards();
@@ -116,7 +120,7 @@ public class Controller implements Observer {
                     try {
                         game.setPatternCard(name, 0);
                     } catch (NotValidInputException e) {
-                        //
+                        //exception already handled
                     }
                 }
                 game.doneAssignPatternCards();
@@ -125,7 +129,6 @@ public class Controller implements Observer {
                 setTimerSkipTurn();
             }}, TIMER_SECONDS*1000);
     }
-
 
     public void sendMessage(String name, String message) {
         for (VirtualView virtualView: views) {
@@ -172,7 +175,6 @@ public class Controller implements Observer {
     protected void itsYourTurn() {
         sendMessage(game.getCurrentPlayer(), "It's your turn! Choose Action: move, toolcard, skip");
     }
-
 
     public void checkGameState() {
         if (game.isTurnEnded()) {

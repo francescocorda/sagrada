@@ -102,6 +102,7 @@ public class SocketReader extends Thread {
                 @Override
                 public void run() {
                     PlayerDatabase.getPlayerDatabase().disconnect(username);
+                    view.notifyObservers("quit");
                 }
             }, TIMER_SECONDS);
         }

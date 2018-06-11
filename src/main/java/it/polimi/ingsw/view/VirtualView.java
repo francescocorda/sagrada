@@ -32,8 +32,8 @@ public class VirtualView extends Observable implements View {
     public void displayGame() {
         if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
             try {
-                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).displayGame();
-            } catch (RemoteException | NotFound e) {
+                playerData.getClientRMI().displayGame();
+            } catch (RemoteException e) {
                 e.printStackTrace();
             }
         } else {

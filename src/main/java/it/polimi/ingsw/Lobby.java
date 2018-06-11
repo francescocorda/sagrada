@@ -17,7 +17,7 @@ public class Lobby {
         private boolean isTimerSet = false;
         private PlayerDatabase players;
         private static final String LOCATION = "lobby";
-        ArrayList<Controller> games;
+        private ArrayList<Controller> controllers;
         private int timerSeconds;
 
         private Lobby() {
@@ -26,7 +26,7 @@ public class Lobby {
             timer = new Timer();
             players = PlayerDatabase.getPlayerDatabase();
             views = new ArrayList<>();
-            games = new ArrayList<>();
+            controllers = new ArrayList<>();
             timerSeconds = ServerMain.getServerMain().getTimerSeconds();
         }
 
@@ -42,16 +42,20 @@ public class Lobby {
         public synchronized void addPlayer(String username, long time) {
             PlayerData player = players.getPlayerData(username);
             VirtualView virtualView = new VirtualView(player);
-            views.add(virtualView);
-            VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
-            connectedPlayers.add(player);
-            connectedPlayersLastTime.add(time);
-            send(username, "/welcome");
-            toTerminal("player: " + player.getUsername() + " singed in");
-            broadcast("/player_joined/" + player.getUsername());
-            send(username, listOfPlayers());
-            players.setPhase(username, Phase.LOBBY);
-            trigger();
+            if(reconnect(virtualView)){
+                send(username, "/back_to_game");
+            } else {
+                views.add(virtualView);
+                VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
+                connectedPlayers.add(player);
+                connectedPlayersLastTime.add(time);
+                send(username, "/welcome");
+                toTerminal("player: " + player.getUsername() + " singed in");
+                broadcast("/player_joined/" + player.getUsername());
+                send(username, listOfPlayers());
+                players.setPhase(username, Phase.LOBBY);
+                trigger();
+            }
         }
 
 
@@ -182,7 +186,7 @@ public class Lobby {
                     if(player.getCurrentConnectionMode()==ConnectionMode.SOCKET)
                         player.getClientSocket().game();
                 }
-                games.add(new Controller(games.size() + 1, viewsInTheRightOrder));
+                controllers.add(new Controller(controllers.size() + 1, viewsInTheRightOrder));
                 connectedPlayers = new ArrayList<>();
                 connectedPlayersLastTime = new ArrayList<>();
                 views = new ArrayList<>();
@@ -201,5 +205,21 @@ public class Lobby {
 
         private void toTerminal(String message) {
             System.out.println("Lobby: " + message);
+        }
+
+        public void removeController(Controller controller){
+            controllers.remove(controller);
+        }
+
+        private boolean reconnect(VirtualView view){
+            String username = view.getUsername();
+            for(Controller controller : controllers){
+                if(controller.contains(username)){
+                    view.addObserver(controller);
+                    view.notifyObservers("join");
+                    return  true;
+                }
+            }
+            return false;
         }
     }

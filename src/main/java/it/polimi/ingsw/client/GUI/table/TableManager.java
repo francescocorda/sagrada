@@ -15,12 +15,13 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
@@ -171,7 +172,10 @@ public class TableManager implements GUIManager {
     @FXML Button moveButton;
     @FXML Button toolCardButton;
     @FXML Button skipButton;
-
+    @FXML GridPane selectedDice;
+    @FXML TextField operation;
+    @FXML Button operationButton;
+    @FXML GridPane tableBackground;
     @FXML
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
@@ -326,12 +330,13 @@ public class TableManager implements GUIManager {
         comparator.put(Restriction.FIVE.escape(), 5);
         comparator.put(Restriction.SIX.escape(), 6);
         colorsWindow = new HashMap<>();
-        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");  //Restrictions
-        colorsWindow.put(Restriction.ANSI_RED.escape(), "-fx-fill: rgba(255, 31, 53, 0.5);");
-        colorsWindow.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: rgba(0, 160, 0, 0.5);");
-        colorsWindow.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: rgba(255, 50, 255, 0.5);");
-        colorsWindow.put(Restriction.ANSI_BLUE.escape(), "-fx-fill: rgba(0, 160, 225, 0.5);");
-        colorsWindow.put(Restriction.ANSI_YELLOW.escape(), "-fx-fill: rgba(255, 230, 0, 0.5);");
+        //colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");  //Restrictions
+        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: #ffffff;");
+        colorsWindow.put(Restriction.ANSI_RED.escape(), "-fx-fill: #ff6a49;");
+        colorsWindow.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: #82f87e;");
+        colorsWindow.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: #ee82dc;");
+        colorsWindow.put(Restriction.ANSI_BLUE.escape(), "-fx-fill: #82c0ed;");
+        colorsWindow.put(Restriction.ANSI_YELLOW.escape(), "-fx-fill: #fff486;");
         cells1 = new ArrayList<>(); cells2 = new ArrayList<>(); cells3 = new ArrayList<>(); cells4 = new ArrayList<>();
         cells1.add(dice11); cells2.add(dice2_11); cells3.add(dice3_11); cells4.add(dice4_11);
         cells1.add(dice12); cells2.add(dice2_12); cells3.add(dice3_12); cells4.add(dice4_12);
@@ -367,6 +372,12 @@ public class TableManager implements GUIManager {
         cellsPool = new ArrayList<>();
         cellsPool.add(dice1); cellsPool.add(dice2); cellsPool.add(dice3); cellsPool.add(dice4); cellsPool.add(dice5);
         cellsPool.add(dice6); cellsPool.add(dice7); cellsPool.add(dice8); cellsPool.add(dice9);
+        selectedDice.setVisible(false);
+        //operation.setVisible(false);
+        //operationButton.setVisible(true);
+        tableBackground.getStylesheets().add("GUI/table.css");
+        Image backGround = new Image(getClass().getResourceAsStream("/GUI/welcome.jpg"));
+        tableBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
 
     public void editMessage(String message) {
@@ -394,6 +405,7 @@ public class TableManager implements GUIManager {
         showTools(table.getGameToolCards());
         showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
         showDraftPool(table.getDraftPool());
+        showSelectedDice(table.getActiveDice());
         int size = table.getPlayers().size();
         int i=0;
         int j=0;
@@ -418,6 +430,25 @@ public class TableManager implements GUIManager {
 
         }
     }
+
+    public void showSelectedDice(Dice item){
+        Platform.runLater(  //Compulsory to update GUI
+              () -> {
+                    if(item != null){
+                        selectedDice.getChildren().removeAll();
+                        StackPane dice = null;
+                        try {
+                            dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) item.valueOf())));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        dice.setStyle(colors.get(item.getColor()));
+                        selectedDice.add(dice, 0,0);
+                        selectedDice.setVisible(true);
+                    }  else selectedDice.setVisible(false);
+              }
+              );
+        }
 
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
         Image image;
@@ -515,6 +546,7 @@ public class TableManager implements GUIManager {
                                         dice.setStyle(colors.get(window.getDice(j, k).getColor()));
                                     } else  //se la restrizione è un numero
                                         dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) (comparator.get(pattern.getRestriction(j, k).escape())))));
+                                        //dice.setStyle("-fx-background-color: #ffffff;");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -567,6 +599,15 @@ public class TableManager implements GUIManager {
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    public void sendOperation(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage(operation.getText());
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -33,7 +33,6 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void displayPrivateObjectiveCard() {
-
     }
 
     @Override

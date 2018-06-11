@@ -14,7 +14,7 @@
   <tabs>
     <Tab text="Table">
          <content>
-            <GridPane prefHeight="550.0" prefWidth="1196.0">
+            <GridPane fx:id="tableBackground" prefHeight="550.0" prefWidth="1196.0">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="600.0" prefWidth="600.0" />
@@ -239,6 +239,23 @@
                   <Button fx:id="skipButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#skipAction" prefHeight="50.0" prefWidth="70.0" text="skip" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="190.0" top="100.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <GridPane fx:id="selectedDice" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <GridPane.margin>
+                        <Insets top="30.0" />
+                     </GridPane.margin>
+                  </GridPane>
+                  <TextField fx:id="operation" maxWidth="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                  <Button fx:id="operationButton" mnemonicParsing="false" onAction="#sendOperation" prefWidth="70.0" text="send" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
                      </GridPane.margin>
                   </Button>
                </children>

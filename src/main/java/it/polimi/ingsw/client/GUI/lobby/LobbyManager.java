@@ -31,6 +31,8 @@ public class LobbyManager implements GUIManager{
     private Table table;
     private String temp;
     private boolean flag=false;
+    private HashMap<Integer, String> PVOCs = null;  //Private Objective Cards
+    private String src;
     @FXML
     ImageView card1;
     @FXML
@@ -46,6 +48,7 @@ public class LobbyManager implements GUIManager{
     @FXML
     Button joinLobby;
     @FXML
+    ImageView privateObj;
     public void joinLobby(javafx.event.ActionEvent event){
         Communicator communicator = GUIData.getGUIData().getCommunicator();
         String username = GUIData.getGUIData().getUsername();
@@ -71,6 +74,17 @@ public class LobbyManager implements GUIManager{
         HM.put(2, card3);
         HM.put(3, card4);
         count=0;
+        PVOCs = new HashMap<Integer, String>();
+        src = "/GUI/privateObj1.PNG";
+        PVOCs.put(1, src);
+        src = "/GUI/privateObj2.PNG";
+        PVOCs.put(2, src);
+        src = "/GUI/privateObj3.PNG";
+        PVOCs.put(3, src);
+        src = "/GUI/privateObj4.PNG";
+        PVOCs.put(4, src);
+        src = "/GUI/privateObj5.PNG";
+        PVOCs.put(5, src);
     }
 
     @FXML
@@ -290,6 +304,9 @@ public class LobbyManager implements GUIManager{
         }
     }
     public void updateTable(Table table){
+        Image image = new Image(PVOCs.get((Integer) table.getPlayers().get(0).getPrivateObjectiveCard().getID()));
+        privateObj.setImage(image);
+        privateObj.setVisible(true);
         this.table=table;
     }
 }

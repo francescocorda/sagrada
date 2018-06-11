@@ -10,12 +10,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.lobby.LobbyManager">
    <children>
-      <TextArea fx:id="message" editable="false" layoutX="170.0" layoutY="90.0" prefHeight="222.0" prefWidth="700.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="150.0" />
+      <TextArea fx:id="message" editable="false" layoutX="170.0" layoutY="90.0" prefHeight="222.0" prefWidth="522.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="328.0" />
       <Button fx:id="joinLobby" alignment="CENTER" layoutX="443.0" layoutY="33.0" mnemonicParsing="false" onAction="#joinLobby" text="JoinLobby" />
       <DatePicker fx:id="date" layoutX="151.0" layoutY="32.0" />
       <ImageView fx:id="card1" fitHeight="176.0" fitWidth="200.0" layoutX="50.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="750.0" />
       <ImageView fx:id="card2" fitHeight="176.0" fitWidth="200.0" layoutX="282.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="520.0" />
       <ImageView fx:id="card3" fitHeight="176.0" fitWidth="200.0" layoutX="548.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="520.0" AnchorPane.rightAnchor="280.0" />
       <ImageView fx:id="card4" fitHeight="176.0" fitWidth="200.0" layoutX="759.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="750.0" AnchorPane.rightAnchor="50.0" />
+      <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" layoutX="704.0" layoutY="61.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

@@ -45,6 +45,7 @@ public class LoginManager implements GUIManager{
             view.setGUIManager(this);
             communicator = new CommunicatorRMI(view);
             ArrayList<String> parameters = new ArrayList();
+            if(IPaddress.getText().equals("")) IPaddress.setText("localhost");
             parameters.add(IPaddress.getText());
             try {
                 communicator.initialize(parameters);

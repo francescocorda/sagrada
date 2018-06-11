@@ -39,7 +39,11 @@ public class TableManager implements GUIManager {
     private ArrayList<Rectangle> cells2 = null;  //cells of player two
     private ArrayList<Rectangle> cells3 = null;  //cells of player three
     private ArrayList<Rectangle> cells4 = null;  //cells of player four
-    private ArrayList<StackPane> poolItems = null;  //dice of draftPool
+    private ArrayList<StackPane> poolItems = null;  //dices of draftPool
+    private ArrayList<StackPane> window1Items = null; //dices to remove from window1
+    private ArrayList<StackPane> window2Items = null; //dices to remove from window2
+    private ArrayList<StackPane> window3Items = null; //dices to remove from window3
+    private ArrayList<StackPane> window4Items = null; //dices to remove from window4
     private ArrayList<Rectangle> cellsPool = null;  //cells of draftPool
     private Table table = null;
     private Rectangle source = null;
@@ -309,7 +313,7 @@ public class TableManager implements GUIManager {
         image = "/GUI/dice6.fxml";
         dices.put(6, image);
         colors = new HashMap<>();
-        colors.put(Color.ANSI_YELLOW, "-fx-background-color: rgba(255, 230, 0, 1);");
+        colors.put(Color.ANSI_YELLOW, "-fx-background-color: rgba(255, 230, 0, 1);");  //dices
         colors.put(Color.ANSI_BLUE, "-fx-background-color: rgba(0, 160, 225, 1);");
         colors.put(Color.ANSI_RED, "-fx-background-color: rgba(255, 31, 53, 1);");
         colors.put(Color.ANSI_PURPLE, "-fx-background-color: rgba(255, 50, 255, 1);");
@@ -322,7 +326,7 @@ public class TableManager implements GUIManager {
         comparator.put(Restriction.FIVE.escape(), 5);
         comparator.put(Restriction.SIX.escape(), 6);
         colorsWindow = new HashMap<>();
-        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");
+        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");  //Restrictions
         colorsWindow.put(Restriction.ANSI_RED.escape(), "-fx-fill: rgba(255, 31, 53, 0.5);");
         colorsWindow.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: rgba(0, 160, 0, 0.5);");
         colorsWindow.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: rgba(255, 50, 255, 0.5);");
@@ -356,6 +360,10 @@ public class TableManager implements GUIManager {
         window3.setVisible(false); username3.setVisible(false);
         window4.setVisible(false); username4.setVisible(false);
         poolItems = new ArrayList<>();
+        window1Items = new ArrayList<>();
+        window2Items = new ArrayList<>();
+        window3Items = new ArrayList<>();
+        window4Items = new ArrayList<>();
         cellsPool = new ArrayList<>();
         cellsPool.add(dice1); cellsPool.add(dice2); cellsPool.add(dice3); cellsPool.add(dice4); cellsPool.add(dice5);
         cellsPool.add(dice6); cellsPool.add(dice7); cellsPool.add(dice8); cellsPool.add(dice9);
@@ -364,7 +372,7 @@ public class TableManager implements GUIManager {
     public void editMessage(String message) {
         if(text.getText().equals("null")) text.setText(message);
         else{
-            if (message.contains("New Turn.")) {
+            if (message!= null && message.contains("New Turn.")) {
                 text.setText(message + "\n");
                 toolCard = false;
             }
@@ -380,7 +388,7 @@ public class TableManager implements GUIManager {
     public void showPattern(int ID) {
     }
 
-    public void updateTable(Table table) {
+    public void updateTable(Table table) {  //added windowXItems ArrayList in order to refresh correctly all windows
         this.table = table;
         showPUOCs(table.getGamePublicObjectiveCards());
         showTools(table.getGameToolCards());
@@ -391,18 +399,18 @@ public class TableManager implements GUIManager {
         int j=0;
         for(Player p : table.getPlayers()){
             if(p.getName().equals(GUIData.getGUIData().getUsername())) {
-                showWindow(p, window1, cells1, text);
+                showWindow(p, window1, cells1, text, window1Items);
             }
             else {
-                if(size==2) {showWindow(p, window2, cells2, username2);}
+                if(size==2) {showWindow(p, window2, cells2, username2, window2Items);}
                 else{
-                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3); i++;}
+                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3, window3Items); i++;}
                     else{
-                        if(size==3 && i==1) showWindow(p, window4, cells4, username4);
+                        if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items);
                         else {
-                            if(j==0) {showWindow(p, window2, cells2, username2); j++;}
-                            if(j==1) {showWindow(p, window3, cells3, username3); j++;}
-                            if(j==2) {showWindow(p, window4, cells4, username4); i++;}
+                            if(j==0) {showWindow(p, window2, cells2, username2, window2Items); j++;}
+                            if(j==1) {showWindow(p, window3, cells3, username3, window3Items); j++;}
+                            if(j==2) {showWindow(p, window4, cells4, username4, window4Items); i++;}
                         }
                     }
                 }
@@ -482,15 +490,20 @@ public class TableManager implements GUIManager {
                 }
         );
     }
-    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username) {  //we have to remove all dices before adding new dices
+    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems) {  //we have to remove all dices before adding new dices
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
                     grid.setVisible(true);
                     username.setVisible(true);
-                    if(!player.getName().equals(GUIData.getGUIData().getUsername()))username.setText(player.getName());
+                    if(!player.getName().equals(GUIData.getGUIData().getUsername()) && !player.getName().equals(username.getText()))username.setText(player.getName());
                     WindowFrame window = player.getWindowFrame();
                     PatternCard pattern = player.getPatternCard();
                     StackPane dice = null;
+                    int q=windowItems.size();
+                    for(int p=0; p<q; p++){  //reset window
+                        if(grid.getChildren().contains(windowItems.get(0))) grid.getChildren().remove(windowItems.get(0));
+                        windowItems.remove(0);
+                    }
                     int i = 0;
                     for (int j = 1; j < 5; j++) {
                         for (int k = 1; k < 6; k++) {
@@ -508,6 +521,7 @@ public class TableManager implements GUIManager {
                             }
                             if (dice != null) {  //se devo aggiungere alla griglia un dado oppure una restrizione di numero
                                 cells.get((j - 1) * (5) + (k - 1)).setStyle(null);
+                                windowItems.add(dice);
                                 grid.add(dice, k - 1, j - 1);
                                 cells.get((j - 1) * (5) + (k - 1)).toFront();
                             } else {  //se devo aggiungere una restrizione di colore

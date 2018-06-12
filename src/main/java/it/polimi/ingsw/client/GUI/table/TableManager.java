@@ -378,6 +378,10 @@ public class TableManager implements GUIManager {
         tableBackground.getStylesheets().add("GUI/table.css");
         Image backGround = new Image(getClass().getResourceAsStream("/GUI/welcome.jpg"));
         tableBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        window1.setStyle("-fx-background-color: #FFFFFF;");
+        window2.setStyle("-fx-background-color: #FFFFFF;");
+        window3.setStyle("-fx-background-color: #FFFFFF;");
+        window4.setStyle("-fx-background-color: #FFFFFF;");
     }
 
     public void editMessage(String message) {

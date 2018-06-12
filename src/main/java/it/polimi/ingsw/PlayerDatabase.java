@@ -20,18 +20,17 @@ public class PlayerDatabase {
         players = new ArrayList<>();
     }
 
-    public boolean check(String user, String password, ConnectionMode connectionMode){
+    public boolean check(String user, String password){
         if(stringCheck(user) && stringCheck(password)){
             for(PlayerData playerData : players)
                 if(playerData.getUsername().equals(user))
                     if((playerData.getPassword().equals(password)) && !playerData.isConnected()){
                         playerData.changeStatus();
-                        playerData.setConnectionMode(connectionMode);
                         return true;
                     } else {
                         return false;
                     }
-            players.add(new PlayerData(user, password, connectionMode));
+            players.add(new PlayerData(user, password));
             System.out.println("Connected players: " + onlinePlayersNumber());
             return true;
         } else {
@@ -41,7 +40,7 @@ public class PlayerDatabase {
 
     public void addRMIClient(String username, RMIClientInterface client){
         PlayerData player = findPlayer(username);
-        if(player != null && player.getCurrentConnectionMode() == ConnectionMode.RMI){
+        if(player != null){
             player.setClientRMI(client);
         }
     }
@@ -54,7 +53,7 @@ public class PlayerDatabase {
 
     public void addSocketClient(String username, ClientSocketInterpreter client){
         PlayerData player = findPlayer(username);
-        if(player != null && player.getCurrentConnectionMode() == ConnectionMode.SOCKET){
+        if(player != null){
             player.setClientSocket(client);
         }
     }

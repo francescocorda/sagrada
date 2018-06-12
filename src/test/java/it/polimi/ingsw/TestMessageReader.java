@@ -1,9 +1,5 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.MessageReader;
-import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
-import it.polimi.ingsw.Model.Game.Color;
-import it.polimi.ingsw.Model.Game.Dice;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

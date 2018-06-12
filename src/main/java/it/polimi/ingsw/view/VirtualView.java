@@ -1,73 +1,53 @@
 package it.polimi.ingsw.view;
 
-import com.google.gson.Gson;
+import it.polimi.ingsw.ClientHandler;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.PlayerData;
-import it.polimi.ingsw.PlayerDatabase;
-import it.polimi.ingsw.connection.ConnectionMode;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
-
-import java.rmi.RemoteException;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.util.Observable;
 
 public class VirtualView extends Observable implements View {
 
+    private ClientHandler clientHandler;
     private PlayerData playerData;
-    private Gson gson;
 
     public VirtualView(PlayerData playerData) {
         super();
         this.playerData = playerData;
-        gson = new Gson();
+        this.clientHandler = playerData.getClientHandler();
     }
 
     public String getUsername() {
         return playerData.getUsername();
     }
 
-
     @Override
     public void displayGame() {
-        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
-            try {
-                playerData.getClientRMI().displayGame();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
-        } else {
-            playerData.getClientSocket().sendMessage("game/displayGame");
+        try {
+            clientHandler.displayGame();
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override
     public void displayMessage(String message) {
-        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
-            try {
-                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).send(message);
-            } catch (RemoteException | NotFound e) {
-                e.printStackTrace();
-            }
-        } else {
-            playerData.getClientSocket().sendMessage("game/message/"+message);
+        try {
+            clientHandler.sendMessage(message);
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void displayGameMessage(String message) {
-        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
-            try {
-                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).send(message);
-            } catch (RemoteException | NotFound e) {
-                e.printStackTrace();
-            }
-        } else {
-            playerData.getClientSocket().sendMessage("game/message/"+message);
+        try {
+            clientHandler.sendGameMessage(message);
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
     }
-
 
     @Override
     public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
@@ -81,34 +61,19 @@ public class VirtualView extends Observable implements View {
 
     @Override
     public void displayPatternCard(PatternCard patternCard) {
-        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
-            try {
-                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).sendPatternCard(patternCard);
-            } catch (RemoteException | NotFound e) {
-                e.printStackTrace();
-            }
-        } else {
-            String patternCardJSON = gson.toJson(patternCard);
-            playerData.getClientSocket().sendMessage("game/pattern_card/"+patternCardJSON);
+        try {
+            clientHandler.sendPatternCard(patternCard);
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
-
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (playerData.getCurrentConnectionMode() == ConnectionMode.RMI){
-            try {
-                PlayerDatabase.getPlayerDatabase().getClientRMI(playerData.getUsername()).update(o, arg);
-            } catch (RemoteException | NotFound e) {
-                e.printStackTrace();
-            }
-        } else {
-            if(o instanceof Table){
-                String observable = ((Table) o).toJson();
-                System.out.println("OBSERVABLE: "+observable);
-                String object = gson.toJson(arg);
-                playerData.getClientSocket().sendMessage("game/update/"+observable+"/"+object);
-            }
+        try {
+            clientHandler.update(o, arg);
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
         }
     }
 

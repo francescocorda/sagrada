@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.ClientHandlerInterface;
-import it.polimi.ingsw.client.GUI.GUIData;
+import it.polimi.ingsw.RMIServerInterface;
 import it.polimi.ingsw.client.RMI.RMIClientImplementation;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class CommunicatorRMI implements Communicator {
     private View view;
     private RMIClientInterface client;
-    private ClientHandlerInterface server;
+    private RMIServerInterface server;
     public CommunicatorRMI(View view) {
         this.view = view;
     }
@@ -28,7 +27,7 @@ public class CommunicatorRMI implements Communicator {
         String address = parameters.remove(0);
         try {
             this.client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
-            this.server = (ClientHandlerInterface) Naming.lookup("//" + address + "/ClientHandler");
+            this.server = (RMIServerInterface) Naming.lookup("//" + address + "/ClientHandler");
         } catch (MalformedURLException | RemoteException | NotBoundException e) {
             throw new NetworkErrorException();
         }

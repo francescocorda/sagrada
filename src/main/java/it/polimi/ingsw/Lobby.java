@@ -3,6 +3,7 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.controller.Controller;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.view.VirtualView;
 import org.omg.CosNaming.NamingContextPackage.NotFound;
 import java.rmi.RemoteException;
@@ -73,30 +74,18 @@ public class Lobby {
 
         private void broadcast(String message) {
             for (PlayerData player : connectedPlayers) {
-                try {
-                    if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
-                        //broadcast for RMI Clients
-                        players.getClientRMI(player.getUsername()).send(LOCATION + message);
-                    } else {
-                        //broadcast for Socket Clients
-                        player.getClientSocket().sendMessage(LOCATION + message);
-                    }
-                } catch (RemoteException | NotFound e) {
-                    //Disconnection already handled.
-                }
+                send(player.getUsername(), message);
             }
         }
 
-        public void send(String username, String message) {  //To be DEFINE for socket clients
+        private void send(String username, String message) {
             PlayerData player = players.findPlayer(username);
+            ClientHandler clientHandler = player.getClientHandler();
             try {
-                if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
-                    players.getClientRMI(username).send(LOCATION + message);
-                } else {
-                    player.getClientSocket().sendMessage(LOCATION + message);
-                }
-            } catch (RemoteException | NotFound e) {
-                //Disconnection already handled.
+                clientHandler.sendMessage(LOCATION + message);
+            } catch (NetworkErrorException e) {
+                players.disconnect(username);
+                //TODO ?
             }
         }
 
@@ -146,15 +135,10 @@ public class Lobby {
             ArrayList<PlayerData> playerToBeChecked = new ArrayList<>(connectedPlayers);
             for(PlayerData player : playerToBeChecked){
                 try {
-                    if (player.getCurrentConnectionMode() == ConnectionMode.RMI) {
-                        players.getClientRMI(player.getUsername()).checkConnection();
-                    } else {
-                        players.getClientSocket(player.getUsername()).isOnline();
-                    }
-                } catch (RemoteException | NotFound e){
-                    if(player.getCurrentConnectionMode() == ConnectionMode.RMI)
-                        players.removeRMIClient(player.getUsername());
-                    //Disconnection Socket already handled
+                    player.getClientHandler().check();
+                } catch (NetworkErrorException e) {
+                    players.disconnect(player.getUsername());
+                    //TODO
                 }
             }
             return connectedPlayers.size();
@@ -183,8 +167,7 @@ public class Lobby {
                 }
                 for (PlayerData player : playersInTheRightOrder) {
                     player.nextPhase();
-                    if(player.getCurrentConnectionMode()==ConnectionMode.SOCKET)
-                        player.getClientSocket().game();
+                    player.getClientHandler().game();
                 }
                 controllers.add(new Controller(controllers.size() + 1, viewsInTheRightOrder));
                 connectedPlayers = new ArrayList<>();

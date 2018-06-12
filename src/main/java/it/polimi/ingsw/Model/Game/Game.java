@@ -192,10 +192,10 @@ public class Game implements Serializable {
 
     public boolean toolCardUseAllowed(int indexTC) {
         if(table.getGameToolCards().get(indexTC).useAllowed(rounds.get(0).getPlayerTurn(0))) {
-            table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " use allowed.");
+            table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " can be used.");
             return true;
         }
-        table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " use not allowed.");
+        table.notifyObservers(getCurrentPlayer() + "'s turn: tool card " + table.getGameToolCards().get(indexTC).getName() + " can't be used in this moment.");
         return false;
     }
 
@@ -207,6 +207,7 @@ public class Game implements Serializable {
             table.getActiveToolCard().getEffects().get(0).explainEffect(table, rounds.get(0));
             return true;
         }
+        table.notifyObservers(getCurrentPlayer() + ": unable to buy it, not enough tokens.");
         return false;
     }
 

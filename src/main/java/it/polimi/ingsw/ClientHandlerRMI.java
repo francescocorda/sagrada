@@ -1,61 +1,74 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Server.ServerMain;
+import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
-import it.polimi.ingsw.exceptions.NotValidInputException;
-import it.polimi.ingsw.view.VirtualView;
-
+import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.Observable;
 
-import static it.polimi.ingsw.connection.ConnectionMode.RMI;
+public class ClientHandlerRMI implements ClientHandler {
+    private RMIClientInterface rmiClientInterface;
 
-public class ClientHandlerRMI extends UnicastRemoteObject implements ClientHandlerInterface {
-    private PlayerDatabase playerDatabase;
-    private Timer timer;
-
-    public ClientHandlerRMI() throws RemoteException {
-        super(0);
-        playerDatabase = PlayerDatabase.getPlayerDatabase();
-        timer = new Timer();
+    public ClientHandlerRMI(RMIClientInterface rmiClientInterface) {
+        this.rmiClientInterface = rmiClientInterface;
     }
 
-    public void login(String username, String password, RMIClientInterface client)throws NotValidInputException, RemoteException {
-
-        System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through RMI");
-        if (playerDatabase.check(username, password, RMI)) {
-            System.out.println("User: "+username+" logged in.");
-            playerDatabase.addRMIClient(username, client);
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        client.checkConnection();
-                    } catch (RemoteException e) {
-                        playerDatabase.disconnect(username);
-                        VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
-                        virtualView.notifyObservers("quit");
-                        this.cancel();
-                    }
-                }
-            }, 1000, 1000);
-        } else {
-            throw new NotValidInputException();
+    @Override
+    public void displayGame() throws NetworkErrorException {
+        try {
+            rmiClientInterface.displayGame();
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
         }
     }
 
-    public void update(String message) throws RemoteException{
-        ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-        VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(commands.get(0));
-        virtualView.notifyObservers(message);
+    @Override
+    public void sendMessage(String message) throws NetworkErrorException {
+        try {
+            rmiClientInterface.send(message);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
     }
 
-    public void joinLobby(String username, long time) throws NotValidInputException, RemoteException {
-        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
-        System.out.println("JOIN LOBBY: username: "+username+"\n \t time: "+time);
-        if (systemTime > time) {
-            Lobby.getLobby().addPlayer(username, time);
-        } else throw new NotValidInputException();
+    @Override
+    public void sendGameMessage(String message) throws NetworkErrorException {
+        try {
+            rmiClientInterface.send(message);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
+        try {
+            rmiClientInterface.sendPatternCard(patternCard);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) throws NetworkErrorException {
+        try {
+            rmiClientInterface.update(o, arg);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void check() throws NetworkErrorException {
+        try {
+            rmiClientInterface.checkConnection();
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void game() {
+
     }
 }

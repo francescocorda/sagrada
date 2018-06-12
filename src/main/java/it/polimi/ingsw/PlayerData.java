@@ -13,13 +13,17 @@ public class PlayerData {
     private Status status;
     private RMIClientInterface clientRMI;
     private ClientSocketInterpreter clientSocket;
+    private ClientHandler clientHandler;
 
-    public PlayerData(String username, String password, ConnectionMode connectionMode){
+    public PlayerData(String username, String password){
         this.username=username;
         this.password=password;
         this.phase= Phase.LOGIN;
         this.status= Status.ONLINE;
-        this.connectionMode = connectionMode;
+    }
+
+    public ClientHandler getClientHandler() {
+        return clientHandler;
     }
 
     public RMIClientInterface getClientRMI() {
@@ -27,7 +31,8 @@ public class PlayerData {
     }
 
     public void setClientRMI(RMIClientInterface clientRMI) {
-        this.clientRMI = clientRMI;
+        this.connectionMode = ConnectionMode.RMI;
+        this.clientHandler = new ClientHandlerRMI(clientRMI);
     }
 
     public ClientSocketInterpreter getClientSocket(){
@@ -35,7 +40,8 @@ public class PlayerData {
     }
 
     public void setClientSocket(ClientSocketInterpreter clientSocket){
-        this.clientSocket = clientSocket;
+        this.connectionMode = ConnectionMode.SOCKET;
+        this.clientHandler = new ClientHandlerSocket(clientSocket);
     }
 
     public String getPassword() {

@@ -1,31 +1,79 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.Server.ServerMain;
-import it.polimi.ingsw.exceptions.NotValidInputException;
-import static it.polimi.ingsw.connection.ConnectionMode.SOCKET;
+import com.google.gson.Gson;
+import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
+import java.util.Observable;
 
-public class ClientHandlerSocket {
-    private PlayerDatabase playerDatabase;
+public class ClientHandlerSocket implements ClientHandler {
 
-    public ClientHandlerSocket() {
-        this.playerDatabase = PlayerDatabase.getPlayerDatabase();
+    private ClientSocketInterpreter clientSocketInterpreter;
+    private Gson gson;
+
+    public ClientHandlerSocket(ClientSocketInterpreter clientSocketInterpreter) {
+        this.clientSocketInterpreter = clientSocketInterpreter;
+        this.gson = new Gson();
     }
 
-    public void login(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
-        System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through Socket");
-        if (playerDatabase.check(username, password, SOCKET)) {
-            System.out.println("User: "+username+" logged in.");
-            playerDatabase.addSocketClient(username, client);
-        } else {
-            throw new NotValidInputException();
+    @Override
+    public void displayGame() throws NetworkErrorException {
+        try{
+            clientSocketInterpreter.sendMessage("game/displayGame");
+        } catch (Exception e){
+            throw new NetworkErrorException();
         }
     }
 
-    public void joinLobby(String username, long time) throws NotValidInputException {
-        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
-        if (systemTime > time) {
-            Lobby.getLobby().addPlayer(username, time);
-        } else throw new NotValidInputException();
+    @Override
+    public void sendMessage(String message) throws NetworkErrorException {
+        try{
+            clientSocketInterpreter.sendMessage(message);
+        } catch (Exception e){
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void sendGameMessage(String message) throws NetworkErrorException {
+        try{
+            clientSocketInterpreter.sendMessage("game/message/"+message);
+        } catch (Exception e){
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
+        String patternCardJSON = gson.toJson(patternCard);
+        try{
+            clientSocketInterpreter.sendMessage("game/pattern_card/"+patternCardJSON);
+        } catch (Exception e){
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) throws NetworkErrorException {
+        if(o instanceof Table){
+            String observable = ((Table) o).toJson();
+            String object = gson.toJson(arg);
+            try{
+                clientSocketInterpreter.sendMessage("game/update/"+observable+"/"+object);
+            } catch (Exception e){
+                throw new NetworkErrorException();
+            }
+        }
+    }
+
+    @Override
+    public void check() throws NetworkErrorException {
+        if(!clientSocketInterpreter.isOnline())
+            throw new NetworkErrorException();
+    }
+
+    @Override
+    public void game() {
+        clientSocketInterpreter.game();
     }
 }
-

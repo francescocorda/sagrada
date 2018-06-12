@@ -1,8 +1,7 @@
 package it.polimi.ingsw.Server;
 
-import it.polimi.ingsw.ClientHandlerInterface;
-import it.polimi.ingsw.ClientHandlerRMI;
-import it.polimi.ingsw.PlayerDatabase;
+import it.polimi.ingsw.RMIServerInterface;
+import it.polimi.ingsw.RMIServerImplementation;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -21,7 +20,7 @@ private int RMI_PORT;
                 System.out.println("Registry already up");
             }
             try {
-                ClientHandlerInterface clientHandlerRMI = new ClientHandlerRMI();
+                RMIServerInterface clientHandlerRMI = new RMIServerImplementation();
                 Naming.rebind("//localhost/ClientHandler", clientHandlerRMI);
             } catch (MalformedURLException e) {
                 System.err.println("Impossible object registration!");

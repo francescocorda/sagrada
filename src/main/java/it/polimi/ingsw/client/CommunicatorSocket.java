@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.MessageReader;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
@@ -96,17 +95,12 @@ public class CommunicatorSocket implements Communicator {
         } catch (Exception e){
             throw new NetworkErrorException();
         }
-
     }
 
     public String getMessage(){
         while(!mg.readable()){
-            System.out.print("");
+            System.out.print(""); //do nothing
         }
-        //just for debug purpose
-        String temp = mg.getMessage();
-        System.out.println("message received: "+temp);
-        return temp;
-        //return mg.getMessage();
+        return mg.getMessage();
     }
 }

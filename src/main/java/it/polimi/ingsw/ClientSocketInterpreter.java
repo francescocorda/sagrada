@@ -1,15 +1,13 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.connection.ConnectionSocket;
-import it.polimi.ingsw.view.VirtualView;
 
 import static it.polimi.ingsw.Status.*;
 import static it.polimi.ingsw.Phase.*;
-import static it.polimi.ingsw.controller.Controller.TIMER_SECONDS;
+import static it.polimi.ingsw.connection.ConnectionMode.SOCKET;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TimerTask;
 import java.net.Socket;
 import java.util.Timer;
@@ -17,16 +15,14 @@ import java.util.Timer;
 public class ClientSocketInterpreter implements Runnable {
 
     private ConnectionSocket connection;
-    private ClientHandlerSocket handler;
     private PlayerDatabase players;
     private Status status;
     private String username;
     private Phase phase;
     private SocketReader reader;
 
-    public ClientSocketInterpreter(Socket socket, ClientHandlerSocket handler) {
+    public ClientSocketInterpreter(Socket socket) {
         this.connection = new ConnectionSocket(socket);
-        this.handler = handler;
         players = PlayerDatabase.getPlayerDatabase();
         status = ONLINE;
         phase = LOGIN;
@@ -54,7 +50,7 @@ public class ClientSocketInterpreter implements Runnable {
                     String password = messageReader.getNext();
                     if (!password.equals("") && !messageReader.hasNext()) {
                         try {
-                            handler.login(tempUsername, password, this);
+                            loginHandler(tempUsername, password, this);
                             sendMessage("login/success");
                             this.username = tempUsername;
                             return;
@@ -94,7 +90,7 @@ public class ClientSocketInterpreter implements Runnable {
                         }
                         if (isValid && systemTime > time) {
                             try {
-                                handler.joinLobby(username, time);
+                                joinLobbyHandler(username, time);
                                 break;
                             } catch (NotValidInputException e) {
                                 sendMessage(invalidCommand);
@@ -199,7 +195,7 @@ public class ClientSocketInterpreter implements Runnable {
     public boolean isOnline() {
         checkConnection();
         if (status == OFFLINE && players.contain(username))
-            players.removeSocketClient(username);
+            players.disconnect(username);
         return (status == ONLINE);
     }
 
@@ -248,5 +244,22 @@ public class ClientSocketInterpreter implements Runnable {
         if (phase != GAME)
             setPhase(GAME);
         reader = new SocketReader(connection, username);
+    }
+
+    public void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
+        System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through Socket");
+        if (players.check(username, password)) {
+            System.out.println("User: "+username+" logged in.");
+            players.addSocketClient(username, client);
+        } else {
+            throw new NotValidInputException();
+        }
+    }
+
+    public void joinLobbyHandler(String username, long time) throws NotValidInputException {
+        long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
+        if (systemTime > time) {
+            Lobby.getLobby().addPlayer(username, time);
+        } else throw new NotValidInputException();
     }
 }

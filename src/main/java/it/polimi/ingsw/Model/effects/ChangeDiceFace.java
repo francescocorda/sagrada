@@ -67,6 +67,7 @@ public class ChangeDiceFace extends Effect {
 
         if (changeFace == RANDOM) {
             table.getActiveDice().roll();
+            table.notifyObservers();
             return true;
         }else if(changeFace == SEQUENTIAL) {
             String command = commands.remove(0);

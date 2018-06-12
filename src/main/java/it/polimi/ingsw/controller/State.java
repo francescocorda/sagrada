@@ -4,6 +4,8 @@ import it.polimi.ingsw.Model.Game.Game;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.controller.Controller.INVALID_FORMAT;
+
 public abstract class State {
 
     Controller controller;
@@ -23,7 +25,8 @@ public abstract class State {
             }
             return true;
         } catch (NumberFormatException e) {
-            //
+            //TODO
+            // insert invalid exception message
         }
         return false;
     }

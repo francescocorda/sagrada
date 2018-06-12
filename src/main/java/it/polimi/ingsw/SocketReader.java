@@ -51,7 +51,7 @@ public class SocketReader extends Thread {
                     cancelTimer();
                 } else {
                     if(temp.equals("quit")){
-                        PlayerDatabase.getPlayerDatabase().disconnect(username);
+                        ClientDatabase.getPlayerDatabase().disconnect(username);
                         flag = false;
                     }
                     message = message.concat(temp);
@@ -101,7 +101,7 @@ public class SocketReader extends Thread {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    PlayerDatabase.getPlayerDatabase().disconnect(username);
+                    ClientDatabase.getPlayerDatabase().disconnect(username);
                     view.notifyObservers("quit");
                 }
             }, TIMER_SECONDS);

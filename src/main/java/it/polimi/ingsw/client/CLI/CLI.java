@@ -17,8 +17,8 @@ public class CLI {
     private Communicator communicator;
     private String username;
     private static CLIView view;
-    private static final String DEFAULT_SERVER = "localhost";
-    private static final String DEFAULT_SERVER_PORT = "3001";
+    public static final String DEFAULT_SERVER = "localhost";
+    public static final String DEFAULT_SERVER_PORT = "3001";
     private static final String INPUT_STREAM_SEPARATOR_SYMBOL = " ";
     private static final String MESSAGE_SEPARATOR_SYMBOL = "/";
 

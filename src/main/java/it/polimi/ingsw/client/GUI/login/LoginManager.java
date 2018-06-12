@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER;
+import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_PORT;
+
 public class LoginManager implements GUIManager{
     private Communicator communicator;
 
@@ -39,13 +42,12 @@ public class LoginManager implements GUIManager{
 
     @FXML
     public void loginAction(MouseEvent event) {
-        System.out.println("Welcome " + username.getText() + "!");
         if (connection.getText().equals("RMI")) {
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorRMI(view);
             ArrayList<String> parameters = new ArrayList();
-            if(IPaddress.getText().equals("")) IPaddress.setText("localhost");
+            if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
             parameters.add(IPaddress.getText());
             try {
                 communicator.initialize(parameters);
@@ -71,6 +73,8 @@ public class LoginManager implements GUIManager{
             view.setGUIManager(this);
             communicator = new CommunicatorSocket(view);
             ArrayList<String> parameters = new ArrayList();
+            if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
+            if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_PORT);
             parameters.add(IPaddress.getText());
             parameters.add(serverPort.getText());
             try {

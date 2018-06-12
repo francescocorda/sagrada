@@ -3,23 +3,23 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.ClientHandler;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.PlayerData;
+import it.polimi.ingsw.ClientData;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.util.Observable;
 
 public class VirtualView extends Observable implements View {
 
     private ClientHandler clientHandler;
-    private PlayerData playerData;
+    private ClientData clientData;
 
-    public VirtualView(PlayerData playerData) {
+    public VirtualView(ClientData clientData) {
         super();
-        this.playerData = playerData;
-        this.clientHandler = playerData.getClientHandler();
+        this.clientData = clientData;
+        this.clientHandler = clientData.getClientHandler();
     }
 
     public String getUsername() {
-        return playerData.getUsername();
+        return clientData.getUsername();
     }
 
     @Override

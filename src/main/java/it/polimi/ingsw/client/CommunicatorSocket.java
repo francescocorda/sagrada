@@ -75,6 +75,7 @@ public class CommunicatorSocket implements Communicator {
             switch(commands.remove(0)){
                 case "welcome":
                     mg.unlock();
+                    view.displayMessage("Welcome!");
                     break;
                 case "last_access":
                 case "invalid_command":
@@ -83,7 +84,7 @@ public class CommunicatorSocket implements Communicator {
                     if(returnedMessage==null)
                         throw new NetworkErrorException();
                     else
-                        view.displayGameMessage("ERROR: "+returnedMessage);
+                        view.displayMessage("ERROR: "+returnedMessage);
             }
         }
     }

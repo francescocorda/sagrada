@@ -9,31 +9,29 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-import static it.polimi.ingsw.connection.ConnectionMode.RMI;
-
 public class RMIServerImplementation extends UnicastRemoteObject implements RMIServerInterface {
-    private PlayerDatabase playerDatabase;
+    private ClientDatabase clientDatabase;
     private Timer timer;
 
     public RMIServerImplementation() throws RemoteException {
         super(0);
-        playerDatabase = PlayerDatabase.getPlayerDatabase();
+        clientDatabase = ClientDatabase.getPlayerDatabase();
         timer = new Timer();
     }
 
     public void login(String username, String password, RMIClientInterface client)throws NotValidInputException, RemoteException {
 
         System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through RMI");
-        if (playerDatabase.check(username, password)) {
+        if (clientDatabase.check(username, password)) {
             System.out.println("User: "+username+" logged in.");
-            playerDatabase.addRMIClient(username, client);
+            clientDatabase.addRMIClient(username, client);
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {
                     try {
                         client.checkConnection();
                     } catch (RemoteException e) {
-                        playerDatabase.disconnect(username);
+                        clientDatabase.disconnect(username);
                         VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
                         virtualView.notifyObservers("quit");
                         this.cancel();

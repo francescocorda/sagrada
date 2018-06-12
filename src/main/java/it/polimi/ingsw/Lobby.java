@@ -1,22 +1,20 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Server.ServerMain;
-import it.polimi.ingsw.connection.ConnectionMode;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.view.VirtualView;
-import org.omg.CosNaming.NamingContextPackage.NotFound;
-import java.rmi.RemoteException;
+
 import java.util.*;
 
 public class Lobby {
         private ArrayList<VirtualView> views;
         private static Lobby instance = null;
-        private ArrayList<PlayerData> connectedPlayers;
+        private ArrayList<ClientData> connectedPlayers;
         private ArrayList<Long> connectedPlayersLastTime;
         private Timer timer;
         private boolean isTimerSet = false;
-        private PlayerDatabase players;
+        private ClientDatabase players;
         private static final String LOCATION = "lobby";
         private ArrayList<Controller> controllers;
         private int timerSeconds;
@@ -25,7 +23,7 @@ public class Lobby {
             connectedPlayers = new ArrayList<>();
             connectedPlayersLastTime = new ArrayList<>();
             timer = new Timer();
-            players = PlayerDatabase.getPlayerDatabase();
+            players = ClientDatabase.getPlayerDatabase();
             views = new ArrayList<>();
             controllers = new ArrayList<>();
             timerSeconds = ServerMain.getServerMain().getTimerSeconds();
@@ -41,7 +39,7 @@ public class Lobby {
 
 
         public synchronized void addPlayer(String username, long time) {
-            PlayerData player = players.getPlayerData(username);
+            ClientData player = players.getPlayerData(username);
             VirtualView virtualView = new VirtualView(player);
             if(reconnect(virtualView)){
                 send(username, "/back_to_game");
@@ -60,7 +58,7 @@ public class Lobby {
         }
 
 
-        public synchronized void removePlayer(PlayerData player) {
+        public synchronized void removePlayer(ClientData player) {
             int index = connectedPlayers.indexOf(player);
             String username = connectedPlayers.get(index).getUsername();
             views.remove(index);
@@ -69,17 +67,16 @@ public class Lobby {
             toTerminal("User: " + player.getUsername() + " has logged out");
             broadcast("/player_left/"+username);
             trigger();
-
         }
 
         private void broadcast(String message) {
-            for (PlayerData player : connectedPlayers) {
+            for (ClientData player : connectedPlayers) {
                 send(player.getUsername(), message);
             }
         }
 
         private void send(String username, String message) {
-            PlayerData player = players.findPlayer(username);
+            ClientData player = players.findPlayer(username);
             ClientHandler clientHandler = player.getClientHandler();
             try {
                 clientHandler.sendMessage(LOCATION + message);
@@ -132,13 +129,12 @@ public class Lobby {
 
 
         private int size() {
-            ArrayList<PlayerData> playerToBeChecked = new ArrayList<>(connectedPlayers);
-            for(PlayerData player : playerToBeChecked){
+            ArrayList<ClientData> playerToBeChecked = new ArrayList<>(connectedPlayers);
+            for(ClientData player : playerToBeChecked){
                 try {
                     player.getClientHandler().check();
                 } catch (NetworkErrorException e) {
                     players.disconnect(player.getUsername());
-                    //TODO
                 }
             }
             return connectedPlayers.size();
@@ -148,9 +144,9 @@ public class Lobby {
             if (connectedPlayers.size() > 1) {
                 isTimerSet = false;
                 timer.cancel();
-                toTerminal("/game start");
+                toTerminal("Game start");
                 broadcast("/start_game" + listOfPlayers());
-                ArrayList<PlayerData> playersInTheRightOrder = new ArrayList<>();
+                ArrayList<ClientData> playersInTheRightOrder = new ArrayList<>();
                 ArrayList<VirtualView> viewsInTheRightOrder = new ArrayList<>();
                 while (!connectedPlayersLastTime.isEmpty()) {
                     int indexOfMax = 0;
@@ -165,7 +161,7 @@ public class Lobby {
                     connectedPlayersLastTime.remove(indexOfMax);
                     views.remove(indexOfMax);
                 }
-                for (PlayerData player : playersInTheRightOrder) {
+                for (ClientData player : playersInTheRightOrder) {
                     player.nextPhase();
                     player.getClientHandler().game();
                 }
@@ -181,7 +177,7 @@ public class Lobby {
 
         private String listOfPlayers() {
             String message = "/list_of_players";
-            for (PlayerData player : connectedPlayers)
+            for (ClientData player : connectedPlayers)
                 message = message.concat("/" + player.getUsername());
             return message;
         }

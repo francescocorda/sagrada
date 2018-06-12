@@ -6,7 +6,6 @@ import it.polimi.ingsw.connection.ConnectionSocket;
 
 import static it.polimi.ingsw.Status.*;
 import static it.polimi.ingsw.Phase.*;
-import static it.polimi.ingsw.connection.ConnectionMode.SOCKET;
 
 import java.util.TimerTask;
 import java.net.Socket;
@@ -15,7 +14,7 @@ import java.util.Timer;
 public class ClientSocketInterpreter implements Runnable {
 
     private ConnectionSocket connection;
-    private PlayerDatabase players;
+    private ClientDatabase players;
     private Status status;
     private String username;
     private Phase phase;
@@ -23,7 +22,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     public ClientSocketInterpreter(Socket socket) {
         this.connection = new ConnectionSocket(socket);
-        players = PlayerDatabase.getPlayerDatabase();
+        players = ClientDatabase.getPlayerDatabase();
         status = ONLINE;
         phase = LOGIN;
     }
@@ -189,7 +188,8 @@ public class ClientSocketInterpreter implements Runnable {
     public void close() {
         this.connection.close();
         Thread.currentThread().interrupt();
-        reader.interrupt();
+        if(reader != null)
+            reader.interrupt();
     }
 
     public boolean isOnline() {

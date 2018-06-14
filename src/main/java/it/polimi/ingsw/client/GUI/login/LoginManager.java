@@ -32,7 +32,7 @@ public class LoginManager implements GUIManager{
     @FXML
     private PasswordField password;
     @FXML
-    private SplitMenuButton connection;
+    private MenuButton connection;
     @FXML
     private TextField IPaddress;
     @FXML

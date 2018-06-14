@@ -21,6 +21,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 
 public class LobbyManager implements GUIManager{
@@ -50,10 +52,11 @@ public class LobbyManager implements GUIManager{
     @FXML
     ImageView privateObj;
     public void joinLobby(javafx.event.ActionEvent event){
+        long time = isDateValid(this.date);
         Communicator communicator = GUIData.getGUIData().getCommunicator();
         String username = GUIData.getGUIData().getUsername();
         try {
-            communicator.lobby(username, Long.parseLong("20"));
+            communicator.lobby(username, 20);
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         } catch (NotValidInputException e) {
@@ -308,5 +311,15 @@ public class LobbyManager implements GUIManager{
         privateObj.setImage(image);
         privateObj.setVisible(true);
         this.table=table;
+    }
+
+    private long isDateValid(DatePicker date){
+        int day = date.getValue().getDayOfMonth();
+        int month = date.getValue().getMonthValue();
+        int year = date.getValue().getYear();
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setLenient(false);
+        cal.get(Calendar.DATE);
+        return cal.getTime().getTime()/1000;
     }
 }

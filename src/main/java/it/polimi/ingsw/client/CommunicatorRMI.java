@@ -43,7 +43,7 @@ public class CommunicatorRMI implements Communicator {
     }
 
     @Override
-    public void lobby(String username, Long time) throws NetworkErrorException, NotValidInputException {
+    public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException {
         try {
             server.joinLobby(username, time);
         } catch (RemoteException | NullPointerException e) {

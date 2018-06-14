@@ -24,15 +24,15 @@
          <children>
             <TextField fx:id="username" layoutX="250.0" layoutY="208.0" prefHeight="35.0" promptText="username" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" />
             <PasswordField fx:id="password" layoutX="250.0" layoutY="273.0" prefHeight="35.0" promptText="password" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" />
-            <SplitMenuButton fx:id="connection" layoutX="181.0" layoutY="341.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="151.0" text="Connection" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="175.0">
+            <TextField fx:id="IPaddress" layoutX="140.0" layoutY="397.0" prefHeight="35.0" promptText="IP address" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" />
+            <TextField fx:id="serverPort" layoutX="190.0" layoutY="452.0" prefHeight="35.0" promptText="server port" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.0" />
+            <Button fx:id="login" layoutX="360.0" layoutY="505.0" minWidth="70.0" mnemonicParsing="false" onMousePressed="#loginAction" prefHeight="35.0" text="Login" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="62.0" />
+            <MenuButton fx:id="connection" layoutX="176.0" layoutY="338.0" mnemonicParsing="false" text="Connection" AnchorPane.leftAnchor="180.0" AnchorPane.rightAnchor="180.0">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#connectionRMI" text="RMI" />
                 <MenuItem mnemonicParsing="false" onAction="#connectionSocket" text="socket" />
               </items>
-            </SplitMenuButton>
-            <TextField fx:id="IPaddress" layoutX="140.0" layoutY="397.0" prefHeight="35.0" promptText="IP address" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" />
-            <TextField fx:id="serverPort" layoutX="190.0" layoutY="452.0" prefHeight="35.0" promptText="server port" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="190.0" />
-            <Button fx:id="login" layoutX="360.0" layoutY="505.0" minWidth="70.0" mnemonicParsing="false" onMousePressed="#loginAction" prefHeight="35.0" text="Login" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="62.0" />
+            </MenuButton>
          </children>
       </AnchorPane>
    </children>

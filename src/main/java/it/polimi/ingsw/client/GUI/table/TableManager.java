@@ -41,24 +41,21 @@ public class TableManager implements GUIManager {
     private ArrayList<Rectangle> cells3 = null;  //cells of player three
     private ArrayList<Rectangle> cells4 = null;  //cells of player four
     private ArrayList<StackPane> poolItems = null;  //dices of draftPool
+    private ArrayList<StackPane> roundItems = null;  //dices of roundTrack
     private ArrayList<StackPane> window1Items = null; //dices to remove from window1
     private ArrayList<StackPane> window2Items = null; //dices to remove from window2
     private ArrayList<StackPane> window3Items = null; //dices to remove from window3
     private ArrayList<StackPane> window4Items = null; //dices to remove from window4
+    private ArrayList<Rectangle> cellsRound = null;  //cells of roundTrack
     private ArrayList<Rectangle> cellsPool = null;  //cells of draftPool
     private Table table = null;
     private Rectangle source = null;
     private int idPool = 0;
-    private boolean sourceSelectedWindow = false;
-    private boolean sourceSelectedPool = false;
-    private int sourcerow;
-    private int sourcecol;
-    private int destrow;
-    private int destcol;
     private Communicator communicator;
     private boolean endGame = false;
     private boolean move;
     private boolean toolCard;
+    int initialPos;
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
     @FXML Rectangle dice2;
@@ -176,6 +173,31 @@ public class TableManager implements GUIManager {
     @FXML TextField operation;
     @FXML Button operationButton;
     @FXML GridPane tableBackground;
+    @FXML GridPane cardsBackground;
+    @FXML GridPane roundTrack;
+    @FXML Rectangle diceR11; @FXML Rectangle diceR12; @FXML Rectangle diceR13; @FXML Rectangle diceR14;
+    @FXML Rectangle diceR15; @FXML Rectangle diceR16; @FXML Rectangle diceR17; @FXML Rectangle diceR18;
+    @FXML Rectangle diceR19; @FXML Rectangle diceR21; @FXML Rectangle diceR22; @FXML Rectangle diceR23;
+    @FXML Rectangle diceR24; @FXML Rectangle diceR25; @FXML Rectangle diceR26; @FXML Rectangle diceR27;
+    @FXML Rectangle diceR28; @FXML Rectangle diceR29; @FXML Rectangle diceR31; @FXML Rectangle diceR32;
+    @FXML Rectangle diceR33; @FXML Rectangle diceR34; @FXML Rectangle diceR35; @FXML Rectangle diceR36;
+    @FXML Rectangle diceR37; @FXML Rectangle diceR38; @FXML Rectangle diceR39; @FXML Rectangle diceR41;
+    @FXML Rectangle diceR42; @FXML Rectangle diceR43; @FXML Rectangle diceR44; @FXML Rectangle diceR45;
+    @FXML Rectangle diceR46; @FXML Rectangle diceR47; @FXML Rectangle diceR48; @FXML Rectangle diceR49;
+    @FXML Rectangle diceR51; @FXML Rectangle diceR52; @FXML Rectangle diceR53; @FXML Rectangle diceR54;
+    @FXML Rectangle diceR55; @FXML Rectangle diceR56; @FXML Rectangle diceR57; @FXML Rectangle diceR58;
+    @FXML Rectangle diceR59; @FXML Rectangle diceR61; @FXML Rectangle diceR62; @FXML Rectangle diceR63;
+    @FXML Rectangle diceR64; @FXML Rectangle diceR65; @FXML Rectangle diceR66; @FXML Rectangle diceR67;
+    @FXML Rectangle diceR68; @FXML Rectangle diceR69; @FXML Rectangle diceR71; @FXML Rectangle diceR72;
+    @FXML Rectangle diceR73; @FXML Rectangle diceR74; @FXML Rectangle diceR75; @FXML Rectangle diceR76;
+    @FXML Rectangle diceR77; @FXML Rectangle diceR78; @FXML Rectangle diceR79; @FXML Rectangle diceR81;
+    @FXML Rectangle diceR82; @FXML Rectangle diceR83; @FXML Rectangle diceR84; @FXML Rectangle diceR85;
+    @FXML Rectangle diceR86; @FXML Rectangle diceR87; @FXML Rectangle diceR88; @FXML Rectangle diceR89;
+    @FXML Rectangle diceR91; @FXML Rectangle diceR92; @FXML Rectangle diceR93; @FXML Rectangle diceR94;
+    @FXML Rectangle diceR95; @FXML Rectangle diceR96; @FXML Rectangle diceR97; @FXML Rectangle diceR98;
+    @FXML Rectangle diceR99; @FXML Rectangle diceR101; @FXML Rectangle diceR102; @FXML Rectangle diceR103;
+    @FXML Rectangle diceR104; @FXML Rectangle diceR105; @FXML Rectangle diceR106; @FXML Rectangle diceR107;
+    @FXML Rectangle diceR108; @FXML Rectangle diceR109;
     @FXML
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
@@ -204,9 +226,21 @@ public class TableManager implements GUIManager {
            }
         }
         try {
-            communicator.sendMessage(""+idPool);
+            communicator.sendMessage(""+(idPool-initialPos));
         } catch (NetworkErrorException e1) {
             e1.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void mousePressedRound(MouseEvent e) {
+        source = (Rectangle) e.getSource();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (source == cellsRound.get((j) * (10) + (i))) {
+                    System.out.println("Selected roundTrack ROUND "+(i+1)+" DICE "+(j+1));
+                }
+            }
         }
     }
 
@@ -375,13 +409,25 @@ public class TableManager implements GUIManager {
         selectedDice.setVisible(false);
         //operation.setVisible(false);
         //operationButton.setVisible(true);
-        tableBackground.getStylesheets().add("GUI/table.css");
-        Image backGround = new Image(getClass().getResourceAsStream("/GUI/welcome.jpg"));
+        //tableBackground.getStylesheets().add("GUI/table.css");
+        Image backGround = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
         tableBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        cardsBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         window1.setStyle("-fx-background-color: #FFFFFF;");
         window2.setStyle("-fx-background-color: #FFFFFF;");
         window3.setStyle("-fx-background-color: #FFFFFF;");
         window4.setStyle("-fx-background-color: #FFFFFF;");
+        cellsRound = new ArrayList<>();
+        roundItems = new ArrayList<>();
+        cellsRound.add(diceR11); cellsRound.add(diceR21); cellsRound.add(diceR31); cellsRound.add(diceR41); cellsRound.add(diceR51); cellsRound.add(diceR61); cellsRound.add(diceR71); cellsRound.add(diceR81); cellsRound.add(diceR91); cellsRound.add(diceR101);
+        cellsRound.add(diceR12); cellsRound.add(diceR22); cellsRound.add(diceR32); cellsRound.add(diceR42); cellsRound.add(diceR52); cellsRound.add(diceR62); cellsRound.add(diceR72); cellsRound.add(diceR82); cellsRound.add(diceR92); cellsRound.add(diceR102);
+        cellsRound.add(diceR13); cellsRound.add(diceR23); cellsRound.add(diceR33); cellsRound.add(diceR43); cellsRound.add(diceR53); cellsRound.add(diceR63); cellsRound.add(diceR73); cellsRound.add(diceR83); cellsRound.add(diceR93); cellsRound.add(diceR103);
+        cellsRound.add(diceR14); cellsRound.add(diceR24); cellsRound.add(diceR34); cellsRound.add(diceR44); cellsRound.add(diceR54); cellsRound.add(diceR64); cellsRound.add(diceR74); cellsRound.add(diceR84); cellsRound.add(diceR94); cellsRound.add(diceR104);
+        cellsRound.add(diceR15); cellsRound.add(diceR25); cellsRound.add(diceR35); cellsRound.add(diceR45); cellsRound.add(diceR55); cellsRound.add(diceR65); cellsRound.add(diceR75); cellsRound.add(diceR85); cellsRound.add(diceR95); cellsRound.add(diceR105);
+        cellsRound.add(diceR16); cellsRound.add(diceR26); cellsRound.add(diceR36); cellsRound.add(diceR46); cellsRound.add(diceR56); cellsRound.add(diceR66); cellsRound.add(diceR76); cellsRound.add(diceR86); cellsRound.add(diceR96); cellsRound.add(diceR106);
+        cellsRound.add(diceR17); cellsRound.add(diceR27); cellsRound.add(diceR37); cellsRound.add(diceR47); cellsRound.add(diceR57); cellsRound.add(diceR67); cellsRound.add(diceR77); cellsRound.add(diceR87); cellsRound.add(diceR97); cellsRound.add(diceR107);
+        cellsRound.add(diceR18); cellsRound.add(diceR28); cellsRound.add(diceR38); cellsRound.add(diceR48); cellsRound.add(diceR58); cellsRound.add(diceR68); cellsRound.add(diceR78); cellsRound.add(diceR88); cellsRound.add(diceR98); cellsRound.add(diceR108);
+        cellsRound.add(diceR19); cellsRound.add(diceR29); cellsRound.add(diceR39); cellsRound.add(diceR49); cellsRound.add(diceR59); cellsRound.add(diceR69); cellsRound.add(diceR79); cellsRound.add(diceR89); cellsRound.add(diceR99); cellsRound.add(diceR109);
     }
 
     public void editMessage(String message) {
@@ -410,6 +456,7 @@ public class TableManager implements GUIManager {
         showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
         showDraftPool(table.getDraftPool());
         showSelectedDice(table.getActiveDice());
+        showRoundTrack(table.getRoundTrack());
         int size = table.getPlayers().size();
         int i=0;
         int j=0;
@@ -453,6 +500,40 @@ public class TableManager implements GUIManager {
               }
               );
         }
+
+    public void showRoundTrack(RoundTrack RT){
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    Dice elem;
+                    StackPane dice = null;
+                    int size = roundItems.size();
+                    for(int k=0; k<size; k++){  //reset roundTrack
+                        roundTrack.getChildren().remove(roundItems.get(0));
+                        roundItems.remove(0);
+                    }
+                    for (int i=0; i<10; i++){
+                        ArrayList<Dice> temp = RT.getRoundDices(i);
+                        if(temp != null){
+                            for(int j=0; j<9; j++){
+                                elem = null;
+                                if(temp.size()>j) elem = temp.get(j);
+                                if(elem != null){  //if there's a dice to add to roundTrack (ROUND i)
+                                    try {
+                                        dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    dice.setStyle(colors.get(elem.getColor()));
+                                    poolItems.add(dice);
+                                    roundTrack.add(dice, i, j);
+                                    cellsRound.get((j) * (10) + (i)).toFront();
+                                }
+                            }
+                        }
+                    }
+                }
+        );
+    }
 
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
         Image image;
@@ -510,6 +591,8 @@ public class TableManager implements GUIManager {
                         draftPool.getChildren().remove(poolItems.get(0));
                         poolItems.remove(0);
                     }
+                    initialPos = ((9-pool.size())/2);
+                    i = initialPos;
                     for (Dice elem : pool) {
                         try {
                             dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));

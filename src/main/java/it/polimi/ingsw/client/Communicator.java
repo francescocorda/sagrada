@@ -9,6 +9,6 @@ import java.util.ArrayList;
 public interface Communicator {
     public void initialize(ArrayList<String> parameters) throws NetworkErrorException;
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException;
-    public void lobby(String username, Long time) throws NetworkErrorException, NotValidInputException;
+    public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException;
     public void sendMessage(String message) throws NetworkErrorException;
 }

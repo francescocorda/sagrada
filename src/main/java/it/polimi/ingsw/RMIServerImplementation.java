@@ -32,8 +32,8 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
                         client.checkConnection();
                     } catch (RemoteException e) {
                         clientDatabase.disconnect(username);
-                        VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
-                        virtualView.notifyObservers("quit");
+                        //TODO eliminate this
+                        System.out.println("WARNING: ");
                         this.cancel();
                     }
                 }
@@ -51,7 +51,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
 
     public void joinLobby(String username, long time) throws NotValidInputException, RemoteException {
         long systemTime = System.currentTimeMillis()/1000; //current unix time in seconds
-        System.out.println("JOIN LOBBY: username: "+username+"\n \t time: "+time);
         if (systemTime > time) {
             Lobby.getLobby().addPlayer(username, time);
         } else throw new NotValidInputException();

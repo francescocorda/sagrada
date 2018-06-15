@@ -9,40 +9,22 @@ public class MessageReader {
     public MessageReader(String message){
         if(message==null)
             throw new NullPointerException();
-        int lastSymbol=0;
-        int secondLastSymbol;
-
         parts = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-        /*
-        parts = new ArrayList<>();
-        while(lastSymbol<message.length()-1) {
-            secondLastSymbol=lastSymbol;
-            lastSymbol= message.indexOf('<', secondLastSymbol+1);
-            if(secondLastSymbol==0){
-                if(lastSymbol== -1){
-                    parts.add(message);
-                    break;
-                }
-                parts.add(message.substring(secondLastSymbol, lastSymbol));
-            }
-            if(lastSymbol==-1){
-                break;
-            }
-            secondLastSymbol=lastSymbol;
-            lastSymbol= message.indexOf('>', secondLastSymbol+1);
-            if(lastSymbol == -1){
-                break;
-            }
-            else
-                parts.add(message.substring(secondLastSymbol+1, lastSymbol));
-        }
-        */
     }
 
+    /**
+     * tells if the {@link MessageReader#parts} has yet something that has to be read.
+     * @return true if there's something to be read or false if there's not.
+     */
     public boolean hasNext(){
         return !parts.isEmpty();
     }
 
+    /**
+     * returns the string in index #0 of {@link MessageReader#parts} or throws NullPointerException
+     * @throws NullPointerException if it is invoked when empty
+     * @return String at index 0 of {@link MessageReader#parts}
+     */
     public String getNext(){
         if(parts.isEmpty())
             throw new NullPointerException();

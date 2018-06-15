@@ -5,7 +5,9 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.View;
+import org.apache.commons.lang.ObjectUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -33,17 +35,22 @@ public class MessageGetter extends Thread{
     @Override
     public void run() {
         super.run();
-        while(on){
-            String tempMessage = connection.getMessage();
-            if(tempMessage.equals("ping")){
-                connection.sendMessage("pong");
-            } else if(lock){
-                setMessage(tempMessage);
-            } else {
-                if(readable())
-                    handleCommands(new ArrayList<>(Arrays.asList(getMessage().split("\\s*/\\s*"))));
-                handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
+        try {
+            while (on) {
+                String tempMessage = connection.getMessage();
+                if (tempMessage.equals("ping")) {
+                    connection.sendMessage("pong");
+                } else if (lock) {
+                    setMessage(tempMessage);
+                } else {
+                    if (readable())
+                        handleCommands(new ArrayList<>(Arrays.asList(getMessage().split("\\s*/\\s*"))));
+                    handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
+                }
             }
+        } catch (NullPointerException e){
+            System.out.println("Server Offline");
+            Thread.currentThread().interrupt();
         }
     }
 

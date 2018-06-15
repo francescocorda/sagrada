@@ -7,9 +7,7 @@ import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.CLIView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class CLI {
 
@@ -28,8 +26,13 @@ public class CLI {
         this.username = new String();
     }
 
+    /**
+     * allows the user to chose the network technology to communicate with the server.
+     * It does that by asking within commandline whether to communicate by socket or rmi and starts the corresponding
+     * method: {@link #startSocket()} , {@link #startRMI()}
+     */
     public void startCLI() {
-        toScreen("What communication technology do you want to use? " +
+        println("What communication technology do you want to use? " +
                 "(type \"RMI\" for RMI  and \"socket\" for socket ...)");
         boolean temp = true;
         while (temp) {
@@ -45,20 +48,23 @@ public class CLI {
                     startSocket();
                     break;
                 default:
-                    toScreen("Wrong input...\n");
-                    toScreen("What communication technology do you want to use? " +
+                    println("Wrong input...\n");
+                    println("What communication technology do you want to use? " +
                             "(type \"RMI\" for RMI  and \"socket\" for socket ...)");
             }
         }
         login();
     }
 
+    /**
+     * starts client with RMI technology initialising a CommunicatorRMI
+     */
     private void startRMI(){
         communicator = new CommunicatorRMI(view);
         boolean temp = true;
         String server = new String();
         while (temp) {
-            toScreen("Insert server IP (leave it blank for default: localhost");
+            println("Insert server IP (leave it blank for default: localhost)");
             server = in.nextLine();
             if(server.equals("")){
                 server = DEFAULT_SERVER;
@@ -70,13 +76,16 @@ public class CLI {
                 temp = false;
             } catch (NetworkErrorException e) {
                 if(server.equals(DEFAULT_SERVER))
-                    toScreen("Server Offline");
+                    println("Server Offline");
                 else
-                    toScreen("Server Offline or WRONG ip address");
+                    println("Server Offline or WRONG ip address");
             }
         }
     }
 
+    /**
+     * starts client with Socket technology initialising a CommunicatorSocket
+     */
     private void startSocket(){
         communicator = new CommunicatorSocket(view);
         boolean temp = true;
@@ -84,13 +93,13 @@ public class CLI {
         String port = new String();
         while (temp) {
             ArrayList<String> parameters = new ArrayList<>();
-            toScreen("Insert server IP (leave it blank for default: localhost)");
+            println("Insert server IP (leave it blank for default: localhost)");
             server = in.nextLine();
             if(server.equals("")){
                 server = DEFAULT_SERVER;
             }
             parameters.add(server);
-            toScreen("Insert server port (leave it blank for default: 3001)");
+            println("Insert server port (leave it blank for default: 3001)");
             port = in.nextLine();
             if(port.equals("")){
                 port = DEFAULT_SERVER_PORT;
@@ -101,58 +110,90 @@ public class CLI {
                 temp = false;
             } catch (NetworkErrorException e) {
                 if(server.equals(DEFAULT_SERVER))
-                    toScreen("Server Offline");
+                    println("Server Offline");
                 else
-                    toScreen("Server Offline or WRONG ip address / port");
+                    println("Server Offline or WRONG ip address / port");
             }
         }
     }
 
+    /**
+     * handles login phase
+     */
     private void login(){
         boolean temp = true;
         String password;
         while (temp) {
-            toScreen("LOGIN");
-            toScreen("Username: ");
+            println("LOGIN");
+            println("Username: ");
             username = in.nextLine();
-            toScreen("Password: ");
+            println("Password: ");
             password = in.nextLine();
             try {
                 communicator.login(username, password);
                 temp = false;
             } catch (NetworkErrorException e) {
-                toScreen("Server Offline / Network Error");
+                println("Server Offline / Network Error");
                 startCLI();
             } catch (NotValidInputException e) {
-                toScreen("Wrong password or user already taken");
+                println("Wrong password or user already taken");
             }
         }
         view.setUsername(username);
         lobby();
     }
 
+    /**
+     * handles lobby phase
+     */
     private void lobby(){
         boolean temp = true;
-        String timeString;
-        long time;
+        String yearStr;
+        String monthStr;
+        String dayStr;
+        int day;
+        int month;
+        int year;
+        long time = 0;
         while (temp) {
-            toScreen("LOBBY");
-            toScreen("When was the last time you visited a Cathedral? ");
-            timeString = in.nextLine();
-            try {
-                time = Long.parseLong(timeString);
-                communicator.lobby(username, time);
-                temp = false;
-            } catch (NetworkErrorException e) {
-                toScreen("Server Offline / Network Error");
-                startCLI();
-            } catch (NotValidInputException | NumberFormatException e) {
-                toScreen("Invalid time");
+            println("LOBBY");
+            print("Year(YYYY):\t");
+            yearStr = in.nextLine();
+            if(!yearStr.equals("")){
+                print("Month(MM):\t");
+                monthStr = in.nextLine();
+                print("Day(DD):\t");
+                dayStr = in.nextLine();
+                try{
+                    year = Integer.parseInt(yearStr);
+                    month = Integer.parseInt(monthStr);
+                    day = Integer.parseInt(dayStr);
+                    time = isDateValid(day, month, year);
+                    communicator.lobby(username, time);
+                    temp = false;
+                } catch (NetworkErrorException e) {
+                    println("Server Offline / Network Error");
+                    startCLI();
+                } catch (NotValidInputException | NumberFormatException e) {
+                    println("Invalid time");
+                }
+            } else {
+                try {
+                    communicator.lobby(username,(long)0);
+                } catch (NetworkErrorException e) {
+                    println("Server Offline / Network Error");
+                    startCLI();
+                } catch (NotValidInputException e) {
+                    println("Invalid time");
+                }
             }
         }
         game();
     }
 
+    /**
+     * handles game phase
+     */
     private void game(){
         boolean temp = true;
         String message = new String();
@@ -165,14 +206,48 @@ public class CLI {
                     temp = false;
                 communicator.sendMessage(message);
             } catch (NetworkErrorException e) {
-                toScreen("Server Offline / Network Error");
+                println("Server Offline / Network Error");
                 temp = false;
             }
         }
         startCLI();
     }
 
-    private static void toScreen(String message) {
+    /**
+     * shows into commandLine the given message and goes to next line
+     * @param message : message to be shown to commandLine
+     */
+    private void println(String message) {
         System.out.println(message);
     }
+
+    /**
+     * shows into commandLine the given message.
+     * @param message the given message
+     */
+    private void print(String message){
+        System.out.print(message);
+    }
+
+    /**
+     * checks if a given date(DD/MM/YYYY) is valid or not.
+     * If the given date is valid it return its corresponding UNIX Time
+     * else it throws a NotValidInputException.
+     * @param day Date's day (YY)
+     * @param month Date's month (MM)
+     * @param year Date's year (YYYY)
+     * @return Date's UNIX Time
+     * @throws NotValidInputException when the given Date is not valid
+     */
+    private long isDateValid (int day, int month, int year) throws NotValidInputException{
+        GregorianCalendar cal = new GregorianCalendar (year, month-1, day);
+        cal.setLenient(false);
+        try {
+            cal.get(Calendar.DATE);
+            return cal.getTime().getTime()/1000;
+        } catch (IllegalArgumentException e) {
+            throw new NotValidInputException();
+        }
+    }
 }
+

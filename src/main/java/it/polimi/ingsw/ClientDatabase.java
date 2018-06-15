@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.util.ArrayList;
 
@@ -108,7 +109,8 @@ public class ClientDatabase {
     private void phaseDisconnection(ClientData player){
         switch(player.getPhase()){
             case GAME:
-                //TODO
+                VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
+                virtualView.notifyObservers("quit");
                 break;
             case LOBBY:
                 Lobby.getLobby().removePlayer(player);

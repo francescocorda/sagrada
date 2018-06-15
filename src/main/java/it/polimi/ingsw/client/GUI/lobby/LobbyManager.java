@@ -21,9 +21,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.util.*;
 
 public class LobbyManager implements GUIManager{
     private Image image;
@@ -51,27 +51,32 @@ public class LobbyManager implements GUIManager{
     Button joinLobby;
     @FXML
     ImageView privateObj;
+
     public void joinLobby(javafx.event.ActionEvent event){
-        long time = isDateValid(this.date);
+        LocalDate isoDate = date.getValue();
+        ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
         Communicator communicator = GUIData.getGUIData().getCommunicator();
         String username = GUIData.getGUIData().getUsername();
         try {
-            communicator.lobby(username, 20);
+            long time = chronoLocalDate.toEpochDay()*24*60*60;
+            time = isDateValid(time);
+            System.out.println("Unix time:"+time);
+            System.out.println("To data: "+(new Date(time*1000L).toString()));
+            communicator.lobby(username, time);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
-        } catch (NotValidInputException e) {
-            e.printStackTrace();
+            this.message.setText("Network Error! Server may be DOWN!\n");
+        } catch (NotValidInputException | NullPointerException e) {
+            this.message.setText("Not valid Date! Retry!\n");
         }
     }
     @FXML
     public void initialize(){
         GUIData.getGUIData().getView().setGUIManager(this);
-        this.message.setText("Welcome to the lobby!\n");
         card1.setVisible(false);
         card2.setVisible(false);
         card3.setVisible(false);
         card4.setVisible(false);
-        HM=new HashMap<Integer, ImageView>();
+        HM=new HashMap<>();
         HM.put(0, card1);
         HM.put(1, card2);
         HM.put(2, card3);
@@ -109,7 +114,7 @@ public class LobbyManager implements GUIManager{
         try {
             GUIData.getGUIData().getCommunicator().sendMessage(card);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            this.message.setText("Network Error! Server may be DOWN!\n");
         }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
@@ -121,6 +126,7 @@ public class LobbyManager implements GUIManager{
             TM.editMessage(temp);
             if(table!=null) TM.updateTable(table);
         } catch (IOException e) {
+            this.message.setText("GUI ERROR!\n");
             e.printStackTrace();
         }
     }
@@ -138,188 +144,116 @@ public class LobbyManager implements GUIManager{
 
     public void showPattern(int ID){
         if(HM==null) System.out.println("HM null");
-        if(HM.get(0)==null) System.out.println("0 null");
-        if(HM.get(1)==null) System.out.println("1 null");
-        if(HM.get(2)==null) System.out.println("2 null");
-        if(HM.get(3)==null) System.out.println("3 null");
+        else {
+            if (HM.get(0) == null) System.out.println("0 null");
+            if (HM.get(1) == null) System.out.println("1 null");
+            if (HM.get(2) == null) System.out.println("2 null");
+            if (HM.get(3) == null) System.out.println("3 null");
+        }
         switch (ID) {
-            case(1): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern1.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(1):
+                setImage("/GUI/pattern1.PNG");
                 break;
-            }
-            case(2): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern2.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(2):
+                setImage("/GUI/pattern2.PNG");
                 break;
-            }
-            case(3): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern3.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(3):
+                setImage("/GUI/pattern3.PNG");
                 break;
-            }
-            case(4): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern4.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(4):
+                setImage("/GUI/pattern4.PNG");
                 break;
-            }
-            case(5): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern5.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(5):
+                setImage("/GUI/pattern5.PNG");
                 break;
-            }
-            case(6): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern6.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(6):
+                setImage("/GUI/pattern6.PNG");
                 break;
-            }
-            case(7): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern7.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(7):
+                setImage("/GUI/pattern7.PNG");
                 break;
-            }
-            case(8): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern8.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(8):
+                setImage("/GUI/pattern8.PNG");
                 break;
-            }
-            case(9): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern9.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(9):
+                setImage("/GUI/pattern9.PNG");
                 break;
-            }case(10): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern10.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(10):
+                setImage("/GUI/pattern10.PNG");
                 break;
-            }
-            case(11): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern11.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(11):
+                setImage("/GUI/pattern11.PNG");
                 break;
-            }case(12): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern12.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(12):
+                setImage("/GUI/pattern12.PNG");
                 break;
-            }
-            case(13): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern13.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(13):
+                setImage("/GUI/pattern13.PNG");
                 break;
-            }
-            case(14): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern14.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(14):
+                setImage("/GUI/pattern14.PNG");
                 break;
-            }
-            case(15): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern15.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(15):
+                setImage("/GUI/pattern15.PNG");
                 break;
-            }case(16): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern16.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(16):
+                setImage("/GUI/pattern16.PNG");
                 break;
-            }case(17): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern17.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(17):
+                setImage("/GUI/pattern17.PNG");
                 break;
-            }case(18): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern18.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(18):
+                setImage("/GUI/pattern18.PNG");
                 break;
-            }case(19): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern19.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(19):
+                setImage("/GUI/pattern19.PNG");
                 break;
-            }case(20): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern20.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(20):
+                setImage("/GUI/pattern20.PNG");
                 break;
-            }
-            case(21): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern21.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(21):
+                setImage("/GUI/pattern21.PNG");
                 break;
-            }
-            case(22): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern22.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(22):
+                setImage("/GUI/pattern22.PNG");
                 break;
-            }
-            case(23): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern23.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(23):
+                setImage("/GUI/pattern23.PNG");
                 break;
-            }
-            case(24): {
-                image = new Image(Client.class.getResourceAsStream("/GUI/pattern24.PNG"));
-                HM.get(count).setImage(image);
-                HM.get(count).setVisible(true);
-                count++;
+            case(24):
+                setImage("/GUI/pattern24.PNG");
                 break;
-            }
+            default:
+                break;
         }
     }
+
+    private void setImage(String path){
+        image = new Image(Client.class.getResourceAsStream(path));
+        HM.get(count).setImage(image);
+        HM.get(count).setVisible(true);
+        count++;
+    }
     public void updateTable(Table table){
-        Image image = new Image(PVOCs.get((Integer) table.getPlayers().get(0).getPrivateObjectiveCard().getID()));
-        privateObj.setImage(image);
+        Image imageToBeUpdated = new Image(PVOCs.get(table.getPlayers().get(0).getPrivateObjectiveCard().getID()));
+        privateObj.setImage(imageToBeUpdated);
         privateObj.setVisible(true);
         this.table=table;
     }
 
-    private long isDateValid(DatePicker date){
-        int day = date.getValue().getDayOfMonth();
-        int month = date.getValue().getMonthValue();
-        int year = date.getValue().getYear();
+    private long isDateValid (long timeUnix) throws NotValidInputException{
         GregorianCalendar cal = new GregorianCalendar();
+        cal.setTimeInMillis(timeUnix*1000L);
+        int year = cal.get(GregorianCalendar.YEAR);
+        int month = cal.get(GregorianCalendar.MONTH);
+        int day = cal.get(GregorianCalendar.DAY_OF_MONTH);
+        cal = new GregorianCalendar(year, month, day);
         cal.setLenient(false);
-        cal.get(Calendar.DATE);
-        return cal.getTime().getTime()/1000;
+        try {
+            cal.get(Calendar.DATE);
+            return cal.getTime().getTime()/1000;
+        } catch (IllegalArgumentException e) {
+            throw new NotValidInputException();
+        }
     }
 }

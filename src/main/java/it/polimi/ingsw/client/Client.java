@@ -6,9 +6,13 @@ import java.util.Scanner;
 
 public class Client {
 
+    /**
+     * starts client and allows to choose whether to play through CLI or GUI
+     * @param args the usual main args
+     */
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        toScreen("Would you like to play in GUI or CLI?");
+        println("Would you like to play in GUI or CLI?");
         boolean temp = true;
         while (temp) {
             String mode = in.nextLine();
@@ -24,13 +28,17 @@ public class Client {
                     new CLI().startCLI();
                     break;
                 default:
-                    toScreen("Wrong input...\n");
-                    toScreen("Would you like to play in GUI or CLI?");
+                    println("Wrong input...\n");
+                    println("Would you like to play in GUI or CLI?");
             }
         }
     }
 
-    private static void toScreen(String message) {
+    /**
+     * shows to commandLine the given message
+     * @param message the given message
+     */
+    private static void println(String message) {
         System.out.println(message);
     }
 }

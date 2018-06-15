@@ -201,4 +201,8 @@ public class Lobby {
             }
             return false;
         }
+
+        public void close(){
+            System.exit(0);
+        }
     }

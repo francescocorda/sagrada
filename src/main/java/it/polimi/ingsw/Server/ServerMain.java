@@ -1,20 +1,31 @@
 package it.polimi.ingsw.Server;
 
 import it.polimi.ingsw.Lobby;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
+
 import java.util.Scanner;
 
 public class ServerMain {
 
-    private static boolean SERVER_UP;
+    private static final String NETWORK_ERROR = "Network Error, try a different port...";
+    private static final String RMI_SETTER_MESSAGE = "Set rmi port (leave it empty for default value: ";
+    private static final String SOCKET_SETTER_MESSAGE = "Set socket port (leave it empty for default value: ";
+    private static final String TIMER_SETTING_MESSAGE = "Set startGame timer[seconds] (leave it empty for default ";
+    private static final String DEFAULT_SYMBOL = "";
+    private static final String NOT_VALID_INPUT = "Not valid input...";
+    private static final String CLOSING_SETTER = "): ";
+    private static boolean serverUp;
     private static SocketServer serverSocket;
     private static RMIServer rmiServer;
-    private static int SOCKET_PORT;
-    private static int RMI_PORT;
+    private static final int DEFAULT_SOCKET_PORT = 3001;
+    private static final int DEFAULT_RMI_PORT = 1099;
+    private static int socketPort;
+    private static int rmiPort;
     private static ServerMain instance = null;
-    private int numberOfClient  = -1;
-    private static int timerSeconds = 2*60;
+    private int numberOfClient = -1;
+    private static int timerSeconds = 2 * 60;
 
-    private ServerMain(){
+    private ServerMain() {
     }
 
     public static synchronized ServerMain getServerMain() {
@@ -24,54 +35,131 @@ public class ServerMain {
         return instance;
     }
 
-    public static void main( String[] args ) {
-
-        //Initialize all the structure for the game/server
+    /**
+     * Initialize all the structure for the game/server
+     * @param args the usual main args
+     */
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        SERVER_UP=true;
-        System.out.println("Set socket port (type 0 for default value: 3001): ");
-        String text = scanner.nextLine();
-        int temp;
-        if((temp=Integer.valueOf(text)) == 0)
-            SOCKET_PORT =3001;
-        else
-            SOCKET_PORT=temp;
-        System.out.println("Set RMI Server port (type 0 for default value: 1099): ");
-        text = scanner.nextLine();
-        if((temp=Integer.valueOf(text)) == 0)
-            RMI_PORT = 1099;
-        else
-            RMI_PORT = temp;
-        System.out.println("Set startGame timer[seconds] (0 for default 2*60): ");
-        text = scanner.nextLine();
-        int seconds = Integer.valueOf(text);
-        if(seconds>0)
-            setTimerSeconds(seconds);
-
+        String text;
+        serverUp = true;
+        boolean flag = true;
+        setSocketServer();
+        setRMIServer();
+        while(flag){
+            println(TIMER_SETTING_MESSAGE+timerSeconds+CLOSING_SETTER);
+            text = scanner.nextLine();
+            try{
+                if(!text.equals(DEFAULT_SYMBOL)){
+                    int seconds = Integer.parseInt(text);
+                    setTimerSeconds(seconds);
+                }
+                flag = false;
+            } catch (NumberFormatException e){
+                println(NOT_VALID_INPUT);
+            }
+        }
         Lobby.getLobby();
         start();
     }
 
-    private static void start(){
-        rmiServer = new RMIServer(RMI_PORT);
-        serverSocket = new SocketServer(SOCKET_PORT);
-
+    private static void setSocketServer(){
+        Scanner scanner = new Scanner(System.in);
+        String text;
+        boolean flag = true;
+        while (flag) {
+            println(SOCKET_SETTER_MESSAGE+DEFAULT_SOCKET_PORT+CLOSING_SETTER);
+            text = scanner.nextLine();
+            if (text.equals(DEFAULT_SYMBOL)){
+                socketPort = DEFAULT_SOCKET_PORT;
+                flag = false;
+            }
+            else {
+                try {
+                    socketPort = Integer.parseInt(text);
+                    flag = false;
+                } catch (NumberFormatException e) {
+                    println(NOT_VALID_INPUT);
+                }
+            }
+            if(!flag){
+                try {
+                    serverSocket = new SocketServer(socketPort);
+                } catch (NetworkErrorException e) {
+                    println(NETWORK_ERROR);
+                    flag = true;
+                }
+            }
+        }
     }
 
-    public static boolean getStatus(){
-        return SERVER_UP;
+    private static void setRMIServer(){
+        Scanner scanner = new Scanner(System.in);
+        String text;
+        boolean flag = true;
+        while (flag) {
+            println(RMI_SETTER_MESSAGE+DEFAULT_RMI_PORT+CLOSING_SETTER);
+            text = scanner.nextLine();
+            if (text.equals(DEFAULT_SYMBOL)){
+                rmiPort = DEFAULT_RMI_PORT;
+                flag = false;
+            }
+            else {
+                try {
+                    rmiPort = Integer.parseInt(text);
+                    flag = false;
+                } catch (NumberFormatException e) {
+                    println(NOT_VALID_INPUT);
+                }
+            }
+            if(!flag){
+                try{
+                    rmiServer = new RMIServer(rmiPort);
+                } catch (NetworkErrorException e) {
+                    flag = true;
+                    println(NETWORK_ERROR);
+                }
+            }
+        }
     }
 
-    public int getNewClientNumber(){
+    private static void start() {
+        Scanner scanner = new Scanner(System.in);
+        String text;
+        boolean flag = true;
+        println("SERVER READY...");
+        while(flag){
+            text = scanner.nextLine();
+            text = text.toLowerCase();
+            if(text.equals("quit")){
+                flag = false;
+                serverUp = false;
+                serverSocket.close();
+                Lobby.getLobby().close();
+                println("SERVER CLOSED...");
+                System.exit(0);
+            }
+        }
+    }
+
+    public static boolean getStatus() {
+        return serverUp;
+    }
+
+    public int getNewClientNumber() {
         numberOfClient++;
         return numberOfClient;
     }
 
-    private static void setTimerSeconds(int seconds){
+    private static void setTimerSeconds(int seconds) {
         timerSeconds = seconds;
     }
 
-    public int getTimerSeconds(){
+    public int getTimerSeconds() {
         return timerSeconds;
+    }
+
+    private static void println(String message) {
+        System.out.println(message);
     }
 }

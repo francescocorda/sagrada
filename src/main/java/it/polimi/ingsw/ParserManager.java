@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
@@ -13,9 +14,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Scanner;
+
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternDeck.PATTERN_CARD_NUMBER;
@@ -63,6 +69,23 @@ public class ParserManager {
         return instance;
     }
 
+    private String readFile(String pathname) throws IOException {
+
+        File file = new File(pathname);
+        StringBuilder fileContents = new StringBuilder((int)file.length());
+        Scanner scanner = new Scanner(file);
+        String lineSeparator = System.getProperty("line.separator");
+
+        try {
+            while(scanner.hasNextLine()) {
+                fileContents.append(scanner.nextLine() + lineSeparator);
+            }
+            return fileContents.toString();
+        } finally {
+            scanner.close();
+        }
+    }
+
 
     public ArrayList<PatternCard> getPatternDeck(){
         ArrayList<PatternCard> deck = new ArrayList<>();
@@ -70,9 +93,11 @@ public class ParserManager {
         try {
             obj = parser.parse(new FileReader(JSON_PATTERNS_PATH));
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("ERROR READING FROM FILE PatternCards");
+            Thread.currentThread().interrupt();
         } catch (ParseException e) {
-            System.out.println(e);
+            System.out.println("ERROR PARSING PatternCards");
+            Thread.currentThread().interrupt();
         }
         JSONObject jsonObject = (JSONObject) obj;
         JSONArray jpatternDeck;

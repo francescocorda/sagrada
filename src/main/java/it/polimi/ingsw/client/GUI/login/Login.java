@@ -14,7 +14,7 @@ public class Login extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/GUI/login.fxml"));
         Parent root = fxmlLoader.load();
         root.getStylesheets().add("GUI/login.css");
-        primaryStage.setTitle("Login");
+        primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 500, 600));
         primaryStage.show();
     }

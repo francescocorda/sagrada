@@ -22,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
@@ -55,6 +56,12 @@ public class TableManager implements GUIManager {
     private boolean endGame = false;
     private boolean move;
     private boolean toolCard;
+    private boolean activeTool = false;
+    private boolean roundTrackEnable = false;
+    private ArrayList<Circle> signals1;
+    private ArrayList<Circle> signals2;
+    private ArrayList<Circle> signals3;
+    private ArrayList<Circle> signals4;
     int initialPos;
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
@@ -68,6 +75,7 @@ public class TableManager implements GUIManager {
     @FXML Rectangle dice9;
     //window1
     @FXML GridPane window1;
+    @FXML TextArea username1;
     @FXML Rectangle dice11;
     @FXML Rectangle dice12;
     @FXML Rectangle dice13;
@@ -174,6 +182,7 @@ public class TableManager implements GUIManager {
     @FXML Button operationButton;
     @FXML GridPane tableBackground;
     @FXML GridPane cardsBackground;
+    @FXML GridPane roundTrackBackground;
     @FXML GridPane roundTrack;
     @FXML Rectangle diceR11; @FXML Rectangle diceR12; @FXML Rectangle diceR13; @FXML Rectangle diceR14;
     @FXML Rectangle diceR15; @FXML Rectangle diceR16; @FXML Rectangle diceR17; @FXML Rectangle diceR18;
@@ -198,6 +207,11 @@ public class TableManager implements GUIManager {
     @FXML Rectangle diceR99; @FXML Rectangle diceR101; @FXML Rectangle diceR102; @FXML Rectangle diceR103;
     @FXML Rectangle diceR104; @FXML Rectangle diceR105; @FXML Rectangle diceR106; @FXML Rectangle diceR107;
     @FXML Rectangle diceR108; @FXML Rectangle diceR109;
+    @FXML Button quit;
+    @FXML Circle signal1; @FXML Circle signal2; @FXML Circle signal3; @FXML Circle signal4; @FXML Circle signal5; @FXML Circle signal6;
+    @FXML Circle signal2_1; @FXML Circle signal2_2; @FXML Circle signal2_3; @FXML Circle signal2_4; @FXML Circle signal2_5; @FXML Circle signal2_6;
+    @FXML Circle signal3_1; @FXML Circle signal3_2; @FXML Circle signal3_3; @FXML Circle signal3_4; @FXML Circle signal3_5; @FXML Circle signal3_6;
+    @FXML Circle signal4_1; @FXML Circle signal4_2; @FXML Circle signal4_3; @FXML Circle signal4_4; @FXML Circle signal4_5; @FXML Circle signal4_6;
     @FXML
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
@@ -234,11 +248,18 @@ public class TableManager implements GUIManager {
 
     @FXML
     public void mousePressedRound(MouseEvent e) {
-        source = (Rectangle) e.getSource();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (source == cellsRound.get((j) * (10) + (i))) {
-                    System.out.println("Selected roundTrack ROUND "+(i+1)+" DICE "+(j+1));
+        if(roundTrackEnable = true){
+            source = (Rectangle) e.getSource();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (source == cellsRound.get((j) * (10) + (i))) {
+                        System.out.println("Selected roundTrack ROUND "+(i+1)+" DICE "+(j+1));
+                        try {
+                            GUIData.getGUIData().getCommunicator().sendMessage((i+1)+"/"+(j+1));
+                        } catch (NetworkErrorException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 }
             }
         }
@@ -413,6 +434,7 @@ public class TableManager implements GUIManager {
         Image backGround = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
         tableBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         cardsBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        roundTrackBackground.setBackground(new Background(new BackgroundImage(backGround, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         window1.setStyle("-fx-background-color: #FFFFFF;");
         window2.setStyle("-fx-background-color: #FFFFFF;");
         window3.setStyle("-fx-background-color: #FFFFFF;");
@@ -428,6 +450,21 @@ public class TableManager implements GUIManager {
         cellsRound.add(diceR17); cellsRound.add(diceR27); cellsRound.add(diceR37); cellsRound.add(diceR47); cellsRound.add(diceR57); cellsRound.add(diceR67); cellsRound.add(diceR77); cellsRound.add(diceR87); cellsRound.add(diceR97); cellsRound.add(diceR107);
         cellsRound.add(diceR18); cellsRound.add(diceR28); cellsRound.add(diceR38); cellsRound.add(diceR48); cellsRound.add(diceR58); cellsRound.add(diceR68); cellsRound.add(diceR78); cellsRound.add(diceR88); cellsRound.add(diceR98); cellsRound.add(diceR108);
         cellsRound.add(diceR19); cellsRound.add(diceR29); cellsRound.add(diceR39); cellsRound.add(diceR49); cellsRound.add(diceR59); cellsRound.add(diceR69); cellsRound.add(diceR79); cellsRound.add(diceR89); cellsRound.add(diceR99); cellsRound.add(diceR109);
+        quit.setDisable(true);
+        signals1 = new ArrayList<>();
+        signals1.add(signal1); signals1.add(signal2); signals1.add(signal3); signals1.add(signal4); signals1.add(signal5); signals1.add(signal6);
+        signals2 = new ArrayList<>();
+        signals2.add(signal2_1); signals2.add(signal2_2); signals2.add(signal2_3); signals2.add(signal2_4); signals2.add(signal2_5); signals2.add(signal2_6);
+        signals3 = new ArrayList<>();
+        signals3.add(signal3_1); signals3.add(signal3_2); signals3.add(signal3_3); signals3.add(signal3_4); signals3.add(signal3_5); signals3.add(signal3_6);
+        signals4 = new ArrayList<>();
+        signals4.add(signal4_1); signals4.add(signal4_2); signals4.add(signal4_3); signals4.add(signal4_4); signals4.add(signal4_5); signals4.add(signal4_6);
+        for(int c=0; c<6; c++){
+            signals1.get(c).setVisible(false);
+            signals2.get(c).setVisible(false);
+            signals3.get(c).setVisible(false);
+            signals4.get(c).setVisible(false);
+        }
     }
 
     public void editMessage(String message) {
@@ -436,12 +473,23 @@ public class TableManager implements GUIManager {
             if (message!= null && message.contains("New Turn.")) {
                 text.setText(message + "\n");
                 toolCard = false;
+                if(activeTool = true){
+                    tool1.setVisible(true);
+                    tool2.setVisible(true);
+                    tool3.setVisible(true);
+                }
             }
             else {
                 this.text.setText(text.getText().concat(message + "\n"));
                 if(message.equals("Command of invalid format.")) {
                     if(!toolCard) move=true;
                 }
+            }
+            if (message!= null && message.contains("It's your turn!") && (activeTool = true)){
+                tool1.setVisible(true);
+                tool2.setVisible(true);
+                tool3.setVisible(true);
+                activeTool = false;
             }
         }
     }
@@ -462,18 +510,18 @@ public class TableManager implements GUIManager {
         int j=0;
         for(Player p : table.getPlayers()){
             if(p.getName().equals(GUIData.getGUIData().getUsername())) {
-                showWindow(p, window1, cells1, text, window1Items);
+                showWindow(p, window1, cells1, username1, window1Items, signals1);
             }
             else {
-                if(size==2) {showWindow(p, window2, cells2, username2, window2Items);}
+                if(size==2) {showWindow(p, window2, cells2, username2, window2Items, signals2);}
                 else{
-                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3, window3Items); i++;}
+                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3, window3Items, signals3); i++;}
                     else{
-                        if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items);
+                        if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items, signals4);
                         else {
-                            if(j==0) {showWindow(p, window2, cells2, username2, window2Items); j++;}
-                            if(j==1) {showWindow(p, window3, cells3, username3, window3Items); j++;}
-                            if(j==2) {showWindow(p, window4, cells4, username4, window4Items); i++;}
+                            if(j==0) {showWindow(p, window2, cells2, username2, window2Items, signals2); j++;}
+                            if(j==1) {showWindow(p, window3, cells3, username3, window3Items, signals3); j++;}
+                            if(j==2) {showWindow(p, window4, cells4, username4, window4Items, signals4); i++;}
                         }
                     }
                 }
@@ -524,7 +572,7 @@ public class TableManager implements GUIManager {
                                         e.printStackTrace();
                                     }
                                     dice.setStyle(colors.get(elem.getColor()));
-                                    poolItems.add(dice);
+                                    roundItems.add(dice);
                                     roundTrack.add(dice, i, j);
                                     cellsRound.get((j) * (10) + (i)).toFront();
                                 }
@@ -593,6 +641,9 @@ public class TableManager implements GUIManager {
                     }
                     initialPos = ((9-pool.size())/2);
                     i = initialPos;
+                    for(Rectangle p : cellsPool){
+                        p.setDisable(true);
+                    }
                     for (Dice elem : pool) {
                         try {
                             dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));
@@ -602,18 +653,24 @@ public class TableManager implements GUIManager {
                         dice.setStyle(colors.get(elem.getColor()));
                         poolItems.add(dice);
                         draftPool.add(dice, i, 0);
+                        cellsPool.get(i).setDisable(false);
                         cellsPool.get(i).toFront();
                         i++;
                     }
                 }
         );
     }
-    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems) {  //we have to remove all dices before adding new dices
+    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {  //we have to remove all dices before adding new dices
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
+                    for(int w=0; w<signals.size(); w++) signals.get(w).setVisible(false);
+                    int n = player.getNumOfTokens();
+                    for(int p=0; p<n; p++){
+                        signals.get(p).setVisible(true);
+                    }
                     grid.setVisible(true);
                     username.setVisible(true);
-                    if(!player.getName().equals(GUIData.getGUIData().getUsername()) && !player.getName().equals(username.getText()))username.setText(player.getName());
+                    if(!player.getName().equals(username.getText()))username.setText(player.getName());
                     WindowFrame window = player.getWindowFrame();
                     PatternCard pattern = player.getPatternCard();
                     StackPane dice = null;
@@ -661,6 +718,9 @@ public class TableManager implements GUIManager {
             try {
                 GUIData.getGUIData().getCommunicator().sendMessage("0");
                 toolCard=false;
+                activeTool = true;
+                tool2.setVisible(false);
+                tool3.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -672,6 +732,9 @@ public class TableManager implements GUIManager {
             try {
                 GUIData.getGUIData().getCommunicator().sendMessage("1");
                 toolCard=false;
+                activeTool = true;
+                tool1.setVisible(false);
+                tool3.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -683,6 +746,9 @@ public class TableManager implements GUIManager {
             try {
                 GUIData.getGUIData().getCommunicator().sendMessage("2");
                 toolCard=false;
+                activeTool = true;
+                tool1.setVisible(false);
+                tool2.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -693,6 +759,15 @@ public class TableManager implements GUIManager {
     public void sendOperation(){
         try {
             GUIData.getGUIData().getCommunicator().sendMessage(operation.getText());
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void quitAction(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("quit");
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }

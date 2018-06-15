@@ -18,6 +18,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
@@ -51,6 +52,8 @@ public class LobbyManager implements GUIManager{
     Button joinLobby;
     @FXML
     ImageView privateObj;
+    @FXML
+    AnchorPane background;
 
     public void joinLobby(javafx.event.ActionEvent event){
         LocalDate isoDate = date.getValue();
@@ -63,6 +66,8 @@ public class LobbyManager implements GUIManager{
             System.out.println("Unix time:"+time);
             System.out.println("To data: "+(new Date(time*1000L).toString()));
             communicator.lobby(username, time);
+            date.setVisible(false);
+            joinLobby.setVisible(false);
         } catch (NetworkErrorException e) {
             this.message.setText("Network Error! Server may be DOWN!\n");
         } catch (NotValidInputException | NullPointerException e) {
@@ -93,6 +98,8 @@ public class LobbyManager implements GUIManager{
         PVOCs.put(4, src);
         src = "/GUI/privateObj5.PNG";
         PVOCs.put(5, src);
+        Image back = new Image(getClass().getResourceAsStream("/GUI/lobbyBackGround.jpg"));
+        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
 
     @FXML

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Observer;
 import java.util.Random;
 
-import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUND;
+import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUNDS;
 
 public class Game implements Serializable {
     int matchID;
@@ -51,9 +51,11 @@ public class Game implements Serializable {
         table.setDiceBag(new DiceBag());
         table.setRoundTrack(new RoundTrack());
         table.setPlayers(players);
-        for (int i = 0; i < NUMBER_OF_ROUND; i++) {
+        for (int i = 0; i < NUMBER_OF_ROUNDS; i++) {
             rounds.add(new Round(this.players,i%players.size()));
         }
+        ArrayList<PlayerTurn> lastRound = new ArrayList<>(rounds.get(NUMBER_OF_ROUNDS-1).getPlayerTurns());
+        table.getScoreTrack().setLastRound(lastRound);
     }
 
     public ArrayList<String> getUserNames() {
@@ -242,17 +244,13 @@ public class Game implements Serializable {
                 score += pubObjCard.countScore(player.getWindowFrame());
             }
             player.setScore(score);
+            table.getScoreTrack().add(player);
         }
+        table.notifyObservers();
     }
 
-    public void broadcastRankings(){
-        int score;
-        ArrayList<Player> players;
-        for (int i = 0; i < table.getPlayers().size(); i++) {
-            for(Player player: table.getPlayers()){
-
-            }
-        }
+    public String getWinner() {
+        return table.getScoreTrack().getWinner().getName();
     }
 
     public boolean isGameEnded() {
@@ -270,7 +268,9 @@ public class Game implements Serializable {
             table.getDraftPool().clear();
             drawDices();
             table.notifyObservers();
-            table.notifyObservers("New round, draft pool extracted.\nNewTurn.");
+            if (!rounds.isEmpty()) {
+                table.notifyObservers("New round, draft pool extracted.\nNewTurn.");
+            }
             return true;
         }
         return false;
@@ -287,10 +287,16 @@ public class Game implements Serializable {
             }
             rounds.get(0).getCurrentPlayer().getWindowFrame().getPatternCard().disableExceptions();
             rounds.get(0).removeTurn(0);
-            table.notifyObservers("New Turn.");
+            if (!rounds.get(0).getPlayerTurns().isEmpty()) {
+                table.notifyObservers("New Turn.");
+            }
             return true;
         }
         return false;
+    }
+
+    public void endGame() {
+        rounds.clear();
     }
 
     public boolean isMoveActive() {
@@ -312,6 +318,14 @@ public class Game implements Serializable {
 
     public void addObserver (Observer o) {
         table.addObserver(o);
+    }
+
+    public void deleteObserver (Observer o) {
+        table.deleteObserver(o);
+    }
+
+    public void notifyObservers(String message) {
+        table.notifyObservers(message);
     }
 
     public Table getTable() {

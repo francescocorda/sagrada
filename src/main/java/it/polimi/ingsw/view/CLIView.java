@@ -70,11 +70,16 @@ public class CLIView extends Observable implements View {
         System.out.println("Private Objective Card: ");
         myPlayer.getPrivateObjectiveCard().dump();
         System.out.println(myPlayer.getWindowFrame().toGameString());
+
         if (table.getActiveToolCard() != null) {
             table.getActiveToolCard().dump();
         }
         if (table.getActiveDice()!=null) {
             System.out.println(table.getActiveDice().toString());
+        }
+
+        if (!table.getScoreTrack().isEmpty()) {
+            table.getScoreTrack().dump();
         }
     }
 

@@ -19,15 +19,15 @@ public abstract class State {
     public abstract void handleEvent(String username, ArrayList<String> commands);
 
     boolean checkFormat(ArrayList<String> commands) {
+        boolean result = false;
         try {
             for (String command : commands) {
                 Integer.parseInt(command);
             }
-            return true;
+            result = true;
         } catch (NumberFormatException e) {
-            //TODO
-            // insert invalid exception message
+            //
         }
-        return false;
+        return result;
     }
 }

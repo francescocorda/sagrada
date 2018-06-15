@@ -17,6 +17,7 @@ public class Table extends Observable implements Serializable {
     private ArrayList<ToolCard> gameToolCards;
     private Dice activeDice;
     private ToolCard activeToolCard;
+    private ScoreTrack scoreTrack;
 
     public Table() {
         this.players = new ArrayList<>();
@@ -25,8 +26,13 @@ public class Table extends Observable implements Serializable {
         draftPool = new ArrayList<>();
         gamePOC = new ArrayList<>();
         gameToolCards = new ArrayList<>();
+        scoreTrack = new ScoreTrack();
         activeDice = null;
         activeToolCard = null;
+    }
+
+    public ScoreTrack getScoreTrack() {
+        return scoreTrack;
     }
 
     public ToolCard getActiveToolCard() {

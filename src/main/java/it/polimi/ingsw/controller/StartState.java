@@ -38,6 +38,8 @@ public class StartState extends State {
                 controller.itsYourTurn();
                 controller.setState(controller.getChooseActionState());
             }
+        } else {
+            controller.sendMessage(username, INVALID_FORMAT);
         }
     }
 }

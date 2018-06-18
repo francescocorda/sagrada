@@ -18,7 +18,8 @@ public class ClientSocketInterpreter implements Runnable {
     private Status status;
     private String username;
     private Phase phase;
-    private SocketReader reader;
+    private SocketReader reader = null;
+    private boolean socketReaderEnabled = false;
 
     public ClientSocketInterpreter(Socket socket) {
         this.connection = new ConnectionSocket(socket);
@@ -32,8 +33,9 @@ public class ClientSocketInterpreter implements Runnable {
     public void run() {
         login();
         nextPhase();
-        if (status == Status.ONLINE)
+        if (status == Status.ONLINE){
             joinLobby();
+        }
         if (players.getPhase(username) != Phase.GAME && status == Status.OFFLINE)
             close();
     }
@@ -90,6 +92,8 @@ public class ClientSocketInterpreter implements Runnable {
                         if (isValid && systemTime > time) {
                             try {
                                 joinLobbyHandler(username, time);
+                                reader = new SocketReader(connection, username);
+                                socketReaderEnabled = true;
                                 break;
                             } catch (NotValidInputException e) {
                                 sendMessage(invalidCommand);
@@ -101,10 +105,11 @@ public class ClientSocketInterpreter implements Runnable {
                         sendMessage(invalidCommand);
                     }
                 } else {
-                    if (tempMessage.equals("quit"))
+                    if (tempMessage.equals("exit"))
                         break;
-                    else
+                    else{
                         sendMessage(invalidCommand);
+                    }
                 }
             } else {
                 sendMessage(invalidCommand);
@@ -114,7 +119,7 @@ public class ClientSocketInterpreter implements Runnable {
 
     public void sendMessage(String message) {
         if (status == ONLINE) {
-            if (phase == GAME) {
+            if (socketReaderEnabled) {
                 reader.waitForPong();
                 connection.sendMessage(message);
             } else if (isOnline()) {
@@ -200,20 +205,24 @@ public class ClientSocketInterpreter implements Runnable {
     }
 
     private void checkConnection() {
-        connection.sendMessage("ping");
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                status = Status.OFFLINE;
-            }
-        }, (long) 30 * 1000);
-        MessageReader messageReader = getMessage();
-        while (!messageReader.getNext().equals("pong") && status == ONLINE) {
+        if(socketReaderEnabled){
+            reader.waitForPong();
+        } else {
             connection.sendMessage("ping");
-            messageReader = getMessage();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    status = Status.OFFLINE;
+                }
+            }, (long) 30 * 1000);
+            MessageReader messageReader = getMessage();
+            while (!messageReader.getNext().equals("pong") && status == ONLINE) {
+                connection.sendMessage("ping");
+                messageReader = getMessage();
+            }
+            timer.cancel();
         }
-        timer.cancel();
     }
 
     public void nextPhase() {
@@ -243,14 +252,15 @@ public class ClientSocketInterpreter implements Runnable {
     public void game() {
         if (phase != GAME)
             setPhase(GAME);
-        reader = new SocketReader(connection, username);
+        if(reader == null)
+            reader = new SocketReader(connection, username);
     }
 
     public void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
         System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through Socket");
         if (players.check(username, password)) {
             System.out.println("User: "+username+" logged in.");
-            players.addSocketClient(username, client);
+            players.setClientHandler(username, new ClientHandlerSocket(client));
         } else {
             throw new NotValidInputException();
         }

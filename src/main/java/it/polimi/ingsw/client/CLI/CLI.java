@@ -156,8 +156,7 @@ public class CLI {
         int year;
         long time = 0;
         while (temp) {
-            println("LOBBY");
-            print("Year(YYYY):\t");
+            print("LOBBY\nYear(YYYY):\t");
             yearStr = in.nextLine();
             if(!yearStr.equals("")){
                 print("Month(MM):\t");
@@ -180,6 +179,7 @@ public class CLI {
             } else {
                 try {
                     communicator.lobby(username,(long)0);
+                    temp = false;
                 } catch (NetworkErrorException e) {
                     println("Server Offline / Network Error");
                     startCLI();
@@ -196,15 +196,26 @@ public class CLI {
      */
     private void game(){
         boolean temp = true;
+        boolean oneExit = false;
         String message = new String();
         while(temp){
             message = in.nextLine();
             ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*"+INPUT_STREAM_SEPARATOR_SYMBOL+"\\s*")));
             message = String.join(MESSAGE_SEPARATOR_SYMBOL, commands);
             try {
-                if(message.equals("quit"))
-                    temp = false;
+                if(message.equals("exit")){
+                    if(oneExit) {
+                        temp = false;
+                        oneExit = false;
+                    } else {
+                        oneExit = true;
+                    }
+                }
+                if(message.equals("join")){
+                    oneExit = false;
+                }
                 communicator.sendMessage(message);
+                System.out.println("Message sent: "+ message);
             } catch (NetworkErrorException e) {
                 println("Server Offline / Network Error");
                 temp = false;

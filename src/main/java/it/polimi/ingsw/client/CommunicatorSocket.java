@@ -4,6 +4,7 @@ import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.View;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class CommunicatorSocket implements Communicator {
             Socket socket = new Socket(address, port);
             connection = new ConnectionSocket(socket);
         } catch (IOException e) {
-            throw  new NetworkErrorException();
+            throw new NetworkErrorException();
         }
         this.mg = new MessageGetter(connection, view);
     }
@@ -36,16 +37,16 @@ public class CommunicatorSocket implements Communicator {
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
         getMessage(); //Clean buffer
-        try{
+        try {
             //waiting message protocol to be updated
             connection.sendMessage("login/" + username + "/" + password);
             returnedMessage = getMessage();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new NetworkErrorException();
         }
         ArrayList<String> commands = new ArrayList<>(Arrays.asList(returnedMessage.split("\\s*/\\s*")));
-        if(commands.remove(0).equals("login")){
-            switch(commands.remove(0)){
+        if (commands.remove(0).equals("login")) {
+            switch (commands.remove(0)) {
                 case "success":
                     break;
                 case "failed":
@@ -56,7 +57,7 @@ public class CommunicatorSocket implements Communicator {
                     throw new NetworkErrorException();
             }
         } else {
-            System.out.println("ERROR: message received: "+returnedMessage);
+            System.out.println("ERROR: message received: " + returnedMessage);
         }
     }
 
@@ -64,15 +65,16 @@ public class CommunicatorSocket implements Communicator {
     public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
         getMessage(); //Clean buffer
-        try{
+        try {
             connection.sendMessage("lobby/last_access/" + time);
             returnedMessage = getMessage();
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new NetworkErrorException();
         }
         ArrayList<String> commands = new ArrayList<>(Arrays.asList(returnedMessage.split("\\s*/\\s*")));
-        if(commands.remove(0).equals("lobby")){
-            switch(commands.remove(0)){
+        String phase = commands.remove(0);
+        if (phase.equals("lobby")) {
+            switch (commands.remove(0)) {
                 case "welcome":
                     mg.unlock();
                     view.displayMessage("Welcome!");
@@ -81,25 +83,26 @@ public class CommunicatorSocket implements Communicator {
                 case "invalid_command":
                     throw new NotValidInputException();
                 default:
-                    if(returnedMessage==null)
-                        throw new NetworkErrorException();
-                    else
-                        view.displayMessage("ERROR: "+returnedMessage);
+                    view.displayMessage("ERROR: " + returnedMessage);
             }
+        } else if (phase.equals("game") && commands.size() == 2 && commands.remove(0).equals("message")
+                && commands.remove(0).equals("back_to_game")) {
+            mg.unlock();
+            view.displayMessage("Welcome back!");
         }
     }
 
     @Override
     public void sendMessage(String message) throws NetworkErrorException {
-        try{
+        try {
             connection.sendMessage(message);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new NetworkErrorException();
         }
     }
 
-    public String getMessage(){
-        while(!mg.readable()){
+    public String getMessage() {
+        while (!mg.readable()) {
             System.out.print(""); //do nothing
         }
         return mg.getMessage();

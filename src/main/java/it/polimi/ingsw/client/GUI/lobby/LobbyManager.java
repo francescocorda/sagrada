@@ -8,6 +8,8 @@ import it.polimi.ingsw.client.GUI.GUIManager;
 import it.polimi.ingsw.client.GUI.table.TableManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -36,6 +38,7 @@ public class LobbyManager implements GUIManager{
     private boolean flag=false;
     private HashMap<Integer, String> PVOCs = null;  //Private Objective Cards
     private String src;
+    private Event e = null;
     @FXML
     ImageView card1;
     @FXML
@@ -56,6 +59,7 @@ public class LobbyManager implements GUIManager{
     AnchorPane background;
 
     public void joinLobby(javafx.event.ActionEvent event){
+        this.e = event;
         LocalDate isoDate = date.getValue();
         ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
         Communicator communicator = GUIData.getGUIData().getCommunicator();
@@ -63,8 +67,6 @@ public class LobbyManager implements GUIManager{
         try {
             long time = chronoLocalDate.toEpochDay()*24*60*60;
             time = isDateValid(time);
-            System.out.println("Unix time:"+time);
-            System.out.println("To data: "+(new Date(time*1000L).toString()));
             communicator.lobby(username, time);
             date.setVisible(false);
             joinLobby.setVisible(false);
@@ -140,7 +142,26 @@ public class LobbyManager implements GUIManager{
 
     public void editMessage(String message){
         this.message.setText(this.message.getText().concat(message.concat("\n")));
-        if(message.equals("Pattern card assigned.")) {
+        if(message.equals("back_to_game")){
+            Platform.runLater(  //Compulsory to update GUI
+                    () -> {
+                        temp = message;
+                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                        URL location = getClass().getResource("/GUI/table.fxml");
+                        FXMLLoader fxmlLoader = new FXMLLoader(location);
+                        try {
+                            stage.setScene(new Scene(fxmlLoader.load()));
+                        } catch (IOException e1) {
+                            e1.printStackTrace();
+                        }
+                        stage.setMaximized(true);
+                        TableManager TM = fxmlLoader.getController();
+                        TM.editMessage(temp);
+                        if(table!=null) TM.updateTable(table);
+                    }
+            );
+        }
+        else if(message.equals("Pattern card assigned.")) {
             temp = new String();
             temp = message+"\n";
             flag = true;

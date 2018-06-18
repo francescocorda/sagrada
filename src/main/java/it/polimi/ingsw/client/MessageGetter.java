@@ -89,7 +89,8 @@ public class MessageGetter extends Thread{
     }
 
     private void lobby(ArrayList<String> commands){
-        switch (commands.remove(0)){
+        String message = commands.remove(0);
+        switch (message){
             case "player_joined":
                 view.displayMessage("Player joined: "+commands.remove(0));
                 break;
@@ -103,13 +104,14 @@ public class MessageGetter extends Thread{
                 view.displayMessage("GAME START:");
                 lobby(commands);
                 break;
-            case "timer_start":
+            case "timer_started":
                 view.displayMessage("TIMER START!");
                 break;
-            case "timer_restarted":
-                view.displayMessage("TIMER RESTART!");
+            case "timer_reset":
+                view.displayMessage("TIMER RESET");
                 break;
             default:
+                view.displayMessage(message);
                 break;
         }
     }

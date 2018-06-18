@@ -1,17 +1,13 @@
 package it.polimi.ingsw.client.RMI;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.view.CLIView;
 import it.polimi.ingsw.view.View;
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
-import java.util.Observer;
 
 public class RMIClientImplementation implements RMIClientInterface {
 
@@ -30,7 +26,8 @@ public class RMIClientImplementation implements RMIClientInterface {
     }
 
     private void lobby(ArrayList<String> commands){
-        switch (commands.remove(0)){
+        String message = commands.remove(0);
+        switch (message){
             case "welcome":
                 view.displayMessage("Welcome!");
                 break;
@@ -47,13 +44,14 @@ public class RMIClientImplementation implements RMIClientInterface {
                 view.displayMessage("GAME START:");
                 lobby(commands);
                 break;
-            case "timer_start":
+            case "timer_started":
                 view.displayMessage("TIMER START!");
                 break;
-            case "timer_restarted":
-                view.displayMessage("TIMER RESTART!");
+            case "timer_reset":
+                view.displayMessage("TIMER RESET");
                 break;
             default:
+                view.displayMessage(message);
                 break;
         }
     }

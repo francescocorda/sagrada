@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.ClientDatabase;
 import it.polimi.ingsw.ClientHandler;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
@@ -9,13 +10,11 @@ import java.util.Observable;
 
 public class VirtualView extends Observable implements View {
 
-    private ClientHandler clientHandler;
     private ClientData clientData;
 
     public VirtualView(ClientData clientData) {
         super();
         this.clientData = clientData;
-        this.clientHandler = clientData.getClientHandler();
     }
 
     public String getUsername() {
@@ -25,27 +24,27 @@ public class VirtualView extends Observable implements View {
     @Override
     public void displayGame() {
         try {
-            clientHandler.displayGame();
+            getClientHandler().displayGame();
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
     @Override
     public void displayMessage(String message) {
         try {
-            clientHandler.sendMessage(message);
+            getClientHandler().sendMessage(message);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
     @Override
     public void displayGameMessage(String message) {
         try {
-            clientHandler.sendGameMessage(message);
+            getClientHandler().sendGameMessage(message);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
@@ -62,18 +61,18 @@ public class VirtualView extends Observable implements View {
     @Override
     public void displayPatternCard(PatternCard patternCard) {
         try {
-            clientHandler.sendPatternCard(patternCard);
+            getClientHandler().sendPatternCard(patternCard);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
     @Override
     public void update(Observable o, Object arg) {
         try {
-            clientHandler.update(o, arg);
+            getClientHandler().update(o, arg);
         } catch (NetworkErrorException e) {
-            e.printStackTrace();
+            disconnect();
         }
     }
 
@@ -81,5 +80,13 @@ public class VirtualView extends Observable implements View {
     public void notifyObservers(Object arg) {
         setChanged();
         super.notifyObservers(arg);
+    }
+
+    private ClientHandler getClientHandler(){
+        return clientData.getClientHandler();
+    }
+
+    private void disconnect(){
+        ClientDatabase.getPlayerDatabase().disconnect(clientData.getUsername());
     }
 }

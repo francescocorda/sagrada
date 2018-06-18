@@ -97,14 +97,18 @@ public class SocketReader extends Thread {
         connection.sendMessage("ping");
         missingPong++;
         if(!timerOn){
-            timerOn=true;
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    ClientDatabase.getPlayerDatabase().disconnect(username);
-                    view.notifyObservers("quit");
-                }
-            }, TIMER_SECONDS);
+            try{
+                timerOn=true;
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        ClientDatabase.getPlayerDatabase().disconnect(username);
+                        view.notifyObservers("exit");
+                    }
+                }, TIMER_SECONDS);
+            } catch (Exception e){
+                //disconnection already handled
+            }
         }
     }
 }

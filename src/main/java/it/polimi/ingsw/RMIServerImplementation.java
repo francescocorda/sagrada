@@ -24,7 +24,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
         System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through RMI");
         if (clientDatabase.check(username, password)) {
             System.out.println("User: "+username+" logged in.");
-            clientDatabase.addRMIClient(username, client);
+            clientDatabase.setClientHandler(username, new ClientHandlerRMI(client));
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {

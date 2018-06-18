@@ -11,7 +11,7 @@ import java.util.*;
 public class Controller implements Observer {
 
 
-    public static final int TIMER_SECONDS = 30;
+    public static final int TIMER_SECONDS = 120;
     public static final String INVALID_FORMAT = "Command of invalid format.";
     public static final String WAIT_YOUR_TURN = "Wait your turn.";
     public static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (0-1-2).";
@@ -22,6 +22,7 @@ public class Controller implements Observer {
     public static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
     public static final String JOINED_THE_GAME = " joined the game.";
     public static final String GAME_JOINED = "Game joined.";
+    public static final String BACK_TO_GAME = "back_to_game";
     public static final String YOU_WON = "You Won!";
     public static final int CHOOSE_ACTION_DIM = 1;
 
@@ -175,6 +176,7 @@ public class Controller implements Observer {
                     return;
                 } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size()==1) {
                     offlinePlayers.remove(username);
+                    sendMessage(username, BACK_TO_GAME);
                     sendMessage(username, GAME_JOINED);
                     game.notifyObservers(username + JOINED_THE_GAME);
                     addObserver(username);

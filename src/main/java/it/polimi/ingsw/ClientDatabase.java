@@ -38,27 +38,23 @@ public class ClientDatabase {
         }
     }
 
-    public void addRMIClient(String username, RMIClientInterface client){
+    public void setClientHandler(String username, ClientHandler clientHandler){
         ClientData player = findPlayer(username);
         if(player != null){
-            player.setClientRMI(client);
-        }
-    }
-
-    public void addSocketClient(String username, ClientSocketInterpreter client){
-        ClientData player = findPlayer(username);
-        if(player != null){
-            player.setClientSocket(client);
+            player.setClientHandler(clientHandler);
         }
     }
 
     public void disconnect(String username){
+        ClientData toBeDisconnected = null;
         for(ClientData clientData : players){
             if(clientData.getUsername().equals(username) && clientData.isConnected()){
+                toBeDisconnected = clientData;
                 clientData.changeStatus();
-                phaseDisconnection(clientData);
             }
         }
+        if(toBeDisconnected != null)
+            phaseDisconnection(toBeDisconnected);
     }
 
     public boolean contain(String user){
@@ -110,10 +106,10 @@ public class ClientDatabase {
         switch(player.getPhase()){
             case GAME:
                 VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
-                virtualView.notifyObservers("quit");
+                virtualView.notifyObservers(player.getUsername()+"/exit");
                 break;
             case LOBBY:
-                Lobby.getLobby().removePlayer(player);
+                Lobby.getLobby().removePlayer(player.getUsername());
                 break;
             default:
                 break;

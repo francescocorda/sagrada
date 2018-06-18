@@ -23,12 +23,8 @@ public class ClientData {
         return clientHandler;
     }
 
-    public void setClientRMI(RMIClientInterface clientRMI) {
-        this.clientHandler = new ClientHandlerRMI(clientRMI);
-    }
-
-    public void setClientSocket(ClientSocketInterpreter clientSocket){
-        this.clientHandler = new ClientHandlerSocket(clientSocket);
+    public void setClientHandler(ClientHandler clientHandler){
+        this.clientHandler = clientHandler;
     }
 
     public String getPassword() {

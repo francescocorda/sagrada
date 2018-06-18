@@ -7,7 +7,9 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.VirtualViewsDataBase;
 import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.view.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;

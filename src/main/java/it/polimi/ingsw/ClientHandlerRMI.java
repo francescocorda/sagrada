@@ -69,6 +69,6 @@ public class ClientHandlerRMI implements ClientHandler {
 
     @Override
     public void game() {
-
+        //just for socket
     }
 }

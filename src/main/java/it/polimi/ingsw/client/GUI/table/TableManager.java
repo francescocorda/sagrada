@@ -248,7 +248,7 @@ public class TableManager implements GUIManager {
 
     @FXML
     public void mousePressedRound(MouseEvent e) {
-        if(roundTrackEnable = true){
+        if(roundTrackEnable){
             source = (Rectangle) e.getSource();
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 9; j++) {

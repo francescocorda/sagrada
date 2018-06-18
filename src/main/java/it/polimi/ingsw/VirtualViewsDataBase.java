@@ -29,11 +29,13 @@ public class VirtualViewsDataBase {
     }
 
     public void removeVirtualView(String username){
+        VirtualView view = null;
         for(VirtualView virtualView : virtualViews){
             if(virtualView.getUsername().equals(username)){
-                virtualViews.remove(virtualView);
+                view = virtualView;
             }
         }
+        virtualViews.remove(view);
     }
 
     public void addVirtualView(VirtualView virtualView){

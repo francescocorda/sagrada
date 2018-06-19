@@ -100,7 +100,7 @@ public class LobbyManager implements GUIManager{
         PVOCs.put(4, src);
         src = "/GUI/privateObj5.PNG";
         PVOCs.put(5, src);
-        Image back = new Image(getClass().getResourceAsStream("/GUI/lobbyBackGround.jpg"));
+        Image back = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
         this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
     }
 

@@ -12,9 +12,9 @@
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.login.LoginManager">
    <children>
-      <ImageView fitHeight="700.0" fitWidth="1500.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
+      <ImageView fitHeight="662.0" fitWidth="1500.0" pickOnBounds="true" StackPane.alignment="TOP_CENTER">
          <image>
-            <Image url="@welcome.jpg" />
+            <Image url="@loginBackGround.jpg" />
          </image>
          <StackPane.margin>
             <Insets />

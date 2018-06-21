@@ -18,6 +18,7 @@ public class Lobby implements Observer {
     private static final String LOCATION = "lobby";
     private ArrayList<Controller> controllers;
     private int timerSeconds;
+    private VirtualViewsDataBase vvdb;
 
     private Lobby() {
         connectedPlayers = new ArrayList<>();
@@ -27,6 +28,7 @@ public class Lobby implements Observer {
         views = new ArrayList<>();
         controllers = new ArrayList<>();
         timerSeconds = ServerMain.getServerMain().getTimerSeconds();
+        vvdb = VirtualViewsDataBase.getVirtualViewsDataBase();
     }
 
     public static synchronized Lobby getLobby() {
@@ -41,9 +43,15 @@ public class Lobby implements Observer {
         if (reconnect(username)) {
             send(username, "/back_to_game");
         } else {
-            VirtualView virtualView = new VirtualView(player);
+            VirtualView virtualView;
+            if(vvdb.contains(username)){
+                virtualView = vvdb.getVirtualView(username);
+            } else {
+                virtualView = new VirtualView(player);
+            }
             views.add(virtualView);
-            VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(virtualView);
+            vvdb.addVirtualView(virtualView);
+            virtualView.deleteObservers();
             virtualView.addObserver(this);
             connectedPlayers.add(player);
             connectedPlayersLastTime.add(time);
@@ -182,6 +190,7 @@ public class Lobby implements Observer {
     private boolean reconnect(String username) {
         for (Controller controller : controllers) {
             if (controller.contains(username)) {
+                players.findPlayer(username).setPhase(Phase.GAME);
                 VirtualView view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
                 view.addObserver(controller);
                 view.notifyObservers(username + "/join");
@@ -218,7 +227,7 @@ public class Lobby implements Observer {
                 String command = commands.remove(0);
                 if (command.equals("exit")) {
                     send(username, "/You exit from lobby");
-                    removePlayer(username);
+                    players.disconnect(username);
                     VirtualViewsDataBase.getVirtualViewsDataBase().removeVirtualView(username);
                     return;
                 }

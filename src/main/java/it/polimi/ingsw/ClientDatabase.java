@@ -1,9 +1,9 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.view.VirtualView;
-
 import java.util.ArrayList;
+
+import static it.polimi.ingsw.Phase.LOGIN;
 
 public class ClientDatabase {
     private ArrayList<ClientData> players;
@@ -26,6 +26,7 @@ public class ClientDatabase {
                 if(clientData.getUsername().equals(user))
                     if((clientData.getPassword().equals(password)) && !clientData.isConnected()){
                         clientData.changeStatus();
+                        clientData.setPhase(LOGIN);
                         return true;
                     } else {
                         return false;

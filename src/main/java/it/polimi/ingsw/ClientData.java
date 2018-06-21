@@ -1,7 +1,8 @@
 package it.polimi.ingsw;
 
-import it.polimi.ingsw.client.RMI.RMIClientInterface;
-import it.polimi.ingsw.connection.ConnectionMode;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
+import java.util.Timer;
+import java.util.TimerTask;
 import static it.polimi.ingsw.Phase.*;
 
 public class ClientData {
@@ -11,12 +12,14 @@ public class ClientData {
     private Phase phase;
     private Status status;
     private ClientHandler clientHandler;
+    private Timer timer;
 
     public ClientData(String username, String password){
         this.username = username;
         this.password = password;
         this.phase = Phase.LOGIN;
         this.status = Status.ONLINE;
+        timer = new Timer();
     }
 
     public ClientHandler getClientHandler() {
@@ -25,6 +28,18 @@ public class ClientData {
 
     public void setClientHandler(ClientHandler clientHandler){
         this.clientHandler = clientHandler;
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    clientHandler.check();
+                } catch (NetworkErrorException e) {
+                    System.out.println("PERIODIC CHECK TRIGGERED");
+                    ClientDatabase.getPlayerDatabase().disconnect(username);
+                    this.cancel();
+                }
+            }
+        }, 0, 1000);
     }
 
     public String getPassword() {
@@ -64,10 +79,7 @@ public class ClientData {
     }
 
     public boolean isConnected(){
-        if(this.status==Status.ONLINE)
-            return true;
-        else
-            return false;
+        return status == Status.ONLINE;
     }
 
     public void changeStatus() {

@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
+import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.VirtualView;
 
@@ -25,19 +26,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
         if (clientDatabase.check(username, password)) {
             System.out.println("User: "+username+" logged in.");
             clientDatabase.setClientHandler(username, new ClientHandlerRMI(client));
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    try {
-                        client.checkConnection();
-                    } catch (RemoteException e) {
-                        clientDatabase.disconnect(username);
-                        //TODO eliminate this
-                        System.out.println("WARNING: ");
-                        this.cancel();
-                    }
-                }
-            }, 1000, 1000);
         } else {
             throw new NotValidInputException();
         }

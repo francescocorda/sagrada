@@ -17,6 +17,7 @@ public class SocketReader extends Thread {
     private Timer timer;
     private int missingPong;
     private boolean timerOn;
+    private static final int TIMER_MAX_SECONDS = 3*1000;
 
     public SocketReader(ConnectionSocket connection, String username) {
         this.username = username;
@@ -50,10 +51,12 @@ public class SocketReader extends Thread {
                         missingPong=0;
                     cancelTimer();
                 } else {
+                    /*
                     if(temp.equals("quit")){
                         ClientDatabase.getPlayerDatabase().disconnect(username);
                         flag = false;
                     }
+                    */
                     message = message.concat(temp);
                     view.notifyObservers(message);
                 }
@@ -70,6 +73,7 @@ public class SocketReader extends Thread {
     private void cancelTimer() {
         try {
             timer.cancel();
+            timer.purge();
             timer = new Timer();
             timerOn = false;
         } catch (Exception e) {
@@ -105,7 +109,7 @@ public class SocketReader extends Thread {
                         ClientDatabase.getPlayerDatabase().disconnect(username);
                         view.notifyObservers("exit");
                     }
-                }, TIMER_SECONDS);
+                }, TIMER_MAX_SECONDS);
             } catch (Exception e){
                 //disconnection already handled
             }

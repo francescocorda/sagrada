@@ -209,13 +209,14 @@ public class CLI {
                         oneExit = false;
                     } else {
                         oneExit = true;
+                        communicator.sendMessage(message);
                     }
+                } else {
+                    if(message.equals("join")){
+                        oneExit = false;
+                    }
+                    communicator.sendMessage(message);
                 }
-                if(message.equals("join")){
-                    oneExit = false;
-                }
-                communicator.sendMessage(message);
-                System.out.println("Message sent: "+ message);
             } catch (NetworkErrorException e) {
                 println("Server Offline / Network Error");
                 temp = false;

@@ -9,11 +9,14 @@ import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.client.GUI.login.LoginManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
@@ -24,8 +27,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -450,7 +456,7 @@ public class TableManager implements GUIManager {
         cellsRound.add(diceR17); cellsRound.add(diceR27); cellsRound.add(diceR37); cellsRound.add(diceR47); cellsRound.add(diceR57); cellsRound.add(diceR67); cellsRound.add(diceR77); cellsRound.add(diceR87); cellsRound.add(diceR97); cellsRound.add(diceR107);
         cellsRound.add(diceR18); cellsRound.add(diceR28); cellsRound.add(diceR38); cellsRound.add(diceR48); cellsRound.add(diceR58); cellsRound.add(diceR68); cellsRound.add(diceR78); cellsRound.add(diceR88); cellsRound.add(diceR98); cellsRound.add(diceR108);
         cellsRound.add(diceR19); cellsRound.add(diceR29); cellsRound.add(diceR39); cellsRound.add(diceR49); cellsRound.add(diceR59); cellsRound.add(diceR69); cellsRound.add(diceR79); cellsRound.add(diceR89); cellsRound.add(diceR99); cellsRound.add(diceR109);
-        quit.setDisable(true);
+        //quit.setDisable(true);
         signals1 = new ArrayList<>();
         signals1.add(signal1); signals1.add(signal2); signals1.add(signal3); signals1.add(signal4); signals1.add(signal5); signals1.add(signal6);
         signals2 = new ArrayList<>();
@@ -520,8 +526,8 @@ public class TableManager implements GUIManager {
                         if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items, signals4);
                         else {
                             if(j==0) {showWindow(p, window2, cells2, username2, window2Items, signals2); j++;}
-                            if(j==1) {showWindow(p, window3, cells3, username3, window3Items, signals3); j++;}
-                            if(j==2) {showWindow(p, window4, cells4, username4, window4Items, signals4); i++;}
+                            else {if(j==1) {showWindow(p, window3, cells3, username3, window3Items, signals3); j++;}
+                                  else if(j==2) {showWindow(p, window4, cells4, username4, window4Items, signals4); i++;}}
                         }
                     }
                 }
@@ -765,10 +771,19 @@ public class TableManager implements GUIManager {
     }
 
     @FXML
-    public void quitAction(){
+    public void quitAction(MouseEvent event){
         try {
-            GUIData.getGUIData().getCommunicator().sendMessage("quit");
+            GUIData.getGUIData().getCommunicator().sendMessage("exit");
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            URL location = getClass().getResource("/GUI/login.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(location);
+            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.centerOnScreen();
+            LoginManager LM = fxmlLoader.getController();
+            GUIData.getGUIData().getView().setGUIManager(LM);
         } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -56,7 +56,12 @@ public class ClientHandlerSocket implements ClientHandler {
 
     @Override
     public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException {
-
+        String privateObjectiveCardJSON = gson.toJson(privateObjectiveCard);
+        try{
+            clientSocketInterpreter.sendMessage("game/private_objective_card/"+privateObjectiveCardJSON);
+        } catch (Exception e){
+            throw new NetworkErrorException();
+        }
     }
 
     @Override

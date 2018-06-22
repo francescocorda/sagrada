@@ -19,7 +19,6 @@ public class ClientData {
         this.password = password;
         this.phase = Phase.LOGIN;
         this.status = Status.ONLINE;
-        timer = new Timer();
     }
 
     public ClientHandler getClientHandler() {
@@ -28,6 +27,7 @@ public class ClientData {
 
     public void setClientHandler(ClientHandler clientHandler){
         this.clientHandler = clientHandler;
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {

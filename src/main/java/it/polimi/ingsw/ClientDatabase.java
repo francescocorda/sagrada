@@ -113,6 +113,9 @@ public class ClientDatabase {
                 Lobby.getLobby().removePlayer(player.getUsername());
                 break;
             default:
+                VirtualView view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
+                if(view != null)
+                    VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
                 break;
         }
     }

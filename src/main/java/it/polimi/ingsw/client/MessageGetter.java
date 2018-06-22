@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.View;
@@ -75,6 +76,10 @@ public class MessageGetter extends Thread{
                 PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
                 view.displayPatternCard(patternCard);
                 break;
+            case "private_objective_card":
+                PrivateObjectiveCard pOCard = gson.fromJson(commands.get(0), PrivateObjectiveCard.class);
+                view.displayPrivateObjectiveCard(pOCard);
+                break;
             case "update":
                 String observer = commands.remove(0);
                 String object = commands.remove(0);
@@ -131,6 +136,13 @@ public class MessageGetter extends Thread{
     }
 
     private void setMessage(String message) {
+        while(!wait) {
+            try {
+                sleep(100);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
         synchronized (countLock) {
             this.message = message;
             wait = false;

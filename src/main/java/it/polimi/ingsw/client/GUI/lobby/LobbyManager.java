@@ -59,21 +59,25 @@ public class LobbyManager implements GUIManager{
     AnchorPane background;
 
     public void joinLobby(javafx.event.ActionEvent event){
-        this.e = event;
-        LocalDate isoDate = date.getValue();
-        ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
-        Communicator communicator = GUIData.getGUIData().getCommunicator();
-        String username = GUIData.getGUIData().getUsername();
-        try {
-            long time = chronoLocalDate.toEpochDay()*24*60*60;
-            time = isDateValid(time);
-            communicator.lobby(username, time);
-            date.setVisible(false);
-            joinLobby.setVisible(false);
-        } catch (NetworkErrorException e) {
-            this.message.setText("Network Error! Server may be DOWN!\n");
-        } catch (NotValidInputException | NullPointerException e) {
-            this.message.setText("Not valid Date! Retry!\n");
+        try{
+            this.e = event;
+            LocalDate isoDate = date.getValue();
+            ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
+            Communicator communicator = GUIData.getGUIData().getCommunicator();
+            String username = GUIData.getGUIData().getUsername();
+            try {
+                long time = chronoLocalDate.toEpochDay()*24*60*60;
+                time = isDateValid(time);
+                communicator.lobby(username, time);
+                date.setVisible(false);
+                joinLobby.setVisible(false);
+            } catch (NetworkErrorException e) {
+                this.message.setText("Network Error! Server may be DOWN!\n");
+            } catch (NotValidInputException | NullPointerException e) {
+                this.message.setText("Not valid Date! Retry!\n");
+            }
+        } catch (Exception exc){
+            System.out.println("IT'S E BIATCH:\n "+ exc);
         }
     }
     @FXML

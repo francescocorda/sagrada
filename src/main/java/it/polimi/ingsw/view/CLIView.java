@@ -37,9 +37,8 @@ public class CLIView extends Observable implements View {
         }
     }
 
-    public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
-        table.getPlayers().get(0).setPrivateObjectiveCard(privateObjectiveCard);
-        displayPrivateObjectiveCard();
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
+        privateObjectiveCard.dump();
     }
 
     public void displayGame() {
@@ -83,9 +82,6 @@ public class CLIView extends Observable implements View {
         }
     }
 
-    public void displayPrivateObjectiveCard() {
-        table.getPlayers().get(0).getPrivateObjectiveCard().dump();
-    }
 
     public void displayPatternCard(PatternCard patternCard) {
         patternCard.dump();

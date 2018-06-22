@@ -28,7 +28,7 @@ class TestPlayer {
         deck.dump();
         Random rand = new Random();
         int index = rand.nextInt(5);
-        player1.setPrivateObjectiveCard(deck.getPrivateObjectiveCard(index));
+        player1.displayPrivateObjectiveCard(deck.getPrivateObjectiveCard(index));
         PatternDeck patternDeck = new PatternDeck();
         patternDeck.dump();
         index=rand.nextInt(24);

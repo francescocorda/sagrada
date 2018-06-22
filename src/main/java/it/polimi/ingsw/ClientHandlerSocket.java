@@ -2,6 +2,7 @@ package it.polimi.ingsw;
 
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.util.Observable;
@@ -51,6 +52,11 @@ public class ClientHandlerSocket implements ClientHandler {
         } catch (Exception e){
             throw new NetworkErrorException();
         }
+    }
+
+    @Override
+    public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException {
+
     }
 
     @Override

@@ -9,8 +9,7 @@ public interface View extends Observer {
     void displayGame();
     void displayMessage(String message);
     void displayGameMessage(String message);
-    void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard);
-    void displayPrivateObjectiveCard();
+    void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard);
     void displayPatternCard(PatternCard patternCard);
     void notifyObservers(Object arg);
     String getUsername();

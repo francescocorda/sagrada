@@ -49,13 +49,12 @@ public class VirtualView extends Observable implements View {
     }
 
     @Override
-    public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
-
-    }
-
-    @Override
-    public void displayPrivateObjectiveCard() {
-
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
+        try {
+            getClientHandler().sendPrivateObjectiveCard(privateObjectiveCard);
+        } catch (NetworkErrorException e) {
+            disconnect();
+        }
     }
 
     @Override

@@ -79,8 +79,8 @@ public class RMIClientImplementation implements RMIClientInterface {
     }
 
     @Override
-    public void assignPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws RemoteException {
-        view.setPrivateObjectiveCard(privateObjectiveCard);
+    public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws RemoteException {
+        view.displayPrivateObjectiveCard(privateObjectiveCard);
     }
 
     @Override

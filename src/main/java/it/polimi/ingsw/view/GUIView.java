@@ -27,12 +27,8 @@ public class GUIView extends Observable implements View  {
     }
 
     @Override
-    public void setPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
 
-    }
-
-    @Override
-    public void displayPrivateObjectiveCard() {
     }
 
     @Override

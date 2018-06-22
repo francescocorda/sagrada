@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.rmi.RemoteException;
@@ -44,6 +45,15 @@ public class ClientHandlerRMI implements ClientHandler {
     public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
         try {
             rmiClientInterface.sendPatternCard(patternCard);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
+    public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException {
+        try {
+            rmiClientInterface.sendPrivateObjectiveCard(privateObjectiveCard);
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }

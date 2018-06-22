@@ -113,7 +113,7 @@ public class Controller implements Observer {
             try {
                 privateObjectiveCard = game.assignPrivateObjectiveCard(view.getUsername());
                 ArrayList<PatternCard> patterns = game.drawPatternCards();
-                view.setPrivateObjectiveCard(privateObjectiveCard);
+                view.displayPrivateObjectiveCard(privateObjectiveCard);
                 view.displayMessage(CHOOSE_PATTERN_CARD);
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);

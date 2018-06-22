@@ -12,7 +12,7 @@ public interface RMIClientInterface extends Remote {
 
     void send(String message) throws RemoteException;
 
-    void assignPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws RemoteException;
+    void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws RemoteException;
 
     void sendPatternCard(PatternCard patternCard) throws RemoteException;
 

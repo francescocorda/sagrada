@@ -13,21 +13,26 @@ import it.polimi.ingsw.client.GUI.login.LoginManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.application.Platform;
+import javafx.event.EventDispatchChain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
+import org.omg.CORBA.TRANSACTION_MODE;
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
@@ -218,7 +223,43 @@ public class TableManager implements GUIManager {
     @FXML Circle signal2_1; @FXML Circle signal2_2; @FXML Circle signal2_3; @FXML Circle signal2_4; @FXML Circle signal2_5; @FXML Circle signal2_6;
     @FXML Circle signal3_1; @FXML Circle signal3_2; @FXML Circle signal3_3; @FXML Circle signal3_4; @FXML Circle signal3_5; @FXML Circle signal3_6;
     @FXML Circle signal4_1; @FXML Circle signal4_2; @FXML Circle signal4_3; @FXML Circle signal4_4; @FXML Circle signal4_5; @FXML Circle signal4_6;
-    @FXML
+
+    public void dragDroppedWindow(DragEvent event) {
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasString()) {
+            success = true;
+            int row = 7, col = 7;
+            source = (Rectangle) event.getTarget();
+            for (int j = 1; j < 5; j++) {
+                for (int k = 1; k < 6; k++) {
+                    if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
+                        row = j;
+                        col = k;
+                    }
+                }
+            }
+            try {
+                communicator.sendMessage(row+"/"+col);
+            }
+            catch (NetworkErrorException e1) {
+                e1.printStackTrace();
+            }
+        }
+        /* let the source know whether the string was successfully
+         * transferred and used */
+        event.setDropCompleted(success);
+        event.consume();
+    }
+
+    public void dragOverWindow(DragEvent event){
+        if (event.getGestureSource() != event.getTarget() && event.getDragboard().hasString()) {
+            /* allow for moving */
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
     public void mousePressedWindow(MouseEvent e) {
         int row = 7, col = 7;
         source = (Rectangle) e.getSource();
@@ -237,6 +278,7 @@ public class TableManager implements GUIManager {
         }
         e.consume();
     }
+
     @FXML
     public void mousePressedPool(MouseEvent e) {
         source = (Rectangle) e.getSource();
@@ -249,6 +291,28 @@ public class TableManager implements GUIManager {
             communicator.sendMessage(""+(idPool-initialPos));
         } catch (NetworkErrorException e1) {
             e1.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void dragDetectedPool(MouseEvent e) {  //IT DOES WORK!
+        source = (Rectangle) e.getSource();
+        for(int i=0; i<9; i++){
+            if (source == cellsPool.get(i)) {
+                idPool = i+1;
+            }
+        }
+        SnapshotParameters sp =  new SnapshotParameters();
+        sp.setTransform(Transform.scale(1.5, 1.5));
+        WritableImage preview = poolItems.get(idPool-initialPos-1).snapshot(sp, null);
+        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putString(source.getId());
+        db.setContent(content);
+        db.setDragView(preview);
+        e.consume();
+        for(Rectangle r : cells1){
+            r.startDragAndDrop(TransferMode.ANY); //accept the dragAndDrop event
         }
     }
 

@@ -851,4 +851,5 @@ public class TableManager implements GUIManager {
             e.printStackTrace();
         }
     }
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){};
 }

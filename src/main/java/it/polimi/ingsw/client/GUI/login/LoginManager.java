@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.login;
 
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.CommunicatorRMI;
@@ -123,5 +124,6 @@ public class LoginManager implements GUIManager{
     public void editMessage(String message){}
     public void showPattern(int ID){}
     public void updateTable(Table table){};
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){};
 }
 

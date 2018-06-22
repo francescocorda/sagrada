@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.lobby;
 
+import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.Communicator;
@@ -267,9 +268,6 @@ public class LobbyManager implements GUIManager{
         count++;
     }
     public void updateTable(Table table){
-        Image imageToBeUpdated = new Image(PVOCs.get(table.getPlayers().get(0).getPrivateObjectiveCard().getID()));
-        privateObj.setImage(imageToBeUpdated);
-        privateObj.setVisible(true);
         this.table=table;
     }
 
@@ -287,5 +285,10 @@ public class LobbyManager implements GUIManager{
         } catch (IllegalArgumentException e) {
             throw new NotValidInputException();
         }
+    }
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
+        Image imageToBeUpdated = new Image(PVOCs.get(privateObjectiveCard.getID()));
+        privateObj.setImage(imageToBeUpdated);
+        privateObj.setVisible(true);
     }
 }

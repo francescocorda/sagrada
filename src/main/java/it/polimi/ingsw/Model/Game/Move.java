@@ -12,7 +12,6 @@ import static it.polimi.ingsw.Model.effects.Element.WINDOW;
 
 public class Move implements Serializable {
     private Table table;
-    private PlayerTurn playerTurn;
     private Round round;
     private RemoveFrom removeFromDP;
     private PlaceIn placeInW;
@@ -20,30 +19,23 @@ public class Move implements Serializable {
 
     public Move(Table table, Round round) {
         this.table = table;
-        this.playerTurn = null;
         this.round = round;
         removeFromDP = new RemoveFrom(DRAFTPOOL);
         placeInW = new PlaceIn(WINDOW);
         count = 0;
     }
 
-    public void performMove(ArrayList<String> commands) {
+    public void performMove(ArrayList<String> commands) throws ImpossibleMoveException {
         if (count == 0) {
-            try {
-                if (removeFromDP.applyEffect(commands,table,round)) {
-                    placeInW.explainEffect(table, round);
-                    count++;
-                } else {
-                    removeFromDP.explainEffect(table, round);
-                }
-            } catch (ImpossibleMoveException e) {
-                round.getPlayerTurn(0).setMoveActive(false);
-                round.getPlayerTurn(0).setMovesLeft(round.getPlayerTurn(0).getMovesLeft()-1);
+            if (removeFromDP.applyEffect(commands,table,round)) {
+                placeInW.explainEffect(table, round);
+                count++;
+            } else {
+                removeFromDP.explainEffect(table, round);
             }
         } else {
             if (placeInW.applyEffect(commands,table,round)) {
                 round.getPlayerTurn(0).setMoveActive(false);
-                round.getPlayerTurn(0).setMovesLeft(round.getPlayerTurn(0).getMovesLeft()-1);
                 count = 0;
             } else {
                 placeInW.explainEffect(table, round);

@@ -18,6 +18,7 @@ public class Controller implements Observer {
     public static final String CHOOSE_PATTERN_CARD = "Choose the pattern card to use (0-1-2-3).";
     public static final String PLAYER_NOT_FOUND = "Player not found.";
     public static final String ITS_YOUR_TURN = "It's your turn! Choose Action: move, toolcard, skip.";
+    public static final String ACTION_CANCELED = "Action canceled.";
     public static final String LEFT_THE_GAME = " left the game.";
     public static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
     public static final String JOINED_THE_GAME = " joined the game.";
@@ -114,10 +115,10 @@ public class Controller implements Observer {
                 privateObjectiveCard = game.assignPrivateObjectiveCard(view.getUsername());
                 ArrayList<PatternCard> patterns = game.drawPatternCards();
                 view.displayPrivateObjectiveCard(privateObjectiveCard);
-                view.displayMessage(CHOOSE_PATTERN_CARD);
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
+                view.displayMessage(CHOOSE_PATTERN_CARD);
             } catch (NotValidInputException e) {
                 System.out.println(PLAYER_NOT_FOUND);
             }
@@ -136,7 +137,8 @@ public class Controller implements Observer {
                 state = chooseActionState;
                 itsYourTurn();
                 setTimerSkipTurn();
-            }}, TIMER_SECONDS*1000);
+            }
+            }, TIMER_SECONDS*1000);
     }
 
     public void sendMessage(String name, String message) {
@@ -252,6 +254,7 @@ public class Controller implements Observer {
             public void run() {
                 state = chooseActionState;
                 offlinePlayers.add(game.getCurrentPlayer());
+                sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
                 skipTurn();
             }
         }, TIMER_SECONDS*1000);

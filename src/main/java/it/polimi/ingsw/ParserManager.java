@@ -15,9 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -32,11 +30,14 @@ public class ParserManager {
     private static ParserManager instance = null;
     private JSONParser parser;
     private static final String JSON_PATTERNS_PATH = "src/main/resources/patterns.json";
+
+    private static final String JSON_PATTERNS_PATH1 = "/patterns.json";
     private static final String JSON_PATTERNS_PARAMETER_1 = "patternDeck";
     private static final String JSON_PATTERNS_PARAMETER_2 = "name";
     private static final String JSON_PATTERNS_PARAMETER_3 = "difficulty";
     private static final String JSON_PATTERNS_PARAMETER_4 = "patternCard";
     private static final String JSON_PUB_OBJ_PATH = "src/main/resources/objectives.json";
+    private static final String JSON_PUB_OBJ_PATH1 = "/objectives.json";
     private static final String JSON_PUB_OBJ_PARAMETER_1 = "objectiveDeck";
     private static final String JSON_PUB_OBJ_PARAMETER_2 = "row";
     private static final String JSON_PUB_OBJ_PARAMETER_3 = "name";
@@ -48,6 +49,7 @@ public class ParserManager {
     private static final String JSON_PUB_OBJ_PARAMETER_9 = "elements";
     private static final String JSON_PUB_OBJ_PARAMETER_10 = "diagonal";
     private static final String JSON_TOOLCARDS_PATH = "src/main/resources/toolcards.json";
+    private static final String JSON_TOOLCARDS_PATH1 = "/toolcards.json";
     private static final String JSON_TOOLCARDS_PARAMETER_1 = "toolcards";
     private static final String JSON_TOOLCARDS_PARAMETER_2 = "ID";
     private static final String JSON_TOOLCARDS_PARAMETER_3 = "name";
@@ -90,8 +92,10 @@ public class ParserManager {
     public ArrayList<PatternCard> getPatternDeck(){
         ArrayList<PatternCard> deck = new ArrayList<>();
         Object obj=null;
+        InputStream inputStream = this.getClass().getResourceAsStream(JSON_PATTERNS_PATH1);
         try {
-            obj = parser.parse(new FileReader(JSON_PATTERNS_PATH));
+            //obj = parser.parse(new FileReader(JSON_PATTERNS_PATH));
+            obj = parser.parse(new InputStreamReader(inputStream));
         } catch (IOException e) {
             System.out.println("ERROR READING FROM FILE PatternCards");
             Thread.currentThread().interrupt();
@@ -131,8 +135,10 @@ public class ParserManager {
     public ArrayList<PublicObjectiveCard> getPublicObjectiveDeck() {
         ArrayList<PublicObjectiveCard> puODeck = new ArrayList<>();
         Object obj = null;
+        InputStream inputStream = this.getClass().getResourceAsStream(JSON_PUB_OBJ_PATH1);
         try {
-            obj = parser.parse(new FileReader(JSON_PUB_OBJ_PATH));
+            //obj = parser.parse(new FileReader(JSON_PUB_OBJ_PATH));
+            obj = parser.parse(new InputStreamReader(inputStream));
         } catch (IOException e) {
             System.out.println(e);
         } catch (ParseException e) {
@@ -195,8 +201,10 @@ public class ParserManager {
     public ArrayList<ToolCard> getToolCards() {
         ArrayList<ToolCard> toolCards = new ArrayList<>();
         Gson gson = new Gson();
-        try {
-            JsonReader reader = new JsonReader(new FileReader(JSON_TOOLCARDS_PATH));
+        InputStream inputStream = this.getClass().getResourceAsStream(JSON_TOOLCARDS_PATH1);
+        //try {
+            //JsonReader reader = new JsonReader(new FileReader(JSON_TOOLCARDS_PATH));
+            JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
             JsonParser parser = new JsonParser();
             JsonObject object = parser.parse(reader).getAsJsonObject();
             JsonArray deck = object.getAsJsonArray(JSON_TOOLCARDS_PARAMETER_1);
@@ -229,10 +237,10 @@ public class ParserManager {
             }
 
             return toolCards;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
+        //return null;
     }
 
 }

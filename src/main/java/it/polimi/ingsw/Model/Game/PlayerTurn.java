@@ -18,6 +18,7 @@ public class PlayerTurn implements Serializable {
     private boolean skipEffect;
     private boolean moveActive;
     private boolean toolCardActive;
+    private int draftPoolSize;
 
     public PlayerTurn(Player player, int turnNumber) {
         this.player = player;
@@ -29,6 +30,15 @@ public class PlayerTurn implements Serializable {
         skipEffect = false;
         moveActive = false;
         toolCardActive = false;
+        draftPoolSize = 0;
+    }
+
+    public int getDraftPoolSize() {
+        return draftPoolSize;
+    }
+
+    public void setDraftPoolSize(int draftPoolSize) {
+        this.draftPoolSize = draftPoolSize;
     }
 
     public boolean isMoveActive() {

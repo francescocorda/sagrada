@@ -44,7 +44,7 @@ public class TestToolCards {
 
 
     @Test
-    public void toolCard1Test() throws WrongRoundException, InvalidNeighboursException {
+    public void toolCard1Test() throws WrongRoundException, InvalidNeighboursException, ImpossibleMoveException {
         for (Dice c : game.getTable().getDraftPool()) {
             if (c.valueOf() == 1 || c.valueOf() == 6) {
                 try {
@@ -126,7 +126,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard2Test() throws WrongRoundException {
+    public void toolCard2Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(1);
 
@@ -216,7 +216,7 @@ public class TestToolCards {
 
 
     @Test
-    public void toolCard3Test() throws WrongRoundException {
+    public void toolCard3Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(2);
 
@@ -303,7 +303,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard41Test() throws WrongRoundException {
+    public void toolCard41Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(3);
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
@@ -358,7 +358,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard5Test() {
+    public void toolCard5Test() throws ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(4);
 
@@ -408,7 +408,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard6Test() throws WrongRoundException {
+    public void toolCard6Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(5);
 
@@ -482,7 +482,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard7Test() {
+    public void toolCard7Test() throws ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(6);
 
@@ -511,7 +511,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard8Test() throws WrongRoundException {
+    public void toolCard8Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(7);
 
@@ -613,7 +613,7 @@ public class TestToolCards {
 
 
     @Test
-    public void toolCard9Test() throws WrongRoundException {
+    public void toolCard9Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(8);
 
@@ -715,7 +715,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard10Test() throws WrongRoundException, InvalidNeighboursException {
+    public void toolCard10Test() throws WrongRoundException, InvalidNeighboursException, ImpossibleMoveException {
         for (Dice c : game.getTable().getDraftPool()) {
             if (c.valueOf() == 1 || c.valueOf() == 6) {
                 try {
@@ -747,7 +747,7 @@ public class TestToolCards {
     }
 
     @Test
-    public void toolCard11Test() throws WrongRoundException {
+    public void toolCard11Test() throws WrongRoundException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(10);
 
@@ -802,7 +802,7 @@ public class TestToolCards {
 
 
     @Test
-    public void toolCard12Test() throws WrongRoundException, InvalidFirstMoveException {
+    public void toolCard12Test() throws WrongRoundException, InvalidFirstMoveException, ImpossibleMoveException {
 
         ToolCard toolCard = toolCards.get(11);
 

@@ -76,6 +76,10 @@ public class PlaceIn extends Effect {
                 int col = Integer.parseInt(commands.remove(0));
                 try {
                     window.setDice(row, col, table.getActiveDice());
+                    if (table.getDraftPool().size() < round.getPlayerTurn(0).getDraftPoolSize()) {
+                        round.getPlayerTurn(0).setDraftPoolSize(table.getDraftPool().size());
+                        round.getPlayerTurn(0).setMovesLeft(round.getPlayerTurn(0).getMovesLeft() - 1);
+                    }
                     window.getPatternCard().disableExceptions();
                     table.setActiveDice(null);
                     table.notifyObservers();
@@ -97,19 +101,15 @@ public class PlaceIn extends Effect {
     }
 
     public boolean isPlaceable(Table table, Round round) {
-        //String activeException;
-
         WindowFrame windowFrame = round.getCurrentPlayer().getWindowFrame();
-        //activeException = windowFrame.getActiveException();
         for (int i = 0; i < PatternCard.ROW; i++) {
             for (int j = 0; j < PatternCard.COLUMN; j++) {
                 try {
                     windowFrame.setDice(i+1, j+1, table.getActiveDice());
                     windowFrame.removeDice(i+1, j+1);
-                    //windowFrame.enableException(activeException);
                     return true;
                 } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException | DiceNotFoundException e) {
-                    //windowFrame.enableException(activeException);
+                    //
                 }
 
             }

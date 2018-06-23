@@ -6,7 +6,6 @@ import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.exceptions.*;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.Set;
 
 import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
@@ -16,18 +15,15 @@ public class WindowFrame implements Serializable {
 
     private Dice[][] dices;
     private PatternCard patternCard;
-    //private String exception;
 
     public WindowFrame(){
         dices = new Dice[ROW][COLUMN];
         patternCard=null;
-        //this.exception = new String();
     }
 
     public WindowFrame(WindowFrame windowFrame) {
         this.patternCard = new PatternCard(windowFrame.getPatternCard());
         this.dices = new Dice[ROW][COLUMN];
-        //this.exception = windowFrame.getActiveException();
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
                 if(windowFrame.getDice(i+1,j+1)!=null) {
@@ -158,7 +154,6 @@ public class WindowFrame implements Serializable {
     }
 
     public void enableException(String restrictionToIgnore){
-        //this.exception = restrictionToIgnore;
         for(int i=1; i<=ROW; i++){
             for(int j=1; j<=COLUMN; j++){
                 if(restrictionToIgnore.compareTo("FACE")==0){
@@ -175,10 +170,6 @@ public class WindowFrame implements Serializable {
             }
         }
     }
-
-    /*public String getActiveException() {
-        return exception;
-    }*/
 
 
     @Override
@@ -233,7 +224,7 @@ public class WindowFrame implements Serializable {
 
     public String toGameString(){
         //Used Symbols:
-        String emptyDiceSymbol =  "\uD83E\uDD76";
+        String emptyDiceSymbol =  "\u25FB";
         String verticalSeparatorSymbol = "|";
         String horizontalLine = "-----------------\t";
         String horizontalSeparator = "--"+verticalSeparatorSymbol+horizontalLine;

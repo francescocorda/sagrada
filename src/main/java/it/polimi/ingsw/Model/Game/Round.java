@@ -53,6 +53,10 @@ public class Round implements Serializable {
         return this.playerTurns;
     }
 
+    public void setPlayerTurns(ArrayList<PlayerTurn> playerTurns) {
+        this.playerTurns = playerTurns;
+    }
+
     public PlayerTurn getPlayerTurn(int index) {
         return playerTurns.get(index);
     }

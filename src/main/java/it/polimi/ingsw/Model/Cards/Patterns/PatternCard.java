@@ -22,6 +22,7 @@ public class PatternCard extends Card {
 
     public PatternCard(PatternCard patternCard) {
         super(patternCard.getName(), patternCard.getID());
+        this.difficulty = patternCard.getDifficulty();
         this.patternCard = new Cell[ROW][COLUMN];
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {

@@ -49,7 +49,7 @@ public class Cell implements Serializable {
         if (escape.compareTo("\u2680") + 1> 0) {
             return Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET;
         } else {
-            return escape + "[" + "\uD83E\uDD76" + "]" + Restriction.RESET;
+            return escape + "[" + "\u25FB" + "]" + Restriction.RESET;
         }
     }
 }

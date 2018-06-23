@@ -7,9 +7,7 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
-import it.polimi.ingsw.VirtualViewsDataBase;
 import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.view.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,12 +32,17 @@ public class Game implements Serializable {
     public static final int PUB_OBJ_CARDS_DIMENSION = 3;
     public static final int TOOL_CARDS_DIMENSION = 3;
     public static final int PROPOSED_PATTERNS = 4;
+    private ArrayList<Dice> old_draftPool;
+    private WindowFrame old_windowFrame;
+    private DiceBag old_diceBag;
+    private RoundTrack old_roundTrack;
+    private ArrayList<PlayerTurn> old_playerTurns;
 
 
-    public Game(int matchID, ArrayList<String> names ){
+    public Game(int matchID, ArrayList<String> names) {
         this.matchID = matchID;
         this.players = new ArrayList<>();
-        for(int i=0; i<names.size(); i++){
+        for (int i=0; i<names.size(); i++){
             this.players.add(new Player(names.get(i)));
         }
         privateObjectiveDeck = new PrivateObjectiveDeck();
@@ -58,6 +61,12 @@ public class Game implements Serializable {
         }
         ArrayList<PlayerTurn> lastRound = new ArrayList<>(rounds.get(NUMBER_OF_ROUNDS-1).getPlayerTurns());
         table.getScoreTrack().setLastRound(lastRound);
+
+        old_draftPool = null;
+        old_windowFrame = null;
+        old_diceBag = null;
+        old_roundTrack = null;
+        old_playerTurns = null;
     }
 
     public ArrayList<String> getUserNames() {
@@ -174,16 +183,22 @@ public class Game implements Serializable {
     }
 
     public void performMove(ArrayList<String> commands) {
-            if(rounds.get(0).getPlayerTurn(0).getMovesLeft() > 0) {
-                rounds.get(0).getPlayerTurn(0).setMoveActive(true);
-                move.performMove(commands);
-            }
+        if(rounds.get(0).getPlayerTurn(0).getMovesLeft() > 0) {
+           rounds.get(0).getPlayerTurn(0).setMoveActive(true);
+           try {
+               move.performMove(commands);
+           } catch (ImpossibleMoveException e) {
+               cancelMove();
+           }
+        }
     }
 
     public void createMove() {
         move = new Move(table, rounds.get(0));
+        saveGame();
         move.explainEffect(table, rounds.get(0));
     }
+
 
     public boolean moveAllowed() {
         if (rounds.get(0).getPlayerTurn(0).getMovesLeft()>0) {
@@ -192,6 +207,41 @@ public class Game implements Serializable {
         }
         table.notifyObservers(getCurrentPlayer() + "'s turn: move not allowed.");
         return false;
+    }
+
+    public void saveGame() {
+        this.old_draftPool = table.cloneDraftPool();
+        this.old_windowFrame = new WindowFrame(rounds.get(0).getCurrentPlayer().getWindowFrame());
+        this.old_diceBag = new DiceBag(table.getDiceBag());
+        this.old_roundTrack = new RoundTrack(table.getRoundTrack());
+        this.old_playerTurns = new ArrayList<>(rounds.get(0).getPlayerTurns());
+    }
+
+    public void cancelToolCardUse() {
+        if (rounds.get(0).getPlayerTurn(0).isToolCardActive()) {
+            table.setDraftPool(old_draftPool);
+            table.setRoundTrack(old_roundTrack);
+            table.setDiceBag(old_diceBag);
+            table.setActiveDice(null);
+            rounds.get(0).setPlayerTurns(old_playerTurns);
+            rounds.get(0).getCurrentPlayer().setWindowFrame(old_windowFrame);
+            rounds.get(0).getPlayerTurn(0).setToolCardActive(false);
+            rounds.get(0).getPlayerTurn(0).setToolCardUsed(false);
+            table.getActiveToolCard().refundTokens(rounds.get(0).getCurrentPlayer());
+            table.getActiveToolCard().resetToolCard(table, rounds.get(0));
+            table.removeActiveToolCard();
+            table.notifyObservers();
+        }
+    }
+
+    public void cancelMove() {
+        if(rounds.get(0).getPlayerTurn(0).isMoveActive()) {
+            rounds.get(0).getPlayerTurn(0).setMoveActive(false);
+            table.setDraftPool(old_draftPool);
+            table.setActiveDice(null);
+            rounds.get(0).getCurrentPlayer().setWindowFrame(old_windowFrame);
+            table.notifyObservers();
+        }
     }
 
     public boolean toolCardUseAllowed(int indexTC) {
@@ -207,6 +257,7 @@ public class Game implements Serializable {
         if(table.getGameToolCards().get(indexTC).payTokens(rounds.get(0).getPlayerTurn(0).getPlayer())) {
             rounds.get(0).getPlayerTurn(0).setToolCardActive(true);
             table.setActiveToolCard(indexTC);
+            saveGame();
             table.notifyObservers(getCurrentPlayer() + "'s turn: acquired tool card " + table.getGameToolCards().get(indexTC).getName());
             table.getActiveToolCard().getEffects().get(0).explainEffect(table, rounds.get(0));
             return true;
@@ -224,7 +275,13 @@ public class Game implements Serializable {
     }
 
     public void useToolCard(ArrayList<String> commands) {
-        table.getActiveToolCard().useToolCard(commands, table, rounds.get(0));
+        try {
+            table.getActiveToolCard().useToolCard(commands, table, rounds.get(0));
+        } catch (ImpossibleMoveException e) {
+            table.notifyObservers(INVALID_MOVE_BY_PLAYER + rounds.get(0).getCurrentPlayer().getName() +
+                    ":\n" + e.getMessage());
+            cancelToolCardUse();
+        }
     }
 
     public void skipTurn() {

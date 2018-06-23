@@ -44,13 +44,13 @@ public class ToolCard implements Serializable {
         this.stops = new ArrayList<>();
     }
 
-    public void useToolCard(ArrayList<String> commands, Table table, Round round) {
+    public void useToolCard(ArrayList<String> commands, Table table, Round round) throws ImpossibleMoveException {
         boolean result = true;
         while (index<effects.size() && index<stop && result) {
             try {
                 if (effects.get(index).applyEffect(commands, table, round)) {
-                    if (index +1<effects.size()) {
-                        effects.get(index +1).explainEffect(table, round);
+                    if (index + 1 < effects.size()) {
+                        effects.get(index + 1).explainEffect(table, round);
                     }
                     index++;
                 } else {
@@ -63,14 +63,10 @@ public class ToolCard implements Serializable {
                 index--;
                 effects.get(index).explainEffect(table, round);
                 result = false;
-            } catch (ImpossibleMoveException e) {
-                table.notifyObservers(INVALID_MOVE_BY_PLAYER + round.getCurrentPlayer().getName() +
-                        ":\n" + e.getMessage());
-                index = effects.size();
             }
         }
 
-        if (result == false) {
+        if (!result) {
             return;
         }
         if (index == stop) {
@@ -78,6 +74,8 @@ public class ToolCard implements Serializable {
         }
         if(index == effects.size()) {
             resetToolCard(table, round);
+            round.getPlayerTurn(0).setToolCardActive(false);
+            round.getPlayerTurn(0).setToolCardUsed(true);
         }
     }
 
@@ -85,16 +83,10 @@ public class ToolCard implements Serializable {
         index = 0;
         stopIndex = 0;
         stop = 0;
-        round.getPlayerTurn(0).setToolCardActive(false);
-        round.getPlayerTurn(0).setToolCardUsed(true);
+        table.removeActiveToolCard();
+        round.getPlayerTurn(0).setDraftPoolSize(0);
         round.getPlayerTurn(0).getOriginCoordinates().clear();
         round.getPlayerTurn(0).setColorRoundTrack(null);
-        table.removeActiveToolCard();
-        Dice dice = table.getActiveDice();
-        table.setActiveDice(null);
-        if (dice != null) {
-            table.getDraftPool().add(dice);
-        }
     }
 
     public void nextStop() {
@@ -190,6 +182,23 @@ public class ToolCard implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public void refundTokens(Player player) {
+        int refund = 0;
+        if (numOfTokens >= INITIAL_PRICE) {
+            refund = INITIAL_PRICE;
+            if (numOfTokens >= ORDINARY_PRICE) {
+                refund = ORDINARY_PRICE;
+            }
+        }
+
+        numOfTokens = numOfTokens - refund;
+        try {
+            player.setNumOfTokens(player.getNumOfTokens() + refund);
+        } catch (NotValidInputException e) {
+            //
+        }
     }
 
     public boolean useAllowed(PlayerTurn turn) {

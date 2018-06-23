@@ -2,9 +2,7 @@ package it.polimi.ingsw.controller;
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.controller.Controller.CHOOSE_TOOL_CARD;
-import static it.polimi.ingsw.controller.Controller.INVALID_FORMAT;
-import static it.polimi.ingsw.controller.Controller.WAIT_YOUR_TURN;
+import static it.polimi.ingsw.controller.Controller.*;
 
 public class BuyToolCardState extends State {
 
@@ -22,7 +20,11 @@ public class BuyToolCardState extends State {
     }
 
     private void buyToolCard(String username, ArrayList<String> commands) {
-        if(commands.size() == 1 && checkFormat(commands)) {
+        if (commands.size() == 1 && commands.get(0).equals("cancel")) {
+            controller.setState(controller.getChooseActionState());
+            controller.sendMessage(username, ACTION_CANCELED);
+            controller.itsYourTurn();
+        } else if(commands.size() == 1 && checkFormat(commands)) {
             int index = Integer.parseInt(commands.remove(0));
             if (game.toolCardUseAllowed(index) && game.buyToolCard(index)) {
                 game.useToolCard(new ArrayList<>());

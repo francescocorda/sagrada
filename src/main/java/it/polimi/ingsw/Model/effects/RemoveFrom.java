@@ -47,6 +47,7 @@ public class RemoveFrom extends Effect {
     public boolean applyEffect(ArrayList<String> commands, Table table, Round round) throws ImpossibleMoveException {
         if (element == DRAFTPOOL) {
             int indexDP = Integer.parseInt(commands.remove(0));
+            round.getPlayerTurn(0).setDraftPoolSize(table.getDraftPool().size());
             round.getPlayerTurn(0).addOriginCoordinate(indexDP);
             try {
                 table.setActiveDice(table.getDraftPool().get(indexDP - 1));

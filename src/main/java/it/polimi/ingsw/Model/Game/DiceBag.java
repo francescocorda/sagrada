@@ -15,6 +15,16 @@ public class DiceBag implements Serializable {
         fill();
     }
 
+    public DiceBag(DiceBag diceBag) {
+        this.dices = new ArrayList<>();
+        for (Dice dice: diceBag.getDices()) {
+            dices.add(new Dice(dice));
+        }
+    }
+
+    private ArrayList<Dice> getDices() {
+        return dices;
+    }
     private void fill() {
         for (int i = 0; i < MAX_NUMBER_OF_DICES / NUMBER_OF_COLORS; i++)
             for (Color c : Color.values()) {

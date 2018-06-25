@@ -18,6 +18,7 @@ public class ChooseActionState extends State {
                     case "move":
                         if(game.moveAllowed()) {
                             game.createMove();
+                            controller.sendActiveTableElement(username);
                             controller.setState(controller.getMoveState());
                         } else {
                             controller.itsYourTurn();

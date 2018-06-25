@@ -16,6 +16,8 @@ public interface RMIClientInterface extends Remote {
 
     void sendPatternCard(PatternCard patternCard) throws RemoteException;
 
+    void sendActiveTableElement(String element) throws RemoteException;
+
     void checkConnection() throws RemoteException;
 
     void update(Observable o, Object arg) throws RemoteException;

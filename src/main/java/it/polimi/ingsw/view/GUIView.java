@@ -27,6 +27,12 @@ public class GUIView extends Observable implements View  {
     }
 
     @Override
+    public void activeTableElement(String element) {
+        //TODO
+        manager.editMessage(element);
+    }
+
+    @Override
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
         manager.displayPrivateObjectiveCard(privateObjectiveCard);
     }

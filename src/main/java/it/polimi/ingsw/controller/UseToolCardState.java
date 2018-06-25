@@ -24,6 +24,8 @@ public class UseToolCardState extends State {
                 useToolCard(username, commands);
                 if (!game.isToolCardActive()) {
                     controller.checkGameState();
+                } else {
+                    controller.sendActiveTableElement(username);
                 }
             }
         }  else {

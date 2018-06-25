@@ -21,4 +21,5 @@ public abstract class Effect implements Serializable {
     public int getCommandsLenght() {
         return commandsLenght;
     }
+    public abstract String getActiveTableElement();
 }

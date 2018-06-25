@@ -42,6 +42,15 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
+    public void sendActiveTableElement(String element) throws NetworkErrorException {
+        try {
+            rmiClientInterface.sendActiveTableElement(element);
+        } catch (RemoteException e) {
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
     public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
         try {
             rmiClientInterface.sendPatternCard(patternCard);
@@ -75,10 +84,5 @@ public class ClientHandlerRMI implements ClientHandler {
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }
-    }
-
-    @Override
-    public void game() {
-        //just for socket
     }
 }

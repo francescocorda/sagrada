@@ -96,5 +96,10 @@ public class CLIView extends Observable implements View {
         System.out.println(message);
     }
 
+    @Override
+    public void activeTableElement(String element) {
+        System.out.println(element);
+    }
+
 
 }

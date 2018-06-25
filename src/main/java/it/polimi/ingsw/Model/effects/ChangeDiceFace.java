@@ -99,4 +99,9 @@ public class ChangeDiceFace extends Effect {
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(changeFace));
     }
+
+    @Override
+    public String getActiveTableElement() {
+        return changeFace.toString();
+    }
 }

@@ -49,6 +49,15 @@ public class VirtualView extends Observable implements View {
     }
 
     @Override
+    public void activeTableElement(String element) {
+        try {
+            getClientHandler().sendActiveTableElement(element);
+        } catch (NetworkErrorException e) {
+            disconnect();
+        }
+    }
+
+    @Override
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
         try {
             getClientHandler().sendPrivateObjectiveCard(privateObjectiveCard);

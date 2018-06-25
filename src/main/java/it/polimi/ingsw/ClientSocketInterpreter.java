@@ -17,20 +17,17 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     private ClientDatabase players;
     private Status status;
     private String username;
-    private Phase phase;
     private SocketReader reader = null;
 
     public ClientSocketInterpreter(Socket socket) {
         this.connection = new ConnectionSocket(socket);
         players = ClientDatabase.getPlayerDatabase();
         status = ONLINE;
-        phase = LOGIN;
     }
 
     @Override
     public void run() {
         login();
-        setPhase(LOBBY);
         sendMessage("lobby/last_access/insert_last_access");
     }
 
@@ -137,14 +134,6 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     public boolean isOnline() {
         reader.waitForPong();
         return status == ONLINE;
-    }
-
-    private void setPhase(Phase phase) {
-        this.phase = phase;
-    }
-
-    public void game() {
-        setPhase(GAME);
     }
 
     private void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {

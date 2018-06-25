@@ -39,4 +39,9 @@ public class EnableException extends Effect{
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(exception));
     }
+
+    @Override
+    public String getActiveTableElement() {
+        return exception.toString();
+    }
 }

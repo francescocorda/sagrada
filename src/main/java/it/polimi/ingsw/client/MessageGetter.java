@@ -80,6 +80,9 @@ public class MessageGetter extends Thread{
                 PrivateObjectiveCard pOCard = gson.fromJson(commands.get(0), PrivateObjectiveCard.class);
                 view.displayPrivateObjectiveCard(pOCard);
                 break;
+            case "active_table_element":
+                view.activeTableElement(commands.remove(0));
+                break;
             case "update":
                 String observer = commands.remove(0);
                 String object = commands.remove(0);

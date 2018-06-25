@@ -79,4 +79,9 @@ public class SwapWith extends Effect{
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(element));
     }
 
+    @Override
+    public String getActiveTableElement() {
+        return element.toString();
+    }
+
 }

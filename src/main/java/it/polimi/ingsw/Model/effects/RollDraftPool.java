@@ -25,4 +25,9 @@ public class RollDraftPool extends Effect {
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + description);
     }
+
+    @Override
+    public String getActiveTableElement() {
+        return "";
+    }
 }

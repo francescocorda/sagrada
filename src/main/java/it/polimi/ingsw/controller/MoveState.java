@@ -24,6 +24,8 @@ public class MoveState extends State {
                     performMove(username, commands);
                     if (!game.isMoveActive()) {
                         controller.checkGameState();
+                    } else {
+                        controller.sendActiveTableElement(username);
                     }
                 }
         } else {

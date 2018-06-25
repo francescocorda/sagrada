@@ -88,6 +88,11 @@ public class RMIClientImplementation implements RMIClientInterface {
         view.displayPatternCard(patternCard);
     }
 
+    @Override
+    public void sendActiveTableElement(String element) throws RemoteException {
+        view.activeTableElement(element);
+    }
+
 
     public void checkConnection()  throws RemoteException{
         //This method has only to check the connection between client and server, so it has to be empty

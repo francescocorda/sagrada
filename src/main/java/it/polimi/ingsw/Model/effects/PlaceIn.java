@@ -100,6 +100,11 @@ public class PlaceIn extends Effect {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(element));
     }
 
+    @Override
+    public String getActiveTableElement() {
+        return element.toString();
+    }
+
     public boolean isPlaceable(Table table, Round round) {
         WindowFrame windowFrame = round.getCurrentPlayer().getWindowFrame();
         for (int i = 0; i < PatternCard.ROW; i++) {

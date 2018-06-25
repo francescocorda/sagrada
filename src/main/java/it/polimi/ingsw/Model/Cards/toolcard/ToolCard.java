@@ -110,6 +110,13 @@ public class ToolCard implements Serializable {
         }
     }
 
+    public String getActiveTableElement() {
+        if (index < effects.size())
+            return effects.get(index).getActiveTableElement();
+        else
+            return "";
+    }
+
     public int getCommandsLenght() {
         return effects.get(index).getCommandsLenght();
     }

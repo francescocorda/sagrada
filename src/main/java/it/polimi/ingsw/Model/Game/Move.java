@@ -51,6 +51,14 @@ public class Move implements Serializable {
         }
     }
 
+    public String getActiveTableElement() {
+        if (count==0) {
+            return removeFromDP.getActiveTableElement();
+        } else {
+            return placeInW.getActiveTableElement();
+        }
+    }
+
 
     public int getCommandsLenght() {
         if(count==0) {

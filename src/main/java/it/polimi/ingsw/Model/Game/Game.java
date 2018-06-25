@@ -184,7 +184,6 @@ public class Game implements Serializable {
 
     public void performMove(ArrayList<String> commands) {
         if(rounds.get(0).getPlayerTurn(0).getMovesLeft() > 0) {
-           rounds.get(0).getPlayerTurn(0).setMoveActive(true);
            try {
                move.performMove(commands);
            } catch (ImpossibleMoveException e) {
@@ -196,6 +195,7 @@ public class Game implements Serializable {
     public void createMove() {
         move = new Move(table, rounds.get(0));
         saveGame();
+        rounds.get(0).getPlayerTurn(0).setMoveActive(true);
         move.explainEffect(table, rounds.get(0));
     }
 
@@ -282,6 +282,15 @@ public class Game implements Serializable {
                     ":\n" + e.getMessage());
             cancelToolCardUse();
         }
+    }
+
+    public String getActiveTableElement() {
+        if (isToolCardActive()) {
+            return table.getActiveToolCard().getActiveTableElement();
+        } else if (isMoveActive()) {
+            return move.getActiveTableElement();
+        } else
+            return "INACTIVE_TABLE";
     }
 
     public void skipTurn() {

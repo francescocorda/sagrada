@@ -68,4 +68,9 @@ public class SearchRoundTrack extends Effect {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + description);
     }
 
+    @Override
+    public String getActiveTableElement() {
+        return "";
+    }
+
 }

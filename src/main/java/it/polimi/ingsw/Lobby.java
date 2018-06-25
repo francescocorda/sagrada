@@ -56,7 +56,7 @@ public class Lobby implements Observer {
             connectedPlayers.add(player);
             connectedPlayersLastTime.add(time);
             send(username, "/welcome");
-            toTerminal("player: " + player.getUsername() + " singed in");
+            toTerminal("player: " + player.getUsername() + " signed in");
             broadcast("/player_joined/" + player.getUsername());
             broadcast(listOfPlayers());
             players.setPhase(username, Phase.LOBBY);

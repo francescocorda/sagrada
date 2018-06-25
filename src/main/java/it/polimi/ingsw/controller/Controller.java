@@ -118,7 +118,7 @@ public class Controller implements Observer {
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
-                view.displayMessage(CHOOSE_PATTERN_CARD);
+                view.displayGameMessage(CHOOSE_PATTERN_CARD);
             } catch (NotValidInputException e) {
                 System.out.println(PLAYER_NOT_FOUND);
             }
@@ -145,6 +145,14 @@ public class Controller implements Observer {
         for (VirtualView virtualView: views) {
             if (virtualView.getUsername().equals(name)) {
                 virtualView.displayGameMessage(message);
+            }
+        }
+    }
+
+    public void sendActiveTableElement(String name) {
+        for (VirtualView virtualView: views) {
+            if (virtualView.getUsername().equals(name)) {
+                virtualView.activeTableElement(game.getActiveTableElement());
             }
         }
     }

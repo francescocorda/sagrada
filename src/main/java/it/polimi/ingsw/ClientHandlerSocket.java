@@ -45,6 +45,15 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
+    public void sendActiveTableElement(String element) throws NetworkErrorException {
+        try{
+            clientSocketInterpreter.sendMessage("game/active_table_element/"+element);
+        } catch (Exception e){
+            throw new NetworkErrorException();
+        }
+    }
+
+    @Override
     public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
         String patternCardJSON = gson.toJson(patternCard);
         try{
@@ -81,10 +90,5 @@ public class ClientHandlerSocket implements ClientHandler {
     public void check() throws NetworkErrorException {
         if(!clientSocketInterpreter.isOnline())
             throw new NetworkErrorException();
-    }
-
-    @Override
-    public void game() {
-        clientSocketInterpreter.game();
     }
 }

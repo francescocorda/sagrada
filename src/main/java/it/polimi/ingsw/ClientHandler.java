@@ -6,12 +6,12 @@ import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.util.Observable;
 
 public interface ClientHandler {
-    public void displayGame() throws NetworkErrorException;
-    public void sendMessage(String message) throws NetworkErrorException;
-    public void sendGameMessage(String message) throws NetworkErrorException;
-    public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException;
-    public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException;
-    public void update(Observable o, Object arg) throws NetworkErrorException;
-    public void check() throws NetworkErrorException;
-    public void game();
+    void displayGame() throws NetworkErrorException;
+    void sendMessage(String message) throws NetworkErrorException;
+    void sendGameMessage(String message) throws NetworkErrorException;
+    void sendActiveTableElement(String element) throws NetworkErrorException;
+    void sendPatternCard(PatternCard patternCard) throws NetworkErrorException;
+    void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException;
+    void update(Observable o, Object arg) throws NetworkErrorException;
+    void check() throws NetworkErrorException;
 }

@@ -29,6 +29,7 @@ public class BuyToolCardState extends State {
             if (game.toolCardUseAllowed(index) && game.buyToolCard(index)) {
                 game.useToolCard(new ArrayList<>());
                 if (game.isToolCardActive()) {
+                    controller.sendActiveTableElement(username);
                     controller.setState(controller.getUseToolCardState());
                 } else {
                     controller.itsYourTurn();

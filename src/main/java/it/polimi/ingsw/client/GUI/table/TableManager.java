@@ -6,21 +6,19 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.Model.Game.*;
+import it.polimi.ingsw.Model.Game.Color;
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
 import it.polimi.ingsw.client.GUI.login.LoginManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
-import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.application.Platform;
-import javafx.event.EventDispatchChain;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -30,11 +28,9 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
-import org.omg.CORBA.TRANSACTION_MODE;
-
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -223,6 +219,13 @@ public class TableManager implements GUIManager {
     @FXML Circle signal2_1; @FXML Circle signal2_2; @FXML Circle signal2_3; @FXML Circle signal2_4; @FXML Circle signal2_5; @FXML Circle signal2_6;
     @FXML Circle signal3_1; @FXML Circle signal3_2; @FXML Circle signal3_3; @FXML Circle signal3_4; @FXML Circle signal3_5; @FXML Circle signal3_6;
     @FXML Circle signal4_1; @FXML Circle signal4_2; @FXML Circle signal4_3; @FXML Circle signal4_4; @FXML Circle signal4_5; @FXML Circle signal4_6;
+    @FXML Text tool1Name; @FXML Text tool1ID; @FXML Text tool1Description; @FXML Text tool1Tokens;
+    @FXML Text tool2Name; @FXML Text tool2ID; @FXML Text tool2Description; @FXML Text tool2Tokens;
+    @FXML Text tool3Name; @FXML Text tool3ID; @FXML Text tool3Description; @FXML Text tool3Tokens;
+    @FXML Text PVOCName; @FXML Text PVOCID; @FXML Text PVOCDescription; @FXML Text PVOCColor;
+    @FXML Text POC1Name; @FXML Text POC1ID; @FXML Text POC1Description; @FXML Text POC1Points;
+    @FXML Text POC2Name; @FXML Text POC2ID; @FXML Text POC2Description; @FXML Text POC2Points;
+    @FXML Text POC3Name; @FXML Text POC3ID; @FXML Text POC3Description; @FXML Text POC3Points;
 
     public void dragDroppedWindow(DragEvent event) {
         Dragboard db = event.getDragboard();
@@ -253,7 +256,7 @@ public class TableManager implements GUIManager {
     }
 
     public void dragOverWindow(DragEvent event){
-        if (event.getGestureSource() != event.getTarget() && event.getDragboard().hasString()) {
+        if (/*event.getGestureSource() != event.getTarget() &&*/ event.getDragboard().hasString()) {
             /* allow for moving */
             event.acceptTransferModes(TransferMode.MOVE);
         }
@@ -281,16 +284,18 @@ public class TableManager implements GUIManager {
 
     @FXML
     public void mousePressedPool(MouseEvent e) {
-        source = (Rectangle) e.getSource();
-        for(int i=0; i<9; i++){
-           if (source == cellsPool.get(i)) {
-               idPool = i+1;
-           }
-        }
-        try {
-            communicator.sendMessage(""+(idPool-initialPos));
-        } catch (NetworkErrorException e1) {
-            e1.printStackTrace();
+        if(activeTool){
+            source = (Rectangle) e.getSource();
+            for(int i=0; i<9; i++){
+                if (source == cellsPool.get(i)) {
+                    idPool = i+1;
+                }
+            }
+            try {
+                communicator.sendMessage(""+(idPool-initialPos));
+            } catch (NetworkErrorException e1) {
+                e1.printStackTrace();
+            }
         }
     }
 
@@ -304,16 +309,34 @@ public class TableManager implements GUIManager {
         }
         SnapshotParameters sp =  new SnapshotParameters();
         sp.setTransform(Transform.scale(1.5, 1.5));
-        WritableImage preview = poolItems.get(idPool-initialPos-1).snapshot(sp, null);
+        WritableImage preview = poolItems.get(idPool-initialPos-1).snapshot(sp,null);
         Dragboard db = source.startDragAndDrop(TransferMode.ANY);
         ClipboardContent content = new ClipboardContent();
         content.putString(source.getId());
         db.setContent(content);
-        db.setDragView(preview);
+        db.setDragView(preview, 45, 45);
         e.consume();
         for(Rectangle r : cells1){
             r.startDragAndDrop(TransferMode.ANY); //accept the dragAndDrop event
         }
+        try {
+            communicator.sendMessage(""+(idPool-initialPos));
+        } catch (NetworkErrorException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void selectedDragDetected(MouseEvent event){
+        SnapshotParameters sp =  new SnapshotParameters();
+        sp.setTransform(Transform.scale(1.5, 1.5));
+        WritableImage preview = ((StackPane)selectedDice.getChildren().get(selectedDice.getChildren().size()-1)).snapshot(sp,null);
+        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putString(source.getId());
+        db.setContent(content);
+        db.setDragView(preview, 45, 45);
+        event.consume();
     }
 
     @FXML
@@ -540,13 +563,13 @@ public class TableManager implements GUIManager {
     public void editMessage(String message) {
         if(text.getText().equals("null")) text.setText(message);
         else{
-            if (message!= null && message.contains("New Turn.")) {
+            if(message != null && (message.contains("It's your turn!"))) activeTool = false;
+            if (message!= null && (message.contains("New Turn.") || message.contains("New round"))) {
                 text.setText(message + "\n");
                 toolCard = false;
                 if(activeTool = true){
-                    tool1.setVisible(true);
-                    tool2.setVisible(true);
-                    tool3.setVisible(true);
+                    makeToolVisible();
+                    activeTool = false;
                 }
             }
             else {
@@ -555,7 +578,7 @@ public class TableManager implements GUIManager {
                     if(!toolCard) move=true;
                 }
             }
-            if (message!= null && message.contains("It's your turn!") && (activeTool = true)){
+            if (message!= null && message.contains("It's your turn!") && (activeTool == true)){
                 tool1.setVisible(true);
                 tool2.setVisible(true);
                 tool3.setVisible(true);
@@ -564,45 +587,49 @@ public class TableManager implements GUIManager {
         }
     }
 
-    public void showPattern(int ID) {
+    public void showPattern(PatternCard pattern) {
     }
 
     public void updateTable(Table table) {  //added windowXItems ArrayList in order to refresh correctly all windows
-        this.table = table;
-        showPUOCs(table.getGamePublicObjectiveCards());
-        showTools(table.getGameToolCards());
-        showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
-        showDraftPool(table.getDraftPool());
-        showSelectedDice(table.getActiveDice());
-        showRoundTrack(table.getRoundTrack());
-        int size = table.getPlayers().size();
-        int i=0;
-        int j=0;
-        for(Player p : table.getPlayers()){
-            if(p.getName().equals(GUIData.getGUIData().getUsername())) {
-                showWindow(p, window1, cells1, username1, window1Items, signals1);
-            }
-            else {
-                if(size==2) {showWindow(p, window2, cells2, username2, window2Items, signals2);}
-                else{
-                    if(size==3 && i==0) {showWindow(p, window3, cells3, username3, window3Items, signals3); i++;}
-                    else{
-                        if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items, signals4);
-                        else {
-                            if(j==0) {showWindow(p, window2, cells2, username2, window2Items, signals2); j++;}
-                            else {if(j==1) {showWindow(p, window3, cells3, username3, window3Items, signals3); j++;}
-                                  else if(j==2) {showWindow(p, window4, cells4, username4, window4Items, signals4); i++;}}
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    this.table = table;
+                    showPUOCs(table.getGamePublicObjectiveCards());
+                    showTools(table.getGameToolCards());
+                    showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
+                    showDraftPool(table.getDraftPool());
+                    showSelectedDice(table.getActiveDice());
+                    showRoundTrack(table.getRoundTrack());
+                    int size = table.getPlayers().size();
+                    int i=0;
+                    int j=0;
+                    for(Player p : table.getPlayers()){
+                        if(p.getName().equals(GUIData.getGUIData().getUsername())) {
+                            showWindow(p, window1, cells1, username1, window1Items, signals1);
                         }
+                        else {
+                            if(size==2) {showWindow(p, window2, cells2, username2, window2Items, signals2);}
+                            else{
+                                if(size==3 && i==0) {showWindow(p, window3, cells3, username3, window3Items, signals3); i++;}
+                                else{
+                                    if(size==3 && i==1) showWindow(p, window4, cells4, username4, window4Items, signals4);
+                                    else {
+                                        if(j==0) {showWindow(p, window2, cells2, username2, window2Items, signals2); j++;}
+                                        else {if(j==1) {showWindow(p, window3, cells3, username3, window3Items, signals3); j++;}
+                                        else if(j==2) {showWindow(p, window4, cells4, username4, window4Items, signals4); i++;}}
+                                    }
+                                }
+                            }
+                        }
+
                     }
                 }
-            }
-
-        }
+        );
     }
 
     public void showSelectedDice(Dice item){
-        Platform.runLater(  //Compulsory to update GUI
-              () -> {
+        //Platform.runLater(  //Compulsory to update GUI
+              //() -> {
                     if(item != null){
                         selectedDice.getChildren().removeAll();
                         StackPane dice = null;
@@ -615,13 +642,13 @@ public class TableManager implements GUIManager {
                         selectedDice.add(dice, 0,0);
                         selectedDice.setVisible(true);
                     }  else selectedDice.setVisible(false);
-              }
-              );
-        }
+              //}
+        //);
+    }
 
     public void showRoundTrack(RoundTrack RT){
-        Platform.runLater(  //Compulsory to update GUI
-                () -> {
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
                     Dice elem;
                     StackPane dice = null;
                     int size = roundItems.size();
@@ -649,59 +676,106 @@ public class TableManager implements GUIManager {
                             }
                         }
                     }
-                }
-        );
+                //}
+        //);
     }
 
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
-        Image image;
-        int i = 0;
-        for (PublicObjectiveCard card : cards) {
-            image = new Image(PUOCs.get((Integer) card.getID()));
-            switch (i) {
-                case (0):
-                    publicObj1.setImage(image);
-                    break;
-                case (1):
-                    publicObj2.setImage(image);
-                    break;
-                case (2):
-                    publicObj3.setImage(image);
-                    break;
-            }
-            i++;
-        }
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
+                    Image image;
+                    int i = 0;
+                    for (PublicObjectiveCard card : cards) {
+                        //image = new Image(PUOCs.get((Integer) card.getID()));
+                        image = new Image("/GUI/publicObj.PNG");
+                        switch (i) {
+                            case (0):
+                                POC1Name.setText(card.getName());
+                                POC1ID.setText("ID: "+card.getID());
+                                POC1Description.setText(card.getDescription());
+                                POC1Points.setText(""+card.getPoints());
+                                publicObj1.setImage(image);
+                                break;
+                            case (1):
+                                POC2Name.setText(card.getName());
+                                POC2ID.setText("ID: "+card.getID());
+                                POC2Description.setText(card.getDescription());
+                                POC2Points.setText(""+card.getPoints());
+                                publicObj2.setImage(image);
+                                break;
+                            case (2):
+                                POC3Name.setText(card.getName());
+                                POC3ID.setText("ID: "+card.getID());
+                                POC3Description.setText(card.getDescription());
+                                POC3Points.setText(""+card.getPoints());
+                                publicObj3.setImage(image);
+                                break;
+                        }
+                        i++;
+                    }
+                //}
+        //);
+
     }
 
     public void showTools(ArrayList<ToolCard> cards) {
-        Image image;
-        int i = 0;
-        for (ToolCard card : cards) {
-            image = new Image(tools.get((Integer) card.getID()));
-            switch (i) {
-                case (0):
-                    tool1.setImage(image);
-                    break;
-                case (1):
-                    tool2.setImage(image);
-                    break;
-                case (2):
-                    tool3.setImage(image);
-                    break;
-            }
-            i++;
-        }
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
+                    Image image;
+                    int i = 0;
+                    for (ToolCard card : cards) {
+                        image = new Image("/GUI/toolCard.PNG");
+                        //image = new Image(tools.get((Integer) card.getID()));
+                        switch (i) {
+                            case (0):
+                                tool1Name.setText(card.getName());
+                                tool1ID.setText("ID: "+card.getID());
+                                String description = card.getDescription();
+                                tool1Description.setText(description);
+                                tool1Tokens.setText("Tokens: "+card.getNumOfTokens());
+                                tool1.setImage(image);
+                                break;
+                            case (1):
+                                tool2Name.setText(card.getName());
+                                tool2ID.setText("ID: "+card.getID());
+                                description = card.getDescription();
+                                tool2Description.setText(description);
+                                tool2Tokens.setText("Tokens: "+card.getNumOfTokens());
+                                tool2.setImage(image);
+                                break;
+                            case (2):
+                                tool3Name.setText(card.getName());
+                                tool3ID.setText("ID: "+card.getID());
+                                description = card.getDescription();
+                                tool3Description.setText(description);
+                                tool3Tokens.setText("Tokens: "+card.getNumOfTokens());
+                                tool3.setImage(image);
+                                break;
+                        }
+                        i++;
+                    }
+                //}
+        //);
     }
 
     public void showPVOC(PrivateObjectiveCard card) {
-        Image image;
-        image = new Image(PVOCs.get((Integer) card.getID()));
-        privateObj.setImage(image);
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
+                    PVOCName.setText(card.getName());
+                    PVOCID.setText("ID: "+card.getID());
+                    PVOCDescription.setText(card.getDescription());
+                    PVOCColor.setText(card.getColor().name());
+                    Image image;
+                    //image = new Image(PVOCs.get((Integer) card.getID()));
+                    image = new Image("/GUI/privateObj.PNG");
+                    privateObj.setImage(image);
+                //}
+        //);
     }
 
     public void showDraftPool(ArrayList<Dice> pool) {  //we have to remove all dices before adding new dices
-        Platform.runLater(  //Compulsory to update GUI
-                () -> {
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
                     StackPane dice = null;
                     int i = 0;
                     int size = poolItems.size();
@@ -727,12 +801,12 @@ public class TableManager implements GUIManager {
                         cellsPool.get(i).toFront();
                         i++;
                     }
-                }
-        );
+                //}
+        //);
     }
     public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {  //we have to remove all dices before adding new dices
-        Platform.runLater(  //Compulsory to update GUI
-                () -> {
+        //Platform.runLater(  //Compulsory to update GUI
+                //() -> {
                     for(int w=0; w<signals.size(); w++) signals.get(w).setVisible(false);
                     int n = player.getNumOfTokens();
                     for(int p=0; p<n; p++){
@@ -778,8 +852,8 @@ public class TableManager implements GUIManager {
                         }
                         i++;
                     }
-                }
-        );
+                //}
+        //);
     }
 
     @FXML
@@ -790,7 +864,15 @@ public class TableManager implements GUIManager {
                 toolCard=false;
                 activeTool = true;
                 tool2.setVisible(false);
+                tool2Name.setVisible(false);
+                tool2ID.setVisible(false);
+                tool2Description.setVisible(false);
+                tool2Tokens.setVisible(false);
                 tool3.setVisible(false);
+                tool3Name.setVisible(false);
+                tool3ID.setVisible(false);
+                tool3Description.setVisible(false);
+                tool3Tokens.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -804,7 +886,15 @@ public class TableManager implements GUIManager {
                 toolCard=false;
                 activeTool = true;
                 tool1.setVisible(false);
+                tool1Name.setVisible(false);
+                tool1ID.setVisible(false);
+                tool1Description.setVisible(false);
+                tool1Tokens.setVisible(false);
                 tool3.setVisible(false);
+                tool3Name.setVisible(false);
+                tool3ID.setVisible(false);
+                tool3Description.setVisible(false);
+                tool3Tokens.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -818,7 +908,15 @@ public class TableManager implements GUIManager {
                 toolCard=false;
                 activeTool = true;
                 tool1.setVisible(false);
+                tool1Name.setVisible(false);
+                tool1ID.setVisible(false);
+                tool1Description.setVisible(false);
+                tool1Tokens.setVisible(false);
                 tool2.setVisible(false);
+                tool2Name.setVisible(false);
+                tool2ID.setVisible(false);
+                tool2Description.setVisible(false);
+                tool2Tokens.setVisible(false);
             } catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
@@ -850,6 +948,24 @@ public class TableManager implements GUIManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void makeToolVisible(){
+        tool1.setVisible(true);
+        tool1Name.setVisible(true);
+        tool1ID.setVisible(true);
+        tool1Description.setVisible(true);
+        tool1Tokens.setVisible(true);
+        tool2.setVisible(true);
+        tool2Name.setVisible(true);
+        tool2ID.setVisible(true);
+        tool2Description.setVisible(true);
+        tool2Tokens.setVisible(true);
+        tool3.setVisible(true);
+        tool3Name.setVisible(true);
+        tool3ID.setVisible(true);
+        tool3Description.setVisible(true);
+        tool3Tokens.setVisible(true);
     }
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){};
 }

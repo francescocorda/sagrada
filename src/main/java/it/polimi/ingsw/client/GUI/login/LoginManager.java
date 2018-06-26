@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.GUI.login;
 
+import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Communicator;
@@ -40,10 +41,11 @@ public class LoginManager implements GUIManager{
     private TextField serverPort;
     @FXML
     private Button login;
+    private static String DEFAULT_PASSWORD = "default";
 
     @FXML
     public void loginAction(MouseEvent event) {
-        if (connection.getText().equals("RMI")) {
+        if (!connection.getText().equals("socket")) {
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorRMI(view);
@@ -52,13 +54,13 @@ public class LoginManager implements GUIManager{
             parameters.add(IPaddress.getText());
             try {
                 communicator.initialize(parameters);
+                if(password.getText().equals("")) password.setText(DEFAULT_PASSWORD);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
                 GUIData.getGUIData().setUsername(username.getText());
                 GUIData.getGUIData().setView(view);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/lobby.fxml"));
-                //initializeLobby();
                 try {
                     view.setUsername(username.getText());
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
@@ -69,7 +71,7 @@ public class LoginManager implements GUIManager{
             } catch (NetworkErrorException | NotValidInputException e) {
                 e.printStackTrace();
             }
-        } else if (connection.getText().equals("socket")) {
+        } else {
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorSocket(view);
@@ -80,6 +82,7 @@ public class LoginManager implements GUIManager{
             parameters.add(serverPort.getText());
             try {
                 communicator.initialize(parameters);
+                if(password.getText().equals("")) password.setText(DEFAULT_PASSWORD);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
                 GUIData.getGUIData().setUsername(username.getText());
@@ -122,8 +125,8 @@ public class LoginManager implements GUIManager{
         login.setDisable(true);
     }
     public void editMessage(String message){}
-    public void showPattern(int ID){}
-    public void updateTable(Table table){};
-    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){};
+    public void showPattern(PatternCard pattern){}
+    public void updateTable(Table table){}
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){}
 }
 

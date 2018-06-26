@@ -39,7 +39,7 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void displayPatternCard(PatternCard patternCard) {
-        manager.showPattern(patternCard.getID());
+        manager.showPattern(patternCard);
     }
 
     public void setUsername(String username) {

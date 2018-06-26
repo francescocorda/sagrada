@@ -3,28 +3,28 @@
   {
     "row": [
       {
-        "name": "Colori Diversi - Riga",
+        "name": "Colori Diversi\n       Riga",
         "description": "Righe senza colori ripetuti",
         "points": "6",
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse - Riga",
-        "description": "Righe senza senza sfumature ripetute",
+        "name": "Sfumature Diverse\n           Riga",
+        "description": "Righe senza senza sfumature\nripetute",
         "points": "5",
         "restriction": "face"
       }
     ],
     "column": [
       {
-        "name": "Colori Diversi - Colonna",
+        "name": "Colori Diversi\n   Colonna",
         "description": "Colonne senza colori ripetuti",
         "points": "5",
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse - Colonna",
-        "description": "Colonne senza senza sfumature ripetute",
+        "name": "Sfumature Diverse\n       Colonna",
+        "description": "Colonne senza senza sfumature\nripetute",
         "points": "4",
         "restriction": "face"
       }
@@ -53,14 +53,14 @@
       },
       {
         "name": "Sfumature Diverse",
-        "description": "Set di dadi di ogni valore ovunque",
+        "description": "Set di dadi di ogni\nvalore ovunque",
         "points": "5",
         "restriction": "face",
         "elements": ["ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX"]
       },
       {
         "name": "Varietà di Colore",
-        "description": "Set di dadi di ogni colore ovunque",
+        "description": "Set di dadi di ogni\ncolore ovunque",
         "points": "4",
         "restriction": "color",
         "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]
@@ -68,7 +68,7 @@
     ],
     "diagonal": {
       "name": "Diagonali Colorate",
-      "description": "Numero di dadi dello stesso colore diagonalmente adiacenti",
+      "description": "Numero di dadi dello stesso\ncolore diagonalmente adiacenti",
       "points": "1",
       "restriction": "color",
       "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]

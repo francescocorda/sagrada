@@ -10,15 +10,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1260.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.table.TableManager">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="670.0" prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.table.TableManager">
   <tabs>
     <Tab text="Table">
          <content>
             <GridPane fx:id="tableBackground" prefHeight="604.0" prefWidth="1196.0">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="340.0" prefWidth="340.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="600.0" prefWidth="600.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="330.0" minWidth="330.0" prefWidth="330.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="340.0" minWidth="340.0" prefWidth="340.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="260.0" minHeight="260.0" prefHeight="260.0" vgrow="SOMETIMES" />
@@ -253,7 +253,7 @@
                         <Insets right="190.0" top="100.0" />
                      </GridPane.margin>
                   </Button>
-                  <GridPane fx:id="selectedDice" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                  <GridPane fx:id="selectedDice" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" onDragDetected="#selectedDragDetected" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -560,6 +560,230 @@
                         <Insets top="300.0" />
                      </GridPane.margin>
                   </ImageView>
+                  <Text fx:id="tool1Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="55.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="tool1ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="85.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="tool1Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="130.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="tool1Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="220.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="tool2Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="55.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool2ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="85.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool2Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="130.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool2Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="220.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool3Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="55.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool3ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="85.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool3Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="130.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="tool3Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="220.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="PVOCName" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="21.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="250.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="PVOCID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="280.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="PVOCDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="305.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="PVOCColor" strokeType="OUTSIDE" strokeWidth="0.0" text="color" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="400.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC1Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC1ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="150.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC1Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="175.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC1Points" strokeType="OUTSIDE" strokeWidth="0.0" text="points" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="75.0" top="250.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC2Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC2ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="150.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC2Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="175.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC2Points" strokeType="OUTSIDE" strokeWidth="0.0" text="points" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="75.0" top="250.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC3Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="100.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC3ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="150.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC3Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="175.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="POC3Points" strokeType="OUTSIDE" strokeWidth="0.0" text="points" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="75.0" top="250.0" />
+                     </GridPane.margin>
+                  </Text>
                </children>
             </GridPane>
          </content>

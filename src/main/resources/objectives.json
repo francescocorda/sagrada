@@ -9,7 +9,7 @@
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse\n           Riga",
+        "name": "Sfumature Diverse\n            Riga",
         "description": "Righe senza senza sfumature\nripetute",
         "points": "5",
         "restriction": "face"
@@ -23,7 +23,7 @@
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse\n       Colonna",
+        "name": "Sfumature Diverse\n        Colonna",
         "description": "Colonne senza senza sfumature\nripetute",
         "points": "4",
         "restriction": "face"

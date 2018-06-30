@@ -32,6 +32,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Transform;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -252,6 +253,7 @@ public class TableManager implements GUIManager {
         /* let the source know whether the string was successfully
          * transferred and used */
         event.setDropCompleted(success);
+        db.clear();
         event.consume();
     }
 
@@ -671,7 +673,7 @@ public class TableManager implements GUIManager {
                                     dice.setStyle(colors.get(elem.getColor()));
                                     roundItems.add(dice);
                                     roundTrack.add(dice, i, j);
-                                    cellsRound.get((j) * (10) + (i)).toFront();
+                                    cellsRound.get((i) * (10) + (j)).toFront();
                                 }
                             }
                         }
@@ -687,7 +689,9 @@ public class TableManager implements GUIManager {
                     int i = 0;
                     for (PublicObjectiveCard card : cards) {
                         //image = new Image(PUOCs.get((Integer) card.getID()));
-                        image = new Image("/GUI/publicObj.PNG");
+                        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/publicObj.PNG");
+                        image = new Image(inputStream);
+                        //image = new Image("/GUI/publicObj.PNG");
                         switch (i) {
                             case (0):
                                 POC1Name.setText(card.getName());
@@ -724,7 +728,9 @@ public class TableManager implements GUIManager {
                     Image image;
                     int i = 0;
                     for (ToolCard card : cards) {
-                        image = new Image("/GUI/toolCard.PNG");
+                        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/toolCard.PNG");
+                        image = new Image(inputStream);
+                        //image = new Image("/GUI/toolCard.PNG");
                         //image = new Image(tools.get((Integer) card.getID()));
                         switch (i) {
                             case (0):
@@ -765,9 +771,11 @@ public class TableManager implements GUIManager {
                     PVOCID.setText("ID: "+card.getID());
                     PVOCDescription.setText(card.getDescription());
                     PVOCColor.setText(card.getColor().name());
-                    Image image;
+                    InputStream inputStream= this.getClass().getResourceAsStream("/GUI/privateObj.PNG");
+                    Image image = new Image(inputStream);
+                    //Image image;
                     //image = new Image(PVOCs.get((Integer) card.getID()));
-                    image = new Image("/GUI/privateObj.PNG");
+                    //image = new Image("/GUI/privateObj.PNG");
                     privateObj.setImage(image);
                 //}
         //);

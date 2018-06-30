@@ -29,6 +29,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
@@ -482,7 +483,9 @@ public class LobbyManager implements GUIManager{
         PVOCColor.setText(card.getColor().name());
         PVOCColor.setVisible(true);
         Image image;
-        image = new Image("/GUI/privateObj.PNG");
+        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/privateObj.PNG");
+        //image = new Image("/GUI/privateObj.PNG");
+        image = new Image(inputStream);
         privateObj.setImage(image);
         privateObj.setVisible(true);
     }

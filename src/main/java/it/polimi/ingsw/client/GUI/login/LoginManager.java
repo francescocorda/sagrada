@@ -16,10 +16,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER;
@@ -41,6 +44,8 @@ public class LoginManager implements GUIManager{
     private TextField serverPort;
     @FXML
     private Button login;
+    @FXML
+    private ImageView background;
     private static String DEFAULT_PASSWORD = "default";
 
     @FXML
@@ -120,6 +125,11 @@ public class LoginManager implements GUIManager{
 
     @FXML
     public void initialize() {
+        Image image;
+        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/loginBackground.jpg");
+        image = new Image(inputStream);
+        background.setImage(image);
+        background.setVisible(true);
         IPaddress.setVisible(false);
         serverPort.setVisible(false);
         login.setDisable(true);

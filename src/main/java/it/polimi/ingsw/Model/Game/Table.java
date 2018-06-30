@@ -35,6 +35,10 @@ public class Table extends Observable implements Serializable {
         return scoreTrack;
     }
 
+    private void setScoreTrack(ScoreTrack scoreTrack){
+        this.scoreTrack = scoreTrack;
+    }
+
     public ToolCard getActiveToolCard() {
         return activeToolCard;
     }
@@ -58,6 +62,7 @@ public class Table extends Observable implements Serializable {
         table.setGamePublicObjectiveCards(gamePOC);
         table.setGameToolCards(gameToolCards);
         table.setActiveDice(activeDice);
+        table.setScoreTrack(scoreTrack);
         return (new Gson()).toJson(table);
     }
 

@@ -1,6 +1,5 @@
 package it.polimi.ingsw.Model.Game;
 
-import it.polimi.ingsw.Model.Game.*;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +23,7 @@ public class TestPlayerTurn {
 
         ArrayList<Dice> draftpool = new ArrayList<>();
         for(int i=0; i<9;i++) {
-            draftpool.add(new Dice(Color.ANSI_BLUE));
+            draftpool.add(new Dice(Color.BLUE));
             draftpool.get(i).roll();
         }
         PlayerTurn turn = new PlayerTurn(player, 1);

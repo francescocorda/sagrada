@@ -10,6 +10,10 @@ public class PatternCard extends Card {
     private int difficulty;
     private Cell[][] patternCard;
 
+    public PatternCard() {
+        new PatternCard(null, 0);
+    }
+
     public PatternCard(String name, int ID) {
         super(name,ID);
         patternCard = new Cell[ROW][COLUMN];

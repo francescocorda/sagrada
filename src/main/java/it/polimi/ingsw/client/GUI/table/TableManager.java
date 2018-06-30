@@ -465,11 +465,11 @@ public class TableManager implements GUIManager {
         image = "/GUI/dice6.fxml";
         dices.put(6, image);
         colors = new HashMap<>();
-        colors.put(Color.ANSI_YELLOW, "-fx-background-color: rgba(255, 230, 0, 1);");  //dices
-        colors.put(Color.ANSI_BLUE, "-fx-background-color: rgba(0, 160, 225, 1);");
-        colors.put(Color.ANSI_RED, "-fx-background-color: rgba(255, 31, 53, 1);");
-        colors.put(Color.ANSI_PURPLE, "-fx-background-color: rgba(255, 50, 255, 1);");
-        colors.put(Color.ANSI_GREEN, "-fx-background-color: rgba(0, 160, 0, 1);");
+        colors.put(Color.YELLOW, "-fx-background-color: rgba(255, 230, 0, 1);");  //dices
+        colors.put(Color.BLUE, "-fx-background-color: rgba(0, 160, 225, 1);");
+        colors.put(Color.RED, "-fx-background-color: rgba(255, 31, 53, 1);");
+        colors.put(Color.PURPLE, "-fx-background-color: rgba(255, 50, 255, 1);");
+        colors.put(Color.GREEN, "-fx-background-color: rgba(0, 160, 0, 1);");
         comparator = new HashMap<>();
         comparator.put(Restriction.ONE.escape(), 1);
         comparator.put(Restriction.TWO.escape(), 2);
@@ -478,13 +478,13 @@ public class TableManager implements GUIManager {
         comparator.put(Restriction.FIVE.escape(), 5);
         comparator.put(Restriction.SIX.escape(), 6);
         colorsWindow = new HashMap<>();
-        //colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");  //Restrictions
-        colorsWindow.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: #ffffff;");
-        colorsWindow.put(Restriction.ANSI_RED.escape(), "-fx-fill: #ff6a49;");
-        colorsWindow.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: #82f87e;");
-        colorsWindow.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: #ee82dc;");
-        colorsWindow.put(Restriction.ANSI_BLUE.escape(), "-fx-fill: #82c0ed;");
-        colorsWindow.put(Restriction.ANSI_YELLOW.escape(), "-fx-fill: #fff486;");
+        //colorsWindow.put(Restriction.WHITE.escape(), "-fx-fill: rgba(255, 230, 0, 0);");  //Restrictions
+        colorsWindow.put(Restriction.WHITE.escape(), "-fx-fill: #ffffff;");
+        colorsWindow.put(Restriction.RED.escape(), "-fx-fill: #ff6a49;");
+        colorsWindow.put(Restriction.GREEN.escape(), "-fx-fill: #82f87e;");
+        colorsWindow.put(Restriction.PURPLE.escape(), "-fx-fill: #ee82dc;");
+        colorsWindow.put(Restriction.BLUE.escape(), "-fx-fill: #82c0ed;");
+        colorsWindow.put(Restriction.YELLOW.escape(), "-fx-fill: #fff486;");
         cells1 = new ArrayList<>(); cells2 = new ArrayList<>(); cells3 = new ArrayList<>(); cells4 = new ArrayList<>();
         cells1.add(dice11); cells2.add(dice2_11); cells3.add(dice3_11); cells4.add(dice4_11);
         cells1.add(dice12); cells2.add(dice2_12); cells3.add(dice3_12); cells4.add(dice4_12);

@@ -170,12 +170,12 @@ public class LobbyManager implements GUIManager{
         pattern4Items.add(cell4_31);pattern4Items.add(cell4_32);pattern4Items.add(cell4_33);pattern4Items.add(cell4_34);pattern4Items.add(cell4_35);
         pattern4Items.add(cell4_41);pattern4Items.add(cell4_42);pattern4Items.add(cell4_43);pattern4Items.add(cell4_44);pattern4Items.add(cell4_45);
         colors = new HashMap<>();  //restrictions
-        colors.put(Restriction.ANSI_WHITE.escape(), "-fx-fill: #ffffff;");
-        colors.put(Restriction.ANSI_RED.escape(), "-fx-fill: #ff6a49;");
-        colors.put(Restriction.ANSI_GREEN.escape(), "-fx-fill: #82f87e;");
-        colors.put(Restriction.ANSI_PURPLE.escape(), "-fx-fill: #ee82dc;");
-        colors.put(Restriction.ANSI_BLUE.escape(), "-fx-fill: #82c0ed;");
-        colors.put(Restriction.ANSI_YELLOW.escape(), "-fx-fill: #fff486;");
+        colors.put(Restriction.WHITE.escape(), "-fx-fill: #ffffff;");
+        colors.put(Restriction.RED.escape(), "-fx-fill: #ff6a49;");
+        colors.put(Restriction.GREEN.escape(), "-fx-fill: #82f87e;");
+        colors.put(Restriction.PURPLE.escape(), "-fx-fill: #ee82dc;");
+        colors.put(Restriction.BLUE.escape(), "-fx-fill: #82c0ed;");
+        colors.put(Restriction.YELLOW.escape(), "-fx-fill: #fff486;");
         dices = new HashMap<Integer, String>();
         String image = "/GUI/dice1_small.fxml";
         dices.put(1, image);

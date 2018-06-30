@@ -1,0 +1,10 @@
+{
+  "name": "Kaleidoscopic Dream",
+  "difficulty": "4",
+  "patternCard": [
+    "YELLOW", "BLUE", "WHITE", "WHITE", "ONE",
+    "GREEN", "WHITE", "FIVE", "WHITE", "FOUR",
+    "THREE", "WHITE", "RED", "WHITE", "GREEN",
+    "TWO", "WHITE", "WHITE", "BLUE", "YELLOW"
+  ]
+}

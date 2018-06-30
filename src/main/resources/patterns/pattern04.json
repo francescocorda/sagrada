@@ -1,0 +1,10 @@
+{
+  "name": "Via Lux",
+  "difficulty": "4",
+  "patternCard": [
+    "YELLOW", "WHITE", "SIX", "WHITE", "WHITE",
+    "WHITE", "ONE", "FIVE", "WHITE", "TWO",
+    "THREE", "YELLOW", "RED", "PURPLE", "WHITE",
+    "WHITE", "WHITE", "FOUR", "THREE", "RED"
+  ]
+}

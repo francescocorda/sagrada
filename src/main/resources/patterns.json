@@ -4,240 +4,240 @@
     "name": "Kaleidoscopic Dream",
     "difficulty": "4",
     "patternCard": [
-      "ANSI_YELLOW", "ANSI_BLUE", "ANSI_WHITE", "ANSI_WHITE", "ONE",
-      "ANSI_GREEN", "ANSI_WHITE", "FIVE", "ANSI_WHITE", "FOUR",
-      "THREE", "ANSI_WHITE", "ANSI_RED", "ANSI_WHITE", "ANSI_GREEN",
-      "TWO", "ANSI_WHITE", "ANSI_WHITE", "ANSI_BLUE", "ANSI_YELLOW"
+      "YELLOW", "BLUE", "WHITE", "WHITE", "ONE",
+      "GREEN", "WHITE", "FIVE", "WHITE", "FOUR",
+      "THREE", "WHITE", "RED", "WHITE", "GREEN",
+      "TWO", "WHITE", "WHITE", "BLUE", "YELLOW"
     ]
   },
   {
     "name": "Virtus",
     "difficulty": "5",
     "patternCard": [
-      "FOUR", "ANSI_WHITE", "TWO", "FIVE", "ANSI_GREEN",
-      "ANSI_WHITE", "ANSI_WHITE", "SIX", "ANSI_GREEN", "TWO",
-      "ANSI_WHITE", "THREE", "ANSI_GREEN", "FOUR", "ANSI_WHITE",
-      "FIVE", "ANSI_GREEN", "ONE", "ANSI_WHITE", "ANSI_WHITE"
+      "FOUR", "WHITE", "TWO", "FIVE", "GREEN",
+      "WHITE", "WHITE", "SIX", "GREEN", "TWO",
+      "WHITE", "THREE", "GREEN", "FOUR", "WHITE",
+      "FIVE", "GREEN", "ONE", "WHITE", "WHITE"
     ]
   },
   {
     "name": "Aurorae Magnificus",
     "difficulty": "5",
     "patternCard": [
-      "FIVE", "ANSI_GREEN", "ANSI_BLUE", "ANSI_PURPLE", "TWO",
-      "ANSI_PURPLE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_YELLOW",
-      "ANSI_YELLOW", "ANSI_WHITE", "SIX", "ANSI_WHITE", "ANSI_PURPLE",
-      "ONE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_GREEN", "FOUR"
+      "FIVE", "GREEN", "BLUE", "PURPLE", "TWO",
+      "PURPLE", "WHITE", "WHITE", "WHITE", "YELLOW",
+      "YELLOW", "WHITE", "SIX", "WHITE", "PURPLE",
+      "ONE", "WHITE", "WHITE", "GREEN", "FOUR"
     ]
   },
   {
     "name": "Via Lux",
     "difficulty": "4",
     "patternCard": [
-      "ANSI_YELLOW", "ANSI_WHITE", "SIX", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "ONE", "FIVE", "ANSI_WHITE", "TWO",
-      "THREE", "ANSI_YELLOW", "ANSI_RED", "ANSI_PURPLE", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_WHITE", "FOUR", "THREE", "ANSI_RED"
+      "YELLOW", "WHITE", "SIX", "WHITE", "WHITE",
+      "WHITE", "ONE", "FIVE", "WHITE", "TWO",
+      "THREE", "YELLOW", "RED", "PURPLE", "WHITE",
+      "WHITE", "WHITE", "FOUR", "THREE", "RED"
     ]
   },
   {
     "name": "Sun Catcher",
     "difficulty": "3",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_BLUE", "TWO", "ANSI_WHITE", "ANSI_YELLOW",
-      "ANSI_WHITE", "FOUR", "ANSI_WHITE", "ANSI_RED", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_WHITE", "FIVE", "ANSI_YELLOW", "ANSI_WHITE",
-      "ANSI_GREEN", "THREE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_PURPLE"
+      "WHITE", "BLUE", "TWO", "WHITE", "YELLOW",
+      "WHITE", "FOUR", "WHITE", "RED", "WHITE",
+      "WHITE", "WHITE", "FIVE", "YELLOW", "WHITE",
+      "GREEN", "THREE", "WHITE", "WHITE", "PURPLE"
     ]
   },
   {
     "name": "Bellesguard",
     "difficulty": "3",
     "patternCard": [
-      "ANSI_BLUE", "SIX", "ANSI_WHITE", "ANSI_WHITE", "ANSI_YELLOW",
-      "ANSI_WHITE", "THREE", "ANSI_BLUE", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "FIVE", "SIX", "TWO", "ANSI_WHITE",
-      "ANSI_WHITE", "FOUR", "ANSI_WHITE", "ONE", "ANSI_GREEN"
+      "BLUE", "SIX", "WHITE", "WHITE", "YELLOW",
+      "WHITE", "THREE", "BLUE", "WHITE", "WHITE",
+      "WHITE", "FIVE", "SIX", "TWO", "WHITE",
+      "WHITE", "FOUR", "WHITE", "ONE", "GREEN"
     ]
   },
   {
     "name": "Firmitas",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_PURPLE", "SIX", "ANSI_WHITE", "ANSI_WHITE", "THREE",
-      "FIVE", "ANSI_PURPLE", "THREE", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "TWO", "ANSI_PURPLE", "ONE", "ANSI_WHITE",
-      "ANSI_WHITE", "ONE", "FIVE", "ANSI_PURPLE", "FOUR"
+      "PURPLE", "SIX", "WHITE", "WHITE", "THREE",
+      "FIVE", "PURPLE", "THREE", "WHITE", "WHITE",
+      "WHITE", "TWO", "PURPLE", "ONE", "WHITE",
+      "WHITE", "ONE", "FIVE", "PURPLE", "FOUR"
     ]
   },
   {
     "name": "Symphony of Light",
     "difficulty": "6",
     "patternCard": [
-      "TWO", "ANSI_WHITE", "FIVE", "ANSI_WHITE", "ONE",
-      "ANSI_YELLOW", "SIX", "ANSI_PURPLE", "TWO", "ANSI_RED",
-      "ANSI_WHITE", "ANSI_BLUE", "FOUR", "ANSI_GREEN", "ANSI_WHITE",
-      "ANSI_WHITE", "THREE", "ANSI_WHITE", "FIVE", "ANSI_WHITE"
+      "TWO", "WHITE", "FIVE", "WHITE", "ONE",
+      "YELLOW", "SIX", "PURPLE", "TWO", "RED",
+      "WHITE", "BLUE", "FOUR", "GREEN", "WHITE",
+      "WHITE", "THREE", "WHITE", "FIVE", "WHITE"
     ]
   },
   {
     "name": "Aurora Sagradis",
     "difficulty": "4",
     "patternCard": [
-      "ANSI_RED", "ANSI_WHITE", "ANSI_BLUE", "ANSI_WHITE", "ANSI_YELLOW",
-      "FOUR", "ANSI_PURPLE", "THREE", "ANSI_GREEN", "TWO",
-      "ANSI_WHITE", "ONE", "ANSI_WHITE", "FIVE", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_WHITE", "SIX", "ANSI_WHITE", "ANSI_WHITE"
+      "RED", "WHITE", "BLUE", "WHITE", "YELLOW",
+      "FOUR", "PURPLE", "THREE", "GREEN", "TWO",
+      "WHITE", "ONE", "WHITE", "FIVE", "WHITE",
+      "WHITE", "WHITE", "SIX", "WHITE", "WHITE"
     ]
   },
   {
     "name": "Industria",
     "difficulty": "5",
     "patternCard": [
-      "ONE", "ANSI_RED", "THREE", "ANSI_WHITE", "SIX",
-      "FIVE", "FOUR", "ANSI_RED", "TWO", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_WHITE", "FIVE", "ANSI_RED", "ONE",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "THREE", "ANSI_RED"
+      "ONE", "RED", "THREE", "WHITE", "SIX",
+      "FIVE", "FOUR", "RED", "TWO", "WHITE",
+      "WHITE", "WHITE", "FIVE", "RED", "ONE",
+      "WHITE", "WHITE", "WHITE", "THREE", "RED"
     ]
   },
   {
     "name": "Shadow Thief",
     "difficulty": "5",
     "patternCard": [
-      "SIX", "ANSI_PURPLE", "ANSI_WHITE", "ANSI_WHITE", "FIVE",
-      "FIVE", "ANSI_WHITE", "ANSI_PURPLE", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_RED", "SIX", "ANSI_WHITE", "ANSI_PURPLE", "ANSI_WHITE",
-      "ANSI_YELLOW", "ANSI_RED", "FIVE", "FOUR", "THREE"
+      "SIX", "PURPLE", "WHITE", "WHITE", "FIVE",
+      "FIVE", "WHITE", "PURPLE", "WHITE", "WHITE",
+      "RED", "SIX", "WHITE", "PURPLE", "WHITE",
+      "YELLOW", "RED", "FIVE", "FOUR", "THREE"
     ]
   },
   {
     "name": "Batllo",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_WHITE", "SIX", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "FIVE", "ANSI_BLUE", "FOUR", "ANSI_WHITE",
-      "THREE", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_PURPLE", "TWO",
-      "ONE", "FOUR", "ANSI_RED", "FIVE", "THREE"
+      "WHITE", "WHITE", "SIX", "WHITE", "WHITE",
+      "WHITE", "FIVE", "BLUE", "FOUR", "WHITE",
+      "THREE", "GREEN", "YELLOW", "PURPLE", "TWO",
+      "ONE", "FOUR", "RED", "FIVE", "THREE"
     ]
   },
   {
     "name": "Gravitas",
     "difficulty": "5",
     "patternCard": [
-      "ONE", "ONE", "THREE", "ANSI_BLUE", "ANSI_WHITE",
-      "ANSI_WHITE", "TWO", "ANSI_BLUE", "ANSI_WHITE", "ANSI_WHITE",
-      "SIX", "ANSI_BLUE", "ANSI_WHITE", "FOUR", "ANSI_WHITE",
-      "ANSI_BLUE", "FIVE", "TWO", "ANSI_WHITE", "ONE"
+      "ONE", "ONE", "THREE", "BLUE", "WHITE",
+      "WHITE", "TWO", "BLUE", "WHITE", "WHITE",
+      "SIX", "BLUE", "WHITE", "FOUR", "WHITE",
+      "BLUE", "FIVE", "TWO", "WHITE", "ONE"
     ]
   },
   {
     "name": "Fractal Drops",
     "difficulty": "3",
     "patternCard": [
-      "ANSI_WHITE", "FOUR", "ANSI_WHITE", "ANSI_YELLOW", "SIX",
-      "ANSI_RED", "ANSI_WHITE", "TWO", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_RED", "ANSI_PURPLE", "ONE",
-      "ANSI_BLUE", "ANSI_YELLOW", "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE"
+      "WHITE", "FOUR", "WHITE", "YELLOW", "SIX",
+      "RED", "WHITE", "TWO", "WHITE", "WHITE",
+      "WHITE", "WHITE", "RED", "PURPLE", "ONE",
+      "BLUE", "YELLOW", "WHITE", "WHITE", "WHITE"
     ]
   },
   {
     "name": "Lux Astram",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_WHITE", "ONE", "ANSI_GREEN", "ANSI_PURPLE", "FOUR",
-      "SIX", "ANSI_PURPLE", "TWO", "FIVE", "ANSI_GREEN",
-      "ONE", "ANSI_GREEN", "FIVE", "THREE", "ANSI_PURPLE",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE"
+      "WHITE", "ONE", "GREEN", "PURPLE", "FOUR",
+      "SIX", "PURPLE", "TWO", "FIVE", "GREEN",
+      "ONE", "GREEN", "FIVE", "THREE", "PURPLE",
+      "WHITE", "WHITE", "WHITE", "WHITE", "WHITE"
     ]
   },
   {
     "name": "Chromatic Splendor",
     "difficulty": "4",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_GREEN", "ANSI_WHITE", "ANSI_WHITE",
-      "TWO", "ANSI_YELLOW", "FIVE", "ANSI_BLUE", "ONE",
-      "ANSI_WHITE", "ANSI_RED", "THREE", "ANSI_PURPLE", "ANSI_WHITE",
-      "ONE", "ANSI_WHITE", "SIX", "ANSI_WHITE", "FOUR"
+      "WHITE", "WHITE", "GREEN", "WHITE", "WHITE",
+      "TWO", "YELLOW", "FIVE", "BLUE", "ONE",
+      "WHITE", "RED", "THREE", "PURPLE", "WHITE",
+      "ONE", "WHITE", "SIX", "WHITE", "FOUR"
     ]
   },
   {
     "name": "Firelight",
     "difficulty": "5",
     "patternCard": [
-      "THREE", "FOUR", "ONE", "FIVE", "ANSI_WHITE",
-      "ANSI_WHITE", "SIX", "TWO", "ANSI_WHITE", "ANSI_YELLOW",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_YELLOW", "ANSI_RED",
-      "FIVE", "ANSI_WHITE", "ANSI_YELLOW", "ANSI_RED", "SIX"
+      "THREE", "FOUR", "ONE", "FIVE", "WHITE",
+      "WHITE", "SIX", "TWO", "WHITE", "YELLOW",
+      "WHITE", "WHITE", "WHITE", "YELLOW", "RED",
+      "FIVE", "WHITE", "YELLOW", "RED", "SIX"
     ]
   },
   {
     "name": "Luz Celestial",
     "difficulty": "3",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_RED", "FIVE", "ANSI_WHITE",
-      "ANSI_PURPLE", "FOUR", "ANSI_WHITE", "ANSI_GREEN", "THREE",
-      "SIX", "ANSI_WHITE", "ANSI_WHITE", "ANSI_BLUE", "ANSI_WHITE",
-      "ANSI_WHITE", "ANSI_YELLOW", "TWO", "ANSI_WHITE", "ANSI_WHITE"
+      "WHITE", "WHITE", "RED", "FIVE", "WHITE",
+      "PURPLE", "FOUR", "WHITE", "GREEN", "THREE",
+      "SIX", "WHITE", "WHITE", "BLUE", "WHITE",
+      "WHITE", "YELLOW", "TWO", "WHITE", "WHITE"
     ]
   },
   {
     "name": "Water of Life",
     "difficulty": "6",
     "patternCard": [
-      "SIX", "ANSI_BLUE", "ANSI_WHITE", "ANSI_WHITE", "ONE",
-      "ANSI_WHITE", "FIVE", "ANSI_BLUE", "ANSI_WHITE", "ANSI_WHITE",
-      "FOUR", "ANSI_RED", "TWO", "ANSI_BLUE", "ANSI_WHITE",
-      "ANSI_GREEN", "SIX", "ANSI_YELLOW", "THREE", "ANSI_PURPLE"
+      "SIX", "BLUE", "WHITE", "WHITE", "ONE",
+      "WHITE", "FIVE", "BLUE", "WHITE", "WHITE",
+      "FOUR", "RED", "TWO", "BLUE", "WHITE",
+      "GREEN", "SIX", "YELLOW", "THREE", "PURPLE"
     ]
   },
   {
     "name": "Ripples of Light",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_RED", "FIVE",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_PURPLE", "FOUR", "ANSI_BLUE",
-      "ANSI_WHITE", "ANSI_BLUE", "THREE", "ANSI_YELLOW", "SIX",
-      "ANSI_YELLOW", "TWO", "ANSI_GREEN", "ONE", "ANSI_RED"
+      "WHITE", "WHITE", "WHITE", "RED", "FIVE",
+      "WHITE", "WHITE", "PURPLE", "FOUR", "BLUE",
+      "WHITE", "BLUE", "THREE", "YELLOW", "SIX",
+      "YELLOW", "TWO", "GREEN", "ONE", "RED"
     ]
   },
   {
     "name": "Lux Mundi",
     "difficulty": "6",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_WHITE", "ONE", "ANSI_WHITE", "ANSI_WHITE",
-      "ONE", "ANSI_GREEN", "THREE", "ANSI_BLUE", "TWO",
-      "ANSI_BLUE", "FIVE", "FOUR", "SIX", "ANSI_GREEN",
-      "ANSI_WHITE", "ANSI_BLUE", "FIVE", "ANSI_GREEN", "ANSI_WHITE"
+      "WHITE", "WHITE", "ONE", "WHITE", "WHITE",
+      "ONE", "GREEN", "THREE", "BLUE", "TWO",
+      "BLUE", "FIVE", "FOUR", "SIX", "GREEN",
+      "WHITE", "BLUE", "FIVE", "GREEN", "WHITE"
     ]
   },
   {
     "name": "Comitas",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_YELLOW", "ANSI_WHITE", "TWO", "ANSI_WHITE", "SIX",
-      "ANSI_WHITE", "FOUR", "ANSI_WHITE", "FIVE", "ANSI_YELLOW",
-      "ANSI_WHITE", "ANSI_WHITE", "ANSI_WHITE", "ANSI_YELLOW", "FIVE",
-      "ONE", "TWO", "ANSI_YELLOW", "THREE", "ANSI_WHITE"
+      "YELLOW", "WHITE", "TWO", "WHITE", "SIX",
+      "WHITE", "FOUR", "WHITE", "FIVE", "YELLOW",
+      "WHITE", "WHITE", "WHITE", "YELLOW", "FIVE",
+      "ONE", "TWO", "YELLOW", "THREE", "WHITE"
     ]
   },
   {
     "name": "Sun's Glory",
     "difficulty": "6",
     "patternCard": [
-      "ONE", "ANSI_PURPLE", "ANSI_YELLOW", "ANSI_WHITE", "FOUR",
-      "ANSI_PURPLE", "ANSI_YELLOW", "ANSI_WHITE", "ANSI_WHITE", "SIX",
-      "ANSI_YELLOW", "ANSI_WHITE", "ANSI_WHITE", "FIVE", "THREE",
-      "ANSI_WHITE", "FIVE", "FOUR", "TWO", "ONE"
+      "ONE", "PURPLE", "YELLOW", "WHITE", "FOUR",
+      "PURPLE", "YELLOW", "WHITE", "WHITE", "SIX",
+      "YELLOW", "WHITE", "WHITE", "FIVE", "THREE",
+      "WHITE", "FIVE", "FOUR", "TWO", "ONE"
     ]
   },
   {
     "name": "Fulgor del Cielo",
     "difficulty": "5",
     "patternCard": [
-      "ANSI_WHITE", "ANSI_BLUE", "ANSI_RED", "ANSI_WHITE", "ANSI_WHITE",
-      "ANSI_WHITE", "FOUR", "FIVE", "ANSI_WHITE", "ANSI_BLUE",
-      "ANSI_BLUE", "TWO", "ANSI_WHITE", "ANSI_RED", "FIVE",
-      "SIX", "ANSI_RED", "THREE", "ONE", "ANSI_WHITE"
+      "WHITE", "BLUE", "RED", "WHITE", "WHITE",
+      "WHITE", "FOUR", "FIVE", "WHITE", "BLUE",
+      "BLUE", "TWO", "WHITE", "RED", "FIVE",
+      "SIX", "RED", "THREE", "ONE", "WHITE"
     ]
   }
 ]

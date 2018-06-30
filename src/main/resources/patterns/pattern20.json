@@ -1,0 +1,10 @@
+{
+  "name": "Ripples of Light",
+  "difficulty": "5",
+  "patternCard": [
+    "WHITE", "WHITE", "WHITE", "RED", "FIVE",
+    "WHITE", "WHITE", "PURPLE", "FOUR", "BLUE",
+    "WHITE", "BLUE", "THREE", "YELLOW", "SIX",
+    "YELLOW", "TWO", "GREEN", "ONE", "RED"
+  ]
+}

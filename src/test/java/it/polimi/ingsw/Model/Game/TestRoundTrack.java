@@ -14,7 +14,7 @@ public class TestRoundTrack {
         Table table = new Table();
         table.setDraftPool(9);
         ArrayList<Dice> dices = new ArrayList<>();
-        dices.add(new Dice(Color.ANSI_PURPLE));
+        dices.add(new Dice(Color.PURPLE));
         try {
             dices.get(0).setFace(2);
         } catch (InvalidFaceException e) {

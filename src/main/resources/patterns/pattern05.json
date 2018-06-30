@@ -1,0 +1,10 @@
+{
+  "name": "Sun Catcher",
+  "difficulty": "3",
+  "patternCard": [
+    "WHITE", "BLUE", "TWO", "WHITE", "YELLOW",
+    "WHITE", "FOUR", "WHITE", "RED", "WHITE",
+    "WHITE", "WHITE", "FIVE", "YELLOW", "WHITE",
+    "GREEN", "THREE", "WHITE", "WHITE", "PURPLE"
+  ]
+}

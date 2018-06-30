@@ -18,15 +18,15 @@ public class PrivateObjectiveDeck implements Serializable {
     public PrivateObjectiveDeck() {
         privateObjectiveDeck = new ArrayList<>();
 
-        red = new PrivateObjectiveCard("Sfumature Rosse", 1, Color.ANSI_RED);
+        red = new PrivateObjectiveCard("Sfumature Rosse", 1, Color.RED);
         red.setDescription("Somma dei valori su tutti i dadi rossi");
-        green = new PrivateObjectiveCard("Sfumature Verdi", 2, Color.ANSI_GREEN);
+        green = new PrivateObjectiveCard("Sfumature Verdi", 2, Color.GREEN);
         green.setDescription("Somma dei valori su tutti i dadi verdi");
-        yellow = new PrivateObjectiveCard("Sfumature Gialle", 3, Color.ANSI_YELLOW);
+        yellow = new PrivateObjectiveCard("Sfumature Gialle", 3, Color.YELLOW);
         yellow.setDescription("Somma dei valori su tutti i dadi gialli");
-        blue = new PrivateObjectiveCard("Sfumature Blu", 4, Color.ANSI_BLUE);
+        blue = new PrivateObjectiveCard("Sfumature Blu", 4, Color.BLUE);
         blue.setDescription("Somma dei valori su tutti i dadi blu");
-        purple = new PrivateObjectiveCard("Sfumature Viola", 5, Color.ANSI_PURPLE);
+        purple = new PrivateObjectiveCard("Sfumature Viola", 5, Color.PURPLE);
         purple.setDescription("Somma dei valori su tutti i dadi blu");
 
         privateObjectiveDeck.add(red);

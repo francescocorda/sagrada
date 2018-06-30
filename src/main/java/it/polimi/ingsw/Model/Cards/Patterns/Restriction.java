@@ -5,12 +5,12 @@ import it.polimi.ingsw.Model.Game.Color;
 import java.io.Serializable;
 
 public enum Restriction implements Serializable {
-    ANSI_WHITE("\u001B[37m"),
-    ANSI_RED("\u001B[31m"),
-    ANSI_GREEN("\u001B[32m"),
-    ANSI_YELLOW("\u001B[33m"),
-    ANSI_BLUE("\u001B[34m"),
-    ANSI_PURPLE("\u001B[35m"),
+    WHITE("\u001B[37m"),
+    RED("\u001B[31m"),
+    GREEN("\u001B[32m"),
+    YELLOW("\u001B[33m"),
+    BLUE("\u001B[34m"),
+    PURPLE("\u001B[35m"),
     ONE("\u2680"),
     TWO("\u2681"),
     THREE("\u2682"),

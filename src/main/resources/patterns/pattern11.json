@@ -1,0 +1,10 @@
+{
+  "name": "Shadow Thief",
+  "difficulty": "5",
+  "patternCard": [
+    "SIX", "PURPLE", "WHITE", "WHITE", "FIVE",
+    "FIVE", "WHITE", "PURPLE", "WHITE", "WHITE",
+    "RED", "SIX", "WHITE", "PURPLE", "WHITE",
+    "YELLOW", "RED", "FIVE", "FOUR", "THREE"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Symphony of Light",
+  "difficulty": "6",
+  "patternCard": [
+    "TWO", "WHITE", "FIVE", "WHITE", "ONE",
+    "YELLOW", "SIX", "PURPLE", "TWO", "RED",
+    "WHITE", "BLUE", "FOUR", "GREEN", "WHITE",
+    "WHITE", "THREE", "WHITE", "FIVE", "WHITE"
+  ]
+}

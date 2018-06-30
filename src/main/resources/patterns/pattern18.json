@@ -1,0 +1,10 @@
+{
+  "name": "Luz Celestial",
+  "difficulty": "3",
+  "patternCard": [
+    "WHITE", "WHITE", "RED", "FIVE", "WHITE",
+    "PURPLE", "FOUR", "WHITE", "GREEN", "THREE",
+    "SIX", "WHITE", "WHITE", "BLUE", "WHITE",
+    "WHITE", "YELLOW", "TWO", "WHITE", "WHITE"
+  ]
+}

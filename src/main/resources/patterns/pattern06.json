@@ -1,0 +1,10 @@
+{
+  "name": "Bellesguard",
+  "difficulty": "3",
+  "patternCard": [
+    "BLUE", "SIX", "WHITE", "WHITE", "YELLOW",
+    "WHITE", "THREE", "BLUE", "WHITE", "WHITE",
+    "WHITE", "FIVE", "SIX", "TWO", "WHITE",
+    "WHITE", "FOUR", "WHITE", "ONE", "GREEN"
+  ]
+}

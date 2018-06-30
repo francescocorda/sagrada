@@ -8,7 +8,7 @@ public class Cell implements Serializable {
     private boolean exceptionPosition;
 
     public Cell() {
-        this.restriction = Restriction.ANSI_WHITE;
+        this.restriction = Restriction.WHITE;
         this.exceptionRestriction = false;
         this.exceptionPosition = false;
     }
@@ -47,7 +47,7 @@ public class Cell implements Serializable {
     public String toString() {
         String escape = getRestriction().escape();
         if (escape.compareTo("\u2680") + 1> 0) {
-            return Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET;
+            return Restriction.WHITE.escape() + "[" + escape + "]" + Restriction.RESET;
         } else {
             return escape + "[" + "\u25FB" + "]" + Restriction.RESET;
         }

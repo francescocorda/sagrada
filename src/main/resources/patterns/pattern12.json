@@ -1,0 +1,10 @@
+{
+  "name": "Batllo",
+  "difficulty": "5",
+  "patternCard": [
+    "WHITE", "WHITE", "SIX", "WHITE", "WHITE",
+    "WHITE", "FIVE", "BLUE", "FOUR", "WHITE",
+    "THREE", "GREEN", "YELLOW", "PURPLE", "TWO",
+    "ONE", "FOUR", "RED", "FIVE", "THREE"
+  ]
+}

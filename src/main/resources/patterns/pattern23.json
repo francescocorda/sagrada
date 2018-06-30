@@ -1,0 +1,10 @@
+{
+  "name": "Sun's Glory",
+  "difficulty": "6",
+  "patternCard": [
+    "ONE", "PURPLE", "YELLOW", "WHITE", "FOUR",
+    "PURPLE", "YELLOW", "WHITE", "WHITE", "SIX",
+    "YELLOW", "WHITE", "WHITE", "FIVE", "THREE",
+    "WHITE", "FIVE", "FOUR", "TWO", "ONE"
+  ]
+}

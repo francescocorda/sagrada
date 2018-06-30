@@ -1,0 +1,10 @@
+{
+  "name": "Firelight",
+  "difficulty": "5",
+  "patternCard": [
+    "THREE", "FOUR", "ONE", "FIVE", "WHITE",
+    "WHITE", "SIX", "TWO", "WHITE", "YELLOW",
+    "WHITE", "WHITE", "WHITE", "YELLOW", "RED",
+    "FIVE", "WHITE", "YELLOW", "RED", "SIX"
+  ]
+}

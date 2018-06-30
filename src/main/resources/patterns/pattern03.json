@@ -1,0 +1,10 @@
+{
+  "name": "Aurorae Magnificus",
+  "difficulty": "5",
+  "patternCard": [
+    "FIVE", "GREEN", "BLUE", "PURPLE", "TWO",
+    "PURPLE", "WHITE", "WHITE", "WHITE", "YELLOW",
+    "YELLOW", "WHITE", "SIX", "WHITE", "PURPLE",
+    "ONE", "WHITE", "WHITE", "GREEN", "FOUR"
+  ]
+}

@@ -5,7 +5,6 @@ import it.polimi.ingsw.Model.Game.Dice;
 import it.polimi.ingsw.Model.Game.WindowFrame;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
-import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.InvalidFirstMoveException;
 import it.polimi.ingsw.exceptions.InvalidNeighboursException;
@@ -29,16 +28,16 @@ class TestPrivateObjectiveCard  {
         System.out.println("--------");
         window.setPatternCard(pattern);
         window.dump();
-        Dice dice1 = new Dice(Color.ANSI_PURPLE);
+        Dice dice1 = new Dice(Color.PURPLE);
         dice1.roll();
-        Dice dice2 = new Dice(Color.ANSI_PURPLE);
+        Dice dice2 = new Dice(Color.PURPLE);
         dice2.roll();
-        Dice dice3 = new Dice(Color.ANSI_PURPLE);
+        Dice dice3 = new Dice(Color.PURPLE);
         dice3.roll();
-        Dice dice4 = new Dice(Color.ANSI_PURPLE);
+        Dice dice4 = new Dice(Color.PURPLE);
         dice4.roll();
 
-        PrivateObjectiveCard purple = new PrivateObjectiveCard("purple",4, Color.ANSI_PURPLE);
+        PrivateObjectiveCard purple = new PrivateObjectiveCard("purple",4, Color.PURPLE);
 
         try {
             window.setDice(1,2, dice1);

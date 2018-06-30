@@ -1,0 +1,10 @@
+{
+  "name": "Chromatic Splendor",
+  "difficulty": "4",
+  "patternCard": [
+    "WHITE", "WHITE", "GREEN", "WHITE", "WHITE",
+    "TWO", "YELLOW", "FIVE", "BLUE", "ONE",
+    "WHITE", "RED", "THREE", "PURPLE", "WHITE",
+    "ONE", "WHITE", "SIX", "WHITE", "FOUR"
+  ]
+}

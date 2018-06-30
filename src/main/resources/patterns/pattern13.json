@@ -1,0 +1,10 @@
+{
+  "name": "Gravitas",
+  "difficulty": "5",
+  "patternCard": [
+    "ONE", "ONE", "THREE", "BLUE", "WHITE",
+    "WHITE", "TWO", "BLUE", "WHITE", "WHITE",
+    "SIX", "BLUE", "WHITE", "FOUR", "WHITE",
+    "BLUE", "FIVE", "TWO", "WHITE", "ONE"
+  ]
+}

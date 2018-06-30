@@ -1,0 +1,10 @@
+{
+  "name": "Lux Mundi",
+  "difficulty": "6",
+  "patternCard": [
+    "WHITE", "WHITE", "ONE", "WHITE", "WHITE",
+    "ONE", "GREEN", "THREE", "BLUE", "TWO",
+    "BLUE", "FIVE", "FOUR", "SIX", "GREEN",
+    "WHITE", "BLUE", "FIVE", "GREEN", "WHITE"
+  ]
+}

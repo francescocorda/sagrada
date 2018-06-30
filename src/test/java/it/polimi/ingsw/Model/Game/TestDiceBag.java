@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model.Game;
 
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.DiceBag;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -40,19 +38,19 @@ class TestDiceBag {
 
         for(Dice test: dices){
             switch(test.getColor()){
-                case ANSI_BLUE:
+                case BLUE:
                     blue++;
                     break;
-                case ANSI_PURPLE:
+                case PURPLE:
                     purple++;
                     break;
-                case ANSI_RED:
+                case RED:
                     red++;
                     break;
-                case ANSI_GREEN:
+                case GREEN:
                     green++;
                     break;
-                case ANSI_YELLOW:
+                case YELLOW:
                     yellow++;
                     break;
             }

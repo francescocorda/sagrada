@@ -1,7 +1,5 @@
 package it.polimi.ingsw.Model.Cards.Patterns;
 
-import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
-import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.junit.jupiter.api.Test;
 
@@ -43,21 +41,21 @@ class TestPatternCard {
     @Test
     void restrictionTest(){
         PatternCard patternCard=new PatternCard("Prova", 1);
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(0, 0, Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, 3,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(3, -1,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, 7,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, -1,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(6, 6,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(4, 6,Restriction.ANSI_WHITE));
-        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(5, 5,Restriction.ANSI_WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(0, 0, Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, 3,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(3, -1,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, 7,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(-1, -1,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(6, 6,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(4, 6,Restriction.WHITE));
+        assertThrows(IndexOutOfBoundsException.class, ()->patternCard.setRestriction(5, 5,Restriction.WHITE));
 
 
-        assertDoesNotThrow(()->patternCard.setRestriction(1,1,Restriction.ANSI_WHITE));
-        assertDoesNotThrow(()->patternCard.setRestriction(1,5,Restriction.ANSI_WHITE));
-        assertDoesNotThrow(()->patternCard.setRestriction(4,5,Restriction.ANSI_WHITE));
-        assertDoesNotThrow(()->patternCard.setRestriction(4,1,Restriction.ANSI_WHITE));
-        assertDoesNotThrow(()->patternCard.setRestriction(3,3,Restriction.ANSI_WHITE));
+        assertDoesNotThrow(()->patternCard.setRestriction(1,1,Restriction.WHITE));
+        assertDoesNotThrow(()->patternCard.setRestriction(1,5,Restriction.WHITE));
+        assertDoesNotThrow(()->patternCard.setRestriction(4,5,Restriction.WHITE));
+        assertDoesNotThrow(()->patternCard.setRestriction(4,1,Restriction.WHITE));
+        assertDoesNotThrow(()->patternCard.setRestriction(3,3,Restriction.WHITE));
     }
 
     @Test

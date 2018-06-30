@@ -132,8 +132,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -166,7 +166,7 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN, windowFrame.getDice(1, 2).getColor());
+        assertEquals(Color.GREEN, windowFrame.getDice(1, 2).getColor());
         assertEquals(3, windowFrame.getDice(1, 2).valueOf());
 
 
@@ -185,7 +185,7 @@ public class TestToolCards {
         WindowFrame window = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
         assertEquals(dimension,  game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN,  window.getDice(1,2).getColor());
+        assertEquals(Color.GREEN,  window.getDice(1,2).getColor());
         assertEquals(3,  window.getDice(1,2).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
         assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(1,2));
@@ -208,7 +208,7 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension,  game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN,  window.getDice(1,2).getColor());
+        assertEquals(Color.GREEN,  window.getDice(1,2).getColor());
         assertEquals(3,  window.getDice(1,2).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
         assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(1,2));
@@ -222,8 +222,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -254,7 +254,7 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN, windowFrame.getDice(2, 3).getColor());
+        assertEquals(Color.GREEN, windowFrame.getDice(2, 3).getColor());
         assertEquals(3, windowFrame.getDice(2, 3).valueOf());
 
 
@@ -273,7 +273,7 @@ public class TestToolCards {
         WindowFrame window = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
         assertEquals(dimension,  game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN,  window.getDice(2,3).getColor());
+        assertEquals(Color.GREEN,  window.getDice(2,3).getColor());
         assertEquals(3,  window.getDice(2,3).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(2,3));
         assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(2,3));
@@ -296,7 +296,7 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension,  game.getTable().getDraftPool().size());
-        assertEquals(Color.ANSI_GREEN,  window.getDice(2,3).getColor());
+        assertEquals(Color.GREEN,  window.getDice(2,3).getColor());
         assertEquals(3,  window.getDice(2,3).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(2,3));
         assertEquals(false, windowFrame.getPatternCard().getExceptionPosition(2,3));
@@ -308,8 +308,8 @@ public class TestToolCards {
         ToolCard toolCard = toolCards.get(3);
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -350,9 +350,9 @@ public class TestToolCards {
 
 
         assertEquals(dimension, table.getDraftPool().size());
-        assertEquals(Color.ANSI_BLUE, windowFrame.getDice(3, 2).getColor());
+        assertEquals(Color.BLUE, windowFrame.getDice(3, 2).getColor());
         assertEquals(2, windowFrame.getDice(3, 2).valueOf());
-        assertEquals(Color.ANSI_GREEN, windowFrame.getDice(4, 2).getColor());
+        assertEquals(Color.GREEN, windowFrame.getDice(4, 2).getColor());
         assertEquals(3, windowFrame.getDice(4, 2).valueOf());
 
     }
@@ -362,8 +362,8 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(4);
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -414,8 +414,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -434,7 +434,7 @@ public class TestToolCards {
 
 
         int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_RED);
+        table.getDraftPool().get(0).setColor(Color.RED);
 
         table.dumpDraftPool();
         //funzionamento base
@@ -448,12 +448,12 @@ public class TestToolCards {
         windowFrame.dump();
         table.dumpDraftPool();
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_RED, windowFrame.getDice(3, 3).getColor());
+        assertEquals(Color.RED, windowFrame.getDice(3, 3).getColor());
 
 
         //verifica che devo rispettare restrizione colore
         dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_RED);
+        table.getDraftPool().get(0).setColor(Color.RED);
         table.dumpDraftPool();
 
 
@@ -486,8 +486,8 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(6);
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -517,8 +517,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -537,7 +537,7 @@ public class TestToolCards {
 
 
         int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_PURPLE);
+        table.getDraftPool().get(0).setColor(Color.PURPLE);
         try {
             table.getDraftPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
@@ -555,13 +555,13 @@ public class TestToolCards {
 
         windowFrame.dump();
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_PURPLE, windowFrame.getDice(3, 2).getColor());
+        assertEquals(Color.PURPLE, windowFrame.getDice(3, 2).getColor());
         assertEquals(1, windowFrame.getDice(3, 2).valueOf());
 
 
         //verifica che devo rispettare restrizione colore
         dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_YELLOW);
+        table.getDraftPool().get(0).setColor(Color.YELLOW);
         try {
             table.getDraftPool().get(0).setFace(4);
         } catch (InvalidFaceException e) {
@@ -581,14 +581,14 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_YELLOW, windowFrame.getDice(4, 3).getColor());
+        assertEquals(Color.YELLOW, windowFrame.getDice(4, 3).getColor());
         assertEquals(4, windowFrame.getDice(4, 3).valueOf());
         assertEquals(null, windowFrame.getDice(3, 3));
 
 
         //verifica che devo rispettare restrizione posizione
         commands.clear();
-        table.getDraftPool().get(0).setColor(Color.ANSI_PURPLE);
+        table.getDraftPool().get(0).setColor(Color.PURPLE);
         try {
             table.getDraftPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
@@ -606,7 +606,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_PURPLE, windowFrame.getDice(3, 4).getColor());
+        assertEquals(Color.PURPLE, windowFrame.getDice(3, 4).getColor());
         assertEquals(1, windowFrame.getDice(3, 4).valueOf());
         assertEquals(null, windowFrame.getDice(1, 5));
     }
@@ -619,8 +619,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -639,7 +639,7 @@ public class TestToolCards {
 
 
         int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_PURPLE);
+        table.getDraftPool().get(0).setColor(Color.PURPLE);
         try {
             table.getDraftPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
@@ -656,13 +656,13 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_PURPLE, windowFrame.getDice(4, 3).getColor());
+        assertEquals(Color.PURPLE, windowFrame.getDice(4, 3).getColor());
         assertEquals(1, windowFrame.getDice(4, 3).valueOf());
 
 
         //verifica che devo rispettare restrizione colore
         dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_YELLOW);
+        table.getDraftPool().get(0).setColor(Color.YELLOW);
         try {
             table.getDraftPool().get(0).setFace(4);
         } catch (InvalidFaceException e) {
@@ -682,14 +682,14 @@ public class TestToolCards {
         windowFrame.dump();
 
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_YELLOW, windowFrame.getDice(4, 5).getColor());
+        assertEquals(Color.YELLOW, windowFrame.getDice(4, 5).getColor());
         assertEquals(4, windowFrame.getDice(4, 5).valueOf());
         assertEquals(null, windowFrame.getDice(3, 5));
 
 
         //verifica che devo rispettare restrizione faccia
         dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_PURPLE);
+        table.getDraftPool().get(0).setColor(Color.PURPLE);
         try {
             table.getDraftPool().get(0).setFace(2);
         } catch (InvalidFaceException e) {
@@ -709,7 +709,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
         assertEquals(dimension-1, table.getDraftPool().size());
-        assertEquals(Color.ANSI_PURPLE, windowFrame.getDice(4, 1).getColor());
+        assertEquals(Color.PURPLE, windowFrame.getDice(4, 1).getColor());
         assertEquals(2, windowFrame.getDice(4, 1).valueOf());
         assertEquals(null, windowFrame.getDice(1, 5));
     }
@@ -753,8 +753,8 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(3);
@@ -773,7 +773,7 @@ public class TestToolCards {
 
         table.dumpDraftPool();
         int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.ANSI_PURPLE);
+        table.getDraftPool().get(0).setColor(Color.PURPLE);
         try {
             table.getDraftPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
@@ -812,7 +812,7 @@ public class TestToolCards {
         for(int i=0; i<10; i++){
             ArrayList<Dice> dices = new ArrayList<>();
             for(int j=0; j<2; j++){
-                Dice dice = new Dice(Color.ANSI_BLUE);
+                Dice dice = new Dice(Color.BLUE);
                 dice.roll();
                 dices.add(dice);
 
@@ -822,9 +822,9 @@ public class TestToolCards {
 
 
 
-        table.getDraftPool().get(0).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(1).setColor(Color.ANSI_BLUE);
-        table.getDraftPool().get(2).setColor(Color.ANSI_GREEN);
+        table.getDraftPool().get(0).setColor(Color.BLUE);
+        table.getDraftPool().get(1).setColor(Color.BLUE);
+        table.getDraftPool().get(2).setColor(Color.GREEN);
         try {
             table.getDraftPool().get(0).setFace(2);
             table.getDraftPool().get(1).setFace(5);
@@ -865,9 +865,9 @@ public class TestToolCards {
         windowFrame.dump();
         table.getRoundTrack().dump();
 
-        assertEquals(Color.ANSI_BLUE, windowFrame.getDice(4,2).getColor());
+        assertEquals(Color.BLUE, windowFrame.getDice(4,2).getColor());
         assertEquals(2, windowFrame.getDice(4,2).valueOf());
-        assertEquals(Color.ANSI_BLUE, windowFrame.getDice(2,3).getColor());
+        assertEquals(Color.BLUE, windowFrame.getDice(2,3).getColor());
         assertEquals(5, windowFrame.getDice(2,3).valueOf());
 
     }

@@ -61,7 +61,7 @@ public class WindowFrame implements Serializable {
     }
 
     private void insertDice(int row, int col, Dice dice) throws MismatchedRestrictionException {
-        if(patternCard.getRestriction(row, col).equals(Restriction.ANSI_WHITE)
+        if(patternCard.getRestriction(row, col).equals(Restriction.WHITE)
                 || patternCard.getExceptionRestriction(row, col)
                 || patternCard.getRestriction(row, col).compare(dice.getColor())
                 || patternCard.getRestriction(row, col).compare(dice.getFace())) {
@@ -194,7 +194,7 @@ public class WindowFrame implements Serializable {
                 String escape = patternCard.getRestriction(i+1, j+1).escape();
                 int face = escape.compareTo("\u2680") + 1;
                 if (face > 0) {
-                    string=string.concat(Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
+                    string=string.concat(Restriction.WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
                 } else {
                     string=string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
                 }
@@ -240,7 +240,7 @@ public class WindowFrame implements Serializable {
                     String escape = patternCard.getRestriction(i+1, j+1).escape();
                     int face = escape.compareTo("\u2680") + 1;
                     if (face > 0) {
-                        string=string.concat(Restriction.ANSI_WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
+                        string=string.concat(Restriction.WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
                     } else {
                         string=string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
                     }

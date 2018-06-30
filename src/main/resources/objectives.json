@@ -63,7 +63,7 @@
         "description": "Set di dadi di ogni\ncolore ovunque",
         "points": "4",
         "restriction": "color",
-        "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]
+        "elements": ["RED", "GREEN", "YELLOW", "BLUE", "PURPLE"]
       }
     ],
     "diagonal": {
@@ -71,7 +71,7 @@
       "description": "Numero di dadi dello stesso\ncolore diagonalmente adiacenti",
       "points": "1",
       "restriction": "color",
-      "elements": ["ANSI_RED", "ANSI_GREEN", "ANSI_YELLOW", "ANSI_BLUE", "ANSI_PURPLE"]
+      "elements": ["RED", "GREEN", "YELLOW", "BLUE", "PURPLE"]
     }
   }
 }

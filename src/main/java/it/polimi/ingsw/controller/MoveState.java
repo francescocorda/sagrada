@@ -40,4 +40,12 @@ public class MoveState extends State {
             controller.sendMessage(username, INVALID_FORMAT);
         }
     }
+
+    @Override
+    public void exitGame(String username) {
+        super.exitGame(username);
+        if (game.getCurrentPlayer().equals(username)) {
+            controller.skipTurn();
+        }
+    }
 }

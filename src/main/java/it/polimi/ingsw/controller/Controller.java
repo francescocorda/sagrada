@@ -173,29 +173,21 @@ public class Controller implements Observer {
         if(commands.size()>1){
             String username = commands.remove(0);
             if (players.contains(username)) {
-                if (commands.get(0).equals("exit") && commands.size()==1) {
-                    if (!offlinePlayers.contains(username)) {
-                        offlinePlayers.add(username);
-                    }
-                    deleteObserver(username);
-                    game.notifyObservers(username + LEFT_THE_GAME);
-                    sendMessage(username, YOU_LEFT_THE_GAME);
-                    if (game.getCurrentPlayer().equals(username)) {
-                        skipTurn();
-                    }
+                if (!offlinePlayers.contains(username) && commands.get(0).equals("exit") && commands.size()==1) {
+                    state.exitGame(username);
                     return;
                 } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size()==1) {
-                    offlinePlayers.remove(username);
-                    sendMessage(username, BACK_TO_GAME);
-                    sendMessage(username, GAME_JOINED);
-                    game.notifyObservers(username + JOINED_THE_GAME);
-                    addObserver(username);
+                    state.joinGame(username);
                     return;
                 } else if(!offlinePlayers.contains(username)){
                     state.handleEvent(username, commands);
                 }
             }
         }
+    }
+
+    public ArrayList<String> getOfflinePlayers() {
+        return offlinePlayers;
     }
 
     public void deleteObserver(String username) {

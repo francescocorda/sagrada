@@ -46,4 +46,12 @@ public class ChooseActionState extends State {
             controller.sendMessage(username, WAIT_YOUR_TURN);
         }
     }
+
+    @Override
+    public void exitGame(String username) {
+        super.exitGame(username);
+        if (game.getCurrentPlayer().equals(username)) {
+            controller.skipTurn();
+        }
+    }
 }

@@ -19,6 +19,14 @@ public class BuyToolCardState extends State {
         }
     }
 
+    @Override
+    public void exitGame(String username) {
+        super.exitGame(username);
+        if (game.getCurrentPlayer().equals(username)) {
+            controller.skipTurn();
+        }
+    }
+
     private void buyToolCard(String username, ArrayList<String> commands) {
         if (commands.size() == 1 && commands.get(0).equals("cancel")) {
             controller.setState(controller.getChooseActionState());

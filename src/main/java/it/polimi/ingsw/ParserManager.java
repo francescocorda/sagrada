@@ -1,9 +1,7 @@
 package it.polimi.ingsw;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
-import it.polimi.ingsw.Model.Cards.Patterns.Cell;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.*;

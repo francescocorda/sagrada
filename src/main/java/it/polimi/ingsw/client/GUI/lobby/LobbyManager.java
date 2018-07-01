@@ -3,9 +3,8 @@ package it.polimi.ingsw.client.GUI.lobby;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Game.Color;
+import it.polimi.ingsw.Model.Game.ScoreTrack;
 import it.polimi.ingsw.Model.Game.Table;
-import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
@@ -37,25 +36,12 @@ import java.util.*;
 
 public class LobbyManager implements GUIManager{
     private HashMap<String, Integer> comparator = null;
-    private Image image;
-    private ImageView source;
     private Integer count;
-    private HashMap<Integer, ImageView> HM;
     private Table table;
     private String temp;
     private boolean flag=false;
-    private HashMap<Integer, String> PVOCs = null;  //Private Objective Cards
-    private String src;
     private Event e = null;
     private HashMap<Integer, String> dices = null;
-    @FXML
-    ImageView card1;
-    @FXML
-    ImageView card2;
-    @FXML
-    ImageView card3;
-    @FXML
-    ImageView card4;
     @FXML
     TextArea message;
     @FXML
@@ -117,37 +103,17 @@ public class LobbyManager implements GUIManager{
                 this.message.setText("Not valid Date! Retry!\n");
             }
         } catch (Exception exc){
-            System.out.println("IT'S E BIATCH:\n "+ exc);
+            System.out.println("Data conversion exception: \n "+ exc);
         }
     }
     @FXML
     public void initialize() {
         GUIData.getGUIData().getView().setGUIManager(this);
-        card1.setVisible(false);
-        card2.setVisible(false);
-        card3.setVisible(false);
-        card4.setVisible(false);
         PVOCName.setVisible(false);
         PVOCID.setVisible(false);
         PVOCDescription.setVisible(false);
         PVOCColor.setVisible(false);
-        HM = new HashMap<>();
-        HM.put(0, card1);
-        HM.put(1, card2);
-        HM.put(2, card3);
-        HM.put(3, card4);
         count = 0;
-        PVOCs = new HashMap<Integer, String>();
-        src = "/GUI/privateObj1.PNG";
-        PVOCs.put(1, src);
-        src = "/GUI/privateObj2.PNG";
-        PVOCs.put(2, src);
-        src = "/GUI/privateObj3.PNG";
-        PVOCs.put(3, src);
-        src = "/GUI/privateObj4.PNG";
-        PVOCs.put(4, src);
-        src = "/GUI/privateObj5.PNG";
-        PVOCs.put(5, src);
         Image back = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
         this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         pattern1Items = new ArrayList<>();
@@ -177,7 +143,7 @@ public class LobbyManager implements GUIManager{
         colors.put(Restriction.PURPLE.escape(), "-fx-fill: #ee82dc;");
         colors.put(Restriction.BLUE.escape(), "-fx-fill: #82c0ed;");
         colors.put(Restriction.YELLOW.escape(), "-fx-fill: #fff486;");
-        dices = new HashMap<Integer, String>();
+        dices = new HashMap<>();
         String image = "/GUI/dice1_small.fxml";
         dices.put(1, image);
         image = "/GUI/dice2_small.fxml";
@@ -207,45 +173,9 @@ public class LobbyManager implements GUIManager{
         pattern4Name.setVisible(false);
     }
 
-    @FXML
-    public void mousePressed(MouseEvent event){
-        String card=null;
-        source = (ImageView) event.getSource();
-        if (source == card1) {
-            card = "0";
-        }
-        if (source == card2) {
-            card = "1";
-        }
-        if (source == card3) {  //to modify
-            card = "2";
-        }
-        if (source == card4) {  //to modify
-            card = "3";
-        }
-        try {
-            GUIData.getGUIData().getCommunicator().sendMessage(card);
-        } catch (NetworkErrorException e) {
-            this.message.setText("Network Error! Server may be DOWN!\n");
-        }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        try {
-            URL location = getClass().getResource("/GUI/table.fxml");
-            FXMLLoader fxmlLoader = new FXMLLoader(location);
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setMaximized(true);
-            TableManager TM = fxmlLoader.getController();
-            TM.editMessage(temp);
-            if(table!=null) TM.updateTable(table);
-        } catch (IOException e) {
-            this.message.setText("GUI ERROR!\n");
-            e.printStackTrace();
-        }
-    }
-
     public void patternChoose(MouseEvent event){
         String card=null;
-        GridPane source = new GridPane();
+        GridPane source;
         source = (GridPane) event.getSource();
         if (source == pattern1) {
             card = "0";
@@ -253,10 +183,10 @@ public class LobbyManager implements GUIManager{
         if (source == pattern2) {
             card = "1";
         }
-        if (source == pattern3) {  //to modify
+        if (source == pattern3) {
             card = "2";
         }
-        if (source == pattern4) {  //to modify
+        if (source == pattern4) {
             card = "3";
         }
         try {
@@ -279,7 +209,7 @@ public class LobbyManager implements GUIManager{
         }
     }
 
-    public void editMessage(String message){
+    public synchronized void editMessage(String message){
         this.message.setText(this.message.getText().concat(message.concat("\n")));
         if(message.equals("back_to_game")){
             Platform.runLater(  //Compulsory to update GUI
@@ -340,7 +270,7 @@ public class LobbyManager implements GUIManager{
                     name.setText(pattern.getName());
                     grid.setVisible(true);
                     name.setVisible(true);
-                    StackPane dice = new StackPane();
+                    StackPane dice;
                     for(int i=1; i<5; i++){
                         for(int j=1; j<6; j++){
                             dice = null;
@@ -357,103 +287,13 @@ public class LobbyManager implements GUIManager{
                             } else{
                                 items.get((i - 1) * (5) + (j - 1)).setStyle(colors.get(pattern.getRestriction(i, j).escape()));
                             }
-                            }
+                        }
                     }
                     count++;
                 }
-                );
-
-        /*if(HM==null) System.out.println("HM null");
-        else {
-            if (HM.get(0) == null) System.out.println("0 null");
-            if (HM.get(1) == null) System.out.println("1 null");
-            if (HM.get(2) == null) System.out.println("2 null");
-            if (HM.get(3) == null) System.out.println("3 null");
-        }
-        switch (ID) {
-            case(1):
-                setImage("/GUI/pattern1.PNG");
-                break;
-            case(2):
-                setImage("/GUI/pattern2.PNG");
-                break;
-            case(3):
-                setImage("/GUI/pattern3.PNG");
-                break;
-            case(4):
-                setImage("/GUI/pattern4.PNG");
-                break;
-            case(5):
-                setImage("/GUI/pattern5.PNG");
-                break;
-            case(6):
-                setImage("/GUI/pattern6.PNG");
-                break;
-            case(7):
-                setImage("/GUI/pattern7.PNG");
-                break;
-            case(8):
-                setImage("/GUI/pattern8.PNG");
-                break;
-            case(9):
-                setImage("/GUI/pattern9.PNG");
-                break;
-            case(10):
-                setImage("/GUI/pattern10.PNG");
-                break;
-            case(11):
-                setImage("/GUI/pattern11.PNG");
-                break;
-            case(12):
-                setImage("/GUI/pattern12.PNG");
-                break;
-            case(13):
-                setImage("/GUI/pattern13.PNG");
-                break;
-            case(14):
-                setImage("/GUI/pattern14.PNG");
-                break;
-            case(15):
-                setImage("/GUI/pattern15.PNG");
-                break;
-            case(16):
-                setImage("/GUI/pattern16.PNG");
-                break;
-            case(17):
-                setImage("/GUI/pattern17.PNG");
-                break;
-            case(18):
-                setImage("/GUI/pattern18.PNG");
-                break;
-            case(19):
-                setImage("/GUI/pattern19.PNG");
-                break;
-            case(20):
-                setImage("/GUI/pattern20.PNG");
-                break;
-            case(21):
-                setImage("/GUI/pattern21.PNG");
-                break;
-            case(22):
-                setImage("/GUI/pattern22.PNG");
-                break;
-            case(23):
-                setImage("/GUI/pattern23.PNG");
-                break;
-            case(24):
-                setImage("/GUI/pattern24.PNG");
-                break;
-            default:
-                break;
-        }*/
+        );
     }
 
-    /*private void setImage(String path){
-        image = new Image(Client.class.getResourceAsStream(path));
-        HM.get(count).setImage(image);
-        HM.get(count).setVisible(true);
-        count++;
-    }*/
     public void updateTable(Table table){
         this.table=table;
     }
@@ -484,9 +324,10 @@ public class LobbyManager implements GUIManager{
         PVOCColor.setVisible(true);
         Image image;
         InputStream inputStream= this.getClass().getResourceAsStream("/GUI/privateObj.PNG");
-        //image = new Image("/GUI/privateObj.PNG");
         image = new Image(inputStream);
         privateObj.setImage(image);
         privateObj.setVisible(true);
     }
+    public void showScoreTrack(ScoreTrack scoreTrack){}
+    public void activeElement(String element){}
 }

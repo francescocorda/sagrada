@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="background" maxHeight="670.0" maxWidth="1275.0" minHeight="670.0" minWidth="1275.0" prefHeight="670.0" prefWidth="1275.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.scoreTrack.ScoreTrackManager">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" minWidth="15.0" prefWidth="15.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="42.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" minWidth="15.0" prefWidth="15.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="235.0" minHeight="235.0" prefHeight="235.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="235.0" minHeight="235.0" prefHeight="235.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="289.0" stroke="BLACK" strokeType="INSIDE" width="1273.0" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets left="-10.0" top="435.0" />
+         </GridPane.margin>
+      </Rectangle>
+      <Circle fx:id="cerchioG31" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP31" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG19" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+      <Circle fx:id="cerchioG1" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG14" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG2" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG3" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG4" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG5" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG6" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG7" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG15" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG16" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG17" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG18" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP19" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG26" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG27" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG28" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG29" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG30" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG32" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG39" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG40" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG41" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG42" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG43" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG44" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP1" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP2" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP3" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP4" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP5" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP6" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP7" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP14" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP15" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP16" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP17" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP18" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP26" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP27" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP28" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP29" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP30" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP32" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP39" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP40" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP41" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP42" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP43" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP44" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Circle fx:id="cerchioG8" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG9" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG10" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG11" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG12" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG13" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP8" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP9" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP10" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP11" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP12" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP13" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG20" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG21" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG22" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG23" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG24" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG25" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP20" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP21" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP22" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP23" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP24" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP25" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG33" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG34" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG35" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG36" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG37" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG38" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG45" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG46" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG47" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG48" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG49" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioG50" disable="true" fill="#1f93ff00" radius="32.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP33" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP45" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP34" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP46" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP35" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP47" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP48" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP36" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP49" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP37" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP50" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Circle fx:id="cerchioP38" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="14" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="26" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="39" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="27" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="16" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="28" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="40" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="29" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="17" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="42" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="30" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="44" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="43" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="41" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="18" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="31" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="10" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="11" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="12" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="13" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="19" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="20" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="21" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="22" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="23" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="24" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="25" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="32" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="33" GridPane.columnIndex="15" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="45" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="34" GridPane.columnIndex="17" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="46" GridPane.columnIndex="16" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="35" GridPane.columnIndex="19" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="36" GridPane.columnIndex="21" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="47" GridPane.columnIndex="18" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="48" GridPane.columnIndex="20" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="37" GridPane.columnIndex="23" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="49" GridPane.columnIndex="22" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="38" GridPane.columnIndex="25" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="50" GridPane.columnIndex="24" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Marlett" size="25.0" />
+         </font>
+      </Text>
+      <Rectangle fx:id="legend" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="160.0" stroke="BLACK" strokeType="INSIDE" width="350.0" GridPane.columnIndex="10" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="10.0" />
+         </GridPane.margin></Rectangle>
+      <Circle fx:id="cerchioL1" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets left="-30.0" top="20.0" />
+         </GridPane.margin>
+      </Circle>
+      <Circle fx:id="cerchioL2" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets left="-20.0" top="20.0" />
+         </GridPane.margin>
+      </Circle>
+      <Circle fx:id="cerchioL3" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="11" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets left="-30.0" top="20.0" />
+         </GridPane.margin>
+      </Circle>
+      <Circle fx:id="cerchioL4" disable="true" fill="#1f93ff00" radius="26.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="14" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets left="-20.0" top="20.0" />
+         </GridPane.margin>
+      </Circle>
+      <Text fx:id="username1" strokeType="OUTSIDE" strokeWidth="0.0" text="username" wrappingWidth="104.205078125" GridPane.columnIndex="12" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets left="-25.0" top="30.0" />
+         </GridPane.margin>
+         <font>
+            <Font name="Segoe UI Black" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="username2" strokeType="OUTSIDE" strokeWidth="0.0" text="username" wrappingWidth="104.205078125" GridPane.columnIndex="15" GridPane.valignment="TOP">
+         <font>
+            <Font name="Segoe UI Black" size="18.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-14.0" top="30.0" />
+         </GridPane.margin>
+      </Text>
+      <Text fx:id="username3" strokeType="OUTSIDE" strokeWidth="0.0" text="username" wrappingWidth="104.205078125" GridPane.columnIndex="12" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Segoe UI Black" size="18.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-25.0" top="20.0" />
+         </GridPane.margin>
+      </Text>
+      <Text fx:id="username4" strokeType="OUTSIDE" strokeWidth="0.0" text="username" wrappingWidth="104.205078125" GridPane.columnIndex="15" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Segoe UI Black" size="18.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-14.0" top="20.0" />
+         </GridPane.margin>
+      </Text>
+      <Button mnemonicParsing="false" onAction="#newGameAction" prefHeight="39.0" prefWidth="109.0" text="new Game" GridPane.columnIndex="20" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets right="-100.0" />
+         </GridPane.margin>
+      </Button>
+      <Button mnemonicParsing="false" onAction="#exitAction" prefHeight="39.0" prefWidth="86.0" text="exit" GridPane.columnIndex="23" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets right="-100.0" />
+         </GridPane.margin>
+      </Button>
+      <TextArea fx:id="screen" maxHeight="150.0" maxWidth="300.0" minHeight="150.0" minWidth="300.0" prefHeight="150.0" prefWidth="300.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets top="20.0" />
+         </GridPane.margin>
+      </TextArea>
+   </children>
+   <opaqueInsets>
+      <Insets right="-100.0" />
+   </opaqueInsets>
+</GridPane>

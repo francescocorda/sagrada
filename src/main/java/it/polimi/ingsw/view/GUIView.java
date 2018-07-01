@@ -28,8 +28,7 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void activeTableElement(String element) {
-        //TODO
-        manager.editMessage(element);
+        manager.activeElement(element);
     }
 
     @Override

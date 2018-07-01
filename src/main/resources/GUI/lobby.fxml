@@ -14,7 +14,7 @@
    <children>
       <TextArea fx:id="message" editable="false" layoutX="170.0" layoutY="90.0" prefHeight="222.0" prefWidth="522.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="328.0" />
       <Button fx:id="joinLobby" alignment="CENTER" layoutX="441.0" layoutY="42.0" mnemonicParsing="false" onAction="#joinLobby" text="JoinLobby" />
-      <DatePicker fx:id="date" layoutX="149.0" layoutY="42.0" />
+      <DatePicker fx:id="date" layoutX="149.0" layoutY="42.0" promptText="insert date" />
       <GridPane layoutX="725.0" layoutY="72.0" prefHeight="280.0" prefWidth="200.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -58,10 +58,6 @@
             </Text>
          </children>
       </GridPane>
-      <ImageView fx:id="card1" fitHeight="176.0" fitWidth="200.0" layoutX="50.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="750.0" />
-      <ImageView fx:id="card2" fitHeight="176.0" fitWidth="200.0" layoutX="282.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="520.0" />
-      <ImageView fx:id="card3" fitHeight="176.0" fitWidth="200.0" layoutX="548.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="520.0" AnchorPane.rightAnchor="280.0" />
-      <ImageView fx:id="card4" fitHeight="176.0" fitWidth="200.0" layoutX="759.0" layoutY="353.0" onMousePressed="#mousePressed" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="750.0" AnchorPane.rightAnchor="50.0" />
       <Text fx:id="phrase" fill="WHITE" layoutX="150.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Insert last time you visited a cathedral">
          <font>
             <Font name="System Bold Italic" size="18.0" />

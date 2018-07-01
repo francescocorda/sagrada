@@ -253,7 +253,7 @@
                         <Insets right="190.0" top="100.0" />
                      </GridPane.margin>
                   </Button>
-                  <GridPane fx:id="selectedDice" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" onDragDetected="#selectedDragDetected" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                  <GridPane fx:id="selectedDice" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" onDragDetected="#dragDetectedSelectedDice" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -392,6 +392,11 @@
                         <Insets left="125.0" top="100.0" />
                      </GridPane.margin>
                   </Circle>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancelAction" prefHeight="50.0" prefWidth="70.0" text="cancel" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets left="10.0" top="200.0" />
+                     </GridPane.margin>
+                  </Button>
                </children>
             </GridPane>
          </content>
@@ -452,7 +457,7 @@
                         <Rectangle fx:id="diceR52" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                         <Rectangle fx:id="diceR62" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                         <Rectangle fx:id="diceR72" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice82" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="diceR82" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
                         <Rectangle fx:id="diceR92" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
                         <Rectangle fx:id="diceR102" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="9" GridPane.rowIndex="1" />
                         <Rectangle fx:id="diceR13" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.rowIndex="2" />
@@ -473,7 +478,7 @@
                         <Rectangle fx:id="diceR64" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
                         <Rectangle fx:id="diceR74" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
                         <Rectangle fx:id="diceR84" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="diceR11012894" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="diceR94" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
                         <Rectangle fx:id="diceR104" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="9" GridPane.rowIndex="3" />
                         <Rectangle fx:id="diceR15" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.rowIndex="4" />
                         <Rectangle fx:id="diceR25" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -513,7 +518,7 @@
                         <Rectangle fx:id="diceR68" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
                         <Rectangle fx:id="diceR78" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="6" GridPane.rowIndex="7" />
                         <Rectangle fx:id="diceR88" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="7" GridPane.rowIndex="7" />
-                        <Rectangle fx:id="dice98" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+                        <Rectangle fx:id="diceR98" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" GridPane.rowIndex="7" />
                         <Rectangle fx:id="diceR108" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="9" GridPane.rowIndex="7" />
                         <Rectangle fx:id="diceR19" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.rowIndex="8" />
                         <Rectangle fx:id="diceR29" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
@@ -527,6 +532,91 @@
                         <Rectangle fx:id="diceR109" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onMousePressed="#mousePressedRound" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="9" GridPane.rowIndex="8" />
                      </children>
                   </GridPane>
+                  <Text fx:id="roundsText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="ROUNDS:" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="18.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="round1Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round2Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="2" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="80.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round3Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="145.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round4Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="4" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="205.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round5Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="5" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="265.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round6Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="6" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="325.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round7Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="7" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="385.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round8Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="8" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="445.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round9Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="505.0" />
+                     </GridPane.margin>
+                  </Text>
+                  <Text fx:id="round10Text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="10" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Yu Gothic Bold" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="560.0" />
+                     </GridPane.margin>
+                  </Text>
                </children>
             </GridPane>
          </content>

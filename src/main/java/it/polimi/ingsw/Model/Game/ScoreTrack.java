@@ -25,36 +25,41 @@ public class ScoreTrack implements Serializable {
         while(i<scores.size() && scores.get(i).getScore() > player.getScore()) {
             i++;
         }
-        if (scores.get(i).getScore() == player.getScore()) {
-            int score1 = scores.get(i).getPrivateObjectiveCard().countScore(scores.get(i).getWindowFrame());
-            int score2 = player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
-            if (score1 == score2) {
-                int tokens1 = scores.get(i).getNumOfTokens();
-                int tokens2 = player.getNumOfTokens();
-                if (tokens1 == tokens2) {
-                    int j = lastRound.size()-1;
-                    while(j>0 && !(lastRound.get(j).getPlayer().getName().equals(scores.get(i).getName()))
-                            && !(lastRound.get(j).getPlayer().getName().equals(player.getName()))) {
-                        j--;
-                    }
-                    if (lastRound.get(j).getPlayer().getName().equals(player.getName())) {
-                        scores.add(i, player);
-                    } else {
+        if(i<scores.size()){
+            if (scores.get(i).getScore() == player.getScore()) {
+                int score1 = scores.get(i).getPrivateObjectiveCard().countScore(scores.get(i).getWindowFrame());
+                int score2 = player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
+                if (score1 == score2) {
+                    int tokens1 = scores.get(i).getNumOfTokens();
+                    int tokens2 = player.getNumOfTokens();
+                    if (tokens1 == tokens2) {
+                        int j = lastRound.size()-1;
+                        while(j>0 && !(lastRound.get(j).getPlayer().getName().equals(scores.get(i).getName()))
+                                && !(lastRound.get(j).getPlayer().getName().equals(player.getName()))) {
+                            j--;
+                        }
+                        if (lastRound.get(j).getPlayer().getName().equals(player.getName())) {
+                            scores.add(i, player);
+                        } else {
+                            scores.add(i+1, player);
+                        }
+                    } else if (tokens1 > tokens2) {
                         scores.add(i+1, player);
+                    } else {
+                        scores.add(i, player);
                     }
-                } else if (tokens1 > tokens2) {
+                } else if(score1 > score2) {
                     scores.add(i+1, player);
                 } else {
                     scores.add(i, player);
                 }
-            } else if(score1 > score2) {
-                scores.add(i+1, player);
             } else {
                 scores.add(i, player);
             }
-        } else {
-            scores.add(i, player);
+        }else {
+            scores.add(player);
         }
+
     }
 
     public Player getWinner() {
@@ -81,5 +86,9 @@ public class ScoreTrack implements Serializable {
 
     public void dump() {
         System.out.println(toString());
+    }
+
+    public ArrayList<Player> getScores(){
+        return (ArrayList<Player>)scores.clone();
     }
 }

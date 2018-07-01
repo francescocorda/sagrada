@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.GUI.login;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Game.ScoreTrack;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.CommunicatorRMI;
@@ -65,7 +66,6 @@ public class LoginManager implements GUIManager{
                 GUIData.getGUIData().setUsername(username.getText());
                 GUIData.getGUIData().setView(view);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/lobby.fxml"));
                 try {
                     view.setUsername(username.getText());
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
@@ -93,8 +93,6 @@ public class LoginManager implements GUIManager{
                 GUIData.getGUIData().setUsername(username.getText());
                 GUIData.getGUIData().setView(view);
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/lobby.fxml"));
-                //initializeLobby();
                 try {
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
                 } catch (IOException e) {
@@ -110,7 +108,7 @@ public class LoginManager implements GUIManager{
     @FXML
     public void connectionRMI() {
         IPaddress.setVisible(true);
-        serverPort.setVisible(false);
+        serverPort.setVisible(true);
         login.setDisable(false);
         connection.setText("RMI");
     }
@@ -138,5 +136,7 @@ public class LoginManager implements GUIManager{
     public void showPattern(PatternCard pattern){}
     public void updateTable(Table table){}
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){}
+    public void showScoreTrack(ScoreTrack scoreTrack){}
+    public void activeElement(String element){}
 }
 

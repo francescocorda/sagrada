@@ -13,7 +13,6 @@ public class Login extends Application {
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader fxmlLoader = new FXMLLoader(Client.class.getResource("/GUI/login.fxml"));
         Parent root = fxmlLoader.load();
-        root.getStylesheets().add("GUI/login.css");
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 500, 650));
         primaryStage.show();

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.connection;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
+import it.polimi.ingsw.Model.Game.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,6 +19,9 @@ public class ConnectionSocket {
         connectionSocketHandler();
     }
 
+    /**
+     * initialises all the fields to handle socket communication.
+     */
     private void connectionSocketHandler(){
         try {
             //setup communication channels
@@ -34,10 +38,20 @@ public class ConnectionSocket {
         }
     }
 
+    /**
+     * sends a message through {@link #outSocket}.
+     * @param message to be sent through {@link #outSocket}.
+     */
     public void sendMessage(String message){
         outSocket.println(message);
     }
 
+    /**
+     * gets a message from {@link #inSocket}.
+     * @return null if method {@link BufferedReader#readLine()} of {@link #inSocket}
+     * throws an {@link IOException} otherwise it returns the received message
+     * if it's correctly received.
+     */
     public String getMessage(){
         String message;
         try {
@@ -48,6 +62,11 @@ public class ConnectionSocket {
         return message;
     }
 
+    /**
+     * closes socket communication channel.
+     * It does that by calling {@link Socket#close()} of {@link #socket} field and
+     * if a {@link IOException} is thrown it prints the error LOG.
+     */
     public void close() {
         try {
             socket.close();

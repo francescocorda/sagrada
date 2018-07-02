@@ -18,6 +18,7 @@ public class SocketReader extends Thread {
     private int missingPong;
     private boolean timerOn;
     private static final int TIMER_MAX_SECONDS = 3*1000;
+    private final Object check = new Object();
 
     public SocketReader(ConnectionSocket connection, String username) {
         this.username = username;
@@ -51,12 +52,6 @@ public class SocketReader extends Thread {
                         missingPong=0;
                     cancelTimer();
                 } else {
-                    /*
-                    if(temp.equals("quit")){
-                        ClientDatabase.getPlayerDatabase().disconnect(username);
-                        flag = false;
-                    }
-                    */
                     message = message.concat(temp);
                     view.notifyObservers(message);
                 }
@@ -71,13 +66,15 @@ public class SocketReader extends Thread {
      * Cancels the scheduled timer
      */
     private void cancelTimer() {
-        try {
-            timer.cancel();
-            timer.purge();
-            timer = new Timer();
-            timerOn = false;
-        } catch (Exception e) {
-            //Timer already closed
+        synchronized (check){
+            try {
+                timer.cancel();
+                timer.purge();
+                timer = new Timer();
+                timerOn = false;
+            } catch (Exception e) {
+                //Timer already closed
+            }
         }
     }
 
@@ -98,20 +95,22 @@ public class SocketReader extends Thread {
      * if it is not already started by checking boolean variable {@link #timerOn}
      */
     public void waitForPong() {
-        connection.sendMessage("ping");
-        missingPong++;
-        if(!timerOn){
-            try{
-                timerOn=true;
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        ClientDatabase.getPlayerDatabase().disconnect(username);
-                        view.notifyObservers("exit");
-                    }
-                }, TIMER_MAX_SECONDS);
-            } catch (Exception e){
-                //disconnection already handled
+        synchronized (check){
+            connection.sendMessage("ping");
+            missingPong++;
+            if(!timerOn){
+                try{
+                    timerOn=true;
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            ClientDatabase.getPlayerDatabase().disconnect(username);
+                            view.notifyObservers("exit");
+                        }
+                    }, TIMER_MAX_SECONDS);
+                } catch (Exception e){
+                    //disconnection already handled
+                }
             }
         }
     }

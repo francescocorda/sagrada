@@ -4,7 +4,7 @@ import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.View;
-
+import it.polimi.ingsw.Model.Game.Color;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -16,10 +16,22 @@ public class CommunicatorSocket implements Communicator {
     private ConnectionSocket connection;
     private MessageGetter mg;
 
+    /**
+     * creates a {@link CommunicatorSocket} Object from a given {@link #view}.
+     * @param view is the given view on witch the {@link CommunicatorSocket} operates
+     */
     public CommunicatorSocket(View view) {
         this.view = view;
     }
 
+    /**
+     * initialise socket communication's field to allow communication with the server.
+     * It does that by getting all the needed field from a given {@link ArrayList<String>}:
+     * the first parameter should be the server's address (IP) while the second should be
+     * the port to connect with it. It also initialise a {@link MessageGetter}
+     * @param parameters is the given {@link ArrayList<String>}
+     * @throws NetworkErrorException if  a  {@link IOException} is thrown
+     */
     @Override
     public void initialize(ArrayList<String> parameters) throws NetworkErrorException {
         try {
@@ -32,7 +44,7 @@ public class CommunicatorSocket implements Communicator {
         }
         this.mg = new MessageGetter(connection, view);
     }
-
+    
     @Override
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;

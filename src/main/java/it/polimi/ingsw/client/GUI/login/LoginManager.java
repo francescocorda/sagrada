@@ -27,7 +27,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER;
-import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_PORT;
+import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_RMI_PORT;
+import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_SOCKET_PORT;
 
 public class LoginManager implements GUIManager{
     private Communicator communicator;
@@ -51,13 +52,15 @@ public class LoginManager implements GUIManager{
 
     @FXML
     public void loginAction(MouseEvent event) {
+        ArrayList<String> parameters = new ArrayList();
         if (!connection.getText().equals("socket")) {
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorRMI(view);
-            ArrayList<String> parameters = new ArrayList();
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
+            if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_RMI_PORT);
             parameters.add(IPaddress.getText());
+            parameters.add(serverPort.getText());
             try {
                 communicator.initialize(parameters);
                 if(password.getText().equals("")) password.setText(DEFAULT_PASSWORD);
@@ -80,9 +83,8 @@ public class LoginManager implements GUIManager{
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorSocket(view);
-            ArrayList<String> parameters = new ArrayList();
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
-            if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_PORT);
+            if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_SOCKET_PORT);
             parameters.add(IPaddress.getText());
             parameters.add(serverPort.getText());
             try {

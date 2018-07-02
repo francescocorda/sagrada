@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 
 public class RMIServer {
 
@@ -19,10 +20,8 @@ public class RMIServer {
         }
         try {
             RMIServerInterface clientHandlerRMI = new RMIServerImplementation();
-            Naming.rebind("//localhost/ClientHandler", clientHandlerRMI);
-        } catch (MalformedURLException e) {
-            System.err.println("Impossible object registration!");
-            throw new NetworkErrorException();
+            Registry registry = LocateRegistry.getRegistry(rmiPort);
+            registry.rebind("//localhost/ClientHandler", clientHandlerRMI);
         } catch (RemoteException e) {
             System.err.println("Connection error: " + e.getMessage() + "!");
             throw new NetworkErrorException();

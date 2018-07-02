@@ -16,7 +16,8 @@ public class CLI {
     private String username;
     private static CLIView view;
     public static final String DEFAULT_SERVER = "localhost";
-    public static final String DEFAULT_SERVER_PORT = "3001";
+    public static final String DEFAULT_SERVER_SOCKET_PORT = "3001";
+    public static final String DEFAULT_SERVER_RMI_PORT = "1099";
     private static final String INPUT_STREAM_SEPARATOR_SYMBOL = " ";
     private static final String MESSAGE_SEPARATOR_SYMBOL = "/";
 
@@ -57,20 +58,27 @@ public class CLI {
     }
 
     /**
-     * starts client with RMI technology initialising a CommunicatorRMI
+     * starts client with RMI technology initialising a {@link CommunicatorRMI}
      */
     private void startRMI(){
         communicator = new CommunicatorRMI(view);
         boolean temp = true;
         String server = new String();
+        String port = new String();
         while (temp) {
-            println("Insert server IP (leave it blank for default: localhost)");
+            println("Insert server IP (leave it blank for default: "+DEFAULT_SERVER+")");
             server = in.nextLine();
             if(server.equals("")){
                 server = DEFAULT_SERVER;
             }
             ArrayList<String> parameters = new ArrayList<>();
             parameters.add(server);
+            println("Insert server port (leave it blank for default:"+DEFAULT_SERVER_RMI_PORT+")");
+            port = in.nextLine();
+            if(port.equals("")){
+                port = DEFAULT_SERVER_RMI_PORT;
+            }
+            parameters.add(port);
             try {
                 communicator.initialize(parameters);
                 temp = false;
@@ -84,7 +92,7 @@ public class CLI {
     }
 
     /**
-     * starts client with Socket technology initialising a CommunicatorSocket
+     * starts client with Socket technology initialising a {@link CommunicatorSocket}
      */
     private void startSocket(){
         communicator = new CommunicatorSocket(view);
@@ -93,16 +101,16 @@ public class CLI {
         String port = new String();
         while (temp) {
             ArrayList<String> parameters = new ArrayList<>();
-            println("Insert server IP (leave it blank for default: localhost)");
+            println("Insert server IP (leave it blank for default: "+DEFAULT_SERVER+")");
             server = in.nextLine();
             if(server.equals("")){
                 server = DEFAULT_SERVER;
             }
             parameters.add(server);
-            println("Insert server port (leave it blank for default: 3001)");
+            println("Insert server port (leave it blank for default: "+DEFAULT_SERVER_SOCKET_PORT+")");
             port = in.nextLine();
             if(port.equals("")){
-                port = DEFAULT_SERVER_PORT;
+                port = DEFAULT_SERVER_SOCKET_PORT;
             }
             parameters.add(port);
             try {

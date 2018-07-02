@@ -3,9 +3,15 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.VirtualView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class Lobby implements Observer {
     private ArrayList<VirtualView> views;
@@ -131,6 +137,7 @@ public class Lobby implements Observer {
             try {
                 player.getClientHandler().check();
             } catch (NetworkErrorException e) {
+                System.out.println("12");
                 players.disconnect(player.getUsername());
             }
         }
@@ -205,16 +212,11 @@ public class Lobby implements Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof VirtualView) {
-            if (arg instanceof String) {
-                String message = (String) arg;
-                handleEvent(message);
-            }
-        }
+    public void update(Observable o, String message) {
+        handleEvent(message);
     }
 
-    private void handleEvent(String message) {
+    private synchronized void handleEvent(String message) {
         String username = new String();
         if (message == null)
             return;
@@ -227,6 +229,7 @@ public class Lobby implements Observer {
                 String command = commands.remove(0);
                 if (command.equals("exit")) {
                     send(username, "/You exit from lobby");
+                    System.out.println("13");
                     players.disconnect(username);
                     VirtualViewsDataBase.getVirtualViewsDataBase().removeVirtualView(username);
                     return;

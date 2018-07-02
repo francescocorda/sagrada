@@ -312,6 +312,7 @@ public class TableManager implements GUIManager {
                 e1.printStackTrace();
             }
         }
+        e.consume();
     }
 
     @FXML
@@ -332,9 +333,8 @@ public class TableManager implements GUIManager {
             content.putString(source.getId());
             db.setContent(content);
             db.setDragView(preview, 45, 45);
-            e.consume();
             for(Rectangle r : cells1){
-                r.startDragAndDrop(TransferMode.ANY); //accept the dragAndDrop event
+                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
             }
             try {
                 communicator.sendMessage(""+(idPool-initialPos));
@@ -342,6 +342,7 @@ public class TableManager implements GUIManager {
                 e1.printStackTrace();
             }
         }
+        e.consume();
     }
 
     @FXML
@@ -374,6 +375,7 @@ public class TableManager implements GUIManager {
                 }
             }
         }
+        e.consume();
     }
 
     @FXML
@@ -778,7 +780,7 @@ public class TableManager implements GUIManager {
     public void selectedTool1(){
         if(toolCardEnable) {
             try {
-                GUIData.getGUIData().getCommunicator().sendMessage("0");
+                GUIData.getGUIData().getCommunicator().sendMessage("1");
                 activeTool = true;
                 tool2.setVisible(false);
                 tool2Name.setVisible(false);
@@ -799,7 +801,7 @@ public class TableManager implements GUIManager {
     public void selectedTool2(){
         if(toolCardEnable) {
             try {
-                GUIData.getGUIData().getCommunicator().sendMessage("1");
+                GUIData.getGUIData().getCommunicator().sendMessage("2");
                 activeTool = true;
                 tool1.setVisible(false);
                 tool1Name.setVisible(false);
@@ -820,7 +822,7 @@ public class TableManager implements GUIManager {
     public void selectedTool3(){
         if(toolCardEnable) {
             try {
-                GUIData.getGUIData().getCommunicator().sendMessage("2");
+                GUIData.getGUIData().getCommunicator().sendMessage("3");
                 activeTool = true;
                 tool1.setVisible(false);
                 tool1Name.setVisible(false);

@@ -25,6 +25,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER;
 import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_RMI_PORT;
@@ -32,6 +34,7 @@ import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_SOCKET_PORT;
 
 public class LoginManager implements GUIManager{
     private Communicator communicator;
+    private static final Logger logger = Logger.getLogger( LoginManager.class.getName() );
 
     private static GUIView view;
     @FXML
@@ -48,7 +51,7 @@ public class LoginManager implements GUIManager{
     private Button login;
     @FXML
     private ImageView background;
-    private static String DEFAULT_PASSWORD = "default";
+    private static String DEFAULT_PASS = "default";
 
     @FXML
     public void loginAction(MouseEvent event) {
@@ -63,7 +66,7 @@ public class LoginManager implements GUIManager{
             parameters.add(serverPort.getText());
             try {
                 communicator.initialize(parameters);
-                if(password.getText().equals("")) password.setText(DEFAULT_PASSWORD);
+                if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
                 GUIData.getGUIData().setUsername(username.getText());
@@ -77,7 +80,9 @@ public class LoginManager implements GUIManager{
                 }
                 stage.centerOnScreen();
             } catch (NetworkErrorException | NotValidInputException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Network Error.");
+                //serverPort.setText("Error.");
+                //IPaddress.setText("Error.");
             }
         } else {
             view = new GUIView();
@@ -89,7 +94,7 @@ public class LoginManager implements GUIManager{
             parameters.add(serverPort.getText());
             try {
                 communicator.initialize(parameters);
-                if(password.getText().equals("")) password.setText(DEFAULT_PASSWORD);
+                if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
                 GUIData.getGUIData().setUsername(username.getText());
@@ -98,11 +103,11 @@ public class LoginManager implements GUIManager{
                 try {
                     stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.log(Level.SEVERE, e.toString());
                 }
                 stage.centerOnScreen();
             } catch (NetworkErrorException | NotValidInputException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, "Network Error.");
             }
         }
     }

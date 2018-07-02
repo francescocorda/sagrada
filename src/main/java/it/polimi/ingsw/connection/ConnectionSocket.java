@@ -44,6 +44,8 @@ public class ConnectionSocket {
      */
     public void sendMessage(String message){
         outSocket.println(message);
+        if (!message.equals("pong"))
+        System.out.println(Color.RED.escape()+"MESSAGE OUT: "+message+Color.RESET);
     }
 
     /**
@@ -56,6 +58,8 @@ public class ConnectionSocket {
         String message;
         try {
             message=inSocket.readLine();
+            if (!message.equals("ping"))
+            System.out.println(Color.YELLOW.escape()+"MESSAGE IN: "+message+Color.RESET);
         } catch (IOException e) {
             message=null;
         }

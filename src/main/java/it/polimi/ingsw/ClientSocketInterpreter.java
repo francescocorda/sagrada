@@ -3,13 +3,17 @@ package it.polimi.ingsw;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.connection.ConnectionSocket;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.VirtualView;
 
 import static it.polimi.ingsw.Status.*;
-import static it.polimi.ingsw.Phase.*;
 
-import java.util.*;
+
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ClientSocketInterpreter implements Runnable, Observer {
 
@@ -114,6 +118,7 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         if (username == null || username.equals("")) {
             System.out.println("client closed connection");
         } else {
+            System.out.println("11");
             players.disconnect(username);
             System.out.println("User: " + username + " logged out");
             Thread.currentThread().interrupt();
@@ -159,11 +164,8 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if (o instanceof VirtualView && arg instanceof String) {
-            String message = (String) arg;
-            handleEvent(message);
-        }
+    public void update(Observable o, String message) {
+        handleEvent(message);
     }
 
     private void handleEvent(String message) {

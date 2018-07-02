@@ -2,12 +2,13 @@ package it.polimi.ingsw.client.RMI;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.view.CLIView;
 import it.polimi.ingsw.view.View;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Observable;
 
 public class RMIClientImplementation implements RMIClientInterface {
 
@@ -98,13 +99,13 @@ public class RMIClientImplementation implements RMIClientInterface {
         //This method has only to check the connection between client and server, so it has to be empty
     }
 
-    public void update(Observable o, Object arg) throws RemoteException{
-        view.update(o,arg);
+    public void update(Observable o, String message) throws RemoteException{
+        view.update(o, message);
     }
 
     @Override
-    public void displayGame() throws RemoteException {
-        view.displayGame();
+    public void displayGame(Table table) throws RemoteException {
+        view.displayGame(table);
     }
 
 }

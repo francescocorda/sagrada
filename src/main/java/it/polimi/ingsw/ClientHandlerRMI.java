@@ -2,10 +2,12 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.RMI.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
+import it.polimi.ingsw.observer.Observable;
+
 import java.rmi.RemoteException;
-import java.util.Observable;
 
 public class ClientHandlerRMI implements ClientHandler {
     private RMIClientInterface rmiClientInterface;
@@ -15,9 +17,9 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
-    public void displayGame() throws NetworkErrorException {
+    public void displayGame(Table table) throws NetworkErrorException {
         try {
-            rmiClientInterface.displayGame();
+            rmiClientInterface.displayGame(table);
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }
@@ -69,9 +71,9 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
-    public void update(Observable o, Object arg) throws NetworkErrorException {
+    public void update(Observable o, String message) throws NetworkErrorException {
         try {
-            rmiClientInterface.update(o, arg);
+            rmiClientInterface.update(o, message);
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }

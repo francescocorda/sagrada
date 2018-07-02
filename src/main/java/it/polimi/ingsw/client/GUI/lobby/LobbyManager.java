@@ -18,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -171,6 +172,15 @@ public class LobbyManager implements GUIManager{
         pattern2Name.setVisible(false);
         pattern3Name.setVisible(false);
         pattern4Name.setVisible(false);
+
+        date.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+
+                setDisable(empty || date.compareTo(today) > 0 );
+            }
+        });
     }
 
     public void patternChoose(MouseEvent event){
@@ -178,16 +188,16 @@ public class LobbyManager implements GUIManager{
         GridPane source;
         source = (GridPane) event.getSource();
         if (source == pattern1) {
-            card = "0";
-        }
-        if (source == pattern2) {
             card = "1";
         }
-        if (source == pattern3) {
+        if (source == pattern2) {
             card = "2";
         }
-        if (source == pattern4) {
+        if (source == pattern3) {
             card = "3";
+        }
+        if (source == pattern4) {
+            card = "4";
         }
         try {
             GUIData.getGUIData().getCommunicator().sendMessage(card);

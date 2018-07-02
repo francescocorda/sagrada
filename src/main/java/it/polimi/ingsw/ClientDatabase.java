@@ -110,6 +110,7 @@ public class ClientDatabase {
                 virtualView.notifyObservers(player.getUsername()+"/exit");
                 break;
             case LOBBY:
+                System.out.println("database");
                 Lobby.getLobby().removePlayer(player.getUsername());
                 break;
             default:

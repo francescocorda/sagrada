@@ -4,15 +4,23 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.SocketVisitor;
 
-import java.util.Observable;
 
 public class GUIView extends Observable implements View  {
     private GUIManager manager;
-    private Table table;
     private String username;
+    private ViewVisitor visitor;
+
+    public GUIView() {
+        visitor = new ViewVisitor(this);
+        manager = null;
+        username = null;
+    }
+
     @Override
-    public void displayGame() {
+    public void displayGame(Table table) {
         manager.updateTable(table);
     }
 
@@ -41,6 +49,7 @@ public class GUIView extends Observable implements View  {
         manager.showPattern(patternCard);
     }
 
+
     public void setUsername(String username) {
         this.username = username;
     }
@@ -51,24 +60,29 @@ public class GUIView extends Observable implements View  {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if(o instanceof Table) {
-            Table table = (Table) o;
-            this.table = table;
-            if(arg == null) {
-                displayGame();
-            }
-            else if(arg instanceof String) {
-                String message = (String) arg;
-                manager.editMessage(message);
-            }
+    public void update(Observable o, String message) {
+        if(message != null) {
+            displayMessage(message);
+        } else {
+            o.display(visitor);
         }
     }
+
     public void setGUIManager(GUIManager manager){
         this.manager = manager;
     }
+
     public GUIManager getGUIManager(){
         return this.manager;
     }
 
+    @Override
+    public void display(ViewVisitor visitor) {
+
+    }
+
+    @Override
+    public String convert(SocketVisitor visitor) {
+        return null;
+    }
 }

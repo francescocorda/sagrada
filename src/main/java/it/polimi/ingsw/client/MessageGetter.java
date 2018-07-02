@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
+import it.polimi.ingsw.Model.Game.Color;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.View;
@@ -42,11 +43,16 @@ public class MessageGetter extends Thread{
                 if (tempMessage.equals("ping")) {
                     connection.sendMessage("pong");
                 } else if (lock) {
+                    System.out.println("lock");
                     setMessage(tempMessage);
                 } else {
-                    if (readable())
+                    if (readable()) {
+                        System.out.println("readable");
                         handleCommands(new ArrayList<>(Arrays.asList(getMessage().split("\\s*/\\s*"))));
-                    handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
+                    } else {
+                        System.out.println("not readable");
+                        handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
+                    }
                 }
             }
         } catch (NullPointerException e){
@@ -55,22 +61,26 @@ public class MessageGetter extends Thread{
         }
     }
 
-    private void handleCommands(ArrayList<String> commands) {
+    private synchronized void handleCommands(ArrayList<String> commands) {
+        System.out.println(commands.size());
         String phase = commands.remove(0);
         if (phase.equals("game")) {
             game(commands);
         } else if (phase.equals("lobby")){
+            System.out.println("lobby");
             lobby(commands);
         }
     }
 
     private void game(ArrayList<String> commands){
+        Table table;
         switch (commands.remove(0)) {
             case "message":
                 view.displayGameMessage(commands.remove(0));
                 break;
             case "displayGame":
-                view.displayGame();
+                table = gson.fromJson(commands.remove(0), Table.class);
+                view.displayGame(table);
                 break;
             case "pattern_card":
                 PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
@@ -84,10 +94,11 @@ public class MessageGetter extends Thread{
                 view.activeTableElement(commands.remove(0));
                 break;
             case "update":
-                String observer = commands.remove(0);
-                String object = commands.remove(0);
-                Table table = gson.fromJson(observer, Table.class);
-                String message = gson.fromJson(object, String.class);
+                String observable = commands.remove(0);
+                String message = null;
+                if (!commands.isEmpty())
+                    message = commands.remove(0);
+                table = gson.fromJson(observable, Table.class);
                 view.update(table, message);
                 break;
             default:

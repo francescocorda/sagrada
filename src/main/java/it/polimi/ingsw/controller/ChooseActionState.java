@@ -31,6 +31,7 @@ public class ChooseActionState extends State {
                         if (!game.isToolCardUsed()) {
                             controller.sendMessage(username, CHOOSE_TOOL_CARD);
                             controller.setState(controller.getBuyToolCardState());
+                            controller.sendActiveTableElement(username, "TOOLCARD");
                         } else {
                             controller.itsYourTurn();
                         }

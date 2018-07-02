@@ -3,10 +3,12 @@ package it.polimi.ingsw.Model.Game;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.SocketVisitor;
+import it.polimi.ingsw.view.ViewVisitor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observable;
 
 public class Table extends Observable implements Serializable {
     private ArrayList<Player> players;
@@ -35,7 +37,7 @@ public class Table extends Observable implements Serializable {
         return scoreTrack;
     }
 
-    private void setScoreTrack(ScoreTrack scoreTrack){
+    public void setScoreTrack(ScoreTrack scoreTrack){
         this.scoreTrack = scoreTrack;
     }
 
@@ -45,6 +47,10 @@ public class Table extends Observable implements Serializable {
 
     public void setActiveToolCard(int index) {
         this.activeToolCard = gameToolCards.get(index);
+    }
+
+    public void setActiveToolCard(ToolCard activeToolCard) {
+        this.activeToolCard = activeToolCard;
     }
 
     public void removeActiveToolCard() {
@@ -187,8 +193,12 @@ public class Table extends Observable implements Serializable {
     }
 
     @Override
-    public void notifyObservers(Object arg) {
-        setChanged();
-        super.notifyObservers(arg);
+    public void display(ViewVisitor visitor) {
+        visitor.visit(this);
+    }
+
+    @Override
+    public String convert(SocketVisitor visitor) {
+        return visitor.visit(this);
     }
 }

@@ -5,27 +5,34 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.exceptions.NotValidInputException;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.observer.Observer;
 import it.polimi.ingsw.view.VirtualView;
+
+
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Controller implements Observer {
 
+    private static final Logger logger = Logger.getLogger( Controller.class.getName() );
 
-    public static final int TIMER_SECONDS = 120;
-    public static final String INVALID_FORMAT = "Command of invalid format.";
-    public static final String WAIT_YOUR_TURN = "Wait your turn.";
-    public static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (0-1-2).";
-    public static final String CHOOSE_PATTERN_CARD = "Choose the pattern card to use (0-1-2-3).";
-    public static final String PLAYER_NOT_FOUND = "Player not found.";
-    public static final String ITS_YOUR_TURN = "It's your turn! Choose Action: move, toolcard, skip.";
-    public static final String ACTION_CANCELED = "Action canceled.";
-    public static final String LEFT_THE_GAME = " left the game.";
-    public static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
-    public static final String JOINED_THE_GAME = " joined the game.";
-    public static final String GAME_JOINED = "Game joined.";
-    public static final String BACK_TO_GAME = "back_to_game";
-    public static final String YOU_WON = "You Won!";
-    public static final int CHOOSE_ACTION_DIM = 1;
+    public static final long TIMER_SECONDS = 120;
+    static final String INVALID_FORMAT = "Command of invalid format.";
+    static final String WAIT_YOUR_TURN = "Wait your turn.";
+    static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (1-2-3).";
+    static final String CHOOSE_PATTERN_CARD = "Choose the pattern card to use (1-2-3-4).";
+    private static final String PLAYER_NOT_FOUND = "Player not found.";
+    private static final String ITS_YOUR_TURN = "It's your turn! Choose Action: move, toolcard, skip.";
+    static final String ACTION_CANCELED = "Action canceled.";
+    static final String LEFT_THE_GAME = " left the game.";
+    static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
+    static final String JOINED_THE_GAME = " joined the game.";
+    static final String GAME_JOINED = "Game joined.";
+    static final String BACK_TO_GAME = "back_to_game";
+    private static final String YOU_WON = "You Won!";
+    static final int CHOOSE_ACTION_DIM = 1;
 
     private State startState;
     private State chooseActionState;
@@ -36,13 +43,13 @@ public class Controller implements Observer {
 
     private State state;
 
-    private ArrayList<VirtualView> views;
+    private List<VirtualView> views;
     private Timer timer;
     private ArrayList<String> players;
     private ArrayList<String> offlinePlayers;
     private Game game;
 
-    public Controller(int matchID, ArrayList<VirtualView> views) {
+    public Controller(int matchID, List<VirtualView> views) {
         offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
         players = new ArrayList<>();
@@ -69,37 +76,31 @@ public class Controller implements Observer {
         startGame();
     }
 
-    public State getState() {
-        return state;
-    }
+    State getState() {return state;}
 
-    public void setState(State state) {
+    void setState(State state) {
         this.state = state;
     }
 
-    public State getStartState() {
-        return startState;
-    }
+    State getStartState() {return startState;}
 
-    public State getChooseActionState() {
+    State getChooseActionState() {
         return chooseActionState;
     }
 
-    public State getMoveState() {
+    State getMoveState() {
         return moveState;
     }
 
-    public State getBuyToolCardState() {
+    State getBuyToolCardState() {
         return buyToolCardState;
     }
 
-    public State getUseToolCardState() {
+    State getUseToolCardState() {
         return useToolCardState;
     }
 
-    public State getEndState() {
-        return endState;
-    }
+    State getEndState() {return endState;}
 
     public boolean contains(String username){
         return (offlinePlayers.contains(username));
@@ -120,7 +121,7 @@ public class Controller implements Observer {
                 }
                 view.displayGameMessage(CHOOSE_PATTERN_CARD);
             } catch (NotValidInputException e) {
-                System.out.println(PLAYER_NOT_FOUND);
+                logger.log(Level.SEVERE, PLAYER_NOT_FOUND);
             }
         }
         timer.schedule(new TimerTask() {
@@ -138,7 +139,7 @@ public class Controller implements Observer {
                 itsYourTurn();
                 setTimerSkipTurn();
             }
-            }, TIMER_SECONDS*1000);
+        }, TIMER_SECONDS*1000);
     }
 
     public void sendMessage(String name, String message) {
@@ -157,16 +158,20 @@ public class Controller implements Observer {
         }
     }
 
-    @Override
-    public synchronized void update(Observable o, Object arg) {
-        ArrayList<String> commands;
-        if(o instanceof VirtualView) {
-            if(arg instanceof String) {
-                String message = (String) arg;
-                commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-                handleEvent(commands);
+    public void sendActiveTableElement(String name, String element) {
+        for (VirtualView virtualView: views) {
+            if (virtualView.getUsername().equals(name)) {
+                virtualView.activeTableElement(element);
             }
         }
+    }
+
+    @Override
+    public synchronized void update(Observable o, String message) {
+        ArrayList<String> commands;
+        commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
+        handleEvent(commands);
+
     }
 
     private synchronized void handleEvent(ArrayList<String> commands) {
@@ -175,10 +180,8 @@ public class Controller implements Observer {
             if (players.contains(username)) {
                 if (!offlinePlayers.contains(username) && commands.get(0).equals("exit") && commands.size()==1) {
                     state.exitGame(username);
-                    return;
                 } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size()==1) {
                     state.joinGame(username);
-                    return;
                 } else if(!offlinePlayers.contains(username)){
                     state.handleEvent(username, commands);
                 }
@@ -186,11 +189,11 @@ public class Controller implements Observer {
         }
     }
 
-    public ArrayList<String> getOfflinePlayers() {
+    ArrayList<String> getOfflinePlayers() {
         return offlinePlayers;
     }
 
-    public void deleteObserver(String username) {
+    void deleteObserver(String username) {
         for (VirtualView virtualView: views) {
             if (virtualView.getUsername().equals(username)) {
                 game.deleteObserver(virtualView);
@@ -199,7 +202,7 @@ public class Controller implements Observer {
         }
     }
 
-    public void addObserver(String username) {
+    void addObserver(String username) {
         for (VirtualView virtualView: views) {
             if (virtualView.getUsername().equals(username)) {
                 game.addObserver(virtualView);
@@ -208,25 +211,23 @@ public class Controller implements Observer {
         }
     }
 
-    public void skipTurn() {
+    void skipTurn() {
         game.skipTurn();
         checkGameState();
     }
 
-    protected void itsYourTurn() {
+    void itsYourTurn() {
         sendMessage(game.getCurrentPlayer(), ITS_YOUR_TURN);
     }
 
-    public void checkGameState() {
+    void checkGameState() {
         if (game.isTurnEnded()) {
-            if (game.isRoundEnded()) {
-                if (game.isGameEnded()) {
-                    game.countScores();
-                    sendMessage(game.getWinner(), YOU_WON);
-                    state = endState;
-                    timer.cancel();
-                    return;
-                }
+            if (game.isRoundEnded() && game.isGameEnded()) {
+                game.countScores();
+                sendMessage(game.getWinner(), YOU_WON);
+                state = endState;
+                timer.cancel();
+                return;
             }
             if(!offlinePlayers.contains(game.getCurrentPlayer())) {
                 setTimerSkipTurn();
@@ -246,7 +247,7 @@ public class Controller implements Observer {
         }
     }
 
-    public void setTimerSkipTurn() {
+    void setTimerSkipTurn() {
         timer.cancel();
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -260,7 +261,7 @@ public class Controller implements Observer {
         }, TIMER_SECONDS*1000);
     }
 
-    protected Game getGame() {
+    Game getGame() {
         return game;
     }
 }

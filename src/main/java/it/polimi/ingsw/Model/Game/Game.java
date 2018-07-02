@@ -8,10 +8,10 @@ import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.observer.Observer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Observer;
 import java.util.Random;
 
 import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUNDS;
@@ -390,6 +390,10 @@ public class Game implements Serializable {
 
     public void deleteObserver (Observer o) {
         table.deleteObserver(o);
+    }
+
+    public void notifyObservers() {
+        table.notifyObservers();
     }
 
     public void notifyObservers(String message) {

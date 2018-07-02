@@ -5,8 +5,11 @@ import it.polimi.ingsw.ClientHandler;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.ClientData;
+import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
-import java.util.Observable;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.SocketVisitor;
+
 
 public class VirtualView extends Observable implements View {
 
@@ -22,10 +25,11 @@ public class VirtualView extends Observable implements View {
     }
 
     @Override
-    public void displayGame() {
+    public void displayGame(Table table) {
         try {
-            getClientHandler().displayGame();
+            getClientHandler().displayGame(table);
         } catch (NetworkErrorException e) {
+            System.out.println("2");
             disconnect();
         }
     }
@@ -35,6 +39,7 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendMessage(message);
         } catch (NetworkErrorException e) {
+            System.out.println("3");
             disconnect();
         }
     }
@@ -44,6 +49,7 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendGameMessage(message);
         } catch (NetworkErrorException e) {
+            System.out.println("4");
             disconnect();
         }
     }
@@ -53,6 +59,7 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendActiveTableElement(element);
         } catch (NetworkErrorException e) {
+            System.out.println("5");
             disconnect();
         }
     }
@@ -62,6 +69,7 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendPrivateObjectiveCard(privateObjectiveCard);
         } catch (NetworkErrorException e) {
+            System.out.println("6");
             disconnect();
         }
     }
@@ -71,30 +79,38 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendPatternCard(patternCard);
         } catch (NetworkErrorException e) {
+            System.out.println("7");
             disconnect();
         }
     }
 
     @Override
-    public void update(Observable o, Object arg) {
+    public void update(Observable o, String message) {
         try {
-            getClientHandler().update(o, arg);
+            getClientHandler().update(o, message);
         } catch (NetworkErrorException e) {
+            System.out.println("8");
             disconnect();
         }
     }
 
-    @Override
-    public void notifyObservers(Object arg) {
-        setChanged();
-        super.notifyObservers(arg);
-    }
 
     private ClientHandler getClientHandler(){
         return clientData.getClientHandler();
     }
 
     private void disconnect(){
+        System.out.println("9");
         ClientDatabase.getPlayerDatabase().disconnect(clientData.getUsername());
+    }
+
+    @Override
+    public void display(ViewVisitor visitor) {
+
+    }
+
+    @Override
+    public String convert(SocketVisitor visitor) {
+        return null;
     }
 }

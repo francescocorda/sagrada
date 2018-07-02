@@ -6,13 +6,18 @@ import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.Table;
-import java.util.Observable;
+import it.polimi.ingsw.observer.Observable;
+import it.polimi.ingsw.SocketVisitor;
 
 public class CLIView extends Observable implements View {
 
     private String username;
+    private ViewVisitor visitor;
 
-    private Table table;
+    public CLIView() {
+        visitor = new ViewVisitor(this);
+        username = null;
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -23,17 +28,11 @@ public class CLIView extends Observable implements View {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        if(o instanceof Table) {
-            Table table = (Table) o;
-            this.table = table;
-            if(arg == null) {
-                displayGame();
-            }
-            else if(arg instanceof String) {
-                String message = (String) arg;
-                displayMessage(message);
-            }
+    public void update(Observable o, String message) {
+        if(message != null) {
+            displayMessage(message);
+        } else {
+            o.display(visitor);
         }
     }
 
@@ -41,7 +40,8 @@ public class CLIView extends Observable implements View {
         privateObjectiveCard.dump();
     }
 
-    public void displayGame() {
+
+    public void displayGame(Table table) {
         Player myPlayer = null;
 
         for (PublicObjectiveCard publicObjectiveCard: table.getGamePublicObjectiveCards()) {
@@ -102,4 +102,13 @@ public class CLIView extends Observable implements View {
     }
 
 
+    @Override
+    public void display(ViewVisitor visitor) {
+
+    }
+
+    @Override
+    public String convert(SocketVisitor visitor) {
+        return null;
+    }
 }

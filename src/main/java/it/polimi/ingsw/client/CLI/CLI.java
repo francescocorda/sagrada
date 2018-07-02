@@ -181,8 +181,10 @@ public class CLI {
                 } catch (NetworkErrorException e) {
                     println("Server Offline / Network Error");
                     startCLI();
-                } catch (NotValidInputException | NumberFormatException e) {
-                    println("Invalid time");
+                } catch (NotValidInputException e) {
+                    println("Invalid time 1");
+                } catch (NumberFormatException e2) {
+                    println("Invalid time 2");
                 }
             } else {
                 try {

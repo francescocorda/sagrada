@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class MessageGetter extends Thread{
+public class MessageGetter extends Thread {
     private String message;
     private boolean wait;
     private static final Object countLock = new Object();
@@ -38,6 +38,7 @@ public class MessageGetter extends Thread{
     public void run() {
         super.run();
         ArrayList<String> check;
+        boolean unlock = false;
         try {
             while (on) {
                 String tempMessage = connection.getMessage();
@@ -45,18 +46,21 @@ public class MessageGetter extends Thread{
                     connection.sendMessage("pong");
                 } else if (lock) {
                     check = new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*")));
-                    if(check.size()>1 && (check.get(1).equals("welcome") || check.get(1).equals("back_to_game") ))
-                        unlock();
-                    setMessage(tempMessage);
+                    if (check.size() > 1 && (check.get(1).equals("welcome") || check.get(1).equals("back_to_game"))) {
+                        unlock = true;
+                        if (check.get(1).equals("welcome"))
+                            view.displayMessage("Welcome!");
+                        else
+                            view.displayMessage("Welcome Back!");
+                    } else
+                        setMessage(tempMessage);
                 } else {
-                    if (readable()) {
-                        handleCommands(new ArrayList<>(Arrays.asList(getMessage().split("\\s*/\\s*"))));
-                    } else {
-                        handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
-                    }
+                    handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
                 }
+                if (unlock)
+                    unlock();
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             System.out.println("Server Offline");
             Thread.currentThread().interrupt();
         }
@@ -67,12 +71,12 @@ public class MessageGetter extends Thread{
         String phase = commands.remove(0);
         if (phase.equals("game")) {
             game(commands);
-        } else if (phase.equals("lobby")){
+        } else if (phase.equals("lobby")) {
             lobby(commands);
         }
     }
 
-    private void game(ArrayList<String> commands){
+    private void game(ArrayList<String> commands) {
         Table table;
         switch (commands.remove(0)) {
             case "message":
@@ -103,21 +107,21 @@ public class MessageGetter extends Thread{
                 break;
             default:
                 String recomposedMessage = String.join("/", commands);
-                System.out.println("ERROR: arrived message: "+recomposedMessage);
+                System.out.println("ERROR: arrived message: " + recomposedMessage);
         }
     }
 
-    private void lobby(ArrayList<String> commands){
+    private void lobby(ArrayList<String> commands) {
         String message = commands.remove(0);
-        switch (message){
+        switch (message) {
             case "player_joined":
-                view.displayMessage("Player joined: "+commands.remove(0));
+                view.displayMessage("Player joined: " + commands.remove(0));
                 break;
             case "list_of_players":
-                view.displayMessage("LIST OF PLAYERS:\n"+getListOfPlayers(commands));
+                view.displayMessage("LIST OF PLAYERS:\n" + getListOfPlayers(commands));
                 break;
             case "player_left":
-                view.displayMessage("Player left: "+commands.remove(0));
+                view.displayMessage("Player left: " + commands.remove(0));
                 break;
             case "start_game":
                 view.displayMessage("GAME START:");
@@ -135,24 +139,24 @@ public class MessageGetter extends Thread{
         }
     }
 
-    private String getListOfPlayers(ArrayList<String> players){
+    private String getListOfPlayers(ArrayList<String> players) {
         String enclosureSymbol = "-";
         String separatorSymbol = "| ";
         String message = separatorSymbol;
-        for(String player : players){
-            message = message.concat(player+" "+separatorSymbol);
+        for (String player : players) {
+            message = message.concat(player + " " + separatorSymbol);
         }
         String enclosure = new String();
-        for(int i =1; i<message.length(); i++)
+        for (int i = 1; i < message.length(); i++)
             enclosure = enclosure.concat(enclosureSymbol);
-        message = enclosure +"\n"+message+"\n"+enclosure;
+        message = enclosure + "\n" + message + "\n" + enclosure;
         return message;
     }
 
     private void setMessage(String message) {
-        while(!wait) {
+        while (!wait) {
             try {
-                sleep(100);
+                sleep(10);
             } catch (InterruptedException e) {
                 break;
             }
@@ -178,12 +182,12 @@ public class MessageGetter extends Thread{
         }
     }
 
-    public void kill(){
+    public void kill() {
         this.on = false;
         Thread.currentThread().interrupt();
     }
 
-    public void unlock(){
-        this.lock=false;
+    public void unlock() {
+        this.lock = false;
     }
 }

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
@@ -44,7 +45,17 @@ public class CommunicatorSocket implements Communicator {
         }
         this.mg = new MessageGetter(connection, view);
     }
-    
+
+    /**
+     * sends a login message to the server.
+     * it does that by sending a message through the use of method {@link ConnectionSocket#sendMessage(String)},
+     * the message format is "login/@USERNAME/@PASSWORD" where @USERNAME is the field for user's username
+     * and @PASSWORD is the one for user's password
+     * @param username is the parameter for user's username
+     * @param password is the parameter for user's password
+     * @throws NetworkErrorException if  a  {@link IOException} is thrown
+     * @throws NotValidInputException if the given parameters aren't correct
+     */
     @Override
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
@@ -65,7 +76,7 @@ public class CommunicatorSocket implements Communicator {
                 case "invalid_command":
                     throw new NotValidInputException();
                 default:
-                    System.out.println(returnedMessage);
+                    System.err.println(returnedMessage);
                     throw new NetworkErrorException();
             }
         } else {
@@ -73,6 +84,16 @@ public class CommunicatorSocket implements Communicator {
         }
     }
 
+    /**
+     * sends a message towards the server to join the {@link it.polimi.ingsw.Lobby}.
+     * it does that through by sending a message through the use of method {@link ConnectionSocket#sendMessage(String)},
+     * the message format is "lobby/@USERNAME/@TIME" where @USERNAME is the field for user's username
+     * and @PASSWORD is the one for user's password
+     * @param username is the parameter for user's username
+     * @param time is the parameter for user's last access to a cathedral
+     * @throws NetworkErrorException if  a  {@link IOException} is thrown
+     * @throws NotValidInputException if the given time is not valid
+     */
     @Override
     public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
@@ -86,15 +107,14 @@ public class CommunicatorSocket implements Communicator {
         String phase = commands.remove(0);
         if (phase.equals("lobby")) {
             switch (commands.remove(0)) {
-                case "welcome":
-                    mg.unlock();
-                    view.displayMessage("Welcome!");
-                    break;
                 case "last_access":
+                    if(!commands.isEmpty() && commands.remove(0).equals("invalid_time"))
+                        throw new NotValidInputException();
+                    break;
                 case "invalid_command":
                     throw new NotValidInputException();
                 default:
-                    view.displayMessage("ERROR: " + returnedMessage);
+                    break;
             }
         } else if (phase.equals("game") && commands.size() == 2 && commands.remove(0).equals("message")
                 && commands.remove(0).equals("back_to_game")) {

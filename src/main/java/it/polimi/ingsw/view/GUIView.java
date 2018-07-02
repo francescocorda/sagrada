@@ -8,10 +8,11 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.SocketVisitor;
 
 
-public class GUIView extends Observable implements View  {
+public class GUIView extends Observable implements View {
     private GUIManager manager;
     private String username;
     private ViewVisitor visitor;
+    private final Object sync = new Object();
 
     public GUIView() {
         visitor = new ViewVisitor(this);
@@ -26,12 +27,16 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void displayMessage(String message) {
-        manager.editMessage(message);
+        synchronized (sync) {
+            manager.editMessage(message);
+        }
     }
 
     @Override
     public void displayGameMessage(String message) {
-        manager.editMessage(message);
+        synchronized (sync) {
+            manager.editMessage(message);
+        }
     }
 
     @Override
@@ -45,10 +50,9 @@ public class GUIView extends Observable implements View  {
     }
 
     @Override
-    public void displayPatternCard(PatternCard patternCard) {
+    public synchronized void displayPatternCard(PatternCard patternCard) {
         manager.showPattern(patternCard);
     }
-
 
     public void setUsername(String username) {
         this.username = username;
@@ -61,18 +65,18 @@ public class GUIView extends Observable implements View  {
 
     @Override
     public void update(Observable o, String message) {
-        if(message != null) {
+        if (message != null) {
             displayMessage(message);
         } else {
             o.display(visitor);
         }
     }
 
-    public void setGUIManager(GUIManager manager){
+    public void setGUIManager(GUIManager manager) {
         this.manager = manager;
     }
 
-    public GUIManager getGUIManager(){
+    public GUIManager getGUIManager() {
         return this.manager;
     }
 

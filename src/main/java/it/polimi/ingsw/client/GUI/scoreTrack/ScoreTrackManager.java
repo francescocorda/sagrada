@@ -191,7 +191,7 @@ public class ScoreTrackManager implements GUIManager {
         colors.add("-fx-fill: #0000cd;"); colors.add("-fx-fill: #ff0000;");
         colors.add("-fx-fill: #00ff00;"); colors.add("-fx-fill: #ff1493;");
         Image back = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
-        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
         rectangle.setStyle("-fx-fill: #ffefd5;");
         for(int i=0; i<SIZE; i++){
             cerchiGrandi.get(i).setStyle("-fx-fill: #696969;");

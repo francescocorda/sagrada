@@ -68,9 +68,11 @@ public class TableManager implements GUIManager {
     private ArrayList<Circle> signals2;
     private ArrayList<Circle> signals3;
     private ArrayList<Circle> signals4;
+    private ArrayList<Button> faces;
     private MouseEvent event;
     int initialPos;
     private static final int NUM_OF_ROUNDS = 10;
+    private static final int NUM_OF_FACES = 6;
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
     @FXML Rectangle dice2;
@@ -186,8 +188,6 @@ public class TableManager implements GUIManager {
     @FXML Button toolCardButton;
     @FXML Button skipButton;
     @FXML GridPane selectedDice;
-    @FXML TextField operation;
-    @FXML Button operationButton;
     @FXML GridPane tableBackground;
     @FXML GridPane cardsBackground;
     @FXML GridPane roundTrackBackground;
@@ -230,6 +230,11 @@ public class TableManager implements GUIManager {
     @FXML Button cancelButton;
     @FXML Text roundsText; @FXML Text round1Text; @FXML Text round2Text; @FXML Text round3Text; @FXML Text round4Text; @FXML Text round5Text;
     @FXML Text round6Text; @FXML Text round7Text; @FXML Text round8Text; @FXML Text round9Text; @FXML Text round10Text;
+    @FXML
+    Button minus;
+    @FXML
+    Button plus;
+    @FXML Button one; @FXML Button two; @FXML Button three; @FXML Button four; @FXML Button five; @FXML Button six;
 
     public void cancelAction(){
         try {
@@ -492,7 +497,8 @@ public class TableManager implements GUIManager {
         cellsRound.add(diceR51); cellsRound.add(diceR52); cellsRound.add(diceR53); cellsRound.add(diceR54); cellsRound.add(diceR55); cellsRound.add(diceR56); cellsRound.add(diceR57); cellsRound.add(diceR58); cellsRound.add(diceR59);
         cellsRound.add(diceR61); cellsRound.add(diceR62); cellsRound.add(diceR63); cellsRound.add(diceR64); cellsRound.add(diceR65); cellsRound.add(diceR66); cellsRound.add(diceR67); cellsRound.add(diceR68); cellsRound.add(diceR69);
         cellsRound.add(diceR71); cellsRound.add(diceR72); cellsRound.add(diceR73); cellsRound.add(diceR74); cellsRound.add(diceR75); cellsRound.add(diceR76); cellsRound.add(diceR77); cellsRound.add(diceR78); cellsRound.add(diceR79);
-        cellsRound.add(diceR81); cellsRound.add(diceR82); cellsRound.add(diceR83); cellsRound.add(diceR84); cellsRound.add(diceR85); cellsRound.add(diceR86); cellsRound.add(diceR87); cellsRound.add(diceR88); cellsRound.add(diceR89);
+        cellsRound.add(diceR81); cellsRound.add(diceR82); cellsRound.add(diceR83); cellsRound.add(diceR84);
+        cellsRound.add(diceR85); cellsRound.add(diceR86); cellsRound.add(diceR87); cellsRound.add(diceR88); cellsRound.add(diceR89);
         cellsRound.add(diceR91); cellsRound.add(diceR92); cellsRound.add(diceR93); cellsRound.add(diceR94); cellsRound.add(diceR95); cellsRound.add(diceR96); cellsRound.add(diceR97); cellsRound.add(diceR98); cellsRound.add(diceR99);
         cellsRound.add(diceR101); cellsRound.add(diceR102); cellsRound.add(diceR103); cellsRound.add(diceR104); cellsRound.add(diceR105); cellsRound.add(diceR106); cellsRound.add(diceR107); cellsRound.add(diceR108); cellsRound.add(diceR109);
         signals1 = new ArrayList<>();
@@ -514,19 +520,30 @@ public class TableManager implements GUIManager {
         roundsTexts.add(round6Text); roundsTexts.add(round7Text); roundsTexts.add(round8Text); roundsTexts.add(round9Text); roundsTexts.add(round10Text);
         for(int i=0; i<NUM_OF_ROUNDS; i++) roundsTexts.get(i).setVisible(false);
         roundsText.setVisible(false);
+        plus.setVisible(false);
+        minus.setVisible(false);
+        faces = new ArrayList<>();
+        faces.add(one); faces.add(two); faces.add(three); faces.add(four); faces.add(five); faces.add(six);
+        for(int i=0; i<NUM_OF_FACES; i++){
+            faces.get(i).setVisible(false);
+        }
     }
 
     public synchronized void editMessage(String message) {
         if(text.getText().equals("null")) text.setText(message);
         else {
             if (message != null && (message.contains("New Turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
+                String oldMessage = text.getText();
+                //this.text.setText((message+"\n").concat(oldMessage));
                 text.setText(message + "\n");
                 if (activeTool == true) {
                     makeToolVisible();
                     activeTool = false;
                 }
             } else {
-                this.text.setText(text.getText().concat(message + "\n"));
+                String oldMessage = text.getText();
+                this.text.setText((message+"\n").concat(oldMessage+"\n"));
+                //this.text.setText(text.getText().concat(message + "\n"));
                 if (message.equals("Command of invalid format.")) {
                 }
             }
@@ -841,22 +858,41 @@ public class TableManager implements GUIManager {
     }
 
     @FXML
-    public void sendOperation(){
+    public void minusPressed(){
         try {
-            GUIData.getGUIData().getCommunicator().sendMessage(operation.getText());
+            GUIData.getGUIData().getCommunicator().sendMessage("-1");
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    public void quitAction(MouseEvent event){
+    public void plusPressed(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("+1");
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void faceSelected(MouseEvent event) {
+        Button source = (Button) event.getSource();
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage(""+source.getText());
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void exitAction(MouseEvent event){
         try {
             GUIData.getGUIData().getCommunicator().sendMessage("exit");
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             URL location = getClass().getResource("/GUI/login.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(location);
-            stage.setScene(new Scene(fxmlLoader.load()));
+            stage.setScene(new Scene(fxmlLoader.load(), 500, 650));
             stage.centerOnScreen();
             LoginManager LM = fxmlLoader.getController();
             GUIData.getGUIData().getView().setGUIManager(LM);
@@ -895,12 +931,20 @@ public class TableManager implements GUIManager {
         GUIData.getGUIData().getView().getGUIManager().showScoreTrack(scoreTrack);
     }
     public void activeElement(String element){
-        if(element.contains("SEQUENTIAL") || element.contains("CHOOSE")){
-            operation.setVisible(true);
-            operationButton.setVisible(true);
+        if(element.contains("SEQUENTIAL")){
+            plus.setVisible(true);
+            minus.setVisible(true);
+
         } else{
-            operation.setVisible(false);
-            operationButton.setVisible(false);
+            plus.setVisible(false);
+            minus.setVisible(false);
+        }
+        if(element.contains("CHOOSE")){
+            for(int i=0; i<NUM_OF_FACES; i++){
+                faces.get(i).setVisible(true);
+            }
+        } else for(int i=0; i<NUM_OF_FACES; i++){
+            faces.get(i).setVisible(false);
         }
         if(element.contains("DRAFTPOOL")){
             draftPoolEnable=true;

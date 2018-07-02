@@ -137,7 +137,6 @@ public class Lobby implements Observer {
             try {
                 player.getClientHandler().check();
             } catch (NetworkErrorException e) {
-                System.out.println("12");
                 players.disconnect(player.getUsername());
             }
         }
@@ -229,7 +228,6 @@ public class Lobby implements Observer {
                 String command = commands.remove(0);
                 if (command.equals("exit")) {
                     send(username, "/You exit from lobby");
-                    System.out.println("13");
                     players.disconnect(username);
                     VirtualViewsDataBase.getVirtualViewsDataBase().removeVirtualView(username);
                     return;

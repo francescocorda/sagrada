@@ -37,20 +37,21 @@ public class MessageGetter extends Thread{
     @Override
     public void run() {
         super.run();
+        ArrayList<String> check;
         try {
             while (on) {
                 String tempMessage = connection.getMessage();
                 if (tempMessage.equals("ping")) {
                     connection.sendMessage("pong");
                 } else if (lock) {
-                    System.out.println("lock");
+                    check = new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*")));
+                    if(check.size()>1 && (check.get(1).equals("welcome") || check.get(1).equals("back_to_game") ))
+                        unlock();
                     setMessage(tempMessage);
                 } else {
                     if (readable()) {
-                        System.out.println("readable");
                         handleCommands(new ArrayList<>(Arrays.asList(getMessage().split("\\s*/\\s*"))));
                     } else {
-                        System.out.println("not readable");
                         handleCommands(new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*"))));
                     }
                 }
@@ -67,7 +68,6 @@ public class MessageGetter extends Thread{
         if (phase.equals("game")) {
             game(commands);
         } else if (phase.equals("lobby")){
-            System.out.println("lobby");
             lobby(commands);
         }
     }

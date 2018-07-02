@@ -76,7 +76,6 @@ public class CommunicatorSocket implements Communicator {
     @Override
     public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
-        getMessage(); //Clean buffer
         try {
             connection.sendMessage("lobby/last_access/" + time);
             returnedMessage = getMessage();

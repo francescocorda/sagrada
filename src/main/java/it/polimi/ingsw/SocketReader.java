@@ -104,7 +104,6 @@ public class SocketReader extends Thread {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            System.out.println("10");
                             ClientDatabase.getPlayerDatabase().disconnect(username);
                             view.notifyObservers("exit");
                         }

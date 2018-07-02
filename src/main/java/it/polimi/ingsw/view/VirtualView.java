@@ -29,7 +29,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().displayGame(table);
         } catch (NetworkErrorException e) {
-            System.out.println("2");
             disconnect();
         }
     }
@@ -39,7 +38,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendMessage(message);
         } catch (NetworkErrorException e) {
-            System.out.println("3");
             disconnect();
         }
     }
@@ -49,7 +47,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendGameMessage(message);
         } catch (NetworkErrorException e) {
-            System.out.println("4");
             disconnect();
         }
     }
@@ -59,7 +56,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendActiveTableElement(element);
         } catch (NetworkErrorException e) {
-            System.out.println("5");
             disconnect();
         }
     }
@@ -69,7 +65,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendPrivateObjectiveCard(privateObjectiveCard);
         } catch (NetworkErrorException e) {
-            System.out.println("6");
             disconnect();
         }
     }
@@ -79,7 +74,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().sendPatternCard(patternCard);
         } catch (NetworkErrorException e) {
-            System.out.println("7");
             disconnect();
         }
     }
@@ -89,7 +83,6 @@ public class VirtualView extends Observable implements View {
         try {
             getClientHandler().update(o, message);
         } catch (NetworkErrorException e) {
-            System.out.println("8");
             disconnect();
         }
     }
@@ -100,7 +93,6 @@ public class VirtualView extends Observable implements View {
     }
 
     private void disconnect(){
-        System.out.println("9");
         ClientDatabase.getPlayerDatabase().disconnect(clientData.getUsername());
     }
 

@@ -118,7 +118,6 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         if (username == null || username.equals("")) {
             System.out.println("client closed connection");
         } else {
-            System.out.println("11");
             players.disconnect(username);
             System.out.println("User: " + username + " logged out");
             Thread.currentThread().interrupt();

@@ -7,10 +7,9 @@ import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.SocketVisitor;
 import it.polimi.ingsw.view.ViewVisitor;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Table extends Observable implements Serializable {
+public class Table extends Observable{
     private ArrayList<Player> players;
     private RoundTrack roundTrack;
     private DiceBag diceBag;

@@ -36,9 +36,9 @@ public class StartState extends State {
                 controller.sendMessage(username, CHOOSE_PATTERN_CARD);
             }
             if (game.doneAssignPatternCards()) {
+                controller.setState(controller.getChooseActionState());
                 controller.setTimerSkipTurn();
                 controller.itsYourTurn();
-                controller.setState(controller.getChooseActionState());
             }
         } else {
             controller.sendMessage(username, INVALID_FORMAT);

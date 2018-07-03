@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public abstract class Observable implements Serializable {
-    private Vector<Observer> obs;
+    private transient Vector<Observer> obs;
 
     public Observable() {
         this.obs = new Vector<>();

@@ -141,7 +141,7 @@ public class PlayerTurn implements Serializable {
     public String toString() {
         return "PlayerTurn{" +
                 "turnNumber=" + turnNumber +
-                ", player=" + player +
+                ", player=" + player.getName() +
                 ", movesLeft=" + movesLeft +
                 ", toolCardUsed=" + toolCardUsed +
                 '}';

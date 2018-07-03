@@ -10,7 +10,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
       <Circle radius="3.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="TOP_LEFT">
          <StackPane.margin>
-            <Insets left="8.0" top="9.0" />
+            <Insets left="9.0" top="9.0" />
          </StackPane.margin>
       </Circle>
       <Circle radius="3.0" stroke="BLACK" strokeType="INSIDE" StackPane.alignment="BOTTOM_RIGHT">

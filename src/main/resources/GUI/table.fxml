@@ -446,7 +446,7 @@
                   </Text>
                   <Text fx:id="username3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets top="70.0" />
+                        <Insets left="-50.0" top="70.0" />
                      </GridPane.margin>
                      <font>
                         <Font name="Monotype Corsiva" size="22.0" />
@@ -462,7 +462,7 @@
                         <Font name="Monotype Corsiva" size="22.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="70.0" />
+                        <Insets left="-50.0" top="70.0" />
                      </GridPane.margin>
                   </Text>
                </children>

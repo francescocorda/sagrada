@@ -604,6 +604,7 @@ public class TableManager implements GUIManager {
         tool2Description.setStyle("-fx-text-alignment: center;");
         tool3Name.setStyle("-fx-text-alignment: center;");
         tool3Description.setStyle("-fx-text-alignment: center;");
+        text.setScrollTop(Double.MIN_VALUE);
     }
 
     /**
@@ -614,18 +615,13 @@ public class TableManager implements GUIManager {
         if(text.getText().equals("null")) text.setText(message);
         else {
             if (message != null && (message.contains("New Turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
-                String oldMessage = text.getText();
-                text.setText(message + "\n");
                 if (activeTool == true) {
                     makeToolVisible();
                     activeTool = false;
                 }
-            } else {
-                String oldMessage = text.getText();
-                this.text.setText((message+"\n").concat(oldMessage+"\n"));
-                if (message.equals("Command of invalid format.")) {
-                }
             }
+            this.text.setText((text.getText()+"\n").concat(message));
+            text.appendText("");
         }
     }
 
@@ -709,8 +705,18 @@ public class TableManager implements GUIManager {
             roundTrack.getChildren().remove(roundItems.get(0));
             roundItems.remove(0);
         }
+        roundsTexts.get(0).setStyle("-fx-fill: #00ff00");
+        roundsTexts.get(0).setVisible(true);
         for (int i=0; i<10; i++){
             ArrayList<Dice> temp = RT.getRoundDices(i);
+            if(temp.size()!=0){
+                roundsTexts.get(i).setStyle("-fx-fill: #ffffff");
+                roundsTexts.get(i).setVisible(true);
+                if((i+1)<NUM_OF_ROUNDS){
+                    roundsTexts.get(i+1).setStyle("-fx-fill: #00ff00");
+                    roundsTexts.get(i+1).setVisible(true);
+                }
+            }
             if(temp != null){
                 roundsText.setVisible(true);
                 for(int j=0; j<9; j++){
@@ -718,7 +724,6 @@ public class TableManager implements GUIManager {
                     if(temp.size()>j) elem = temp.get(j);
                     if(elem != null){  //if there's a dice to add to roundTrack (ROUND i)
                         try {
-                            roundsTexts.get(i).setVisible(true);
                             dice = FXMLLoader.load(getClass().getResource(dices.get((Integer) elem.valueOf())));
                         } catch (IOException e) {
                             e.printStackTrace();

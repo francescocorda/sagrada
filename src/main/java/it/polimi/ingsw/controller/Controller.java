@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class Controller implements Observer {
 
-    private static final Logger logger = Logger.getLogger( Controller.class.getName() );
+    private static final Logger logger = Logger.getLogger(Controller.class.getName());
 
     public static final long TIMER_SECONDS = 120;
     static final String INVALID_FORMAT = "Command of invalid format.";
@@ -53,7 +53,7 @@ public class Controller implements Observer {
         offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
         players = new ArrayList<>();
-        for (VirtualView view: views) {
+        for (VirtualView view : views) {
             players.add(view.getUsername());
         }
         game = new Game(matchID, players);
@@ -61,7 +61,7 @@ public class Controller implements Observer {
         game.setPublicObjectiveDeck(pm.getPublicObjectiveDeck());
         game.setToolCards(pm.getToolCards());
         this.views = views;
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             game.addObserver(virtualView);
             virtualView.addObserver(this);
         }
@@ -76,13 +76,17 @@ public class Controller implements Observer {
         startGame();
     }
 
-    State getState() {return state;}
+    State getState() {
+        return state;
+    }
 
     void setState(State state) {
         this.state = state;
     }
 
-    State getStartState() {return startState;}
+    State getStartState() {
+        return startState;
+    }
 
     State getChooseActionState() {
         return chooseActionState;
@@ -100,9 +104,11 @@ public class Controller implements Observer {
         return useToolCardState;
     }
 
-    State getEndState() {return endState;}
+    State getEndState() {
+        return endState;
+    }
 
-    public boolean contains(String username){
+    public boolean contains(String username) {
         return (offlinePlayers.contains(username));
     }
 
@@ -110,7 +116,7 @@ public class Controller implements Observer {
         game.drawDices();
         game.drawPublicObjectiveCards();
         game.drawToolCards();
-        for (VirtualView view: views) {
+        for (VirtualView view : views) {
             PrivateObjectiveCard privateObjectiveCard;
             try {
                 privateObjectiveCard = game.assignPrivateObjectiveCard(view.getUsername());
@@ -127,7 +133,7 @@ public class Controller implements Observer {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                for (String name: players) {
+                for (String name : players) {
                     try {
                         game.setPatternCard(name, 0);
                     } catch (NotValidInputException e) {
@@ -139,11 +145,11 @@ public class Controller implements Observer {
                 itsYourTurn();
                 setTimerSkipTurn();
             }
-        }, TIMER_SECONDS*1000);
+        }, TIMER_SECONDS * 1000);
     }
 
     public void sendMessage(String name, String message) {
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
                 virtualView.displayMessage(message);
             }
@@ -151,7 +157,7 @@ public class Controller implements Observer {
     }
 
     public void sendActiveTableElement(String name) {
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
                 virtualView.activeTableElement(game.getActiveTableElement());
             }
@@ -159,7 +165,7 @@ public class Controller implements Observer {
     }
 
     public void sendActiveTableElement(String name, String element) {
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
                 virtualView.activeTableElement(element);
             }
@@ -175,14 +181,14 @@ public class Controller implements Observer {
     }
 
     private synchronized void handleEvent(ArrayList<String> commands) {
-        if(commands.size()>1){
+        if (commands.size() > 1) {
             String username = commands.remove(0);
             if (players.contains(username)) {
-                if (!offlinePlayers.contains(username) && commands.get(0).equals("exit") && commands.size()==1) {
+                if (!offlinePlayers.contains(username) && commands.get(0).equals("exit") && commands.size() == 1) {
                     state.exitGame(username);
-                } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size()==1) {
+                } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size() == 1) {
                     state.joinGame(username);
-                } else if(!offlinePlayers.contains(username)){
+                } else if (!offlinePlayers.contains(username)) {
                     state.handleEvent(username, commands);
                 }
             }
@@ -194,7 +200,7 @@ public class Controller implements Observer {
     }
 
     void deleteObserver(String username) {
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(username)) {
                 game.deleteObserver(virtualView);
                 return;
@@ -203,7 +209,7 @@ public class Controller implements Observer {
     }
 
     void addObserver(String username) {
-        for (VirtualView virtualView: views) {
+        for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(username)) {
                 game.addObserver(virtualView);
                 return;
@@ -212,7 +218,8 @@ public class Controller implements Observer {
     }
 
     void skipTurn() {
-        game.skipTurn();
+        if (!game.isGameEnded())
+            game.skipTurn();
         checkGameState();
     }
 
@@ -229,14 +236,14 @@ public class Controller implements Observer {
                 timer.cancel();
                 return;
             }
-            if(!offlinePlayers.contains(game.getCurrentPlayer())) {
+            if (!offlinePlayers.contains(game.getCurrentPlayer())) {
                 setTimerSkipTurn();
             }
         }
 
-        if(offlinePlayers.contains(game.getCurrentPlayer())) {
+        if (offlinePlayers.contains(game.getCurrentPlayer())) {
             skipTurn();
-        } else if (offlinePlayers.size() == players.size()-1) {
+        } else if (offlinePlayers.size() == players.size() - 1) {
             sendMessage(game.getCurrentPlayer(), YOU_WON);
             game.endGame();
             state = endState;
@@ -258,7 +265,7 @@ public class Controller implements Observer {
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
                 skipTurn();
             }
-        }, TIMER_SECONDS*1000);
+        }, TIMER_SECONDS * 1000);
     }
 
     Game getGame() {

@@ -12,7 +12,7 @@ public class ChooseActionState extends State {
 
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
-        if (game.isCurrentPlayer(username)) {
+        if (!game.isGameEnded() && game.isCurrentPlayer(username)) {
             if (commands.size() == CHOOSE_ACTION_DIM) {
                 switch (commands.remove(0)) {
                     case "move":

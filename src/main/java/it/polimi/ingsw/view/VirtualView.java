@@ -71,14 +71,12 @@ public class VirtualView extends Observable implements View {
 
     @Override
     public void update(Observable o, String message) {
-        ((Table) o).dumpDraftPool();
         try {
             getClientHandler().update(o, message);
         } catch (NetworkErrorException e) {
             disconnect();
         }
     }
-
 
     private ClientHandler getClientHandler(){
         return clientData.getClientHandler();

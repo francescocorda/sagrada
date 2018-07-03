@@ -10,6 +10,5 @@ public class EndState extends State {
 
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
-
     }
 }

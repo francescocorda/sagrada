@@ -33,13 +33,6 @@ public class GUIView extends Observable implements View {
     }
 
     @Override
-    public void displayGameMessage(String message) {
-        synchronized (sync) {
-            manager.editMessage(message);
-        }
-    }
-
-    @Override
     public void activeTableElement(String element) {
         manager.activeElement(element);
     }

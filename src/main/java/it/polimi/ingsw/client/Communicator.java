@@ -39,4 +39,6 @@ public interface Communicator {
      * @throws NetworkErrorException if a network related exception is thrown
      */
     void sendMessage(String message) throws NetworkErrorException;
+
+    void close();
 }

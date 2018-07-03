@@ -35,15 +35,6 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
-    public void sendGameMessage(String message) throws NetworkErrorException {
-        try {
-            rmiClientInterface.send(message);
-        } catch (RemoteException e) {
-            throw new NetworkErrorException();
-        }
-    }
-
-    @Override
     public void sendActiveTableElement(String element) throws NetworkErrorException {
         try {
             rmiClientInterface.sendActiveTableElement(element);
@@ -80,7 +71,7 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
-    public void check() throws NetworkErrorException {
+    public synchronized void check() throws NetworkErrorException {
         try {
             rmiClientInterface.checkConnection();
         } catch (RemoteException e) {

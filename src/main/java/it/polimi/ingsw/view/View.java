@@ -9,7 +9,6 @@ import it.polimi.ingsw.observer.Observer;
 public interface View extends Observer {
     void displayGame(Table table);
     void displayMessage(String message);
-    void displayGameMessage(String message);
     void activeTableElement(String element);
     void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard);
     void displayPatternCard(PatternCard patternCard);

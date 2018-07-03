@@ -24,10 +24,10 @@ public class RMIClientImplementation implements RMIClientInterface {
 
     /**
      * is used by the server to send a message to it's client through RMI.
-     * It gets a message from the server in witch all commands are separated on another by "/" and
+     * It gets a message from the server in which all commands are separated on another by "/" and
      * create an {@link ArrayList<String>} of all the commands to be sent to {@link #lobby(ArrayList)},
      * omitting the first one, or display directly the message
-     * through {@link View#displayGameMessage(String)}
+     * through {@link View#displayMessage(String)}
      * @param message : is the given message
      * @throws RemoteException if there's any connection related problem
      */
@@ -36,7 +36,7 @@ public class RMIClientImplementation implements RMIClientInterface {
         if(commands.remove(0).equals("lobby"))
             lobby(commands);
         else
-            view.displayGameMessage(message);
+            view.displayMessage(message);
     }
 
     /**

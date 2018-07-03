@@ -23,7 +23,7 @@ public class CommunicatorRMI implements Communicator {
 
     /**
      * creates a {@link CommunicatorRMI} Object from a given {@link #view}.
-     * @param view is the given view on witch the {@link CommunicatorRMI} operates
+     * @param view is the given view on which the {@link CommunicatorRMI} operates
      */
     public CommunicatorRMI(View view) {
         this.view = view;
@@ -104,5 +104,9 @@ public class CommunicatorRMI implements Communicator {
         } catch (RemoteException | NullPointerException e) {
             throw new NetworkErrorException();
         }
+    }
+
+    public void close(){
+        //garbage collector will handle it by himself
     }
 }

@@ -43,15 +43,6 @@ public class VirtualView extends Observable implements View {
     }
 
     @Override
-    public void displayGameMessage(String message) {
-        try {
-            getClientHandler().sendGameMessage(message);
-        } catch (NetworkErrorException e) {
-            disconnect();
-        }
-    }
-
-    @Override
     public void activeTableElement(String element) {
         try {
             getClientHandler().sendActiveTableElement(element);

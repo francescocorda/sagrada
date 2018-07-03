@@ -3,13 +3,10 @@ package it.polimi.ingsw.client;
 import com.google.gson.Gson;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Game.Color;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.View;
-import org.apache.commons.lang.ObjectUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -68,52 +65,54 @@ public class MessageGetter extends Thread {
 
     private synchronized void handleCommands(ArrayList<String> commands) {
         System.out.println(commands.size());
-        String phase = commands.remove(0);
-        if (phase.equals("game")) {
-            game(commands);
-        } else if (phase.equals("lobby")) {
+        String phase = commands.get(0);
+        if (phase.equals("lobby")) {
+            commands.remove(0);
             lobby(commands);
+        } else {
+            game(commands);
         }
     }
 
     private void game(ArrayList<String> commands) {
         Table table;
-        switch (commands.remove(0)) {
-            case "message":
-                view.displayGameMessage(commands.remove(0));
-                break;
-            case "displayGame":
-                table = gson.fromJson(commands.remove(0), Table.class);
-                view.displayGame(table);
-                break;
-            case "pattern_card":
-                PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
-                view.displayPatternCard(patternCard);
-                break;
-            case "private_objective_card":
-                PrivateObjectiveCard pOCard = gson.fromJson(commands.get(0), PrivateObjectiveCard.class);
-                view.displayPrivateObjectiveCard(pOCard);
-                break;
-            case "active_table_element":
-                view.activeTableElement(commands.remove(0));
-                break;
-            case "update":
-                String observable = commands.remove(0);
-                String message = null;
-                if (!commands.isEmpty())
-                    message = commands.remove(0);
-                table = gson.fromJson(observable, Table.class);
-                view.update(table, message);
-                break;
-            default:
-                String recomposedMessage = String.join("/", commands);
-                System.out.println("ERROR: arrived message: " + recomposedMessage);
+        String command = commands.remove(0);
+        if(command.equals("game")){
+            switch (commands.remove(0)) {
+                case "displayGame":
+                    table = gson.fromJson(commands.remove(0), Table.class);
+                    view.displayGame(table);
+                    break;
+                case "pattern_card":
+                    PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
+                    view.displayPatternCard(patternCard);
+                    break;
+                case "private_objective_card":
+                    PrivateObjectiveCard pOCard = gson.fromJson(commands.get(0), PrivateObjectiveCard.class);
+                    view.displayPrivateObjectiveCard(pOCard);
+                    break;
+                case "active_table_element":
+                    view.activeTableElement(commands.remove(0));
+                    break;
+                case "update":
+                    String observable = commands.remove(0);
+                    String message = null;
+                    if (!commands.isEmpty())
+                        message = commands.remove(0);
+                    table = gson.fromJson(observable, Table.class);
+                    view.update(table, message);
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            view.displayMessage(command);
         }
     }
 
     private void lobby(ArrayList<String> commands) {
-        String message = commands.remove(0);
-        switch (message) {
+        String command = commands.remove(0);
+        switch (command) {
             case "player_joined":
                 view.displayMessage("Player joined: " + commands.remove(0));
                 break;
@@ -142,15 +141,15 @@ public class MessageGetter extends Thread {
     private String getListOfPlayers(ArrayList<String> players) {
         String enclosureSymbol = "-";
         String separatorSymbol = "| ";
-        String message = separatorSymbol;
+        String command = separatorSymbol;
         for (String player : players) {
-            message = message.concat(player + " " + separatorSymbol);
+            command = command.concat(player + " " + separatorSymbol);
         }
         String enclosure = new String();
-        for (int i = 1; i < message.length(); i++)
+        for (int i = 1; i < command.length(); i++)
             enclosure = enclosure.concat(enclosureSymbol);
-        message = enclosure + "\n" + message + "\n" + enclosure;
-        return message;
+        command = enclosure + "\n" + command + "\n" + enclosure;
+        return command;
     }
 
     private void setMessage(String message) {

@@ -9,7 +9,6 @@ import it.polimi.ingsw.observer.Observable;
 public interface ClientHandler {
     void displayGame(Table table) throws NetworkErrorException;
     void sendMessage(String message) throws NetworkErrorException;
-    void sendGameMessage(String message) throws NetworkErrorException;
     void sendActiveTableElement(String element) throws NetworkErrorException;
     void sendPatternCard(PatternCard patternCard) throws NetworkErrorException;
     void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException;

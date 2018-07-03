@@ -92,11 +92,6 @@ public class CLIView extends Observable implements View {
     }
 
     @Override
-    public void displayGameMessage(String message) {
-        System.out.println(message);
-    }
-
-    @Override
     public void activeTableElement(String element) {
         System.out.println(element);
     }

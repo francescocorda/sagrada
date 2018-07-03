@@ -38,15 +38,6 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void sendGameMessage(String message) throws NetworkErrorException {
-        try{
-            clientSocketInterpreter.sendMessage("game/message/"+message);
-        } catch (Exception e){
-            throw new NetworkErrorException();
-        }
-    }
-
-    @Override
     public void sendActiveTableElement(String element) throws NetworkErrorException {
         try{
             clientSocketInterpreter.sendMessage("game/active_table_element/"+element);

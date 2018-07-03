@@ -17,7 +17,7 @@ public class CommunicatorSocket implements Communicator {
 
     /**
      * creates a {@link CommunicatorSocket} Object from a given {@link #view}.
-     * @param view is the given view on witch the {@link CommunicatorSocket} operates
+     * @param view is the given view on which the {@link CommunicatorSocket} operates
      */
     public CommunicatorSocket(View view) {
         this.view = view;
@@ -28,14 +28,14 @@ public class CommunicatorSocket implements Communicator {
      * It does that by getting all the needed field from a given {@link ArrayList<String>}:
      * the first parameter should be the server's address (IP) while the second should be
      * the port to connect with it. It also initialise a {@link MessageGetter}
-     * @param IPaddress is the address of the server
+     * @param addressIP is the address of the server
      * @param port is the port of the server
      * @throws NetworkErrorException if  a  {@link IOException} is thrown
      */
     @Override
-    public void initialize(String IPaddress, int port) throws NetworkErrorException {
+    public void initialize(String addressIP, int port) throws NetworkErrorException {
         try {
-            Socket socket = new Socket(IPaddress, port);
+            Socket socket = new Socket(addressIP, port);
             connection = new ConnectionSocket(socket);
         } catch (IOException e) {
             throw new NetworkErrorException();
@@ -73,11 +73,11 @@ public class CommunicatorSocket implements Communicator {
                 case "invalid_command":
                     throw new NotValidInputException();
                 default:
-                    System.err.println(returnedMessage);
+                    println(returnedMessage);
                     throw new NetworkErrorException();
             }
         } else {
-            System.out.println("ERROR: message received: " + returnedMessage);
+            println("ERROR: message received: " + returnedMessage);
         }
     }
 
@@ -129,10 +129,19 @@ public class CommunicatorSocket implements Communicator {
         }
     }
 
-    public String getMessage() {
+    public synchronized String getMessage() {
         while (!mg.readable()) {
-            System.out.print(""); //do nothing
+            //do nothing
         }
         return mg.getMessage();
+    }
+
+    public void close(){
+        mg.kill();
+        connection.close();
+    }
+
+    private void println(String message){
+        System.out.println(message);
     }
 }

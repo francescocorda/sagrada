@@ -119,7 +119,7 @@ public class Controller implements Observer {
                 for (PatternCard patternCard : patterns) {
                     view.displayPatternCard(patternCard);
                 }
-                view.displayGameMessage(CHOOSE_PATTERN_CARD);
+                view.displayMessage(CHOOSE_PATTERN_CARD);
             } catch (NotValidInputException e) {
                 logger.log(Level.SEVERE, PLAYER_NOT_FOUND);
             }
@@ -145,7 +145,7 @@ public class Controller implements Observer {
     public void sendMessage(String name, String message) {
         for (VirtualView virtualView: views) {
             if (virtualView.getUsername().equals(name)) {
-                virtualView.displayGameMessage(message);
+                virtualView.displayMessage(message);
             }
         }
     }

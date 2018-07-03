@@ -112,12 +112,13 @@ public class ScoreTrackManager implements GUIManager {
                 () -> {
                     ArrayList<Player> scores = scoreTrack.getScores();
                     int i;
-                    for(i = 0; i<scores.size(); i++){
-                        cerchiLegenda.get(i).setStyle(colors.get(i));
-                        usernames.get(i).setText(scoreTrack.getScores().get(i).getName());
+                    for(i = scores.size()-1; i>=0; i--){
+                        cerchiLegenda.get(scores.size()-1-i).setStyle(colors.get(scores.size()-1-i));
+                        usernames.get(scores.size()-1-i).setText(scoreTrack.getScores().get(i).getName());
                         int score = scoreTrack.getScores().get(i).getScore();
-                        cerchiPiccoli.get(score == 0 ? 0 : (score-1)%50).setStyle(colors.get(i));
+                        cerchiPiccoli.get(score == 0 ? 0 : (score-1)%50).setStyle(colors.get(scores.size()-1-i));
                     }
+                    i=scores.size();
                     while(i<MAX_PLAYER){
                         cerchiLegenda.get(i).setVisible(false);
                         usernames.get(i).setVisible(false);

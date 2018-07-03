@@ -44,7 +44,7 @@ public class UseToolCardState extends State {
     @Override
     public void exitGame(String username) {
         super.exitGame(username);
-        if (game.getCurrentPlayer().equals(username)) {
+        if (!game.isGameEnded() && game.getCurrentPlayer().equals(username)) {
             controller.skipTurn();
         }
     }

@@ -264,6 +264,18 @@ public class WindowFrame implements Serializable {
         return false;
     }
 
+    public int getEmptyCells() {
+        int emptyCells = 0;
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COLUMN; j++) {
+                if (dices[i][j] == null) {
+                    emptyCells++;
+                }
+            }
+        }
+        return emptyCells;
+    }
+
     public void dump(){
         System.out.println(toString());
     }

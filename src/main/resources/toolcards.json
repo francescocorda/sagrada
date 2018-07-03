@@ -17,7 +17,7 @@
       "parameters":["WINDOW", "COLOR", "WINDOW"]
     },
     {"ID":3,
-      "name":"Copper Foil Burnisher",
+      "name":"Copper Foil\nBurnisher",
       "description":"Move any one die in your window\nignoring shade restriction.\nYou must obey all other\nplacement restriction",
       "usableInTurns":[1,2],
       "movesLeft":[0,1],
@@ -65,8 +65,8 @@
       "parameters":["", "DRAFTPOOL", "WINDOW"]
     },
     {"ID":9,
-      "name":"Cork-backed Straightedge",
-      "description":"After drafting, place the\ndie in a spot that is not adjacent to\nanother die.\nYou must obey all other\nplacement restrictions",
+      "name":"Cork-backed\nStraightedge",
+      "description":"After drafting, place the\ndie in a spot that is not adjacent to\nanother die. You must obey all other\nplacement restrictions",
       "usableInTurns":[1,2],
       "movesLeft":[1],
       "classes":["RemoveFrom", "EnableException", "PlaceIn"],

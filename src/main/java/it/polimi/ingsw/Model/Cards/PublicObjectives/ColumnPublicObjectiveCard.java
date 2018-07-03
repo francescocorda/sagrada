@@ -33,7 +33,7 @@ public class ColumnPublicObjectiveCard extends PublicObjectiveCard {
                     }
                 }
             }
-            if (set.size()==4) {
+            if (set.size()==ROW) {
                 score += points;
             }
         }

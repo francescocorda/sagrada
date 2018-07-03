@@ -307,11 +307,15 @@ public class Game implements Serializable {
             score = 0;
             score += player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
             score += player.getNumOfTokens();
+            score -= player.getWindowFrame().getEmptyCells();
 
             for(PublicObjectiveCard pubObjCard : table.getGamePublicObjectiveCards()){
                 score += pubObjCard.countScore(player.getWindowFrame());
             }
-            player.setScore(score);
+            if (score>=0)
+                player.setScore(score);
+            else
+                player.setScore(0);
             table.getScoreTrack().add(player);
         }
         table.notifyObservers();

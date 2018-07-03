@@ -19,13 +19,13 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
         this.restriction = restriction;
         this.elements = elements;
         this.numPerElement = new int[elements.size()];
+        for (int i = 0; i<numPerElement.length; i++) {
+            numPerElement[i] = 0;
+        }
     }
-
-    public SetPublicObjectiveCard(){}
 
     @Override
     public int countScore(WindowFrame windowFrame) {
-        int score = 0;
 
         for (int i = 1; i <= ROW; i++) {
             for (int j = 1; j <= COLUMN; j++) {

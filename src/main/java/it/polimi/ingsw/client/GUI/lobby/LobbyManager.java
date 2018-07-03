@@ -192,6 +192,8 @@ public class LobbyManager implements GUIManager{
                 setDisable(empty || date.compareTo(today) > 0 );
             }
         });
+        PVOCName.setStyle("-fx-text-alignment: center;");
+        PVOCDescription.setStyle("-fx-text-alignment: center;");
     }
 
     /**

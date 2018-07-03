@@ -74,22 +74,22 @@ public class CLI {
             if(server.equals("")){
                 server = DEFAULT_SERVER;
             }
-            ArrayList<String> parameters = new ArrayList<>();
-            parameters.add(server);
             println("Insert server port (leave it blank for default:"+DEFAULT_SERVER_RMI_PORT+")");
             port = in.nextLine();
             if(port.equals("")){
                 port = DEFAULT_SERVER_RMI_PORT;
             }
-            parameters.add(port);
+            int serverPort = Integer.parseInt(port);
             try {
-                communicator.initialize(parameters);
+                communicator.initialize(server, serverPort);
                 temp = false;
             } catch (NetworkErrorException e) {
                 if(server.equals(DEFAULT_SERVER))
                     println("Server Offline");
                 else
                     println("Server Offline or WRONG ip address");
+            } catch (NumberFormatException e){
+                println("Wrong server port.");
             }
         }
     }
@@ -103,27 +103,27 @@ public class CLI {
         String server = new String();
         String port = new String();
         while (temp) {
-            ArrayList<String> parameters = new ArrayList<>();
             println("Insert server IP (leave it blank for default: "+DEFAULT_SERVER+")");
             server = in.nextLine();
             if(server.equals("")){
                 server = DEFAULT_SERVER;
             }
-            parameters.add(server);
             println("Insert server port (leave it blank for default: "+DEFAULT_SERVER_SOCKET_PORT+")");
             port = in.nextLine();
             if(port.equals("")){
                 port = DEFAULT_SERVER_SOCKET_PORT;
             }
-            parameters.add(port);
+            int serverPort = Integer.parseInt(port);
             try {
-                communicator.initialize(parameters);
+                communicator.initialize(server, serverPort);
                 temp = false;
             } catch (NetworkErrorException e) {
                 if(server.equals(DEFAULT_SERVER))
                     println("Server Offline");
                 else
                     println("Server Offline or WRONG ip address / port");
+            } catch (NumberFormatException e){
+                println("Wrong server port.");
             }
         }
     }

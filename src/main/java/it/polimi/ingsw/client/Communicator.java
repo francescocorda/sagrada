@@ -9,10 +9,11 @@ import java.util.ArrayList;
 public interface Communicator {
     /**
      * initialise RMI communication's field to allow communication with the server.
-     * @param parameters is the given {@link ArrayList<String>}
+     * @param IPaddress is the address of the server
+     * @param port is the port of the server
      * @throws NetworkErrorException if  a network related exception is thrown
      */
-    void initialize(ArrayList<String> parameters) throws NetworkErrorException;
+    void initialize(String IPaddress, int port) throws NetworkErrorException;
 
     /**
      * sends a login message to the server.

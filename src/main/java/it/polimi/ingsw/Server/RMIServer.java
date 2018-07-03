@@ -20,9 +20,8 @@ public class RMIServer {
         }
         try {
             RMIServerInterface clientHandlerRMI = new RMIServerImplementation();
-            Registry registry = LocateRegistry.getRegistry(rmiPort);
-            registry.rebind("//localhost/ClientHandler", clientHandlerRMI);
-        } catch (RemoteException e) {
+            Naming.rebind("//localhost:"+rmiPort+"/ClientHandler", clientHandlerRMI);
+        } catch (RemoteException | MalformedURLException e) {
             System.err.println("Connection error: " + e.getMessage() + "!");
             throw new NetworkErrorException();
         }

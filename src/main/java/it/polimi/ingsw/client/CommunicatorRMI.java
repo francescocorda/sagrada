@@ -34,20 +34,17 @@ public class CommunicatorRMI implements Communicator {
      * It does that by getting all the needed field from a given {@link ArrayList<String>}:
      * the first parameter should be the server's address (IP) while the second should be
      * the port to connect with it
-     * @param parameters is the given {@link ArrayList<String>}
+     * @param IPaddress is the address of the server
+     * @param port is the port of the server
      * @throws NetworkErrorException if  a  {@link RemoteException} or a {@link NotBoundException}
      * is thrown
      */
     @Override
-    public void initialize(ArrayList<String> parameters) throws NetworkErrorException{
-        String address = parameters.remove(0);
-        String portString = parameters.remove(0);
+    public void initialize(String IPaddress, int port) throws NetworkErrorException{
         try {
             this.client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
-            int port = Integer.parseInt(portString);
-            Registry registry = LocateRegistry.getRegistry(port);
-            this.server = (RMIServerInterface) registry.lookup("//" + address + "/ClientHandler");
-        } catch (RemoteException | NotBoundException e) {
+            this.server = (RMIServerInterface) Naming.lookup("//" + IPaddress+":"+ port + "/ClientHandler");
+        } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new NetworkErrorException();
         }
     }

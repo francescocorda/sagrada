@@ -3,13 +3,13 @@
   {
     "row": [
       {
-        "name": "Colori Diversi\n       Riga",
+        "name": "Colori Diversi\nRiga",
         "description": "Righe senza colori ripetuti",
         "points": "6",
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse\n            Riga",
+        "name": "Sfumature Diverse\nRiga",
         "description": "Righe senza senza sfumature\nripetute",
         "points": "5",
         "restriction": "face"
@@ -17,13 +17,13 @@
     ],
     "column": [
       {
-        "name": "Colori Diversi\n   Colonna",
+        "name": "Colori Diversi\nColonna",
         "description": "Colonne senza colori ripetuti",
         "points": "5",
         "restriction": "color"
       },
       {
-        "name": "Sfumature Diverse\n        Colonna",
+        "name": "Sfumature Diverse\nColonna",
         "description": "Colonne senza senza sfumature\nripetute",
         "points": "4",
         "restriction": "face"

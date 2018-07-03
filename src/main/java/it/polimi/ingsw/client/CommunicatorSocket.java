@@ -28,15 +28,14 @@ public class CommunicatorSocket implements Communicator {
      * It does that by getting all the needed field from a given {@link ArrayList<String>}:
      * the first parameter should be the server's address (IP) while the second should be
      * the port to connect with it. It also initialise a {@link MessageGetter}
-     * @param parameters is the given {@link ArrayList<String>}
+     * @param IPaddress is the address of the server
+     * @param port is the port of the server
      * @throws NetworkErrorException if  a  {@link IOException} is thrown
      */
     @Override
-    public void initialize(ArrayList<String> parameters) throws NetworkErrorException {
+    public void initialize(String IPaddress, int port) throws NetworkErrorException {
         try {
-            String address = parameters.get(0);
-            int port = Integer.parseInt(parameters.get(1));
-            Socket socket = new Socket(address, port);
+            Socket socket = new Socket(IPaddress, port);
             connection = new ConnectionSocket(socket);
         } catch (IOException e) {
             throw new NetworkErrorException();

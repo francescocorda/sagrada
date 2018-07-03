@@ -475,7 +475,7 @@ public class TableManager implements GUIManager {
         GUIData.getGUIData().getView().setGUIManager(this);
         text.setEditable(false);
         String image;
-        dices = new HashMap<Integer, String>();
+        dices = new HashMap<>();
         image = "/GUI/dice1.fxml";
         dices.put(1, image);
         image = "/GUI/dice2.fxml";
@@ -590,6 +590,20 @@ public class TableManager implements GUIManager {
         for(int i=0; i<NUM_OF_FACES; i++){
             faces.get(i).setVisible(false);
         }
+        POC1Name.setStyle("-fx-text-alignment: center;");
+        POC1Description.setStyle("-fx-text-alignment: center;");
+        POC2Name.setStyle("-fx-text-alignment: center;");
+        POC2Description.setStyle("-fx-text-alignment: center;");
+        POC3Name.setStyle("-fx-text-alignment: center;");
+        POC3Description.setStyle("-fx-text-alignment: center;");
+        PVOCName.setStyle("-fx-text-alignment: center;");
+        PVOCDescription.setStyle("-fx-text-alignment: center;");
+        tool1Name.setStyle("-fx-text-alignment: center;");
+        tool1Description.setStyle("-fx-text-alignment: center;");
+        tool2Name.setStyle("-fx-text-alignment: center;");
+        tool2Description.setStyle("-fx-text-alignment: center;");
+        tool3Name.setStyle("-fx-text-alignment: center;");
+        tool3Description.setStyle("-fx-text-alignment: center;");
     }
 
     /**
@@ -626,7 +640,7 @@ public class TableManager implements GUIManager {
      * in javaFx application. This method calls methods: showPUOCs, showTools, showPVOC, showDraftPool,
      * showSelectedDice and showRoundTrack in order to properly update every component of the table.
      */
-    public void updateTable(Table table) {
+    public synchronized void updateTable(Table table) {
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
                     this.table = table;

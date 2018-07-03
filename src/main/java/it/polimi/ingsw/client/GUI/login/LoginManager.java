@@ -61,17 +61,15 @@ public class LoginManager implements GUIManager{
      */
     @FXML
     public void loginAction(MouseEvent event) {
-        ArrayList<String> parameters = new ArrayList();
         if (!connection.getText().equals("socket")) {
             view = new GUIView();
             view.setGUIManager(this);
             communicator = new CommunicatorRMI(view);
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
             if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_RMI_PORT);
-            parameters.add(IPaddress.getText());
-            parameters.add(serverPort.getText());
             try {
-                communicator.initialize(parameters);
+                int port = Integer.parseInt(serverPort.getText());
+                communicator.initialize(IPaddress.getText(), port);
                 if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
@@ -89,6 +87,8 @@ public class LoginManager implements GUIManager{
                 logger.log(Level.SEVERE, "Network Error.");
                 //serverPort.setText("Error.");
                 //IPaddress.setText("Error.");
+            }catch (NumberFormatException e){
+                logger.log(Level.SEVERE, "Wrong server port.");
             }
         } else {
             view = new GUIView();
@@ -96,10 +96,9 @@ public class LoginManager implements GUIManager{
             communicator = new CommunicatorSocket(view);
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
             if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_SOCKET_PORT);
-            parameters.add(IPaddress.getText());
-            parameters.add(serverPort.getText());
             try {
-                communicator.initialize(parameters);
+                int port = Integer.parseInt(serverPort.getText());
+                communicator.initialize(IPaddress.getText(), port);
                 if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
@@ -114,6 +113,8 @@ public class LoginManager implements GUIManager{
                 stage.centerOnScreen();
             } catch (NetworkErrorException | NotValidInputException e) {
                 logger.log(Level.SEVERE, "Network Error.");
+            } catch (NumberFormatException e){
+                logger.log(Level.SEVERE, "Wrong server port.");
             }
         }
         event.consume();

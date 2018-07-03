@@ -687,17 +687,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fx:id="tool1" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool1" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER">
+                  <ImageView fx:id="tool1" fitHeight="280.0" fitWidth="230.0" onMousePressed="#selectedTool1" pickOnBounds="true" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
                   </ImageView>
-                  <ImageView fx:id="publicObj3" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fx:id="publicObj2" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fx:id="publicObj1" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <ImageView fx:id="tool2" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool2" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <ImageView fx:id="tool3" fitHeight="280.0" fitWidth="200.0" onMousePressed="#selectedTool3" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                  <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER">
+                  <ImageView fx:id="publicObj3" fitHeight="280.0" fitWidth="230.0" pickOnBounds="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="publicObj2" fitHeight="280.0" fitWidth="230.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="publicObj1" fitHeight="280.0" fitWidth="230.0" pickOnBounds="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <ImageView fx:id="tool2" fitHeight="280.0" fitWidth="230.0" onMousePressed="#selectedTool2" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="tool3" fitHeight="280.0" fitWidth="230.0" onMousePressed="#selectedTool3" pickOnBounds="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="230.0" pickOnBounds="true" GridPane.columnIndex="3" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets top="300.0" />
                      </GridPane.margin>
@@ -859,7 +859,7 @@
                         <Font size="20.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="78.0" top="250.0" />
+                        <Insets left="68.0" top="250.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="POC2Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -891,7 +891,7 @@
                         <Font size="20.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="78.0" top="250.0" />
+                        <Insets left="68.0" top="250.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="POC3Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -923,7 +923,7 @@
                         <Font size="20.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="78.0" top="250.0" />
+                        <Insets left="68.0" top="250.0" />
                      </GridPane.margin>
                   </Text>
                </children>

@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" GridPane.halignment="CENTER" />
             <Text fx:id="PVOCName" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold Italic" size="21.0" />
@@ -42,7 +42,7 @@
             </Text>
             <Text fx:id="PVOCDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <font>
-                  <Font size="11.0" />
+                  <Font size="10.0" />
                </font>
                <GridPane.margin>
                   <Insets top="145.0" />
@@ -211,19 +211,19 @@
             <Rectangle fx:id="cell1_45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="40.0" stroke="BLACK" strokeType="INSIDE" width="40.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
          </children>
       </GridPane>
-      <Text fx:id="pattern1Name" layoutX="50.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="pattern1Name" fill="WHITE" layoutX="50.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font name="Monotype Corsiva" size="26.0" />
          </font></Text>
-      <Text fx:id="pattern2Name" layoutX="284.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="pattern2Name" fill="WHITE" layoutX="284.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font name="Monotype Corsiva" size="26.0" />
          </font></Text>
-      <Text fx:id="pattern3Name" layoutX="519.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="pattern3Name" fill="WHITE" layoutX="519.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font name="Monotype Corsiva" size="26.0" />
          </font></Text>
-      <Text fx:id="pattern4Name" layoutX="757.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
+      <Text fx:id="pattern4Name" fill="WHITE" layoutX="757.0" layoutY="368.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name">
          <font>
             <Font name="Monotype Corsiva" size="26.0" />
          </font></Text>

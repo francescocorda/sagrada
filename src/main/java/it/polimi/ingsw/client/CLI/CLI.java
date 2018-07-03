@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.CommunicatorSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.CLIView;
-
 import java.util.*;
 
 public class CLI {
@@ -21,6 +20,10 @@ public class CLI {
     private static final String INPUT_STREAM_SEPARATOR_SYMBOL = " ";
     private static final String MESSAGE_SEPARATOR_SYMBOL = "/";
 
+    /**
+     * creates a new {@link CLI}.
+     * it does that initialising a {@link CLIView}, a {@link Scanner} and the field {@link #username}
+     */
     public CLI() {
         this.view = new CLIView();
         this.in = new Scanner(System.in);

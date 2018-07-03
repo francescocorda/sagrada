@@ -1,11 +1,9 @@
 package it.polimi.ingsw.client;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.View;
-import it.polimi.ingsw.Model.Game.Color;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;

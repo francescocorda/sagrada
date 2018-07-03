@@ -301,14 +301,13 @@ public class Game implements Serializable {
         }
     }
 
-    public void countScores(){
+    public void countScores() {
         int score;
         for(Player player: table.getPlayers()){
             score = 0;
             score += player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
             score += player.getNumOfTokens();
             score -= player.getWindowFrame().getEmptyCells();
-
             for(PublicObjectiveCard pubObjCard : table.getGamePublicObjectiveCards()){
                 score += pubObjCard.countScore(player.getWindowFrame());
             }
@@ -330,7 +329,8 @@ public class Game implements Serializable {
             table.notifyObservers("Game end.");
             return true;
         } else {
-            return false;}
+            return false;
+        }
     }
 
     public boolean isRoundEnded() {
@@ -338,9 +338,9 @@ public class Game implements Serializable {
             table.getRoundTrack().setRoundDices(table.getDraftPool(), 10-rounds.size());
             rounds.remove(0);
             table.getDraftPool().clear();
-            drawDices();
-            table.notifyObservers();
             if (!rounds.isEmpty()) {
+                drawDices();
+                table.notifyObservers();
                 table.notifyObservers("New round, draft pool extracted.\nNewTurn.");
             }
             return true;

@@ -241,10 +241,11 @@ public class Controller implements Observer {
             }
         }
 
-        if (offlinePlayers.contains(game.getCurrentPlayer())) {
+        if (!game.isGameEnded() && offlinePlayers.contains(game.getCurrentPlayer())) {
             skipTurn();
         } else if (offlinePlayers.size() == players.size() - 1) {
-            sendMessage(game.getCurrentPlayer(), YOU_WON);
+            if (!game.isGameEnded())
+                sendMessage(game.getCurrentPlayer(), YOU_WON);
             game.endGame();
             state = endState;
             timer.cancel();

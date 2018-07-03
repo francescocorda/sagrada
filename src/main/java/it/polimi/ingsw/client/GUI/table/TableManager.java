@@ -85,7 +85,7 @@ public class TableManager implements GUIManager {
     @FXML Rectangle dice9;
     //window1
     @FXML GridPane window1;
-    @FXML TextArea username1;
+    @FXML Text username1;
     @FXML Rectangle dice11;
     @FXML Rectangle dice12;
     @FXML Rectangle dice13;
@@ -108,7 +108,7 @@ public class TableManager implements GUIManager {
     @FXML Rectangle dice45;
     //window2
     @FXML GridPane window2;
-    @FXML TextArea username2;
+    @FXML Text username2;
     @FXML Rectangle dice2_11;
     @FXML Rectangle dice2_12;
     @FXML Rectangle dice2_13;
@@ -131,7 +131,7 @@ public class TableManager implements GUIManager {
     @FXML Rectangle dice2_45;
     //window3
     @FXML GridPane window3;
-    @FXML TextArea username3;
+    @FXML Text username3;
     @FXML Rectangle dice3_11;
     @FXML Rectangle dice3_12;
     @FXML Rectangle dice3_13;
@@ -154,7 +154,7 @@ public class TableManager implements GUIManager {
     @FXML Rectangle dice3_45;
     //window4
     @FXML GridPane window4;
-    @FXML TextArea username4;
+    @FXML Text username4;
     @FXML Rectangle dice4_11;
     @FXML Rectangle dice4_12;
     @FXML Rectangle dice4_13;
@@ -784,7 +784,7 @@ public class TableManager implements GUIManager {
             switch (i) {
                 case (0):
                     tool1Name.setText(card.getName());
-                    tool1ID.setText("ID: "+card.getID());
+                    tool1ID.setText(""+card.getID());
                     String description = card.getDescription();
                     tool1Description.setText(description);
                     tool1Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -792,7 +792,7 @@ public class TableManager implements GUIManager {
                     break;
                 case (1):
                     tool2Name.setText(card.getName());
-                    tool2ID.setText("ID: "+card.getID());
+                    tool2ID.setText(""+card.getID());
                     description = card.getDescription();
                     tool2Description.setText(description);
                     tool2Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -800,7 +800,7 @@ public class TableManager implements GUIManager {
                     break;
                 case (2):
                     tool3Name.setText(card.getName());
-                    tool3ID.setText("ID: "+card.getID());
+                    tool3ID.setText(""+card.getID());
                     description = card.getDescription();
                     tool3Description.setText(description);
                     tool3Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -861,7 +861,7 @@ public class TableManager implements GUIManager {
      * It's called by the method updateTable and contains all dices of a window.
      * This method show the related dices in the javaFx application in the properly boxes.
      */
-    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {
+    public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, Text username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {
         for(int w=0; w<signals.size(); w++) signals.get(w).setVisible(false);
         int n = player.getNumOfTokens();
         for(int p=0; p<n; p++){

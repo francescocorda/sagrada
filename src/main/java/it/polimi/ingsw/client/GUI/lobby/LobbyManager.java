@@ -25,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -81,8 +82,17 @@ public class LobbyManager implements GUIManager{
     @FXML Rectangle cell4_21; @FXML Rectangle cell4_22; @FXML Rectangle cell4_23; @FXML Rectangle cell4_24; @FXML Rectangle cell4_25;
     @FXML Rectangle cell4_31; @FXML Rectangle cell4_32; @FXML Rectangle cell4_33; @FXML Rectangle cell4_34; @FXML Rectangle cell4_35;
     @FXML Rectangle cell4_41; @FXML Rectangle cell4_42; @FXML Rectangle cell4_43; @FXML Rectangle cell4_44; @FXML Rectangle cell4_45;
+    @FXML Circle token1_1; @FXML Circle token1_2; @FXML Circle token1_3; @FXML Circle token1_4; @FXML Circle token1_5; @FXML Circle token1_6;
+    @FXML Circle token2_1; @FXML Circle token2_2; @FXML Circle token2_3; @FXML Circle token2_4; @FXML Circle token2_5; @FXML Circle token2_6;
+    @FXML Circle token3_1; @FXML Circle token3_2; @FXML Circle token3_3; @FXML Circle token3_4; @FXML Circle token3_5; @FXML Circle token3_6;
+    @FXML Circle token4_1; @FXML Circle token4_2; @FXML Circle token4_3; @FXML Circle token4_4; @FXML Circle token4_5; @FXML Circle token4_6;
     private ArrayList<Rectangle> pattern4Items;
     private HashMap<String, String> colors = null;  //Restriction of colors
+    private ArrayList<Circle> tokens1;
+    private ArrayList<Circle> tokens2;
+    private ArrayList<Circle> tokens3;
+    private ArrayList<Circle> tokens4;
+    private static final int NUM_OF_TOKENS = 6;
 
     /**
      * This method is called when the joinLobby Button is pressed.
@@ -194,6 +204,20 @@ public class LobbyManager implements GUIManager{
         });
         PVOCName.setStyle("-fx-text-alignment: center;");
         PVOCDescription.setStyle("-fx-text-alignment: center;");
+        tokens1 = new ArrayList<>();
+        tokens2 = new ArrayList<>();
+        tokens3 = new ArrayList<>();
+        tokens4 = new ArrayList<>();
+        tokens1.add(token1_1); tokens1.add(token1_2); tokens1.add(token1_3); tokens1.add(token1_4); tokens1.add(token1_5); tokens1.add(token1_6);
+        tokens2.add(token2_1); tokens2.add(token2_2); tokens2.add(token2_3); tokens2.add(token2_4); tokens2.add(token2_5); tokens2.add(token2_6);
+        tokens3.add(token3_1); tokens3.add(token3_2); tokens3.add(token3_3); tokens3.add(token3_4); tokens3.add(token3_5); tokens3.add(token3_6);
+        tokens4.add(token4_1); tokens4.add(token4_2); tokens4.add(token4_3); tokens4.add(token4_4); tokens4.add(token4_5); tokens4.add(token4_6);
+        for(int i=0; i<NUM_OF_TOKENS; i++){
+            tokens1.get(i).setVisible(false);
+            tokens2.get(i).setVisible(false);
+            tokens3.get(i).setVisible(false);
+            tokens4.get(i).setVisible(false);
+        }
     }
 
     /**
@@ -281,6 +305,7 @@ public class LobbyManager implements GUIManager{
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
                     GridPane grid= new GridPane();
+                    ArrayList<Circle> tokens = new ArrayList();
                     ArrayList<Rectangle> items = new ArrayList<>();
                     Text name = new Text();
                     switch(count){
@@ -288,21 +313,25 @@ public class LobbyManager implements GUIManager{
                             grid = pattern1;
                             items = pattern1Items;
                             name = pattern1Name;
+                            tokens = tokens1;
                             break;
                         case(1):
                             grid = pattern2;
                             items = pattern2Items;
                             name = pattern2Name;
+                            tokens = tokens2;
                             break;
                         case(2):
                             grid = pattern3;
                             items = pattern3Items;
                             name = pattern3Name;
+                            tokens = tokens3;
                             break;
                         case(3):
                             grid = pattern4;
                             items = pattern4Items;
                             name = pattern4Name;
+                            tokens = tokens4;
                             break;
                     }
                     name.setText(pattern.getName());
@@ -326,6 +355,9 @@ public class LobbyManager implements GUIManager{
                                 items.get((i - 1) * (5) + (j - 1)).setStyle(colors.get(pattern.getRestriction(i, j).escape()));
                             }
                         }
+                    }
+                    for(int i=0; i<pattern.getDifficulty(); i++){
+                        tokens.get(i).setVisible(true);
                     }
                     count++;
                 }

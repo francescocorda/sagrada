@@ -23,13 +23,13 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" GridPane.halignment="CENTER" />
+            <ImageView fx:id="privateObj" fitHeight="280.0" fitWidth="200.0" pickOnBounds="true" translateY="-20.0" GridPane.halignment="CENTER" />
             <Text fx:id="PVOCName" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <font>
                   <Font name="System Bold Italic" size="21.0" />
                </font>
                <GridPane.margin>
-                  <Insets top="90.0" />
+                  <Insets top="70.0" />
                </GridPane.margin>
             </Text>
             <Text fx:id="PVOCID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -37,7 +37,7 @@
                   <Font size="20.0" />
                </font>
                <GridPane.margin>
-                  <Insets top="120.0" />
+                  <Insets top="100.0" />
                </GridPane.margin>
             </Text>
             <Text fx:id="PVOCDescription" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -45,7 +45,7 @@
                   <Font size="10.0" />
                </font>
                <GridPane.margin>
-                  <Insets top="145.0" />
+                  <Insets top="125.0" />
                </GridPane.margin>
             </Text>
             <Text fx:id="PVOCColor" strokeType="OUTSIDE" strokeWidth="0.0" text="color" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -53,7 +53,7 @@
                   <Font size="16.0" />
                </font>
                <GridPane.margin>
-                  <Insets top="230.0" />
+                  <Insets top="210.0" />
                </GridPane.margin>
             </Text>
          </children>
@@ -227,5 +227,29 @@
          <font>
             <Font name="Monotype Corsiva" size="26.0" />
          </font></Text>
+      <Circle fx:id="token1_1" fill="DODGERBLUE" layoutX="60.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="50.0" />
+      <Circle fx:id="token1_5" fill="DODGERBLUE" layoutX="137.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="130.0" />
+      <Circle fx:id="token1_3" fill="DODGERBLUE" layoutX="97.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="90.0" />
+      <Circle fx:id="token1_4" fill="DODGERBLUE" layoutX="117.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="110.0" />
+      <Circle fx:id="token1_2" fill="DODGERBLUE" layoutX="77.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="70.0" />
+      <Circle fx:id="token1_6" fill="DODGERBLUE" layoutX="159.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="150.0" />
+      <Circle fx:id="token2_1" fill="DODGERBLUE" layoutX="302.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="290.0" />
+      <Circle fx:id="token2_2" fill="DODGERBLUE" layoutX="322.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="310.0" />
+      <Circle fx:id="token2_3" fill="DODGERBLUE" layoutX="338.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="330.0" />
+      <Circle fx:id="token2_4" fill="DODGERBLUE" layoutX="360.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="350.0" />
+      <Circle fx:id="token2_5" fill="DODGERBLUE" layoutX="380.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="370.0" />
+      <Circle fx:id="token2_6" fill="DODGERBLUE" layoutX="400.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="390.0" />
+      <Circle fx:id="token3_1" fill="DODGERBLUE" layoutX="530.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="520.0" />
+      <Circle fx:id="token3_2" fill="DODGERBLUE" layoutX="546.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="540.0" />
+      <Circle fx:id="token3_3" fill="DODGERBLUE" layoutX="560.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="560.0" />
+      <Circle fx:id="token3_4" fill="DODGERBLUE" layoutX="590.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="580.0" />
+      <Circle fx:id="token3_5" fill="DODGERBLUE" layoutX="610.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="600.0" />
+      <Circle fx:id="token3_6" fill="DODGERBLUE" layoutX="630.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="620.0" />
+      <Circle fx:id="token4_2" fill="DODGERBLUE" layoutX="767.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="780.0" />
+      <Circle fx:id="token4_1" fill="DODGERBLUE" layoutX="784.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="760.0" />
+      <Circle fx:id="token4_3" fill="DODGERBLUE" layoutX="811.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="800.0" />
+      <Circle fx:id="token4_4" fill="DODGERBLUE" layoutX="825.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="820.0" />
+      <Circle fx:id="token4_5" fill="DODGERBLUE" layoutX="850.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="840.0" />
+      <Circle fx:id="token4_6" fill="DODGERBLUE" layoutX="870.0" layoutY="564.0" radius="10.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.leftAnchor="860.0" />
    </children>
 </AnchorPane>

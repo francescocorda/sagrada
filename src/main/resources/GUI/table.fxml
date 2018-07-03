@@ -226,18 +226,6 @@
                      <GridPane.margin>
                         <Insets top="100.0" />
                      </GridPane.margin></TextArea>
-                  <TextArea fx:id="username3" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets top="70.0" />
-                     </GridPane.margin></TextArea>
-                  <TextArea fx:id="username4" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets top="70.0" />
-                     </GridPane.margin></TextArea>
-                  <TextArea fx:id="username2" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.valignment="TOP">
-                     <GridPane.margin>
-                        <Insets top="20.0" />
-                     </GridPane.margin></TextArea>
                   <Button fx:id="moveButton" contentDisplay="CENTER" minWidth="70.0" mnemonicParsing="false" onAction="#moveAction" prefHeight="50.0" prefWidth="70.0" text="move" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="330.0" top="110.0" />
@@ -265,7 +253,6 @@
                      </GridPane.margin>
                   </GridPane>
                   <Button fx:id="exit" mnemonicParsing="false" onMousePressed="#exitAction" text="exit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
-                  <TextArea fx:id="username1" editable="false" maxHeight="30.0" maxWidth="120.0" minHeight="30.0" minWidth="120.0" prefHeight="30.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                   <Circle fx:id="signal1" fill="DODGERBLUE" radius="10.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                      <GridPane.margin>
                         <Insets top="30.0" />
@@ -449,6 +436,35 @@
                         <Insets top="120.0" />
                      </GridPane.margin>
                   </Button>
+                  <Text fx:id="username2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.columnIndex="1" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="20.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font name="Monotype Corsiva" size="22.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="username3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <GridPane.margin>
+                        <Insets top="70.0" />
+                     </GridPane.margin>
+                     <font>
+                        <Font name="Monotype Corsiva" size="22.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="username1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="Monotype Corsiva" size="22.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="username4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                     <font>
+                        <Font name="Monotype Corsiva" size="22.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="70.0" />
+                     </GridPane.margin>
+                  </Text>
                </children>
             </GridPane>
          </content>
@@ -704,23 +720,23 @@
                   </ImageView>
                   <Text fx:id="tool1Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets top="55.0" />
+                        <Insets left="40.0" top="20.0" />
                      </GridPane.margin>
                      <font>
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                   </Text>
-                  <Text fx:id="tool1ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Text fx:id="tool1ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets top="85.0" />
+                        <Insets left="65.0" top="28.0" />
                      </GridPane.margin>
                      <font>
-                        <Font size="20.0" />
+                        <Font size="28.0" />
                      </font>
                   </Text>
                   <Text fx:id="tool1Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets top="130.0" />
+                        <Insets top="200.0" />
                      </GridPane.margin>
                      <font>
                         <Font size="12.0" />
@@ -728,7 +744,7 @@
                   </Text>
                   <Text fx:id="tool1Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets top="220.0" />
+                        <Insets top="260.0" />
                      </GridPane.margin>
                      <font>
                         <Font size="20.0" />
@@ -739,15 +755,15 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="55.0" />
+                        <Insets left="40.0" top="20.0" />
                      </GridPane.margin>
                   </Text>
-                  <Text fx:id="tool2ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Text fx:id="tool2ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="28.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="85.0" />
+                        <Insets left="65.0" top="28.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="tool2Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -755,7 +771,7 @@
                         <Font size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="130.0" />
+                        <Insets top="200.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="tool2Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -763,7 +779,7 @@
                         <Font size="20.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="220.0" />
+                        <Insets top="260.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="tool3Name" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -771,15 +787,15 @@
                         <Font name="System Bold Italic" size="18.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="55.0" />
+                        <Insets left="40.0" top="20.0" />
                      </GridPane.margin>
                   </Text>
-                  <Text fx:id="tool3ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Text fx:id="tool3ID" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
-                        <Font size="20.0" />
+                        <Font size="28.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="85.0" />
+                        <Insets left="65.0" top="28.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="tool3Description" strokeType="OUTSIDE" strokeWidth="0.0" text="description" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -787,7 +803,7 @@
                         <Font size="12.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="130.0" />
+                        <Insets top="200.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="tool3Tokens" strokeType="OUTSIDE" strokeWidth="0.0" text="tokens" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
@@ -795,7 +811,7 @@
                         <Font size="20.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets top="220.0" />
+                        <Insets top="260.0" />
                      </GridPane.margin>
                   </Text>
                   <Text fx:id="PVOCName" strokeType="OUTSIDE" strokeWidth="0.0" text="name" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP">

@@ -84,6 +84,10 @@ public class LobbyManager implements GUIManager{
     private ArrayList<Rectangle> pattern4Items;
     private HashMap<String, String> colors = null;  //Restriction of colors
 
+    /**
+     * This method is called when the joinLobby Button is pressed.
+     * It sends to the server the date inserted by the user.
+     */
     public void joinLobby(javafx.event.ActionEvent event){
         try{
             this.e = event;
@@ -106,7 +110,14 @@ public class LobbyManager implements GUIManager{
         } catch (Exception exc){
             System.out.println("Data conversion exception: \n "+ exc);
         }
+        event.consume();
     }
+
+    /**
+     * This method is called by the FXMLLoader when the file lobby.fxml is loaded.
+     * It initializes all the javaFx application's items and all the attributes of the class.
+     * It set the current class in the GUIData class as current javaFxController class.
+     */
     @FXML
     public void initialize() {
         GUIData.getGUIData().getView().setGUIManager(this);
@@ -183,6 +194,11 @@ public class LobbyManager implements GUIManager{
         });
     }
 
+    /**
+     * This method is called if a pattern card is pressed by the user.
+     * It sends to server the related index and, consequently, it loads the table.fxml file.
+     * Finally it consumes the event.
+     */
     public void patternChoose(MouseEvent event){
         String card=null;
         GridPane source;
@@ -217,8 +233,14 @@ public class LobbyManager implements GUIManager{
             this.message.setText("GUI ERROR!\n");
             e.printStackTrace();
         }
+        event.consume();
     }
 
+    /**
+     * This method is called by the View class(GUIView or CLIView) in order to display a message
+     * in the properly box in the javaFx application.
+     * If the message is "back_to_game" is loaded the table.fxml file.
+     */
     public synchronized void editMessage(String message){
         this.message.setText(this.message.getText().concat(message.concat("\n")));
         if(message.equals("back_to_game")){
@@ -249,6 +271,10 @@ public class LobbyManager implements GUIManager{
         }
     }
 
+    /**
+     * This method is called by the View class(GUIView or CLIView) in order to display the patternCards
+     * in the properly boxes in the javaFx application.
+     */
     public void showPattern(PatternCard pattern){
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
@@ -308,6 +334,11 @@ public class LobbyManager implements GUIManager{
         this.table=table;
     }
 
+    /**
+     * This method is called by the joinLobby method to check if the data selected
+     * by the user is valid. It converts it into a long.
+     * @returns the date converted to long.
+     */
     private long isDateValid (long timeUnix) throws NotValidInputException{
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTimeInMillis(timeUnix*1000L);
@@ -323,6 +354,11 @@ public class LobbyManager implements GUIManager{
             throw new NotValidInputException();
         }
     }
+
+    /**
+     * This method is called by the View class(GUIView or CLIView) in order to display the PrivateObjectiveCard
+     * in the properly boxes in the javaFx application.
+     */
     public void displayPrivateObjectiveCard(PrivateObjectiveCard card) {
         PVOCName.setText(card.getName());
         PVOCName.setVisible(true);

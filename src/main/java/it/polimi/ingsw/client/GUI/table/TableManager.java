@@ -236,6 +236,10 @@ public class TableManager implements GUIManager {
     Button plus;
     @FXML Button one; @FXML Button two; @FXML Button three; @FXML Button four; @FXML Button five; @FXML Button six;
 
+    /**
+     * It's called if the button cancelButton is pressed.
+     * It sends to the server the message "cancel".
+     */
     public void cancelAction(){
         try {
             communicator.sendMessage("cancel");
@@ -244,6 +248,11 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called when a drag is dropped over a rectangle of the player's window.
+     * It sends to the server the position in which the drag is dropped.
+     * It clears the dragBoard and consumes the event.
+     */
     public void dragDroppedWindow(DragEvent event) {
         Dragboard db = event.getDragboard();
         boolean success = false;
@@ -273,6 +282,10 @@ public class TableManager implements GUIManager {
         event.consume();
     }
 
+    /**
+     * It's called when a drag is over a cell of the player's window.
+     * It accept the transfer mode and consumes the event.
+     */
     public void dragOverWindow(DragEvent event){
         if (event.getDragboard().hasString()) {
             /* allow for moving */
@@ -281,6 +294,11 @@ public class TableManager implements GUIManager {
         event.consume();
     }
 
+    /**
+     * It's called when is pressed a rectangle of the player's window.
+     * It sends to the server the position of the rectangle in the window.
+     * It consumes the event.
+     */
     public void mousePressedWindow(MouseEvent e) {
         if(windowEnable){
             int row = 7, col = 7;
@@ -302,6 +320,11 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called when a dice in the draftPool is pressed.
+     * It sends to the server the number of the pressed dice.
+     * It consumes the event.
+     */
     @FXML
     public void mousePressedPool(MouseEvent e) {
         if(activeTool && draftPoolEnable){
@@ -320,6 +343,14 @@ public class TableManager implements GUIManager {
         e.consume();
     }
 
+    /**
+     * It's called if a drag in the draftPool is detected.
+     * The method works only if the draftPool is enabled to be used.
+     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
+     * and accept the DragAndDrop over all rectangles of the window's player.
+     * It sends to the server the index of the dragged dice in the draftPool.
+     * It consumes the event.
+     */
     @FXML
     public void dragDetectedPool(MouseEvent e) {
         if(draftPoolEnable){
@@ -350,6 +381,14 @@ public class TableManager implements GUIManager {
         e.consume();
     }
 
+    /**
+     * It's called if a drag is detected on the selectDice.
+     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
+     * and accept the DragAndDrop over all rectangles of the window's player.
+     * It sends to the server the index of the rectangle in the window's player
+     * in which the drag is dropped.
+     * It consumes the event.
+     */
     @FXML
     public void dragDetectedSelectedDice(MouseEvent event){
         SnapshotParameters sp =  new SnapshotParameters();
@@ -363,6 +402,12 @@ public class TableManager implements GUIManager {
         event.consume();
     }
 
+    /**
+     * It's called if a dice of the roundTrack is pressed.
+     * The method works only if the roundTrack is enable to be pressed.
+     * It sends to the server the index of the dice selected.
+     * It consumes the event.
+     */
     @FXML
     public void mousePressedRound(MouseEvent e) {
         if(roundTrackEnable){
@@ -383,6 +428,10 @@ public class TableManager implements GUIManager {
         e.consume();
     }
 
+    /**
+     * It's called when the moveButton is pressed.
+     * It sends to the server the message "move".
+     */
     @FXML
     public void moveAction(){
         try {
@@ -391,6 +440,11 @@ public class TableManager implements GUIManager {
             e.printStackTrace();
         }
     }
+
+    /**
+     * It's called when the toolCardButton is pressed.
+     * It sends to the server the message "toolcard".
+     */
     @FXML
     public void toolCardAction(){
         try {
@@ -399,6 +453,11 @@ public class TableManager implements GUIManager {
             e.printStackTrace();
         }
     }
+
+    /**
+     * It's called when the skipButton is pressed.
+     * It sends to the server the message "skip".
+     */
     @FXML
     public void skipAction(){
         try {
@@ -408,6 +467,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called by the FXMLLoader when the file table.fxml is loaded.
+     * It initializes all javaFx items and all the attributes of the class.
+     */
     public void initialize(){
         GUIData.getGUIData().getView().setGUIManager(this);
         text.setEditable(false);
@@ -529,12 +592,15 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called by the class view(CLIView or GUIView) and receives as parameters a message
+     * to print into the properly TextArea in the table.
+     */
     public synchronized void editMessage(String message) {
         if(text.getText().equals("null")) text.setText(message);
         else {
             if (message != null && (message.contains("New Turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
                 String oldMessage = text.getText();
-                //this.text.setText((message+"\n").concat(oldMessage));
                 text.setText(message + "\n");
                 if (activeTool == true) {
                     makeToolVisible();
@@ -543,16 +609,23 @@ public class TableManager implements GUIManager {
             } else {
                 String oldMessage = text.getText();
                 this.text.setText((message+"\n").concat(oldMessage+"\n"));
-                //this.text.setText(text.getText().concat(message + "\n"));
                 if (message.equals("Command of invalid format.")) {
                 }
             }
         }
     }
 
+    /**
+     * It's empty since the patterns are shown only in the lobby.fxml file
+     */
     public void showPattern(PatternCard pattern) {
     }
 
+    /**
+     * It's called by the class View (GUIView or CLIView) in order to update all the table
+     * in javaFx application. This method calls methods: showPUOCs, showTools, showPVOC, showDraftPool,
+     * showSelectedDice and showRoundTrack in order to properly update every component of the table.
+     */
     public void updateTable(Table table) {
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
@@ -591,6 +664,10 @@ public class TableManager implements GUIManager {
         );
     }
 
+    /**
+     * It's called by the method updateTable and contains the selectedDice.
+     * This method show the related dice in the javaFx application in the properly box.
+     */
     public void showSelectedDice(Dice item){
         if(item != null){
             selectedDice.getChildren().removeAll();
@@ -606,6 +683,10 @@ public class TableManager implements GUIManager {
         }  else selectedDice.setVisible(false);
     }
 
+    /**
+     * It's called by the method updateTable and contains the roundTrack.
+     * This method show the related dices in the javaFx application in the properly boxes.
+     */
     public void showRoundTrack(RoundTrack RT){
         Dice elem;
         StackPane dice = null;
@@ -638,6 +719,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called by the method updateTable and contains an arrayList of PublicObjectiveCard.
+     * This method show the related cards in the javaFx application in the properly boxes.
+     */
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
         Image image;
         int i = 0;
@@ -672,6 +757,10 @@ public class TableManager implements GUIManager {
 
     }
 
+    /**
+     * It's called by the method updateTable and contains an arrayList of ToolCard.
+     * This method show the related cards in the javaFx application in the properly boxes.
+     */
     public void showTools(ArrayList<ToolCard> cards) {
         Image image;
         int i = 0;
@@ -708,6 +797,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called by the method updateTable and contains an arrayList of PrivateObjectiveCard.
+     * This method show the related cards in the javaFx application in the properly boxes.
+     */
     public void showPVOC(PrivateObjectiveCard card) {
         PVOCName.setText(card.getName());
         PVOCID.setText("ID: "+card.getID());
@@ -718,6 +811,10 @@ public class TableManager implements GUIManager {
         privateObj.setImage(image);
     }
 
+    /**
+     * It's called by the method updateTable and contains the draftPool.
+     * This method show the related dices in the javaFx application in the properly boxes.
+     */
     public void showDraftPool(ArrayList<Dice> pool) {
         StackPane dice = null;
         int i = 0;
@@ -745,6 +842,11 @@ public class TableManager implements GUIManager {
             i++;
         }
     }
+
+    /**
+     * It's called by the method updateTable and contains all dices of a window.
+     * This method show the related dices in the javaFx application in the properly boxes.
+     */
     public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, TextArea username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {
         for(int w=0; w<signals.size(); w++) signals.get(w).setVisible(false);
         int n = player.getNumOfTokens();
@@ -793,6 +895,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method is called if the toolCard1 is pressed and sends to the server the message "1".
+     * This method works properly only if toolCards are enabled to be selecetd.
+     */
     @FXML
     public void selectedTool1(){
         if(toolCardEnable) {
@@ -814,6 +920,11 @@ public class TableManager implements GUIManager {
             }
         }
     }
+
+    /**
+     * This method is called if the toolCard2 is pressed and sends to the server the message "2".
+     * This method works properly only if toolCards are enabled to be selecetd.
+     */
     @FXML
     public void selectedTool2(){
         if(toolCardEnable) {
@@ -835,6 +946,11 @@ public class TableManager implements GUIManager {
             }
         }
     }
+
+    /**
+     * This method is called if the toolCard3 is pressed and sends to the server the message "3".
+     * This method works properly only if toolCards are enabled to be selecetd.
+     */
     @FXML
     public void selectedTool3(){
         if(toolCardEnable) {
@@ -857,6 +973,9 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method is called if the minusButton is pressed and sends to the server the message "-1".
+     */
     @FXML
     public void minusPressed(){
         try {
@@ -866,6 +985,9 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method is called if the plusButton is pressed and sends to the server the message "+1".
+     */
     @FXML
     public void plusPressed(){
         try {
@@ -875,6 +997,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method is called if a faceButton(one, two, three, four, five or six) is pressed
+     * and sends to the server the related face.
+     */
     @FXML
     public void faceSelected(MouseEvent event) {
         Button source = (Button) event.getSource();
@@ -885,6 +1011,10 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method is called if the exitButton is pressed and sends to the server the message "exit".
+     * It consumes the event.
+     */
     @FXML
     public void exitAction(MouseEvent event){
         try {
@@ -903,6 +1033,9 @@ public class TableManager implements GUIManager {
         }
     }
 
+    /**
+     * This method make every toolCards' component visible.
+     */
     public void makeToolVisible(){
         tool1.setVisible(true);
         tool1Name.setVisible(true);
@@ -920,7 +1053,15 @@ public class TableManager implements GUIManager {
         tool3Description.setVisible(true);
         tool3Tokens.setVisible(true);
     }
-    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){};
+
+    /**
+     * This method is empty because it's called only in the lobby.fxml file.
+     */
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){}
+
+    /**
+     * This method is called by the class View(GUIView or CLIView) when the game is ended.
+     */
     public void showScoreTrack(ScoreTrack scoreTrack){
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
@@ -930,6 +1071,10 @@ public class TableManager implements GUIManager {
         }
         GUIData.getGUIData().getView().getGUIManager().showScoreTrack(scoreTrack);
     }
+
+    /**
+     * This method is called by the updateTable method and it makes the related active item visible on the screen.
+     */
     public void activeElement(String element){
         if(element.contains("SEQUENTIAL")){
             plus.setVisible(true);

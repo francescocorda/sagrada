@@ -53,6 +53,12 @@ public class LoginManager implements GUIManager{
     private ImageView background;
     private static String DEFAULT_PASS = "default";
 
+    /**
+     * This method is called if the loginButton is pressed.
+     * It create a new View and a new Communicator and it sends to the server the message with the user credentials.
+     * The FXMLLoader loads the lobby.fxml file.
+     * .
+     */
     @FXML
     public void loginAction(MouseEvent event) {
         ArrayList<String> parameters = new ArrayList();
@@ -110,8 +116,13 @@ public class LoginManager implements GUIManager{
                 logger.log(Level.SEVERE, "Network Error.");
             }
         }
+        event.consume();
     }
 
+    /**
+     * This method is called if the RMI item of the connectionButton is pressed and
+     * it changes the text of the connectionButton to "RMI".
+     */
     @FXML
     public void connectionRMI() {
         IPaddress.setVisible(true);
@@ -120,6 +131,10 @@ public class LoginManager implements GUIManager{
         connection.setText("RMI");
     }
 
+    /**
+     * This method is called if the socket item of the connectionButton is pressed and
+     * it changes the text of the connectionButton to "socket".
+     */
     @FXML
     public void connectionSocket() {
         IPaddress.setVisible(true);
@@ -128,6 +143,10 @@ public class LoginManager implements GUIManager{
         connection.setText("socket");
     }
 
+    /**
+     * It's called by the FXMLLoader when the file login.fxml is loaded.
+     * It initializes all the javaFx application's items.
+     */
     @FXML
     public void initialize() {
         Image image;

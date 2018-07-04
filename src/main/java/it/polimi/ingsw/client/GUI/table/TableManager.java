@@ -62,14 +62,16 @@ public class TableManager implements GUIManager {
     private boolean toolCardEnable;
     private boolean activeTool = false;
     private boolean roundTrackEnable = false;
-    private boolean draftPoolEnable = false;
-    private boolean windowEnable = false;
+    private boolean draftPoolEnable_IN = false;
+    private boolean draftPoolEnable_OUT = false;
+    private boolean windowEnable_IN = false;
+    private boolean windowEnable_OUT = false;
     private ArrayList<Circle> signals1;
     private ArrayList<Circle> signals2;
     private ArrayList<Circle> signals3;
     private ArrayList<Circle> signals4;
     private ArrayList<Button> faces;
-    private ActionEvent event;
+    private MouseEvent event;
     int initialPos;
     private static final int NUM_OF_ROUNDS = 10;
     private static final int NUM_OF_FACES = 6;
@@ -218,7 +220,6 @@ public class TableManager implements GUIManager {
     @FXML Rectangle diceR99; @FXML Rectangle diceR101; @FXML Rectangle diceR102; @FXML Rectangle diceR103;
     @FXML Rectangle diceR104; @FXML Rectangle diceR105; @FXML Rectangle diceR106; @FXML Rectangle diceR107;
     @FXML Rectangle diceR108; @FXML Rectangle diceR109;
-    @FXML Button quit;
     @FXML Circle signal1; @FXML Circle signal2; @FXML Circle signal3; @FXML Circle signal4; @FXML Circle signal5; @FXML Circle signal6;
     @FXML Circle signal2_1; @FXML Circle signal2_2; @FXML Circle signal2_3; @FXML Circle signal2_4; @FXML Circle signal2_5; @FXML Circle signal2_6;
     @FXML Circle signal3_1; @FXML Circle signal3_2; @FXML Circle signal3_3; @FXML Circle signal3_4; @FXML Circle signal3_5; @FXML Circle signal3_6;
@@ -258,31 +259,33 @@ public class TableManager implements GUIManager {
      * It clears the dragBoard and consumes the event.
      */
     public void dragDroppedWindow(DragEvent event) {
-        Dragboard db = event.getDragboard();
-        boolean success = false;
-        if (db.hasString()) {
-            success = true;
-            int row = 7, col = 7;
-            source = (Rectangle) event.getTarget();
-            for (int j = 1; j < 5; j++) {
-                for (int k = 1; k < 6; k++) {
-                    if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
-                        row = j;
-                        col = k;
+        if(windowEnable_IN){
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                success = true;
+                int row = 7, col = 7;
+                source = (Rectangle) event.getTarget();
+                for (int j = 1; j < 5; j++) {
+                    for (int k = 1; k < 6; k++) {
+                        if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
+                            row = j;
+                            col = k;
+                        }
                     }
                 }
+                try {
+                    communicator.sendMessage(row+"/"+col);
+                }
+                catch (NetworkErrorException e1) {
+                    e1.printStackTrace();
+                }
             }
-            try {
-                communicator.sendMessage(row+"/"+col);
-            }
-            catch (NetworkErrorException e1) {
-                e1.printStackTrace();
-            }
+            /* let the source know whether the string was successfully
+             * transferred and used */
+            event.setDropCompleted(success);
+            db.clear();
         }
-        /* let the source know whether the string was successfully
-         * transferred and used */
-        event.setDropCompleted(success);
-        db.clear();
         event.consume();
     }
 
@@ -304,7 +307,7 @@ public class TableManager implements GUIManager {
      * It consumes the event.
      */
     public void mousePressedWindow(MouseEvent e) {
-        if(windowEnable){
+        if(windowEnable_OUT){
             WindowFrame window= new WindowFrame();
             for(Player p : table.getPlayers()){
                 if(p.getName().equals(GUIData.getGUIData().getUsername())){
@@ -344,28 +347,26 @@ public class TableManager implements GUIManager {
                     e1.printStackTrace();
                 }
             }
-            e.consume();
         }
+        e.consume();
     }
 
     @FXML void dragDetectedWindow(){
-        if(windowEnable){
-            if(draggableDice != null){
-                SnapshotParameters sp =  new SnapshotParameters();
-                sp.setTransform(Transform.scale(1.5, 1.5));
-                WritableImage preview = draggableDice.snapshot(sp,null);
-                Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-                ClipboardContent content = new ClipboardContent();
-                content.putString(source.getId());
-                db.setContent(content);
-                db.setDragView(preview, 45, 45);
-                for(Rectangle r : cells1){
-                    r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
-                }
-                draggableDice=null;
+        if(draggableDice != null){
+            SnapshotParameters sp =  new SnapshotParameters();
+            sp.setTransform(Transform.scale(1.5, 1.5));
+            WritableImage preview = draggableDice.snapshot(sp,null);
+            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(source.getId());
+            db.setContent(content);
+            db.setDragView(preview, 45, 45);
+            for(Rectangle r : cells1){
+                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
             }
-            event.consume();
+            draggableDice=null;
         }
+        event.consume();
     }
 
     /**
@@ -375,7 +376,7 @@ public class TableManager implements GUIManager {
      */
     @FXML
     public void mousePressedPool(MouseEvent e) {
-        if(draftPoolEnable){
+        if(draftPoolEnable_OUT){
             source = (Rectangle) e.getSource();
             for(int i=0; i<9; i++){
                 if (source == cellsPool.get(i)) {
@@ -384,7 +385,7 @@ public class TableManager implements GUIManager {
             }
             draggableDice = poolItems.get(idPool-initialPos-1);
             try {
-                communicator.sendMessage(""+(idPool-initialPos));
+                communicator.sendMessage(Integer.toString((idPool-initialPos)));
             } catch (NetworkErrorException e1) {
                 e1.printStackTrace();
             }
@@ -415,7 +416,7 @@ public class TableManager implements GUIManager {
                 r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
             }
             try {
-                communicator.sendMessage(""+(idPool-initialPos));
+                communicator.sendMessage(Integer.toString((idPool-initialPos)));
             } catch (NetworkErrorException e1) {
                 e1.printStackTrace();
             }
@@ -477,7 +478,6 @@ public class TableManager implements GUIManager {
      */
     @FXML
     public void moveAction(ActionEvent e){
-        this.event = e;
         try {
             GUIData.getGUIData().getCommunicator().sendMessage("move");
         } catch (NetworkErrorException exc) {
@@ -505,7 +505,6 @@ public class TableManager implements GUIManager {
      */
     @FXML
     public void skipAction(ActionEvent e){
-        this.event = e;
         try {
             GUIData.getGUIData().getCommunicator().sendMessage("skip");
         } catch (NetworkErrorException exc) {
@@ -655,6 +654,8 @@ public class TableManager implements GUIManager {
         tool1Border.setStyle("-fx-fill: #00ffff;"); tool1Border.setVisible(false);
         tool2Border.setStyle("-fx-fill: #00ffff;"); tool2Border.setVisible(false);
         tool3Border.setStyle("-fx-fill: #00ffff;"); tool3Border.setVisible(false);
+        this.event = GUIData.getGUIData().getEvent();
+        moveButton.setVisible(false); toolCardButton.setVisible(false); skipButton.setVisible(false); cancelButton.setVisible(false);
     }
 
     /**
@@ -670,7 +671,6 @@ public class TableManager implements GUIManager {
         }
         if(message!=null) {
             this.text.appendText(message+"\n");
-            text.appendText("");
         }
     }
 
@@ -802,21 +802,21 @@ public class TableManager implements GUIManager {
                     POC1Name.setText(card.getName());
                     POC1ID.setText("ID: "+card.getID());
                     POC1Description.setText(card.getDescription());
-                    POC1Points.setText(""+card.getPoints());
+                    POC1Points.setText(Integer.toString(card.getPoints()));
                     publicObj1.setImage(image);
                     break;
                 case (1):
                     POC2Name.setText(card.getName());
                     POC2ID.setText("ID: "+card.getID());
                     POC2Description.setText(card.getDescription());
-                    POC2Points.setText(""+card.getPoints());
+                    POC2Points.setText(Integer.toString(card.getPoints()));
                     publicObj2.setImage(image);
                     break;
                 case (2):
                     POC3Name.setText(card.getName());
                     POC3ID.setText("ID: "+card.getID());
                     POC3Description.setText(card.getDescription());
-                    POC3Points.setText(""+card.getPoints());
+                    POC3Points.setText(Integer.toString(card.getPoints()));
                     publicObj3.setImage(image);
                     break;
             }
@@ -838,7 +838,7 @@ public class TableManager implements GUIManager {
             switch (i) {
                 case (0):
                     tool1Name.setText(card.getName());
-                    tool1ID.setText(""+card.getID());
+                    tool1ID.setText(Integer.toString(card.getID()));
                     String description = card.getDescription();
                     tool1Description.setText(description);
                     tool1Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -846,7 +846,7 @@ public class TableManager implements GUIManager {
                     break;
                 case (1):
                     tool2Name.setText(card.getName());
-                    tool2ID.setText(""+card.getID());
+                    tool2ID.setText(Integer.toString(card.getID()));
                     description = card.getDescription();
                     tool2Description.setText(description);
                     tool2Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -854,7 +854,7 @@ public class TableManager implements GUIManager {
                     break;
                 case (2):
                     tool3Name.setText(card.getName());
-                    tool3ID.setText(""+card.getID());
+                    tool3ID.setText(Integer.toString(card.getID()));
                     description = card.getDescription();
                     tool3Description.setText(description);
                     tool3Tokens.setText("Tokens: "+card.getNumOfTokens());
@@ -1047,7 +1047,7 @@ public class TableManager implements GUIManager {
     public void faceSelected(MouseEvent event) {
         Button source = (Button) event.getSource();
         try {
-            GUIData.getGUIData().getCommunicator().sendMessage(""+source.getText());
+            GUIData.getGUIData().getCommunicator().sendMessage(source.getText());
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         }
@@ -1107,31 +1107,48 @@ public class TableManager implements GUIManager {
      * This method is called by the updateTable method and it makes the related active item visible on the screen.
      */
     public void activeElement(String element){
-        if(element.contains("SEQUENTIAL")){
+        if(element.equals("SEQUENTIAL")){
             plus.setVisible(true);
             minus.setVisible(true);
         } else{
             plus.setVisible(false);
             minus.setVisible(false);
         }
-        if(element.contains("CHOOSE")){
+        if(element.equals("CHOOSE")){
             for(int i=0; i<NUM_OF_FACES; i++){
                 faces.get(i).setVisible(true);
             }
         } else for(int i=0; i<NUM_OF_FACES; i++){
             faces.get(i).setVisible(false);
         }
-        if(element.contains("DRAFTPOOL")){
-            draftPoolEnable=true;
-        } else draftPoolEnable=false;
-        if(element.contains("WINDOW")){
-            windowEnable=true;
-        } else windowEnable=false;
-        if(element.contains("ROUNDTRACK")){
+        if(element.equals("DRAFTPOOL_IN")){
+            draftPoolEnable_IN=true;
+        } else draftPoolEnable_IN=false;
+        if(element.equals("DRAFTPOOL_OUT")){
+            draftPoolEnable_OUT=true;
+        } else draftPoolEnable_OUT=false;
+        if(element.equals("WINDOW_IN")){
+            windowEnable_IN=true;
+        } else windowEnable_IN=false;
+        if(element.equals("WINDOW_OUT")){
+            windowEnable_OUT=true;
+        } else windowEnable_OUT=false;
+        if(element.equals("ROUNDTRACK")){
             roundTrackEnable=true;
         } else roundTrackEnable=false;
-        if(element.contains("TOOLCARD")){
+        if(element.equals("TOOLCARD")){
             toolCardEnable=true;
         } else toolCardEnable=false;
+        if(element.equals("CHOOSE_ACTION")){
+            moveButton.setVisible(true);
+            toolCardButton.setVisible(true);
+            skipButton.setVisible(true);
+            cancelButton.setVisible(false);
+        } else {
+            moveButton.setVisible(false);
+            toolCardButton.setVisible(false);
+            skipButton.setVisible(false);
+            cancelButton.setVisible(true);
+        }
     }
 }

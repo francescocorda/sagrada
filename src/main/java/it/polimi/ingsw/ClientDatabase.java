@@ -108,6 +108,7 @@ public class ClientDatabase {
             case GAME:
                 VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
                 virtualView.notifyObservers(player.getUsername()+"/exit");
+                System.out.println("Game: player: "+player.getUsername()+" left the game...");
                 break;
             case LOBBY:
                 Lobby.getLobby().removePlayer(player.getUsername());

@@ -2,11 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.view.VirtualView;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static it.polimi.ingsw.controller.Controller.TIMER_SECONDS;
 
 public class SocketReader extends Thread {
 
@@ -91,7 +88,7 @@ public class SocketReader extends Thread {
      * Triggers the checking of Client connection.
      * It accomplish that by sending a "ping" message and incrementing the variable {@link #missingPong}
      * to predispose the method {@link #run()} for checking Client connection.
-     * It also starts a timer of {@link it.polimi.ingsw.controller.Controller#TIMER_SECONDS}
+     * It also starts a timer of 3 seconds.
      * if it is not already started by checking boolean variable {@link #timerOn}
      */
     public void waitForPong() {

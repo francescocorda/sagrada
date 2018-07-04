@@ -1,13 +1,21 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.Model.Game.Dice;
 import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.Model.Game.WindowFrame;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.SocketVisitor;
+
+import java.util.ArrayList;
+
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
 
 public class CLIView extends Observable implements View {
 
@@ -29,7 +37,7 @@ public class CLIView extends Observable implements View {
 
     @Override
     public void update(String message) {
-        if(message != null) {
+        if (message != null) {
             displayMessage(message);
         }
     }
@@ -37,7 +45,7 @@ public class CLIView extends Observable implements View {
     @Override
     public void update(Observable o) {
         o.display(visitor);
-}
+    }
 
 
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
@@ -47,37 +55,39 @@ public class CLIView extends Observable implements View {
 
     public void displayGame(Table table) {
         Player myPlayer = null;
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player(""));
 
-        for (PublicObjectiveCard publicObjectiveCard: table.getGamePublicObjectiveCards()) {
+        for (PublicObjectiveCard publicObjectiveCard : table.getGamePublicObjectiveCards()) {
             publicObjectiveCard.dump();
         }
 
-        for(Player p: table.getPlayers()) {
-            if(!p.getName().equals(username)) {
-                System.out.println("Name: " + p.getName());
-                System.out.println("Number of Tokens: " + p.getNumOfTokens());
-                System.out.println(p.getWindowFrame().toGameString());
+        for (Player p : table.getPlayers()) {
+            if (!p.getName().equals(username)) {
+                players.add(p);
             } else {
                 myPlayer = p;
+                players.set(0, p);
             }
         }
 
         table.getRoundTrack().dump();
-        table.dumpDraftPool();
-        for (ToolCard toolCard: table.getGameToolCards()) {
+        for (ToolCard toolCard : table.getGameToolCards()) {
             toolCard.dump();
         }
 
-        System.out.println("Name: " + myPlayer.getName());
-        System.out.println("Number of Tokens: " + myPlayer.getNumOfTokens());
         System.out.println("Private Objective Card: ");
         myPlayer.getPrivateObjectiveCard().dump();
-        System.out.println(myPlayer.getWindowFrame().toGameString());
+
+        table.dumpDraftPool();
+        print("\n");
+
+        showPlayers(players);
 
         if (table.getActiveToolCard() != null) {
             table.getActiveToolCard().dump();
         }
-        if (table.getActiveDice()!=null) {
+        if (table.getActiveDice() != null) {
             System.out.println(table.getActiveDice().toString());
         }
 
@@ -110,4 +120,124 @@ public class CLIView extends Observable implements View {
     public String convert(SocketVisitor visitor) {
         return null;
     }
+
+    private void showPlayers(ArrayList<Player> players) {
+        int playerSpace = 30;
+        String verticalSeparatorSymbol = "|";
+        String horizontalLine = "-----------------";
+        String horizontalSeparator = "--" + verticalSeparatorSymbol + horizontalLine;
+        String horizontalCoordinates = " 1  2  3  4  5";
+
+        //level 1
+        for (Player player : players) {
+            printFixedLength(" Player: " + player.getName(), playerSpace);
+            print(verticalSeparatorSymbol);
+        }
+        //newLine
+        print("\n");
+        //level 2
+        for (Player player : players) {
+            printFixedLength(" Number of tokens: " + player.getNumOfTokens(), playerSpace);
+            print(verticalSeparatorSymbol);
+        }
+        //newLine
+        print("\n");
+        //level 3
+        for (Player player : players) {
+            printFixedLength(" Pattern: " + player.getPatternCard().getName(), playerSpace);
+            print(verticalSeparatorSymbol);
+        }
+        //newLine
+        print("\n");
+        //level 3
+        for (Player player : players) {
+            printFixedLength(" Difficulty: " + player.getPatternCard().getDifficulty(), playerSpace);
+            print(verticalSeparatorSymbol);
+        }
+        //newLine
+        print("\n");
+        //newSpace
+        int i = 0;
+        while (i < players.size()) {
+            printFixedLength(" ", playerSpace);
+            print(verticalSeparatorSymbol);
+            i++;
+        }
+        //newLine
+        print("\n");
+        //level 4
+        i = 0;
+        while (i < players.size()) {
+            printFixedLength("   " + verticalSeparatorSymbol + horizontalCoordinates, playerSpace);
+            print(verticalSeparatorSymbol);
+            i++;
+        }
+        //newLine
+        print("\n");
+        //level 5
+        i = 0;
+        while (i < players.size()) {
+            printFixedLength(" " + horizontalSeparator, playerSpace);
+            print(verticalSeparatorSymbol);
+            i++;
+        }
+        //newLine
+        print("\n");
+        for (i = 0; i < ROW; i++) {
+            for (Player player : players) {
+                String playerRow = windowFrameRow(player.getWindowFrame(), i, verticalSeparatorSymbol);
+                printFixedLength(" " + playerRow, playerSpace);
+                print(verticalSeparatorSymbol);
+            }
+            //newLine
+            print("\n");
+        }
+        //newLine
+        print("\n\n");
+    }
+
+    private void print(String string) {
+        System.out.print(string);
+    }
+
+    private void printFixedLength(String word, int fixedLength) {
+        String emptyDiceSymbol = "\u25FB";
+        String space = new String();
+        int length = word.length();
+        if(word.contains(emptyDiceSymbol)){
+            length -= 9*COLUMN;
+        } else {
+            for(String string : Dice.faces){
+                if(word.contains(string)){
+                    length -= 9*COLUMN;
+                    break;
+                }
+            }
+        }
+        for (int i = 0; i < (fixedLength - length); i++) {
+            space = space.concat(" ");
+        }
+        print(word);
+        print(space);
+    }
+
+    private String windowFrameRow(WindowFrame window, int row, String verticalSeparatorSymbol) {
+        String emptyDiceSymbol = "\u25FB";
+        String string = "";
+        string = string.concat((row + 1) + " " + verticalSeparatorSymbol);
+        for (int j = 0; j < COLUMN; j++) {
+            if (window.getDice(row + 1, j + 1) == null) {
+                String escape = window.getPatternCard().getRestriction(row + 1, j + 1).escape();
+                int face = escape.compareTo("\u2680") + 1;
+                if (face > 0) {
+                    string = string.concat(Restriction.WHITE.escape() + "[" + escape + "]" + Restriction.RESET);
+                } else {
+                    string = string.concat(escape + "[" + emptyDiceSymbol + "]" + Restriction.RESET);
+                }
+            } else
+                string = string.concat(window.getDice(row + 1, j + 1).toString());
+        }
+        return string;
+    }
+
 }

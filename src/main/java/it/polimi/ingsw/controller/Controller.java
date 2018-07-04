@@ -4,6 +4,7 @@ import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
 import it.polimi.ingsw.ParserManager;
+import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -18,7 +19,7 @@ public class Controller implements Observer {
 
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
 
-    public static final long TIMER_SECONDS = 120;
+    private int turnTimerSeconds;
     static final String INVALID_FORMAT = "Command of invalid format.";
     static final String WAIT_YOUR_TURN = "Wait your turn.";
     static final String CHOOSE_TOOL_CARD = "Choose the tool card to use (1-2-3).";
@@ -32,6 +33,8 @@ public class Controller implements Observer {
     static final String GAME_JOINED = "Game joined.";
     static final String BACK_TO_GAME = "back_to_game";
     private static final String YOU_WON = "You Won!";
+    private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
+    private static final String START = "START";
     static final int CHOOSE_ACTION_DIM = 1;
 
     private State startState;
@@ -50,6 +53,7 @@ public class Controller implements Observer {
     private Game game;
 
     public Controller(int matchID, List<VirtualView> views) {
+        turnTimerSeconds = ServerMain.getServerMain().getTurnSeconds();
         offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
         players = new ArrayList<>();
@@ -135,16 +139,16 @@ public class Controller implements Observer {
             public void run() {
                 for (String name : players) {
                     if(game.setPatternCard(name, 0)) {
-                        sendActiveTableElement(name, "START");
+                        sendActiveTableElement(name, START);
                     }
                 }
                 game.doneAssignPatternCards();
                 state = chooseActionState;
-                sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
+                sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 itsYourTurn();
                 setTimerSkipTurn();
             }
-        }, TIMER_SECONDS * 1000);
+        }, turnTimerSeconds * 1000);
     }
 
     public void sendMessage(String name, String message) {
@@ -258,7 +262,7 @@ public class Controller implements Observer {
             timer.cancel();
         } else {
             state = chooseActionState;
-            sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
+            sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
             itsYourTurn();
         }
     }
@@ -271,11 +275,11 @@ public class Controller implements Observer {
             public void run() {
                 state = chooseActionState;
                 offlinePlayers.add(game.getCurrentPlayer());
-                sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
+                sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
                 skipTurn();
             }
-        }, TIMER_SECONDS * 1000);
+        }, turnTimerSeconds * 1000);
     }
 
     Game getGame() {

@@ -49,7 +49,7 @@ public class Dice implements Serializable {
         System.out.println(toString());
     }
 
-    protected static final String[] faces = {          //it was public before (changed on sonarqube's suggestion)
+    public static final String[] faces = {          //it was public before (changed on sonarqube's suggestion)
             "\u2680",  //ONE
             "\u2681",  //TWO
             "\u2682",  //THREE

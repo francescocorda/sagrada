@@ -11,6 +11,7 @@ public class ServerMain {
     private static final String RMI_SETTER_MESSAGE = "Set rmi port (leave it empty for default value: ";
     private static final String SOCKET_SETTER_MESSAGE = "Set socket port (leave it empty for default value: ";
     private static final String TIMER_SETTING_MESSAGE = "Set startGame timer[seconds] (leave it empty for default ";
+    private static final String TURN_SETTING_MESSAGE = "Set playerTurn timer[seconds] (leave it empty for default ";
     private static final String DEFAULT_SYMBOL = "";
     private static final String NOT_VALID_INPUT = "Not valid input...";
     private static final String CLOSING_SETTER = "): ";
@@ -21,6 +22,7 @@ public class ServerMain {
     private static final int DEFAULT_RMI_PORT = 1099;
     private static int socketPort;
     private static int rmiPort;
+    private static int turnSeconds = 2 * 60;
     private static ServerMain instance = null;
     private int numberOfClient = -1;
     private static int timerSeconds = 2 * 60;
@@ -46,6 +48,35 @@ public class ServerMain {
         boolean flag = true;
         setSocketServer();
         setRMIServer();
+        setTimerLobby();
+        setTimerPlayerTurn();
+        Lobby.getLobby();
+        start();
+    }
+
+    private static void setTimerPlayerTurn(){
+        Scanner scanner = new Scanner(System.in);
+        String text;
+        boolean flag = true;
+        while(flag){
+            println(TURN_SETTING_MESSAGE+turnSeconds+CLOSING_SETTER);
+            text = scanner.nextLine();
+            try{
+                if(!text.equals(DEFAULT_SYMBOL)){
+                    int seconds = Integer.parseInt(text);
+                    setTimerPlayerTurn(seconds);
+                }
+                flag = false;
+            } catch (NumberFormatException e){
+                println(NOT_VALID_INPUT);
+            }
+        }
+    }
+
+    private static void setTimerLobby(){
+        Scanner scanner = new Scanner(System.in);
+        String text;
+        boolean flag = true;
         while(flag){
             println(TIMER_SETTING_MESSAGE+timerSeconds+CLOSING_SETTER);
             text = scanner.nextLine();
@@ -59,8 +90,6 @@ public class ServerMain {
                 println(NOT_VALID_INPUT);
             }
         }
-        Lobby.getLobby();
-        start();
     }
 
     private static void setSocketServer(){
@@ -149,6 +178,14 @@ public class ServerMain {
     public int getNewClientNumber() {
         numberOfClient++;
         return numberOfClient;
+    }
+
+    private static void setTimerPlayerTurn(int seconds){
+        turnSeconds = seconds;
+    }
+
+    public int getTurnSeconds(){
+        return turnSeconds;
     }
 
     private static void setTimerSeconds(int seconds) {

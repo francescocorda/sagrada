@@ -20,6 +20,7 @@ public class CommunicatorRMI implements Communicator {
     private View view;
     private RMIClientInterface client;
     private RMIServerInterface server;
+    private RMIClientImplementation rmiClientImplementation;
 
     /**
      * creates a {@link CommunicatorRMI} Object from a given {@link #view}.
@@ -34,16 +35,17 @@ public class CommunicatorRMI implements Communicator {
      * It does that by getting all the needed field from a given {@link ArrayList<String>}:
      * the first parameter should be the server's address (IP) while the second should be
      * the port to connect with it
-     * @param IPaddress is the address of the server
+     * @param addressIP is the address of the server
      * @param port is the port of the server
      * @throws NetworkErrorException if  a  {@link RemoteException} or a {@link NotBoundException}
      * is thrown
      */
     @Override
-    public void initialize(String IPaddress, int port) throws NetworkErrorException{
+    public void initialize(String addressIP, int port) throws NetworkErrorException{
         try {
-            this.client = (RMIClientInterface) UnicastRemoteObject.exportObject(new RMIClientImplementation(view), 0);
-            this.server = (RMIServerInterface) Naming.lookup("//" + IPaddress+":"+ port + "/ClientHandler");
+            this.rmiClientImplementation = new RMIClientImplementation(view);
+            this.client = (RMIClientInterface) UnicastRemoteObject.exportObject(rmiClientImplementation, 0);
+            this.server = (RMIServerInterface) Naming.lookup("//" + addressIP+":"+ port + "/ClientHandler");
         } catch (RemoteException | NotBoundException | MalformedURLException e) {
             throw new NetworkErrorException();
         }
@@ -106,6 +108,9 @@ public class CommunicatorRMI implements Communicator {
         }
     }
 
+    /**
+     * in RMI it doesn't do nothing.
+     */
     public void close(){
         //garbage collector will handle it by himself
     }

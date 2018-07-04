@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.CommunicatorSocket;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.CLIView;
+
 import java.util.*;
 
 public class CLI {
@@ -13,7 +14,7 @@ public class CLI {
     private Scanner in;
     private Communicator communicator;
     private String username;
-    private static CLIView view;
+    private CLIView view;
     public static final String DEFAULT_SERVER = "localhost";
     public static final String DEFAULT_SERVER_SOCKET_PORT = "3001";
     public static final String DEFAULT_SERVER_RMI_PORT = "1099";
@@ -25,7 +26,7 @@ public class CLI {
      * it does that initialising a {@link CLIView}, a {@link Scanner} and the field {@link #username}
      */
     public CLI() {
-        this.view = new CLIView();
+        view = new CLIView();
         this.in = new Scanner(System.in);
         this.username = new String();
     }
@@ -42,7 +43,7 @@ public class CLI {
         while (temp) {
             String mode = in.nextLine();
             mode = mode.toLowerCase();
-            switch(mode){
+            switch (mode) {
                 case "rmi":
                     temp = false;
                     startRMI();
@@ -63,32 +64,33 @@ public class CLI {
     /**
      * starts client with RMI technology initialising a {@link CommunicatorRMI}
      */
-    private void startRMI(){
+    private void startRMI() {
         communicator = new CommunicatorRMI(view);
         boolean temp = true;
         String server = new String();
         String port = new String();
         while (temp) {
-            println("Insert server IP (leave it blank for default: "+DEFAULT_SERVER+")");
+            println("Insert server IP (leave it blank for default: " + DEFAULT_SERVER + ")");
             server = in.nextLine();
-            if(server.equals("")){
+            if (server.equals("")) {
                 server = DEFAULT_SERVER;
             }
-            println("Insert server port (leave it blank for default:"+DEFAULT_SERVER_RMI_PORT+")");
+            println("Insert server port (leave it blank for default:" + DEFAULT_SERVER_RMI_PORT + ")");
             port = in.nextLine();
-            if(port.equals("")){
+            if (port.equals("")) {
                 port = DEFAULT_SERVER_RMI_PORT;
             }
-            int serverPort = Integer.parseInt(port);
+            int serverPort;
             try {
+                serverPort = Integer.parseInt(port);
                 communicator.initialize(server, serverPort);
                 temp = false;
             } catch (NetworkErrorException e) {
-                if(server.equals(DEFAULT_SERVER))
+                if (server.equals(DEFAULT_SERVER))
                     println("Server Offline");
                 else
                     println("Server Offline or WRONG ip address");
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 println("Wrong server port.");
             }
         }
@@ -97,32 +99,30 @@ public class CLI {
     /**
      * starts client with Socket technology initialising a {@link CommunicatorSocket}
      */
-    private void startSocket(){
+    private void startSocket() {
         communicator = new CommunicatorSocket(view);
         boolean temp = true;
         String server = new String();
         String port = new String();
         while (temp) {
-            println("Insert server IP (leave it blank for default: "+DEFAULT_SERVER+")");
+            println("Insert server IP (leave it blank for default: " + DEFAULT_SERVER + ")");
             server = in.nextLine();
-            if(server.equals("")){
+            if (server.equals("")) {
                 server = DEFAULT_SERVER;
             }
-            println("Insert server port (leave it blank for default: "+DEFAULT_SERVER_SOCKET_PORT+")");
+            println("Insert server port (leave it blank for default: " + DEFAULT_SERVER_SOCKET_PORT + ")");
             port = in.nextLine();
-            if(port.equals("")){
+            if (port.equals("")) {
                 port = DEFAULT_SERVER_SOCKET_PORT;
             }
-            int serverPort = Integer.parseInt(port);
+            int serverPort;
             try {
+                serverPort = Integer.parseInt(port);
                 communicator.initialize(server, serverPort);
                 temp = false;
             } catch (NetworkErrorException e) {
-                if(server.equals(DEFAULT_SERVER))
-                    println("Server Offline");
-                else
-                    println("Server Offline or WRONG ip address / port");
-            } catch (NumberFormatException e){
+                println("Server Offline or wrong IP:PORT");
+            } catch (NumberFormatException e) {
                 println("Wrong server port.");
             }
         }
@@ -131,7 +131,7 @@ public class CLI {
     /**
      * handles login phase
      */
-    private void login(){
+    private void login() {
         boolean temp = true;
         String password;
         while (temp) {
@@ -157,7 +157,7 @@ public class CLI {
     /**
      * handles lobby phase
      */
-    private void lobby(){
+    private void lobby() {
         boolean temp = true;
         String yearStr;
         String monthStr;
@@ -165,40 +165,31 @@ public class CLI {
         int day;
         int month;
         int year;
-        long time = 0;
+        long time;
         while (temp) {
-            print("LOBBY\nYear(YYYY):\t");
-            yearStr = in.nextLine();
-            if(!yearStr.equals("")){
-                print("Month(MM):\t");
-                monthStr = in.nextLine();
-                print("Day(DD):\t");
-                dayStr = in.nextLine();
-                try{
+            try {
+                print("LOBBY\nYear(YYYY):\t");
+                yearStr = in.nextLine();
+                if (!yearStr.equals("")) {
+                    print("Month(MM):\t");
+                    monthStr = in.nextLine();
+                    print("Day(DD):\t");
+                    dayStr = in.nextLine();
                     year = Integer.parseInt(yearStr);
                     month = Integer.parseInt(monthStr);
                     day = Integer.parseInt(dayStr);
                     time = isDateValid(day, month, year);
                     communicator.lobby(username, time);
                     temp = false;
-                } catch (NetworkErrorException e) {
-                    println("Server Offline / Network Error");
-                    startCLI();
-                } catch (NotValidInputException e) {
-                    println("Invalid time 1");
-                } catch (NumberFormatException e2) {
-                    println("Invalid time 2");
-                }
-            } else {
-                try {
-                    communicator.lobby(username,(long)0);
+                } else {
+                    communicator.lobby(username, (long) 0);
                     temp = false;
-                } catch (NetworkErrorException e) {
-                    println("Server Offline / Network Error");
-                    startCLI();
-                } catch (NotValidInputException e) {
-                    println("Invalid time");
                 }
+            } catch (NetworkErrorException e) {
+                println("Server Offline / Network Error");
+                startCLI();
+            } catch (NotValidInputException | NumberFormatException e) {
+                println("Invalid time");
             }
         }
         game();
@@ -207,17 +198,17 @@ public class CLI {
     /**
      * handles game phase
      */
-    private void game(){
+    private void game() {
         boolean temp = true;
         boolean oneExit = false;
         String message = new String();
-        while(temp){
+        while (temp) {
             message = in.nextLine();
-            ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*"+INPUT_STREAM_SEPARATOR_SYMBOL+"\\s*")));
+            ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*" + INPUT_STREAM_SEPARATOR_SYMBOL + "\\s*")));
             message = String.join(MESSAGE_SEPARATOR_SYMBOL, commands);
             try {
-                if(message.equals("exit")){
-                    if(oneExit) {
+                if (message.equals("exit")) {
+                    if (oneExit) {
                         temp = false;
                         oneExit = false;
                     } else {
@@ -225,7 +216,7 @@ public class CLI {
                         communicator.sendMessage(message);
                     }
                 } else {
-                    if(message.equals("join")){
+                    if (message.equals("join")) {
                         oneExit = false;
                     }
                     communicator.sendMessage(message);
@@ -240,6 +231,7 @@ public class CLI {
 
     /**
      * shows into commandLine the given message and goes to next line
+     *
      * @param message : message to be shown to commandLine
      */
     private void println(String message) {
@@ -248,9 +240,10 @@ public class CLI {
 
     /**
      * shows into commandLine the given message.
+     *
      * @param message the given message
      */
-    private void print(String message){
+    private void print(String message) {
         System.out.print(message);
     }
 
@@ -258,18 +251,19 @@ public class CLI {
      * checks if a given date(DD/MM/YYYY) is valid or not.
      * If the given date is valid it return its corresponding UNIX Time
      * else it throws a NotValidInputException.
-     * @param day Date's day (YY)
+     *
+     * @param day   Date's day (YY)
      * @param month Date's month (MM)
-     * @param year Date's year (YYYY)
+     * @param year  Date's year (YYYY)
      * @return Date's UNIX Time
      * @throws NotValidInputException when the given Date is not valid
      */
-    private long isDateValid (int day, int month, int year) throws NotValidInputException{
-        GregorianCalendar cal = new GregorianCalendar (year, month-1, day);
+    private long isDateValid(int day, int month, int year) throws NotValidInputException {
+        GregorianCalendar cal = new GregorianCalendar(year, month - 1, day);
         cal.setLenient(false);
         try {
             cal.get(Calendar.DATE);
-            return cal.getTime().getTime()/1000;
+            return cal.getTime().getTime() / 1000;
         } catch (IllegalArgumentException e) {
             throw new NotValidInputException();
         }

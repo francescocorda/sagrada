@@ -1,10 +1,8 @@
 package it.polimi.ingsw.client.RMI;
-
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.observer.Observable;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

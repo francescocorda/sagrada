@@ -12,6 +12,6 @@ public interface ClientHandler {
     void sendActiveTableElement(String element) throws NetworkErrorException;
     void sendPatternCard(PatternCard patternCard) throws NetworkErrorException;
     void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException;
-    void update(Observable o, String message) throws NetworkErrorException;
+    void update(Observable o) throws NetworkErrorException;
     void check() throws NetworkErrorException;
 }

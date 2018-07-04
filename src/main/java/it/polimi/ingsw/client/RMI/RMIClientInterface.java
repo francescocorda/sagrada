@@ -45,10 +45,9 @@ public interface RMIClientInterface extends Remote {
     /**
      * allows to updates client's view.
      * @param o : {@link Observable} to be passed
-     * @param message : {@link String} to be passed
      * @throws RemoteException if there's any connection related problem
      */
-    void update(Observable o, String message) throws RemoteException;
+    void update(Observable o) throws RemoteException;
 
     /**
      * allows to display the Game.

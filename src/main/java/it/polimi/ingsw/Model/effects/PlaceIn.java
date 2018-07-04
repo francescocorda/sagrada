@@ -102,7 +102,7 @@ public class PlaceIn extends Effect {
 
     @Override
     public String getActiveTableElement() {
-        return element.toString();
+        return element.toString() + "_IN";
     }
 
     public boolean isPlaceable(Table table, Round round) {

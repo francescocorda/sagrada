@@ -64,7 +64,6 @@ public class MessageGetter extends Thread {
     }
 
     private synchronized void handleCommands(ArrayList<String> commands) {
-        System.out.println(commands.size());
         String phase = commands.get(0);
         if (phase.equals("lobby")) {
             commands.remove(0);
@@ -96,11 +95,8 @@ public class MessageGetter extends Thread {
                     break;
                 case "update":
                     String observable = commands.remove(0);
-                    String message = null;
-                    if (!commands.isEmpty())
-                        message = commands.remove(0);
                     table = gson.fromJson(observable, Table.class);
-                    view.update(table, message);
+                    view.update(table);
                     break;
                 default:
                     break;

@@ -22,19 +22,27 @@ public class DiagonalPublicObjectiveCard extends PublicObjectiveCard {
             for (int j = 1; j <= COLUMN; j++) {
                 boolean added = false;
                 if (windowFrame.getDice(i, j) != null) {
-                    if (i > 1 && j > 1 && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i - 1, j - 1).getColor())) {
+                    if (i > 1 && j > 1
+                            && windowFrame.getDice(i-1, j-1) != null
+                            && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i-1, j-1).getColor())) {
                         score++;
                         added = true;
                     }
-                    if (!added && i > 1 && j < COLUMN && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i - 1, j + 1).getColor())) {
+                    if (!added && i > 1 && j < COLUMN
+                            && windowFrame.getDice(i-1, j+1) != null
+                            && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i-1, j+1).getColor())) {
                         score++;
                         added = true;
                     }
-                    if (!added && i < ROW && j > 1 && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i + 1, j - 1).getColor())) {
+                    if (!added && i < ROW && j > 1
+                            && windowFrame.getDice(i+1, j-1) != null
+                            && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i+1, j-1).getColor())) {
                         score++;
                         added = true;
                     }
-                    if (!added && i < ROW && j < COLUMN && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i + 1, j + 1).getColor())) {
+                    if (!added && i < ROW && j < COLUMN
+                            && windowFrame.getDice(i+1, j+1) != null
+                            && windowFrame.getDice(i, j).getColor().equals(windowFrame.getDice(i+1, j+1).getColor())) {
                         score++;
                     }
                 }

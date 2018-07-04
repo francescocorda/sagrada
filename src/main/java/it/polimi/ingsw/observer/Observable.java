@@ -26,7 +26,15 @@ public abstract class Observable implements Serializable {
     }
 
     public void notifyObservers() {
-        notifyObservers(null);
+
+        Object[] arrLocal;
+
+        synchronized (this) {
+            arrLocal = obs.toArray();
+        }
+
+        for (int i = arrLocal.length-1; i>=0; i--)
+            ((Observer)arrLocal[i]).update(this);
     }
 
     public void notifyObservers(String message) {
@@ -37,7 +45,7 @@ public abstract class Observable implements Serializable {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--)
-            ((Observer)arrLocal[i]).update(this, message);
+            ((Observer)arrLocal[i]).update(message);
     }
 
     public synchronized void deleteObservers() {

@@ -5,7 +5,7 @@ import it.polimi.ingsw.exceptions.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class PlayerTurn implements Serializable {
+public class PlayerTurn {
 
     public static final int MOVES = 1;
 

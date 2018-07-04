@@ -31,6 +31,7 @@ public class BuyToolCardState extends State {
     private void buyToolCard(String username, ArrayList<String> commands) {
         if (commands.size() == 1 && commands.get(0).equals("cancel")) {
             controller.setState(controller.getChooseActionState());
+            controller.sendActiveTableElement(username, "CHOOSE_ACTION");
             controller.sendMessage(username, ACTION_CANCELED);
             controller.itsYourTurn();
         } else if(commands.size() == 1 && checkFormat(commands)) {
@@ -44,9 +45,11 @@ public class BuyToolCardState extends State {
                     } else {
                         controller.itsYourTurn();
                         controller.setState(controller.getChooseActionState());
+                        controller.sendActiveTableElement(username, "CHOOSE_ACTION");
                     }
                 } else {
                     controller.setState(controller.getChooseActionState());
+                    controller.sendActiveTableElement(username, "CHOOSE_ACTION");
                     controller.itsYourTurn();
                 }
             } else {

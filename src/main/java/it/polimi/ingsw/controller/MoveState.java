@@ -18,6 +18,7 @@ public class MoveState extends State {
                 if (commands.size()==1 && commands.get(0).equals("cancel")) {
                     game.cancelMove();
                     controller.setState(controller.getChooseActionState());
+                    controller.sendActiveTableElement(username, "CHOOSE_ACTION");
                     controller.sendMessage(username, ACTION_CANCELED);
                     controller.itsYourTurn();
                 } else {

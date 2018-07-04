@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class ScoreTrack implements Serializable {
 
-    private ArrayList<PlayerTurn> lastRound;
+    private transient ArrayList<PlayerTurn> lastRound;
     private ArrayList<Player> scores;
 
     public ScoreTrack() {

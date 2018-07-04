@@ -153,14 +153,13 @@ public class RMIClientImplementation implements RMIClientInterface {
     }
 
     /**
-     * allows to updates client's {@link View} through it's method {@link View#update(Observable, String)}.
-     * @param o : {@link Observable} object to be passed as first param of method {@link View#update(Observable, String)}
-     * @param message : {@link String} object to be passed as second param of method
-     *                method {@link View#update(Observable, String)}
+     * allows to updates client's {@link View} through it's method {@link View#update(Observable)}.
+     * @param o : {@link Observable} object to be passed as first param of method {@link View#update(Observable)}
+     *                method {@link View#update(Observable)}
      * @throws RemoteException if there's any connection related problem
      */
-    public void update(Observable o, String message) throws RemoteException{
-        view.update(o, message);
+    public void update(Observable o) throws RemoteException{
+        view.update(o);
     }
 
     /**

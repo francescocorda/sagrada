@@ -62,9 +62,9 @@ public class ClientHandlerRMI implements ClientHandler {
     }
 
     @Override
-    public void update(Observable o, String message) throws NetworkErrorException {
+    public void update(Observable o) throws NetworkErrorException {
         try {
-            rmiClientInterface.update(o, message);
+            rmiClientInterface.update(o);
         } catch (RemoteException e) {
             throw new NetworkErrorException();
         }

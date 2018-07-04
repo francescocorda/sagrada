@@ -70,9 +70,18 @@ public class VirtualView extends Observable implements View {
     }
 
     @Override
-    public void update(Observable o, String message) {
+    public void update(String message) {
         try {
-            getClientHandler().update(o, message);
+            getClientHandler().sendMessage(message);
+        } catch (NetworkErrorException e) {
+            disconnect();
+        }
+    }
+
+    @Override
+    public void update(Observable o) {
+        try {
+            getClientHandler().update(o);
         } catch (NetworkErrorException e) {
             disconnect();
         }

@@ -142,6 +142,7 @@ public class Controller implements Observer {
                 }
                 game.doneAssignPatternCards();
                 state = chooseActionState;
+                sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
                 itsYourTurn();
                 setTimerSkipTurn();
             }
@@ -173,11 +174,17 @@ public class Controller implements Observer {
     }
 
     @Override
-    public synchronized void update(Observable o, String message) {
+    public synchronized void update(String message) {
         ArrayList<String> commands;
         commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
         handleEvent(commands);
+    }
 
+    @Override
+    public synchronized void update(Observable o) {
+        //ArrayList<String> commands;
+        //commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
+        //handleEvent(commands);
     }
 
     private synchronized void handleEvent(ArrayList<String> commands) {
@@ -227,7 +234,7 @@ public class Controller implements Observer {
         sendMessage(game.getCurrentPlayer(), ITS_YOUR_TURN);
     }
 
-    void checkGameState() {
+    synchronized void checkGameState() {
         if (game.isTurnEnded()) {
             if (game.isRoundEnded() && game.isGameEnded()) {
                 game.countScores();
@@ -251,6 +258,7 @@ public class Controller implements Observer {
             timer.cancel();
         } else {
             state = chooseActionState;
+            sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
             itsYourTurn();
         }
     }
@@ -263,6 +271,7 @@ public class Controller implements Observer {
             public void run() {
                 state = chooseActionState;
                 offlinePlayers.add(game.getCurrentPlayer());
+                sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
                 skipTurn();
             }

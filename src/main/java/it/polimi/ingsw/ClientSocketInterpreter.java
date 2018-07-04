@@ -163,8 +163,14 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     }
 
     @Override
-    public void update(Observable o, String message) {
-        handleEvent(message);
+    public void update(String message) {
+        if (message!=null)
+            handleEvent(message);
+    }
+
+    @Override
+    public void update(Observable o) {
+
     }
 
     private void handleEvent(String message) {

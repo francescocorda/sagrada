@@ -57,12 +57,15 @@ public class GUIView extends Observable implements View {
     }
 
     @Override
-    public void update(Observable o, String message) {
+    public void update(String message) {
         if (message != null) {
             displayMessage(message);
-        } else {
-            o.display(visitor);
         }
+    }
+
+    @Override
+    public void update(Observable o) {
+        o.display(visitor);
     }
 
     public void setGUIManager(GUIManager manager) {

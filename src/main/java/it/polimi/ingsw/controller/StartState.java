@@ -37,6 +37,8 @@ public class StartState extends State {
             }
             if (game.doneAssignPatternCards()) {
                 controller.setState(controller.getChooseActionState());
+                if (!game.isGameEnded())
+                    controller.sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
                 controller.setTimerSkipTurn();
                 controller.itsYourTurn();
             }

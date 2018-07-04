@@ -91,6 +91,6 @@ public class RemoveFrom extends Effect {
 
     @Override
     public String getActiveTableElement() {
-        return element.toString();
+        return element.toString() + "_OUT";
     }
 }

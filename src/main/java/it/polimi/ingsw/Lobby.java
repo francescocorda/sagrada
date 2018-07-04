@@ -211,8 +211,14 @@ public class Lobby implements Observer {
     }
 
     @Override
-    public void update(Observable o, String message) {
-        handleEvent(message);
+    public void update(String message) {
+        if (message!=null)
+            handleEvent(message);
+    }
+
+    @Override
+    public void update(Observable o) {
+        //handleEvent(message);
     }
 
     private synchronized void handleEvent(String message) {

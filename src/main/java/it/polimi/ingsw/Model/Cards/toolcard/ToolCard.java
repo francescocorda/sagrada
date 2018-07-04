@@ -201,6 +201,8 @@ public class ToolCard implements Serializable {
         }
 
         numOfTokens = numOfTokens - refund;
+        if (numOfTokens==0)
+            price = INITIAL_PRICE;
         try {
             player.setNumOfTokens(player.getNumOfTokens() + refund);
         } catch (NotValidInputException e) {

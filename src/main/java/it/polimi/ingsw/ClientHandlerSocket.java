@@ -67,11 +67,9 @@ public class ClientHandlerSocket implements ClientHandler {
     }
 
     @Override
-    public void update(Observable o, String message) throws NetworkErrorException {
+    public void update(Observable o) throws NetworkErrorException {
         String observable = o.convert(socketVisitor);
         String protocolMessage = "game/update/"+observable;
-        if (message != null)
-                protocolMessage = protocolMessage.concat("/"+message);
         try{
             clientSocketInterpreter.sendMessage(protocolMessage);
         } catch (Exception e){

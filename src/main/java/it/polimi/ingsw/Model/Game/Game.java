@@ -7,16 +7,20 @@ import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveDeck;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
+import it.polimi.ingsw.client.GUI.login.LoginManager;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.observer.Observer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static it.polimi.ingsw.Model.Game.RoundTrack.NUMBER_OF_ROUNDS;
 
-public class Game implements Serializable {
+public class Game {
+    private static final Logger logger = Logger.getLogger(Game.class.getName());
     int matchID;
     private ArrayList<Player> players;
     private PrivateObjectiveDeck privateObjectiveDeck;
@@ -143,19 +147,24 @@ public class Game implements Serializable {
         return patterns;
     }
 
-    public void setPatternCard(String player, int patternIndex) throws NotValidInputException {
+    public boolean setPatternCard(String player, int patternIndex) {
         int i=0;
         while(!players.get(i).getName().equals(player)&& i<players.size()){
             i++;
         }
         if(i==players.size()){
-            throw new NotValidInputException();
+            return false;
         } else {
             if(players.get(i).getPatternCard() == null) {
                 players.get(i).setPatternCard(matchPatternDeck.get(PROPOSED_PATTERNS*i + patternIndex));
-                players.get(i).setNumOfTokens(matchPatternDeck.get(PROPOSED_PATTERNS*i + patternIndex).getDifficulty());
+                try {
+                    players.get(i).setNumOfTokens(matchPatternDeck.get(PROPOSED_PATTERNS*i + patternIndex).getDifficulty());
+                } catch (NotValidInputException e) {
+                    logger.log(Level.SEVERE, e.toString());
+                }
+                return true;
             } else {
-                throw new NotValidInputException();
+                return false;
             }
         }
     }
@@ -302,23 +311,27 @@ public class Game implements Serializable {
     }
 
     public void countScores() {
-        int score;
         for(Player player: table.getPlayers()){
-            score = 0;
-            score += player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
-            score += player.getNumOfTokens();
-            score -= player.getWindowFrame().getEmptyCells();
-            for(PublicObjectiveCard pubObjCard : table.getGamePublicObjectiveCards()){
-                score += pubObjCard.countScore(player.getWindowFrame());
-            }
-            if (score>=0)
-                player.setScore(score);
-            else
-                player.setScore(0);
+            countScore(player);
             table.getScoreTrack().add(player);
         }
         table.notifyObservers();
     }
+
+    public void countScore(Player player) {
+        int score = 0;
+        score += player.getPrivateObjectiveCard().countScore(player.getWindowFrame());
+        score += player.getNumOfTokens();
+        score -= player.getWindowFrame().getEmptyCells();
+        for(PublicObjectiveCard pubObjCard : table.getGamePublicObjectiveCards()){
+            score += pubObjCard.countScore(player.getWindowFrame());
+        }
+        if (score>=0)
+            player.setScore(score);
+        else
+            player.setScore(0);
+    }
+
 
     public String getWinner() {
         return table.getScoreTrack().getWinner().getName();
@@ -368,7 +381,19 @@ public class Game implements Serializable {
     }
 
     public void endGame() {
-        rounds.clear();
+        if (!isGameEnded()) {
+            Player lastPlayer = rounds.get(0).getCurrentPlayer();
+            rounds.clear();
+            for(Player player: table.getPlayers()){
+                if (!player.getName().equals(lastPlayer.getName())) {
+                    player.setScore(0);
+                    table.getScoreTrack().add(player);
+                }
+            }
+            countScore(lastPlayer);
+            table.getScoreTrack().add(0, lastPlayer);
+            table.notifyObservers();
+        }
     }
 
     public boolean isMoveActive() {

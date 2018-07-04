@@ -134,10 +134,8 @@ public class Controller implements Observer {
             @Override
             public void run() {
                 for (String name : players) {
-                    try {
-                        game.setPatternCard(name, 0);
-                    } catch (NotValidInputException e) {
-                        //exception already handled
+                    if(game.setPatternCard(name, 0)) {
+                        sendActiveTableElement(name, "START");
                     }
                 }
                 game.doneAssignPatternCards();
@@ -251,9 +249,11 @@ public class Controller implements Observer {
         if (!game.isGameEnded() && offlinePlayers.contains(game.getCurrentPlayer())) {
             skipTurn();
         } else if (offlinePlayers.size() == players.size() - 1) {
-            if (!game.isGameEnded())
-                sendMessage(game.getCurrentPlayer(), YOU_WON);
-            game.endGame();
+            if (!game.isGameEnded()) {
+                String lastPlayer = game.getCurrentPlayer();
+                game.endGame();
+                sendMessage(lastPlayer, YOU_WON);
+            }
             state = endState;
             timer.cancel();
         } else {

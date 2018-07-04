@@ -25,11 +25,9 @@ public class StartState extends State {
         if (checkFormat(commands)) {
             int indexPattern = Integer.parseInt(commands.remove(0));
             if ((indexPattern >= 1 && indexPattern <= PROPOSED_PATTERNS) && commands.isEmpty()) {
-                try {
-                    game.setPatternCard(username, indexPattern-1);
+                if (game.setPatternCard(username, indexPattern-1)) {
+                    controller.sendActiveTableElement(username, "START");
                     controller.sendMessage(username, "Pattern card assigned.");
-                } catch (NotValidInputException e) {
-                    controller.sendMessage(username, INVALID_FORMAT);
                 }
             } else {
                 controller.sendMessage(username, INVALID_FORMAT);

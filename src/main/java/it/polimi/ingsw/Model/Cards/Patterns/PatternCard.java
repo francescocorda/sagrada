@@ -44,7 +44,7 @@ public class PatternCard extends Card {
     }
 
     public void setDifficulty(int difficulty) throws NotValidInputException {
-        if(difficulty<3||difficulty>6) throw new NotValidInputException();
+        if(difficulty<0) throw new NotValidInputException();
         this.difficulty = difficulty;
     }
 

@@ -30,7 +30,7 @@ public class Player implements Serializable {
     }
 
     public void setNumOfTokens(int numOfTokens) throws NotValidInputException {
-        if(numOfTokens>=0 && numOfTokens<=6) {
+        if(numOfTokens>=0) {
             this.numOfTokens = numOfTokens;
         } else {
             throw new NotValidInputException();

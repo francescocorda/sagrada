@@ -35,8 +35,8 @@ class TestPatternCard {
         assertEquals(6, patternCard.getDifficulty());
 
         assertThrows(NotValidInputException.class, ()->patternCard.setDifficulty(-1));
-        assertThrows(NotValidInputException.class, ()->patternCard.setDifficulty(0));
-        assertThrows(NotValidInputException.class, ()->patternCard.setDifficulty(10));
+        assertDoesNotThrow(()->patternCard.setDifficulty(0));
+        assertDoesNotThrow(()->patternCard.setDifficulty(10));
     }
     @Test
     void restrictionTest(){

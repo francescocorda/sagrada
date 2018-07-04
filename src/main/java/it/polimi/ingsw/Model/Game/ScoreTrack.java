@@ -15,6 +15,10 @@ public class ScoreTrack implements Serializable {
         lastRound = new ArrayList<>();
     }
 
+    public void add(int i, Player player) {
+        scores.add(i, player);
+    }
+
     public void add(Player player) {
         if (scores.isEmpty()) {
             scores.add(player);
@@ -89,6 +93,6 @@ public class ScoreTrack implements Serializable {
     }
 
     public ArrayList<Player> getScores(){
-        return (ArrayList<Player>)scores.clone();
+        return new ArrayList<>(scores);
     }
 }

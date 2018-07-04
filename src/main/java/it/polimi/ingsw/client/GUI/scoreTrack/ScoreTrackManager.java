@@ -99,13 +99,20 @@ public class ScoreTrackManager implements GUIManager {
     @FXML
     Text username4;
     @FXML
-    TextArea screen;
+    Text score1;
+    @FXML
+    Text score2;
+    @FXML
+    Text score3;
+    @FXML
+    Text score4;
 
     private ArrayList<Circle> cerchiPiccoli;
     private ArrayList<Circle> cerchiGrandi;
     private ArrayList<Circle> cerchiLegenda;
     private ArrayList<String> colors;
     private ArrayList<Text> usernames;
+    private ArrayList<Text> scores;
 
     public void showScoreTrack(ScoreTrack scoreTrack){
         Platform.runLater(  //Compulsory to update GUI
@@ -113,8 +120,13 @@ public class ScoreTrackManager implements GUIManager {
                     ArrayList<Player> scores = scoreTrack.getScores();
                     int i;
                     for(i = scores.size()-1; i>=0; i--){
-                        cerchiLegenda.get(scores.size()-1-i).setStyle(colors.get(scores.size()-1-i));
-                        usernames.get(scores.size()-1-i).setText(scoreTrack.getScores().get(i).getName());
+                        cerchiLegenda.get(i).setStyle(colors.get(scores.size()-1-i));
+                        String name = scoreTrack.getScores().get(i).getName();
+                        if(name.length()>10){
+                            name = name.substring(0, 9);
+                        }
+                        usernames.get(i).setText(name);
+                        this.scores.get(i).setText(""+scoreTrack.getScores().get(i).getScore());
                         int score = scoreTrack.getScores().get(i).getScore();
                         cerchiPiccoli.get(score == 0 ? 0 : (score-1)%50).setStyle(colors.get(scores.size()-1-i));
                     }
@@ -122,9 +134,9 @@ public class ScoreTrackManager implements GUIManager {
                     while(i<MAX_PLAYER){
                         cerchiLegenda.get(i).setVisible(false);
                         usernames.get(i).setVisible(false);
+                        this.scores.get(i).setVisible(false);
                         i++;
                     }
-                    screen.setText(scoreTrack.toString());
                 }
                 );
     }
@@ -136,6 +148,7 @@ public class ScoreTrackManager implements GUIManager {
         cerchiLegenda = new ArrayList<>();
         colors = new ArrayList<>();
         usernames = new ArrayList<>();
+        scores = new ArrayList<>();
         cerchiGrandi.add(cerchioG1); cerchiPiccoli.add(cerchioP1);
         cerchiGrandi.add(cerchioG2); cerchiPiccoli.add(cerchioP2);
         cerchiGrandi.add(cerchioG3); cerchiPiccoli.add(cerchioP3);
@@ -189,10 +202,11 @@ public class ScoreTrackManager implements GUIManager {
         cerchiLegenda.add(cerchioL1); cerchiLegenda.add(cerchioL2);
         cerchiLegenda.add(cerchioL3); cerchiLegenda.add(cerchioL4);
         usernames.add(username1); usernames.add(username2); usernames.add(username3); usernames.add(username4);
+        scores.add(score1); scores.add(score2); scores.add(score3); scores.add(score4);
         colors.add("-fx-fill: #0000cd;"); colors.add("-fx-fill: #ff0000;");
         colors.add("-fx-fill: #00ff00;"); colors.add("-fx-fill: #ff1493;");
         Image back = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
-        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         rectangle.setStyle("-fx-fill: #ffefd5;");
         for(int i=0; i<SIZE; i++){
             cerchiGrandi.get(i).setStyle("-fx-fill: #696969;");

@@ -44,29 +44,29 @@
                         <Insets bottom="20.0" left="150.0" right="150.0" />
                      </GridPane.margin>
                      <children>
-                        <Rectangle fx:id="dice11" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                        <Rectangle fx:id="dice12" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" />
-                        <Rectangle fx:id="dice13" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" />
-                        <Rectangle fx:id="dice14" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" />
-                        <Rectangle fx:id="dice15" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" />
-                        <Rectangle fx:id="dice21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice22" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice23" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice24" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                        <Rectangle fx:id="dice25" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                        <Rectangle fx:id="dice11" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" />
+                        <Rectangle fx:id="dice12" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" />
+                        <Rectangle fx:id="dice13" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" />
+                        <Rectangle fx:id="dice14" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" />
+                        <Rectangle fx:id="dice15" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" />
+                        <Rectangle fx:id="dice21" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice22" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice23" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice24" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="dice25" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin></Rectangle>
-                        <Rectangle fx:id="dice31" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice32" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice33" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice34" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice35" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-                        <Rectangle fx:id="dice41" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice42" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice43" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice44" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Rectangle fx:id="dice45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice31" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice32" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice33" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice34" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice35" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                        <Rectangle fx:id="dice41" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice42" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice43" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice44" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                        <Rectangle fx:id="dice45" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedWindow" onDragDropped="#dragDroppedWindow" onDragOver="#dragOverWindow" onMousePressed="#mousePressedWindow" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                      </children>
                   </GridPane>
                   <GridPane fx:id="window2" gridLinesVisible="true" layoutX="460.0" layoutY="295.0" rotate="180.0" GridPane.columnIndex="1">
@@ -222,7 +222,7 @@
                         <Rectangle fx:id="dice9" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="60.0" onDragDetected="#dragDetectedPool" onMousePressed="#mousePressedPool" stroke="TRANSPARENT" strokeType="INSIDE" width="60.0" GridPane.columnIndex="8" />
                      </children>
                   </GridPane>
-                  <TextArea fx:id="text" editable="false" maxHeight="140.0" maxWidth="400.0" prefHeight="140.0" prefWidth="400.0" translateX="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                  <TextArea fx:id="text" editable="false" maxHeight="140.0" maxWidth="400.0" minWidth="430.0" prefHeight="140.0" prefWidth="400.0" translateX="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets top="100.0" />
                      </GridPane.margin></TextArea>
@@ -249,7 +249,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <GridPane.margin>
-                        <Insets top="30.0" />
+                        <Insets top="20.0" />
                      </GridPane.margin>
                   </GridPane>
                   <Button fx:id="exit" mnemonicParsing="false" onMousePressed="#exitAction" text="exit" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
@@ -444,9 +444,9 @@
                         <Font name="Monotype Corsiva" size="22.0" />
                      </font>
                   </Text>
-                  <Text fx:id="username3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Text fx:id="username3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <GridPane.margin>
-                        <Insets left="-50.0" top="70.0" />
+                        <Insets left="105.0" top="70.0" />
                      </GridPane.margin>
                      <font>
                         <Font name="Monotype Corsiva" size="22.0" />
@@ -457,12 +457,12 @@
                         <Font name="Monotype Corsiva" size="22.0" />
                      </font>
                   </Text>
-                  <Text fx:id="username4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                  <Text fx:id="username4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.valignment="TOP">
                      <font>
                         <Font name="Monotype Corsiva" size="22.0" />
                      </font>
                      <GridPane.margin>
-                        <Insets left="-50.0" top="70.0" />
+                        <Insets left="105.0" top="70.0" />
                      </GridPane.margin>
                   </Text>
                </children>
@@ -703,6 +703,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
+                  <Rectangle fx:id="tool3Border" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="295.0" stroke="WHITE" strokeType="INSIDE" width="245.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                  <Rectangle fx:id="tool2Border" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="295.0" stroke="WHITE" strokeType="INSIDE" width="245.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Rectangle fx:id="tool1Border" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="295.0" stroke="WHITE" strokeType="INSIDE" width="245.0" GridPane.halignment="CENTER" />
                   <ImageView fx:id="tool1" fitHeight="280.0" fitWidth="230.0" onMousePressed="#selectedTool1" pickOnBounds="true" GridPane.halignment="CENTER">
                      <GridPane.margin>
                         <Insets />

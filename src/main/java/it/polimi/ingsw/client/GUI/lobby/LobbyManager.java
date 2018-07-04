@@ -138,6 +138,7 @@ public class LobbyManager implements GUIManager{
         count = 0;
         Image back = new Image(getClass().getResourceAsStream("/GUI/wood.jpg"));
         this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        this.background.setBackground(new Background(new BackgroundImage(back, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         pattern1Items = new ArrayList<>();
         pattern2Items = new ArrayList<>();
         pattern3Items = new ArrayList<>();
@@ -268,7 +269,7 @@ public class LobbyManager implements GUIManager{
      * If the message is "back_to_game" is loaded the table.fxml file.
      */
     public synchronized void editMessage(String message){
-        this.message.setText(this.message.getText().concat(message.concat("\n")));
+        this.message.appendText(message.concat("\n"));
         if(message.equals("back_to_game")){
             Platform.runLater(  //Compulsory to update GUI
                     () -> {
@@ -290,10 +291,10 @@ public class LobbyManager implements GUIManager{
         }
         else if(message.equals("Pattern card assigned.")) {
             temp = new String();
-            temp = message+"\n";
+            temp = message;
             flag = true;
         } else if(flag){
-            temp = temp.concat(message+"\n");
+            temp = temp.concat("\n"+message);
         }
     }
 

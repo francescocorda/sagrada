@@ -7,7 +7,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane fx:id="background" maxHeight="670.0" maxWidth="1275.0" minHeight="670.0" minWidth="1275.0" prefHeight="670.0" prefWidth="1275.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.scoreTrack.ScoreTrackManager">
+<GridPane fx:id="background" alignment="CENTER" maxHeight="670.0" maxWidth="1280.0" minHeight="670.0" minWidth="1280.0" prefHeight="670.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.scoreTrack.ScoreTrackManager">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" minWidth="15.0" prefWidth="15.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
@@ -46,7 +46,7 @@
       <RowConstraints maxHeight="235.0" minHeight="235.0" prefHeight="235.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="289.0" stroke="BLACK" strokeType="INSIDE" width="1273.0" GridPane.columnIndex="1">
+      <Rectangle fx:id="rectangle" arcHeight="5.0" arcWidth="5.0" fill="#1f93ff00" height="289.0" stroke="BLACK" strokeType="INSIDE" width="1272.0" GridPane.columnIndex="1">
          <GridPane.margin>
             <Insets left="-10.0" top="435.0" />
          </GridPane.margin>
@@ -468,11 +468,38 @@
             <Insets right="-100.0" />
          </GridPane.margin>
       </Button>
-      <TextArea fx:id="screen" maxHeight="150.0" maxWidth="300.0" minHeight="150.0" minWidth="300.0" prefHeight="150.0" prefWidth="300.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+      <Text fx:id="score1" strokeType="OUTSIDE" strokeWidth="0.0" text="score" wrappingWidth="104.205078125" GridPane.columnIndex="12" GridPane.valignment="TOP">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
          <GridPane.margin>
-            <Insets top="20.0" />
+            <Insets left="-25.0" top="50.0" />
          </GridPane.margin>
-      </TextArea>
+      </Text>
+      <Text fx:id="score2" strokeType="OUTSIDE" strokeWidth="0.0" text="score" wrappingWidth="104.205078125" GridPane.columnIndex="15" GridPane.valignment="TOP">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-14.0" top="50.0" />
+         </GridPane.margin>
+      </Text>
+      <Text fx:id="score3" strokeType="OUTSIDE" strokeWidth="0.0" text="score" wrappingWidth="104.205078125" GridPane.columnIndex="12" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-25.0" top="55.0" />
+         </GridPane.margin>
+      </Text>
+      <Text fx:id="score4" strokeType="OUTSIDE" strokeWidth="0.0" text="score" wrappingWidth="104.205078125" GridPane.columnIndex="15" GridPane.valignment="CENTER">
+         <font>
+            <Font name="Arial" size="16.0" />
+         </font>
+         <GridPane.margin>
+            <Insets left="-14.0" top="55.0" />
+         </GridPane.margin>
+      </Text>
    </children>
    <opaqueInsets>
       <Insets right="-100.0" />

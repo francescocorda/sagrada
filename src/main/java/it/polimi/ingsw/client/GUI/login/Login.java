@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.GUI.login;
 import it.polimi.ingsw.client.Client;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ public class Login extends Application {
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(new Scene(root, 500, 650));
         primaryStage.show();
+        primaryStage.setOnCloseRequest(e -> System.exit(0));
     }
 
     public void showGUI() {

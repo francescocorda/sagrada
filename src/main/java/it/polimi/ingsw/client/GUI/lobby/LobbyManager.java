@@ -12,7 +12,7 @@ import it.polimi.ingsw.client.GUI.table.TableManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import javafx.application.Platform;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -37,13 +37,23 @@ import java.time.chrono.ChronoLocalDate;
 import java.util.*;
 
 public class LobbyManager implements GUIManager{
+    private static final int NUM_OF_TOKENS = 6;
+    private  static final int NUM_OF_COL = 5;
+    private  static final int NUM_OF_ROW = 4;
     private HashMap<String, Integer> comparator = null;
     private Integer count;
     private Table table;
     private String temp;
+    private String activeTemp;
     private boolean flag=false;
-    private Event e = null;
+    private MouseEvent e = null;
     private HashMap<Integer, String> dices = null;
+    private ArrayList<Rectangle> pattern4Items;
+    private HashMap<String, String> colors = null;  //Restriction of colors
+    private ArrayList<Circle> tokens1;
+    private ArrayList<Circle> tokens2;
+    private ArrayList<Circle> tokens3;
+    private ArrayList<Circle> tokens4;
     @FXML
     TextArea message;
     @FXML
@@ -86,42 +96,6 @@ public class LobbyManager implements GUIManager{
     @FXML Circle token2_1; @FXML Circle token2_2; @FXML Circle token2_3; @FXML Circle token2_4; @FXML Circle token2_5; @FXML Circle token2_6;
     @FXML Circle token3_1; @FXML Circle token3_2; @FXML Circle token3_3; @FXML Circle token3_4; @FXML Circle token3_5; @FXML Circle token3_6;
     @FXML Circle token4_1; @FXML Circle token4_2; @FXML Circle token4_3; @FXML Circle token4_4; @FXML Circle token4_5; @FXML Circle token4_6;
-    private ArrayList<Rectangle> pattern4Items;
-    private HashMap<String, String> colors = null;  //Restriction of colors
-    private ArrayList<Circle> tokens1;
-    private ArrayList<Circle> tokens2;
-    private ArrayList<Circle> tokens3;
-    private ArrayList<Circle> tokens4;
-    private static final int NUM_OF_TOKENS = 6;
-
-    /**
-     * This method is called when the joinLobby Button is pressed.
-     * It sends to the server the date inserted by the user.
-     */
-    public void joinLobby(javafx.event.ActionEvent event){
-        try{
-            this.e = event;
-            LocalDate isoDate = date.getValue();
-            ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
-            Communicator communicator = GUIData.getGUIData().getCommunicator();
-            String username = GUIData.getGUIData().getUsername();
-            try {
-                long time = chronoLocalDate.toEpochDay()*24*60*60;
-                time = isDateValid(time);
-                communicator.lobby(username, time);
-                date.setVisible(false);
-                joinLobby.setVisible(false);
-                phrase.setVisible(false);
-            } catch (NetworkErrorException e) {
-                this.message.setText("Network Error! Server may be DOWN!\n");
-            } catch (NotValidInputException | NullPointerException e) {
-                this.message.setText("Not valid Date! Retry!\n");
-            }
-        } catch (Exception exc){
-            System.out.println("Data conversion exception: \n "+ exc);
-        }
-        event.consume();
-    }
 
     /**
      * This method is called by the FXMLLoader when the file lobby.fxml is loaded.
@@ -222,12 +196,42 @@ public class LobbyManager implements GUIManager{
     }
 
     /**
+     * This method is called when the joinLobby Button is pressed.
+     * It sends to the server the date inserted by the user.
+     */
+    public void joinLobby(ActionEvent event){
+        GUIData.getGUIData().setEvent(event);
+        try{
+            LocalDate isoDate = date.getValue();
+            ChronoLocalDate chronoLocalDate = ((isoDate != null) ? date.getChronology().date(isoDate) : null);
+            Communicator communicator = GUIData.getGUIData().getCommunicator();
+            String username = GUIData.getGUIData().getUsername();
+            try {
+                long time = chronoLocalDate.toEpochDay()*24*60*60;
+                time = isDateValid(time);
+                communicator.lobby(username, time);
+                date.setVisible(false);
+                joinLobby.setVisible(false);
+                phrase.setVisible(false);
+            } catch (NetworkErrorException e) {
+                this.message.setText("Network Error! Server may be DOWN!\n");
+            } catch (NotValidInputException | NullPointerException e) {
+                this.message.setText("Not valid Date! Retry!\n");
+            }
+        } catch (Exception exc){
+            System.out.println("Data conversion exception: \n "+ exc);
+        }
+        event.consume();
+    }
+
+    /**
      * This method is called if a pattern card is pressed by the user.
      * It sends to server the related index and, consequently, it loads the table.fxml file.
      * Finally it consumes the event.
      */
     public void patternChoose(MouseEvent event){
-        String card=null;
+        this.e = event;
+        String card=new String();
         GridPane source;
         source = (GridPane) event.getSource();
         if (source == pattern1) {
@@ -247,20 +251,32 @@ public class LobbyManager implements GUIManager{
         } catch (NetworkErrorException e) {
             this.message.setText("Network Error! Server may be DOWN!\n");
         }
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        try {
-            URL location = getClass().getResource("/GUI/table.fxml");
-            FXMLLoader fxmlLoader = new FXMLLoader(location);
-            stage.setScene(new Scene(fxmlLoader.load()));
-            stage.setMaximized(true);
-            TableManager TM = fxmlLoader.getController();
-            TM.editMessage(temp);
-            if(table!=null) TM.updateTable(table);
-        } catch (IOException e) {
-            this.message.setText("GUI ERROR!\n");
-            e.printStackTrace();
-        }
         event.consume();
+    }
+
+    /**
+     * This method is called in order to load table.fxml file
+     */
+    public void loadTable(String message){
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                    URL location = getClass().getResource("/GUI/table.fxml");
+                    FXMLLoader fxmlLoader = new FXMLLoader(location);
+                    try {
+                        stage.setScene(new Scene(fxmlLoader.load()));
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    GUIData.getGUIData().setStage(stage);
+                    stage.setMaximized(true);
+                    TableManager TM = fxmlLoader.getController();
+                    GUIData.getGUIData().getView().setGUIManager(TM);
+                    if(table!=null) TM.updateTable(table);
+                    if(temp!=null) TM.editMessage(temp);
+                    if(activeTemp != null) TM.activeElement(activeTemp);
+                }
+        );
     }
 
     /**
@@ -274,18 +290,9 @@ public class LobbyManager implements GUIManager{
             Platform.runLater(  //Compulsory to update GUI
                     () -> {
                         temp = message;
-                        Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-                        URL location = getClass().getResource("/GUI/table.fxml");
-                        FXMLLoader fxmlLoader = new FXMLLoader(location);
-                        try {
-                            stage.setScene(new Scene(fxmlLoader.load()));
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
-                        stage.setMaximized(true);
-                        TableManager TM = fxmlLoader.getController();
+                        loadTable(temp);
+                        GUIManager TM =  GUIData.getGUIData().getView().getGUIManager();
                         TM.editMessage(temp);
-                        if(table!=null) TM.updateTable(table);
                     }
             );
         }
@@ -339,8 +346,8 @@ public class LobbyManager implements GUIManager{
                     grid.setVisible(true);
                     name.setVisible(true);
                     StackPane dice;
-                    for(int i=1; i<5; i++){
-                        for(int j=1; j<6; j++){
+                    for(int i=1; i<=NUM_OF_ROW; i++){
+                        for(int j=1; j<=NUM_OF_COL; j++){
                             dice = null;
                             if (pattern.getRestriction(i, j).escape().compareTo("\u2680") >= 0) {
                                 try {
@@ -353,7 +360,7 @@ public class LobbyManager implements GUIManager{
                                 dice.setStyle("-fx-background-color: #ffffff;");
                                 grid.add(dice, j - 1, i - 1);
                             } else{
-                                items.get((i - 1) * (5) + (j - 1)).setStyle(colors.get(pattern.getRestriction(i, j).escape()));
+                                items.get((i - 1) * (NUM_OF_COL) + (j - 1)).setStyle(colors.get(pattern.getRestriction(i, j).escape()));
                             }
                         }
                     }
@@ -365,6 +372,9 @@ public class LobbyManager implements GUIManager{
         );
     }
 
+    /**
+     * This method is called by the View class in order to update local attribute table.
+     */
     public void updateTable(Table table){
         this.table=table;
     }
@@ -409,6 +419,19 @@ public class LobbyManager implements GUIManager{
         privateObj.setImage(image);
         privateObj.setVisible(true);
     }
+
+    /**
+     * This method is empty since it is used by the class ScoreTrackManager.
+     */
     public void showScoreTrack(ScoreTrack scoreTrack){}
-    public void activeElement(String element){}
+
+    /**
+     * This method is called by the View in order to update properly activeTemp local attribute.
+     */
+    public void activeElement(String element){
+        activeTemp = element;
+        if(element.equals("START")){
+            loadTable(temp);
+        }
+    }
 }

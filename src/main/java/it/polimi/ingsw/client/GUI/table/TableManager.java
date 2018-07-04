@@ -38,6 +38,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TableManager implements GUIManager {
+    private static final int NUM_OF_ROUNDS = 10;
+    private static final int MAX_TURNS = 9;
+    private static final int NUM_OF_FACES = 6;
+    private static final int NUM_OF_COL = 5;
+    private static final int NUM_OF_ROW = 4;
+    private static final int START_NUMBER =0;
     private HashMap<String, Integer> comparator = null;
     private HashMap<Integer, String> dices = null;
     private HashMap<Color, String> colors = null;  //Restriction of colors
@@ -73,11 +79,8 @@ public class TableManager implements GUIManager {
     private ArrayList<Button> faces;
     private MouseEvent event;
     int initialPos;
-    private static final int NUM_OF_ROUNDS = 10;
-    private static final int NUM_OF_FACES = 6;
-    private static final int NUM_OF_COL = 5;
-    private static final int NUM_OF_ROW = 4;
     private StackPane draggableDice;
+
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
     @FXML Rectangle dice2;
@@ -242,278 +245,6 @@ public class TableManager implements GUIManager {
     @FXML Rectangle tool1Border; @FXML Rectangle tool2Border; @FXML Rectangle tool3Border;
 
     /**
-     * It's called if the button cancelButton is pressed.
-     * It sends to the server the message "cancel".
-     */
-    public void cancelAction(){
-        try {
-            communicator.sendMessage("cancel");
-        } catch (NetworkErrorException e1) {
-            e1.printStackTrace();
-        }
-    }
-
-    /**
-     * It's called when a drag is dropped over a rectangle of the player's window.
-     * It sends to the server the position in which the drag is dropped.
-     * It clears the dragBoard and consumes the event.
-     */
-    public void dragDroppedWindow(DragEvent event) {
-        if(windowEnable_IN){
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString()) {
-                success = true;
-                int row = 7, col = 7;
-                source = (Rectangle) event.getTarget();
-                for (int j = 1; j < 5; j++) {
-                    for (int k = 1; k < 6; k++) {
-                        if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
-                            row = j;
-                            col = k;
-                        }
-                    }
-                }
-                try {
-                    communicator.sendMessage(row+"/"+col);
-                }
-                catch (NetworkErrorException e1) {
-                    e1.printStackTrace();
-                }
-            }
-            /* let the source know whether the string was successfully
-             * transferred and used */
-            event.setDropCompleted(success);
-            db.clear();
-        }
-        event.consume();
-    }
-
-    /**
-     * It's called when a drag is over a cell of the player's window.
-     * It accept the transfer mode and consumes the event.
-     */
-    public void dragOverWindow(DragEvent event){
-        if (event.getDragboard().hasString()) {
-            /* allow for moving */
-            event.acceptTransferModes(TransferMode.MOVE);
-        }
-        event.consume();
-    }
-
-    /**
-     * It's called when is pressed a rectangle of the player's window.
-     * It sends to the server the position of the rectangle in the window.
-     * It consumes the event.
-     */
-    public void mousePressedWindow(MouseEvent e) {
-        if(windowEnable_OUT){
-            WindowFrame window= new WindowFrame();
-            for(Player p : table.getPlayers()){
-                if(p.getName().equals(GUIData.getGUIData().getUsername())){
-                    window = p.getWindowFrame();
-                }
-            }
-            int row = 7, col = 7;
-            source = (Rectangle) e.getSource();
-            for (int j = 1; j < 5; j++) {
-                for (int k = 1; k < 6; k++) {
-                    if (source.equals(cells1.get((j - 1) * (5) + (k - 1)))) {
-                        row = j;
-                        col = k;
-                    }
-                }
-            }
-            if(window.getDice(row, col) != null) {
-                SnapshotParameters sp = new SnapshotParameters();
-                sp.setTransform(Transform.scale(1.5, 1.5));
-                int num = 0;
-                int stop = NUM_OF_COL * (row - 1) + col;
-                int cont = 1;
-                for (int i = 1; i <= NUM_OF_ROW; i++) {
-                    for (int j = 1; j < NUM_OF_COL; j++) {
-                        if (cont < stop) {
-                            if (window.getDice(i, j) != null || window.getPatternCard().getRestriction(i, j).escape().compareTo("\u2680") >= 0) {
-                                num++;
-                            }
-                            cont++;
-                        }
-                    }
-                }
-                draggableDice = window1Items.get(num);
-                try {
-                    communicator.sendMessage(row+"/"+col);
-                } catch (NetworkErrorException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-        e.consume();
-    }
-
-    @FXML void dragDetectedWindow(){
-        if(draggableDice != null){
-            SnapshotParameters sp =  new SnapshotParameters();
-            sp.setTransform(Transform.scale(1.5, 1.5));
-            WritableImage preview = draggableDice.snapshot(sp,null);
-            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(source.getId());
-            db.setContent(content);
-            db.setDragView(preview, 45, 45);
-            for(Rectangle r : cells1){
-                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
-            }
-            draggableDice=null;
-        }
-        event.consume();
-    }
-
-    /**
-     * It's called when a dice in the draftPool is pressed.
-     * It sends to the server the number of the pressed dice.
-     * It consumes the event.
-     */
-    @FXML
-    public void mousePressedPool(MouseEvent e) {
-        if(draftPoolEnable_OUT){
-            source = (Rectangle) e.getSource();
-            for(int i=0; i<9; i++){
-                if (source == cellsPool.get(i)) {
-                    idPool = i+1;
-                }
-            }
-            draggableDice = poolItems.get(idPool-initialPos-1);
-            try {
-                communicator.sendMessage(Integer.toString((idPool-initialPos)));
-            } catch (NetworkErrorException e1) {
-                e1.printStackTrace();
-            }
-        }
-        e.consume();
-    }
-
-    /**
-     * It's called if a drag in the draftPool is detected.
-     * The method works only if the draftPool is enabled to be used.
-     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
-     * and accept the DragAndDrop over all rectangles of the window's player.
-     * It sends to the server the index of the dragged dice in the draftPool.
-     * It consumes the event.
-     */
-    @FXML
-    public void dragDetectedPool() {
-        if(draggableDice!=null){
-            SnapshotParameters sp =  new SnapshotParameters();
-            sp.setTransform(Transform.scale(1.5, 1.5));
-            WritableImage preview = draggableDice.snapshot(sp,null);
-            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(source.getId());
-            db.setContent(content);
-            db.setDragView(preview, 45, 45);
-            for(Rectangle r : cells1){
-                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
-            }
-            try {
-                communicator.sendMessage(Integer.toString((idPool-initialPos)));
-            } catch (NetworkErrorException e1) {
-                e1.printStackTrace();
-            }
-        }
-        draggableDice = null;
-    }
-
-    /**
-     * It's called if a drag is detected on the selectDice.
-     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
-     * and accept the DragAndDrop over all rectangles of the window's player.
-     * It sends to the server the index of the rectangle in the window's player
-     * in which the drag is dropped.
-     * It consumes the event.
-     */
-    @FXML
-    public void dragDetectedSelectedDice(MouseEvent event){
-        SnapshotParameters sp =  new SnapshotParameters();
-        sp.setTransform(Transform.scale(1.5, 1.5));
-        WritableImage preview = ((StackPane)selectedDice.getChildren().get(selectedDice.getChildren().size()-1)).snapshot(sp,null);
-        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
-        ClipboardContent content = new ClipboardContent();
-        content.putString(source.getId());
-        db.setContent(content);
-        db.setDragView(preview, 45, 45);
-        event.consume();
-    }
-
-    /**
-     * It's called if a dice of the roundTrack is pressed.
-     * The method works only if the roundTrack is enable to be pressed.
-     * It sends to the server the index of the dice selected.
-     * It consumes the event.
-     */
-
-    @FXML
-    public void mousePressedRound(MouseEvent e) {
-        if(roundTrackEnable){
-            source = (Rectangle) e.getSource();
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 9; j++) {
-                    if (source == cellsRound.get((j) * (10) + (i))) {
-                        System.out.println("Selected roundTrack ROUND "+(i+1)+" DICE "+(j+1));
-                        try {
-                            GUIData.getGUIData().getCommunicator().sendMessage((i+1)+"/"+(j+1));
-                        } catch (NetworkErrorException e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }
-        e.consume();
-    }
-
-    /**
-     * It's called when the moveButton is pressed.
-     * It sends to the server the message "move".
-     */
-    @FXML
-    public void moveAction(ActionEvent e){
-        try {
-            GUIData.getGUIData().getCommunicator().sendMessage("move");
-        } catch (NetworkErrorException exc) {
-            exc.printStackTrace();
-        }
-        e.consume();
-    }
-
-    /**
-     * It's called when the toolCardButton is pressed.
-     * It sends to the server the message "toolcard".
-     */
-    @FXML
-    public void toolCardAction(){
-        try {
-            GUIData.getGUIData().getCommunicator().sendMessage("toolcard");
-        } catch (NetworkErrorException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * It's called when the skipButton is pressed.
-     * It sends to the server the message "skip".
-     */
-    @FXML
-    public void skipAction(ActionEvent e){
-        try {
-            GUIData.getGUIData().getCommunicator().sendMessage("skip");
-        } catch (NetworkErrorException exc) {
-            exc.printStackTrace();
-        }
-        e.consume();
-    }
-
-    /**
      * It's called by the FXMLLoader when the file table.fxml is loaded.
      * It initializes all javaFx items and all the attributes of the class.
      */
@@ -654,8 +385,282 @@ public class TableManager implements GUIManager {
         tool1Border.setStyle("-fx-fill: #00ffff;"); tool1Border.setVisible(false);
         tool2Border.setStyle("-fx-fill: #00ffff;"); tool2Border.setVisible(false);
         tool3Border.setStyle("-fx-fill: #00ffff;"); tool3Border.setVisible(false);
-        this.event = GUIData.getGUIData().getEvent();
         moveButton.setVisible(false); toolCardButton.setVisible(false); skipButton.setVisible(false); cancelButton.setVisible(false);
+    }
+
+    /**
+     * It's called if the button cancelButton is pressed.
+     * It sends to the server the message "cancel".
+     */
+    public void cancelAction(){
+        try {
+            communicator.sendMessage("cancel");
+        } catch (NetworkErrorException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    /**
+     * It's called when a drag is dropped over a rectangle of the player's window.
+     * It sends to the server the position in which the drag is dropped.
+     * It clears the dragBoard and consumes the event.
+     */
+    public void dragDroppedWindow(DragEvent event) {
+        if(windowEnable_IN){
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString()) {
+                success = true;
+                int row = NUM_OF_ROW, col = NUM_OF_COL;
+                source = (Rectangle) event.getTarget();
+                for (int j = START_NUMBER+1; j <= NUM_OF_ROW; j++) {
+                    for (int k = 1; k <= NUM_OF_COL; k++) {
+                        if (source.equals(cells1.get((j - 1) * (NUM_OF_COL) + (k - 1)))) {
+                            row = j;
+                            col = k;
+                        }
+                    }
+                }
+                try {
+                    communicator.sendMessage(row+"/"+col);
+                }
+                catch (NetworkErrorException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            /* let the source know whether the string was successfully
+             * transferred and used */
+            event.setDropCompleted(success);
+            db.clear();
+        }
+        event.consume();
+    }
+
+    /**
+     * It's called when a drag is over a cell of the player's window.
+     * It accept the transfer mode and consumes the event.
+     */
+    public void dragOverWindow(DragEvent event){
+        if (event.getDragboard().hasString()) {
+            /* allow for moving */
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
+    /**
+     * It's called when is pressed a rectangle of the player's window.
+     * It sends to the server the position of the rectangle in the window.
+     * It consumes the event.
+     */
+    public void mousePressedWindow(MouseEvent e) {
+        if(windowEnable_OUT){
+            WindowFrame window= new WindowFrame();
+            for(Player p : table.getPlayers()){
+                if(p.getName().equals(GUIData.getGUIData().getUsername())){
+                    window = p.getWindowFrame();
+                }
+            }
+            int row = NUM_OF_ROW, col = NUM_OF_COL;
+            source = (Rectangle) e.getSource();
+            for (int j = START_NUMBER+1; j <= NUM_OF_ROW; j++) {
+                for (int k = START_NUMBER+1; k <= NUM_OF_COL; k++) {
+                    if (source.equals(cells1.get((j - 1) * (NUM_OF_COL) + (k - 1)))) {
+                        row = j;
+                        col = k;
+                    }
+                }
+            }
+            if(window.getDice(row, col) != null) {
+                SnapshotParameters sp = new SnapshotParameters();
+                sp.setTransform(Transform.scale(1.5, 1.5));
+                int num = START_NUMBER;
+                int stop = NUM_OF_COL * (row - 1) + col;
+                int cont = START_NUMBER+1;
+                for (int i = 1; i <= NUM_OF_ROW; i++) {
+                    for (int j = 1; j < NUM_OF_COL; j++) {
+                        if (cont < stop) {
+                            if (window.getDice(i, j) != null || window.getPatternCard().getRestriction(i, j).escape().compareTo("\u2680") >= 0) {
+                                num++;
+                            }
+                            cont++;
+                        }
+                    }
+                }
+                draggableDice = window1Items.get(num);
+                try {
+                    communicator.sendMessage(row+"/"+col);
+                } catch (NetworkErrorException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        e.consume();
+    }
+
+    /**
+     * It's called if a drag in the windowFrame is detected.
+     * The method works only if the windowFrame is enabled to be used.
+     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
+     * and accept the DragAndDrop over all rectangles of the window's player.
+     * It sends to the server the index of the dragged dice in the window.
+     * It consumes the event.
+     */
+    @FXML void dragDetectedWindow(){
+        if(draggableDice != null){
+            SnapshotParameters sp =  new SnapshotParameters();
+            sp.setTransform(Transform.scale(1.5, 1.5));
+            WritableImage preview = draggableDice.snapshot(sp,null);
+            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(source.getId());
+            db.setContent(content);
+            db.setDragView(preview, 45, 45);
+            for(Rectangle r : cells1){
+                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
+            }
+            draggableDice=null;
+        }
+        event.consume();
+    }
+
+    /**
+     * It's called when a dice in the draftPool is pressed.
+     * It sends to the server the number of the pressed dice.
+     * It consumes the event.
+     */
+    @FXML
+    public void mousePressedPool(MouseEvent e) {
+        if(draftPoolEnable_OUT){
+            source = (Rectangle) e.getSource();
+            for(int i=0; i<MAX_TURNS; i++){
+                if (source == cellsPool.get(i)) {
+                    idPool = i+1;
+                }
+            }
+            draggableDice = poolItems.get(idPool-initialPos-1);
+            try {
+                communicator.sendMessage(Integer.toString((idPool-initialPos)));
+            } catch (NetworkErrorException e1) {
+                e1.printStackTrace();
+            }
+        }
+        e.consume();
+    }
+
+    /**
+     * It's called if a drag in the draftPool is detected.
+     * The method works only if the draftPool is enabled to be used.
+     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
+     * and accept the DragAndDrop over all rectangles of the window's player.
+     * It sends to the server the index of the dragged dice in the draftPool.
+     * It consumes the event.
+     */
+    @FXML
+    public void dragDetectedPool() {
+        if(draggableDice!=null){
+            SnapshotParameters sp =  new SnapshotParameters();
+            sp.setTransform(Transform.scale(1.5, 1.5));
+            WritableImage preview = draggableDice.snapshot(sp,null);
+            Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(source.getId());
+            db.setContent(content);
+            db.setDragView(preview, 45, 45);
+            for(Rectangle r : cells1){
+                r.startDragAndDrop(TransferMode.ANY); //display the dragAndDrop event
+            }
+        }
+        draggableDice = null;
+    }
+
+    /**
+     * It's called if a drag is detected on the selectDice.
+     * It takes a snapshot of the related dice, it puts the snapshot in a clipboard
+     * and accept the DragAndDrop over all rectangles of the window's player.
+     * It sends to the server the index of the rectangle in the window's player
+     * in which the drag is dropped.
+     * It consumes the event.
+     */
+    @FXML
+    public void dragDetectedSelectedDice(MouseEvent event){
+        SnapshotParameters sp =  new SnapshotParameters();
+        sp.setTransform(Transform.scale(1.5, 1.5));
+        WritableImage preview = ((StackPane)selectedDice.getChildren().get(selectedDice.getChildren().size()-1)).snapshot(sp,null);
+        Dragboard db = source.startDragAndDrop(TransferMode.ANY);
+        ClipboardContent content = new ClipboardContent();
+        content.putString(source.getId());
+        db.setContent(content);
+        db.setDragView(preview, 45, 45);
+        event.consume();
+    }
+
+    /**
+     * It's called if a dice of the roundTrack is pressed.
+     * The method works only if the roundTrack is enable to be pressed.
+     * It sends to the server the index of the dice selected.
+     * It consumes the event.
+     */
+
+    @FXML
+    public void mousePressedRound(MouseEvent e) {
+        if(roundTrackEnable){
+            source = (Rectangle) e.getSource();
+            for (int i = 0; i < NUM_OF_ROUNDS; i++) {
+                for (int j = 0; j < MAX_TURNS; j++) {
+                    if (source == cellsRound.get((j) * (NUM_OF_ROUNDS) + (i))) {
+                        System.out.println("Selected roundTrack ROUND "+(i+1)+" DICE "+(j+1));
+                        try {
+                            GUIData.getGUIData().getCommunicator().sendMessage((i+1)+"/"+(j+1));
+                        } catch (NetworkErrorException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+        e.consume();
+    }
+
+    /**
+     * It's called when the moveButton is pressed.
+     * It sends to the server the message "move".
+     */
+    @FXML
+    public void moveAction(ActionEvent e){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("move");
+        } catch (NetworkErrorException exc) {
+            exc.printStackTrace();
+        }
+        e.consume();
+    }
+
+    /**
+     * It's called when the toolCardButton is pressed.
+     * It sends to the server the message "toolcard".
+     */
+    @FXML
+    public void toolCardAction(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("toolcard");
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * It's called when the skipButton is pressed.
+     * It sends to the server the message "skip".
+     */
+    @FXML
+    public void skipAction(ActionEvent e){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("skip");
+        } catch (NetworkErrorException exc) {
+            exc.printStackTrace();
+        }
+        e.consume();
     }
 
     /**
@@ -663,15 +668,20 @@ public class TableManager implements GUIManager {
      * to print into the properly TextArea in the table.
      */
     public synchronized void editMessage(String message) {
-        if (message != null && (message.contains("New Turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
-            if (activeTool == true) {
-                removeBorder();
-                activeTool = false;
-            }
-        }
-        if(message!=null) {
-            this.text.appendText(message+"\n");
-        }
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    if (message != null && (message.contains("New Turn.") || message.contains("NewTurn.") || message.equals("Wait your turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
+                        if (activeTool == true) {
+                            removeBorder();
+                            activeTool = false;
+                        }
+                        if(message.contains("New Turn.") || message.contains("NewTurn.") || message.contains("Wait your turn.")) hideMoveButtons();
+                    }
+                    if(message!=null) {
+                        this.text.appendText(message+"\n");
+                    }
+                }
+        );
     }
 
     /**
@@ -696,8 +706,8 @@ public class TableManager implements GUIManager {
                     showSelectedDice(table.getActiveDice());
                     showRoundTrack(table.getRoundTrack());
                     int size = table.getPlayers().size();
-                    int i=0;
-                    int j=0;
+                    int i=START_NUMBER;
+                    int j=START_NUMBER;
                     for(Player p : table.getPlayers()){
                         if(p.getName().equals(GUIData.getGUIData().getUsername())) {
                             showWindow(p, window1, cells1, username1, window1Items, signals1);
@@ -750,7 +760,7 @@ public class TableManager implements GUIManager {
         Dice elem;
         StackPane dice = null;
         int size = roundItems.size();
-        for(int k=0; k<size; k++){  //reset roundTrack
+        for(int k=START_NUMBER; k<size; k++){  //reset roundTrack
             roundTrack.getChildren().remove(roundItems.get(0));
             roundItems.remove(0);
         }
@@ -768,7 +778,7 @@ public class TableManager implements GUIManager {
             }
             if(temp != null){
                 roundsText.setVisible(true);
-                for(int j=0; j<9; j++){
+                for(int j=START_NUMBER; j<MAX_TURNS; j++){
                     elem = null;
                     if(temp.size()>j) elem = temp.get(j);
                     if(elem != null){  //if there's a dice to add to roundTrack (ROUND i)
@@ -793,7 +803,7 @@ public class TableManager implements GUIManager {
      */
     public void showPUOCs(ArrayList<PublicObjectiveCard> cards) {
         Image image;
-        int i = 0;
+        int i = START_NUMBER;
         for (PublicObjectiveCard card : cards) {
             InputStream inputStream= this.getClass().getResourceAsStream("/GUI/publicObj.PNG");
             image = new Image(inputStream);
@@ -831,7 +841,7 @@ public class TableManager implements GUIManager {
      */
     public void showTools(ArrayList<ToolCard> cards) {
         Image image;
-        int i = 0;
+        int i = START_NUMBER;
         for (ToolCard card : cards) {
             InputStream inputStream= this.getClass().getResourceAsStream("/GUI/toolCard.PNG");
             image = new Image(inputStream);
@@ -885,13 +895,13 @@ public class TableManager implements GUIManager {
      */
     public void showDraftPool(ArrayList<Dice> pool) {
         StackPane dice = null;
-        int i = 0;
+        int i = START_NUMBER;
         int size = poolItems.size();
-        for(int k=0; k<size; k++){  //reset draftPool
+        for(int k=START_NUMBER; k<size; k++){  //reset draftPool
             draftPool.getChildren().remove(poolItems.get(0));
             poolItems.remove(0);
         }
-        initialPos = ((9-pool.size())/2);
+        initialPos = ((MAX_TURNS-pool.size())/2);
         i = initialPos;
         for(Rectangle p : cellsPool){
             p.setDisable(true);
@@ -916,9 +926,9 @@ public class TableManager implements GUIManager {
      * This method show the related dices in the javaFx application in the properly boxes.
      */
     public void showWindow(Player player, GridPane grid, ArrayList<Rectangle> cells, Text username, ArrayList<StackPane> windowItems, ArrayList<Circle> signals) {
-        for(int w=0; w<signals.size(); w++) signals.get(w).setVisible(false);
+        for(int w=START_NUMBER; w<signals.size(); w++) signals.get(w).setVisible(false);
         int n = player.getNumOfTokens();
-        for(int p=0; p<n; p++){
+        for(int p=START_NUMBER; p<n; p++){
             signals.get(p).setVisible(true);
         }
         grid.setVisible(true);
@@ -928,13 +938,12 @@ public class TableManager implements GUIManager {
         PatternCard pattern = player.getPatternCard();
         StackPane dice;
         int q=windowItems.size();
-        for(int p=0; p<q; p++){  //reset window
+        for(int p=START_NUMBER; p<q; p++){  //reset window
             if(grid.getChildren().contains(windowItems.get(0))) grid.getChildren().remove(windowItems.get(0));
             windowItems.remove(0);
         }
-        int i = 0;
-        for (int j = 1; j < 5; j++) {
-            for (int k = 1; k < 6; k++) {
+        for (int j = START_NUMBER+1; j <= NUM_OF_ROW; j++) {
+            for (int k = START_NUMBER+1; k <= NUM_OF_COL; k++) {
                 dice = null;
                 if (window.getDice(j, k) != null || pattern.getRestriction(j, k).escape().compareTo("\u2680") >= 0) {  //se la restrizione è un numero oppure c'è un dado nella cella
                     try {
@@ -949,17 +958,15 @@ public class TableManager implements GUIManager {
                     }
                 }
                 if (dice != null) {  //se devo aggiungere alla griglia un dado oppure una restrizione di numero
-                    cells.get((j - 1) * (5) + (k - 1)).setStyle(null);
+                    cells.get((j - 1) * (NUM_OF_COL) + (k - 1)).setStyle(null);
                     windowItems.add(dice);
                     grid.add(dice, k - 1, j - 1);
-                    cells.get((j - 1) * (5) + (k - 1)).toFront();
+                    cells.get((j - 1) * (NUM_OF_COL) + (k - 1)).toFront();
                 } else {  //se devo aggiungere una restrizione di colore
-                    cells.get((j - 1) * (5) + (k - 1)).setStyle(null);
-                    //cells.get((j - 1) * (5) + (k - 1)).getStyleClass().clear();
-                    cells.get((j - 1) * (5) + (k - 1)).setStyle(colorsWindow.get(pattern.getRestriction(j, k).escape()));
+                    cells.get((j - 1) * (NUM_OF_COL) + (k - 1)).setStyle(null);
+                    cells.get((j - 1) * (NUM_OF_COL) + (k - 1)).setStyle(colorsWindow.get(pattern.getRestriction(j, k).escape()));
                 }
             }
-            i++;
         }
     }
 
@@ -1085,6 +1092,15 @@ public class TableManager implements GUIManager {
     }
 
     /**
+     * This method make moveButton, skipButton and toolCardButton not visible.
+     */
+    public void hideMoveButtons(){
+        moveButton.setVisible(false);
+        skipButton.setVisible(false);
+        toolCardButton.setVisible(false);
+    }
+
+    /**
      * This method is empty because it's called only in the lobby.fxml file.
      */
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard){}
@@ -1093,7 +1109,10 @@ public class TableManager implements GUIManager {
      * This method is called by the class View(GUIView or CLIView) when the game is ended.
      */
     public void showScoreTrack(ScoreTrack scoreTrack){
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Stage stage;
+        if(event!=null) {
+             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        } else stage = GUIData.getGUIData().getStage();
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/scoreTrack.fxml"))));
             stage.setMaximized(true);
@@ -1107,48 +1126,52 @@ public class TableManager implements GUIManager {
      * This method is called by the updateTable method and it makes the related active item visible on the screen.
      */
     public void activeElement(String element){
-        if(element.equals("SEQUENTIAL")){
-            plus.setVisible(true);
-            minus.setVisible(true);
-        } else{
-            plus.setVisible(false);
-            minus.setVisible(false);
-        }
-        if(element.equals("CHOOSE")){
-            for(int i=0; i<NUM_OF_FACES; i++){
-                faces.get(i).setVisible(true);
-            }
-        } else for(int i=0; i<NUM_OF_FACES; i++){
-            faces.get(i).setVisible(false);
-        }
-        if(element.equals("DRAFTPOOL_IN")){
-            draftPoolEnable_IN=true;
-        } else draftPoolEnable_IN=false;
-        if(element.equals("DRAFTPOOL_OUT")){
-            draftPoolEnable_OUT=true;
-        } else draftPoolEnable_OUT=false;
-        if(element.equals("WINDOW_IN")){
-            windowEnable_IN=true;
-        } else windowEnable_IN=false;
-        if(element.equals("WINDOW_OUT")){
-            windowEnable_OUT=true;
-        } else windowEnable_OUT=false;
-        if(element.equals("ROUNDTRACK")){
-            roundTrackEnable=true;
-        } else roundTrackEnable=false;
-        if(element.equals("TOOLCARD")){
-            toolCardEnable=true;
-        } else toolCardEnable=false;
-        if(element.equals("CHOOSE_ACTION")){
-            moveButton.setVisible(true);
-            toolCardButton.setVisible(true);
-            skipButton.setVisible(true);
-            cancelButton.setVisible(false);
-        } else {
-            moveButton.setVisible(false);
-            toolCardButton.setVisible(false);
-            skipButton.setVisible(false);
-            cancelButton.setVisible(true);
-        }
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    if(element.equals("SEQUENTIAL")){
+                        plus.setVisible(true);
+                        minus.setVisible(true);
+                    } else{
+                        plus.setVisible(false);
+                        minus.setVisible(false);
+                    }
+                    if(element.equals("CHOOSE")){
+                        for(int i=START_NUMBER; i<NUM_OF_FACES; i++) faces.get(i).setVisible(true);
+                    } else for(int i=START_NUMBER; i<NUM_OF_FACES; i++){
+                        faces.get(i).setVisible(false);
+                    }
+                    if(element.equals("DRAFTPOOL_IN")){
+                        draftPoolEnable_IN=true;
+                    } else draftPoolEnable_IN=false;
+                    if(element.equals("DRAFTPOOL_OUT")){
+                        draftPoolEnable_OUT=true;
+                    } else draftPoolEnable_OUT=false;
+                    if(element.equals("WINDOW_IN")){
+                        windowEnable_IN=true;
+                    } else{
+                        windowEnable_IN=false;
+                    }
+                    if(element.equals("WINDOW_OUT")){
+                        windowEnable_OUT=true;
+                    } else windowEnable_OUT=false;
+                    if(element.equals("ROUNDTRACK")){
+                        roundTrackEnable=true;
+                    } else roundTrackEnable=false;
+                    if(element.equals("TOOLCARD")){
+                        toolCardEnable=true;
+                    } else toolCardEnable=false;
+                    if(element.equals("CHOOSE_ACTION")){
+                        moveButton.setVisible(true);
+                        toolCardButton.setVisible(true);
+                        skipButton.setVisible(true);
+                        cancelButton.setVisible(false);
+                    } else {
+                        moveButton.setVisible(false);
+                        toolCardButton.setVisible(false);
+                        skipButton.setVisible(false);
+                        cancelButton.setVisible(true);
+                    }
+                }
+        );
     }
 }

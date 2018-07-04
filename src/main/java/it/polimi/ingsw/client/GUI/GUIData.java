@@ -2,11 +2,12 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.view.GUIView;
-import javafx.scene.input.MouseEvent;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 public class GUIData {
-    private MouseEvent event;
+    private ActionEvent event;
+    private Stage stage;
     private Communicator communicator;
     private String username;
     private GUIView view;
@@ -18,11 +19,19 @@ public class GUIData {
         return instance;
     }
 
-    public MouseEvent getEvent() {
+    public ActionEvent getEvent() {
         return event;
     }
-    public void setEvent(MouseEvent event) {
+    public void setEvent(ActionEvent event) {
         this.event = event;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public void setCommunicator(Communicator communicator){

@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,9 +32,9 @@ import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_RMI_PORT;
 import static it.polimi.ingsw.client.CLI.CLI.DEFAULT_SERVER_SOCKET_PORT;
 
 public class LoginManager implements GUIManager{
-    private Communicator communicator;
     private static final Logger logger = Logger.getLogger( LoginManager.class.getName() );
-
+    private static String DEFAULT_PASS = "default";
+    private Communicator communicator;
     private static GUIView view;
     @FXML
     private TextField username;
@@ -51,7 +50,22 @@ public class LoginManager implements GUIManager{
     private Button login;
     @FXML
     private ImageView background;
-    private static String DEFAULT_PASS = "default";
+
+    /**
+     * It's called by the FXMLLoader when the file login.fxml is loaded.
+     * It initializes all the javaFx application's items.
+     */
+    @FXML
+    public void initialize() {
+        Image image;
+        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/loginBackground.jpg");
+        image = new Image(inputStream);
+        background.setImage(image);
+        background.setVisible(true);
+        IPaddress.setVisible(false);
+        serverPort.setVisible(false);
+        login.setDisable(true);
+    }
 
     /**
      * This method is called if the loginButton is pressed.
@@ -145,20 +159,8 @@ public class LoginManager implements GUIManager{
     }
 
     /**
-     * It's called by the FXMLLoader when the file login.fxml is loaded.
-     * It initializes all the javaFx application's items.
+     * The following methods are empty since they are used in the others GUIManager classes.
      */
-    @FXML
-    public void initialize() {
-        Image image;
-        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/loginBackground.jpg");
-        image = new Image(inputStream);
-        background.setImage(image);
-        background.setVisible(true);
-        IPaddress.setVisible(false);
-        serverPort.setVisible(false);
-        login.setDisable(true);
-    }
     public void editMessage(String message){}
     public void showPattern(PatternCard pattern){}
     public void updateTable(Table table){}

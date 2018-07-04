@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
@@ -106,7 +105,6 @@ public class ScoreTrackManager implements GUIManager {
     Text score3;
     @FXML
     Text score4;
-
     private ArrayList<Circle> cerchiPiccoli;
     private ArrayList<Circle> cerchiGrandi;
     private ArrayList<Circle> cerchiLegenda;
@@ -114,33 +112,10 @@ public class ScoreTrackManager implements GUIManager {
     private ArrayList<Text> usernames;
     private ArrayList<Text> scores;
 
-    public void showScoreTrack(ScoreTrack scoreTrack){
-        Platform.runLater(  //Compulsory to update GUI
-                () -> {
-                    ArrayList<Player> scores = scoreTrack.getScores();
-                    int i;
-                    for(i = scores.size()-1; i>=0; i--){
-                        cerchiLegenda.get(i).setStyle(colors.get(scores.size()-1-i));
-                        String name = scoreTrack.getScores().get(i).getName();
-                        if(name.length()>10){
-                            name = name.substring(0, 9);
-                        }
-                        usernames.get(i).setText(name);
-                        this.scores.get(i).setText(""+scoreTrack.getScores().get(i).getScore());
-                        int score = scoreTrack.getScores().get(i).getScore();
-                        cerchiPiccoli.get(score == 0 ? 0 : (score-1)%50).setStyle(colors.get(scores.size()-1-i));
-                    }
-                    i=scores.size();
-                    while(i<MAX_PLAYER){
-                        cerchiLegenda.get(i).setVisible(false);
-                        usernames.get(i).setVisible(false);
-                        this.scores.get(i).setVisible(false);
-                        i++;
-                    }
-                }
-                );
-    }
-
+    /**
+     * It's called by the FXMLLoader when the file scoreTrack.fxml is loaded.
+     * It initializes all the javaFx items and all the internal structures.
+     */
     public void initialize(){
         GUIData.getGUIData().getView().setGUIManager(this);
         cerchiGrandi = new ArrayList<>();
@@ -217,6 +192,50 @@ public class ScoreTrackManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called by the updateTable method.
+     * This method show the score of the players in the javaFx application in the properly boxes.
+     */
+    public void showScoreTrack(ScoreTrack scoreTrack){
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    ArrayList<Player> scores = scoreTrack.getScores();
+                    int i;
+                    for(i = scores.size()-1; i>=0; i--){
+                        cerchiLegenda.get(i).setStyle(colors.get(scores.size()-1-i));
+                        String name = scoreTrack.getScores().get(i).getName();
+                        if(name.length()>10){
+                            name = name.substring(0, 9);
+                        }
+                        usernames.get(i).setText(name);
+                        this.scores.get(i).setText(""+scoreTrack.getScores().get(i).getScore());
+                        int score = scoreTrack.getScores().get(i).getScore();
+                        cerchiPiccoli.get(score == 0 ? 0 : (score-1)%50).setStyle(colors.get(scores.size()-1-i));
+                    }
+                    i=scores.size();
+                    while(i<MAX_PLAYER){
+                        cerchiLegenda.get(i).setVisible(false);
+                        usernames.get(i).setVisible(false);
+                        this.scores.get(i).setVisible(false);
+                        i++;
+                    }
+                }
+                );
+    }
+
+    /**
+     * It's called by the View class and it calls the method showScoreTrack
+     * passing him as parameter the scoreTrack, which is a Table item
+     */
+    @Override
+    public void updateTable(Table table) {
+        showScoreTrack(table.getScoreTrack());
+    }
+
+    /**
+     * It's called when the button newGameButton is pressed by the user.
+     * It loads the lobby.fxml file.
+     */
     public void newGameAction(javafx.event.ActionEvent event){
         /*try {
             GUIData.getGUIData().getCommunicator().sendMessage("Game");
@@ -232,6 +251,10 @@ public class ScoreTrackManager implements GUIManager {
         }
     }
 
+    /**
+     * It's called when the button exitButton is pressed by the user.
+     * It stops javaFx process and program.
+     */
     public void exitAction(){
         try {
             GUIData.getGUIData().getCommunicator().sendMessage("exit");
@@ -239,26 +262,33 @@ public class ScoreTrackManager implements GUIManager {
             e.printStackTrace();
         }
         Platform.exit();
+        System.exit(0);
     }
 
+    /**
+     * This is a method necessary for the others GUIManager classes.
+     * Since here there is not a message to show, this method is empty.
+     */
     @Override
-    public void editMessage(String message) {
+    public void editMessage(String message) {}
 
-    }
-
+    /**
+     * This is a method necessary for the others GUIManager classes.
+     * Since here there are not patternCards to show, this method is empty.
+     */
     @Override
-    public void showPattern(PatternCard pattern) {
+    public void showPattern(PatternCard pattern) {}
 
-    }
-
+    /**
+     * This is a method necessary for the others GUIManager classes.
+     * Since here there are not privateObjectiveCards to show, this method is empty.
+     */
     @Override
-    public void updateTable(Table table) {
-        showScoreTrack(table.getScoreTrack());
-    }
+    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {}
 
-    @Override
-    public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
-
-    }
+    /**
+     * This is a method necessary for the others GUIManager classes.
+     * Since here there are not activeElements to show, this method is empty.
+     */
     public void activeElement(String element){}
 }

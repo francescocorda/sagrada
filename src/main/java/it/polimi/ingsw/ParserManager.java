@@ -77,7 +77,7 @@ public class ParserManager {
         try (Stream<Path> paths = Files.walk(Paths.get(directory))) {
             list.addAll(paths
                     .filter(Files::isRegularFile)
-                    .map(path -> path.subpath(4, 6).toString().replace("\\","/"))
+                    .map(path -> path.getFileName().toString())
                     .collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -88,10 +88,10 @@ public class ParserManager {
     public PatternDeck getPatternDeck(){
         PatternDeck deck = new PatternDeck();
         List<String> list = walkResources(JSON_PATTERNS_PATH);
-
+        //List<String> list = listFilesForFolder(new FileInputStream(JSON_PATTERNS_PATH));
         if(!list.isEmpty()) {
             for (String path: list) {
-                InputStream inputStream = this.getClass().getResourceAsStream("/" + path);
+                InputStream inputStream = this.getClass().getResourceAsStream("/patterns/" + path);
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 JsonParser parser = new JsonParser();
                 JsonObject patternJson = parser.parse(reader).getAsJsonObject();
@@ -184,10 +184,11 @@ public class ParserManager {
     public ArrayList<ToolCard> getToolCards(){
         ArrayList<ToolCard> toolCards = new ArrayList<>();
         ArrayList<String> fileList = walkResources(JSON_TOOL_CARDS_PATH);
+        //List<String> fileList = listFilesForFolder(new File(JSON_TOOL_CARDS_PATH));
         Gson gson = new Gson();
         if(!fileList.isEmpty()) {
             for (String path : fileList) {
-                InputStream inputStream = this.getClass().getResourceAsStream("/" + path);
+                InputStream inputStream = this.getClass().getResourceAsStream("/toolcards/" + path);
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 JsonParser parser = new JsonParser();
                 JsonObject card = parser.parse(reader).getAsJsonObject();

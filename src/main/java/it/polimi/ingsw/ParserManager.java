@@ -33,6 +33,7 @@ public class ParserManager {
     private static ParserManager instance = null;
     private JSONParser parser;
     private static final String JSON_PATTERNS_PATH = "./src/main/resources/patterns";
+    private static final String JSON_PATTERNS_PARAMETER_1 = "id";
     private static final String JSON_PATTERNS_PARAMETER_2 = "name";
     private static final String JSON_PATTERNS_PARAMETER_3 = "difficulty";
     private static final String JSON_PATTERNS_PARAMETER_4 = "patternCard";
@@ -91,12 +92,13 @@ public class ParserManager {
         //List<String> list = listFilesForFolder(new FileInputStream(JSON_PATTERNS_PATH));
         if(!list.isEmpty()) {
             for (String path: list) {
-                InputStream inputStream = this.getClass().getResourceAsStream("/patterns/" + path);
+                InputStream inputStream = ParserManager.class.getResourceAsStream("/patterns/" + path);
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 JsonParser parser = new JsonParser();
                 JsonObject patternJson = parser.parse(reader).getAsJsonObject();
                 String name = patternJson.get(JSON_PATTERNS_PARAMETER_2).getAsString();
-                PatternCard patternCard = new PatternCard(name, deck.size()+1);
+                String ID = patternJson.get(JSON_PATTERNS_PARAMETER_1).getAsString();
+                PatternCard patternCard = new PatternCard(name, Integer.valueOf(ID));
                 int difficulty = patternJson.get(JSON_PATTERNS_PARAMETER_3).getAsInt();
                 try {
                     patternCard.setDifficulty(difficulty);

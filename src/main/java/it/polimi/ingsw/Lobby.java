@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.Model.Game.Player;
 import it.polimi.ingsw.Server.ServerMain;
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
@@ -37,6 +38,29 @@ public class Lobby implements Observer {
         vvdb = VirtualViewsDataBase.getVirtualViewsDataBase();
     }
 
+    public void status(){
+        //TODO eliminate
+        System.out.println("LOBBY:");
+        System.out.println(" - Players in lobby:");
+        for(VirtualView view : views){
+            System.out.println("   + "+view.getUsername());
+        }
+        System.out.println(" - number of games: "+controllers.size());
+        int counter = 0;
+        for (Controller controller : controllers){
+            System.out.println(" - Controller "+counter+":");
+            System.out.println("   + Players:");
+            for(String player : controller.getPlayers()){
+                System.out.println("     > "+player);
+            }
+            System.out.println("\n   + Offline Players:");
+            for(String player : controller.getOFFPlayer()){
+                System.out.println("     > "+player);
+            }
+            counter++;
+        }
+    }
+
     public static synchronized Lobby getLobby() {
         if (instance == null) {
             instance = new Lobby();
@@ -46,9 +70,7 @@ public class Lobby implements Observer {
 
     public synchronized void addPlayer(String username, long time) {
         ClientData player = players.getPlayerData(username);
-        if (reconnect(username)) {
-            send(username, "/back_to_game");
-        } else {
+        if (!reconnect(username)) {
             VirtualView virtualView;
             if(vvdb.contains(username)){
                 virtualView = vvdb.getVirtualView(username);
@@ -65,7 +87,8 @@ public class Lobby implements Observer {
             toTerminal("player: " + player.getUsername() + " signed in");
             broadcast("/player_joined/" + player.getUsername());
             broadcast(listOfPlayers());
-            players.setPhase(username, Phase.LOBBY);
+            if (player.getPhase() == Phase.LOGIN)
+                player.setPhase(Phase.LOBBY);
             trigger();
         }
     }
@@ -196,7 +219,6 @@ public class Lobby implements Observer {
     private boolean reconnect(String username) {
         for (Controller controller : controllers) {
             if (controller.contains(username)) {
-                players.findPlayer(username).setPhase(Phase.GAME);
                 VirtualView view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
                 view.addObserver(controller);
                 view.notifyObservers(username + "/join");
@@ -232,8 +254,7 @@ public class Lobby implements Observer {
         for (ClientData player : connectedPlayers) {
             if (player.getUsername().equals(username)) {
                 String command = commands.remove(0);
-                if (command.equals("exit")) {
-                    send(username, "/You exit from lobby");
+                if (command.equals("logout")) {
                     players.disconnect(username);
                     VirtualViewsDataBase.getVirtualViewsDataBase().removeVirtualView(username);
                     return;

@@ -13,8 +13,10 @@ public class ClientData {
     private Status status;
     private ClientHandler clientHandler;
     private Timer timer;
+    private long lastTime;
 
     public ClientData(String username, String password){
+        this.lastTime = 0;
         this.username = username;
         this.password = password;
         this.phase = Phase.LOGIN;
@@ -58,6 +60,15 @@ public class ClientData {
         this.phase=phase;
     }
 
+    public long getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(long lastTime) {
+        if(lastTime>=0)
+            this.lastTime = lastTime;
+    }
+
     public void nextPhase() {
         switch (phase) {
             case GAME:
@@ -87,5 +98,11 @@ public class ClientData {
             this.status = Status.OFFLINE;
         else
             this.status = Status.ONLINE;
+    }
+
+    public void shutDownTimer(){
+        timer.cancel();
+        timer.purge();
+        timer = new Timer();
     }
 }

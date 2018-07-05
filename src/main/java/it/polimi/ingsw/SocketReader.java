@@ -16,11 +16,13 @@ public class SocketReader extends Thread {
     private boolean timerOn;
     private static final int TIMER_MAX_SECONDS = 3*1000;
     private final Object check = new Object();
+    private ClientSocketInterpreter clientSocketInterpreter;
 
-    public SocketReader(ConnectionSocket connection, String username) {
+    public SocketReader(ConnectionSocket connection, String username, ClientSocketInterpreter csi) {
         this.username = username;
         this.connection = connection;
         this.view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
+        clientSocketInterpreter = csi;
         this.timer = new Timer();
         this.missingPong=0;
         this.timerOn=false;
@@ -79,8 +81,10 @@ public class SocketReader extends Thread {
     /**
      * Closes this thread
      */
-    private void kill() {
+    public void kill() {
+        cancelTimer();
         flag = false;
+        connection.close();
         Thread.currentThread().interrupt();
     }
 
@@ -101,8 +105,8 @@ public class SocketReader extends Thread {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            ClientDatabase.getPlayerDatabase().disconnect(username);
-                            view.notifyObservers("exit");
+                            clientSocketInterpreter.offline();
+                            kill();
                         }
                     }, TIMER_MAX_SECONDS);
                 } catch (Exception e){

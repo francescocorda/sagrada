@@ -22,6 +22,10 @@ public class CLIView extends Observable implements View {
     private String username;
     private ViewVisitor visitor;
 
+    /**
+     * creates a new {@link CLIView}
+     * it does that by setting {@link #username} to null and by creating a new {@link ViewVisitor}
+     */
     public CLIView() {
         visitor = new ViewVisitor(this);
         username = null;
@@ -58,10 +62,6 @@ public class CLIView extends Observable implements View {
         ArrayList<Player> players = new ArrayList<>();
         players.add(new Player(""));
 
-        for (PublicObjectiveCard publicObjectiveCard : table.getGamePublicObjectiveCards()) {
-            publicObjectiveCard.dump();
-        }
-
         for (Player p : table.getPlayers()) {
             if (!p.getName().equals(username)) {
                 players.add(p);
@@ -71,12 +71,20 @@ public class CLIView extends Observable implements View {
             }
         }
 
+        print("\nPUBLIC OBJECTIVE CARDS:\n\n");
+        for (PublicObjectiveCard publicObjectiveCard : table.getGamePublicObjectiveCards()) {
+            publicObjectiveCard.dump();
+        }
+
+        print("\nROUND TRACK:\n\n");
         table.getRoundTrack().dump();
+
+        print("\nTOOL CARDS:\n\n");
         for (ToolCard toolCard : table.getGameToolCards()) {
             toolCard.dump();
         }
 
-        System.out.println("Private Objective Card: ");
+        System.out.println("PRIVATE OBJECTIVE CARD: ");
         myPlayer.getPrivateObjectiveCard().dump();
 
         table.dumpDraftPool();
@@ -149,7 +157,7 @@ public class CLIView extends Observable implements View {
         }
         //newLine
         print("\n");
-        //level 3
+        //level 4
         for (Player player : players) {
             printFixedLength(" Difficulty: " + player.getPatternCard().getDifficulty(), playerSpace);
             print(verticalSeparatorSymbol);
@@ -165,7 +173,7 @@ public class CLIView extends Observable implements View {
         }
         //newLine
         print("\n");
-        //level 4
+        //level 5
         i = 0;
         while (i < players.size()) {
             printFixedLength("   " + verticalSeparatorSymbol + horizontalCoordinates, playerSpace);
@@ -174,7 +182,7 @@ public class CLIView extends Observable implements View {
         }
         //newLine
         print("\n");
-        //level 5
+        //level 6
         i = 0;
         while (i < players.size()) {
             printFixedLength(" " + horizontalSeparator, playerSpace);
@@ -183,6 +191,7 @@ public class CLIView extends Observable implements View {
         }
         //newLine
         print("\n");
+        //level from 7 to 10
         for (i = 0; i < ROW; i++) {
             for (Player player : players) {
                 String playerRow = windowFrameRow(player.getWindowFrame(), i, verticalSeparatorSymbol);
@@ -192,7 +201,7 @@ public class CLIView extends Observable implements View {
             //newLine
             print("\n");
         }
-        //newLine
+        //newLine x2
         print("\n\n");
     }
 

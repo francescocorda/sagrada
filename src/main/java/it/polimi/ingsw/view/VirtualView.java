@@ -36,7 +36,8 @@ public class VirtualView extends Observable implements View {
     @Override
     public void displayMessage(String message) {
         try {
-            getClientHandler().sendMessage(message);
+            if(clientData.isConnected())
+                getClientHandler().sendMessage(message);
         } catch (NetworkErrorException e) {
             disconnect();
         }

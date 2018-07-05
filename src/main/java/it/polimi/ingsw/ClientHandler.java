@@ -14,4 +14,5 @@ public interface ClientHandler {
     void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException;
     void update(Observable o) throws NetworkErrorException;
     void check() throws NetworkErrorException;
+    void close();
 }

@@ -78,4 +78,9 @@ public class ClientHandlerRMI implements ClientHandler {
             throw new NetworkErrorException();
         }
     }
+
+    @Override
+    public void close() {
+        //useless for rmi
+    }
 }

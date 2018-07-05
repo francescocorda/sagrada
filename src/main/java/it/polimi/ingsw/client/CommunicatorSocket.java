@@ -113,8 +113,7 @@ public class CommunicatorSocket implements Communicator {
                 default:
                     break;
             }
-        } else if (phase.equals("game") && commands.size() == 2 && commands.remove(0).equals("message")
-                && commands.remove(0).equals("back_to_game")) {
+        } else if (phase.equals("lobby") && commands.size() == 1 && commands.remove(0).equals("back_to_game")) {
             mg.unlock();
             view.displayMessage("Welcome back!");
         }

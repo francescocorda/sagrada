@@ -43,9 +43,9 @@ public class MessageGetter extends Thread {
                     connection.sendMessage("pong");
                 } else if (lock) {
                     check = new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*")));
-                    if (check.size() > 1 && (check.get(1).equals("welcome") || check.get(1).equals("back_to_game"))) {
+                    if ((check.size() > 1 && check.get(1).equals("welcome")) || (check.size() == 1 && check.get(0).equals("back_to_game"))) {
                         unlock = true;
-                        if (check.get(1).equals("welcome"))
+                        if (check.size()>1)
                             view.displayMessage("Welcome!");
                         else
                             view.displayMessage("Welcome Back!");

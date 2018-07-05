@@ -1,8 +1,10 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.view.VirtualView;
+
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.Phase.GAME;
 import static it.polimi.ingsw.Phase.LOGIN;
 
 public class ClientDatabase {
@@ -20,13 +22,14 @@ public class ClientDatabase {
         players = new ArrayList<>();
     }
 
-    public boolean check(String user, String password){
-        if(stringCheck(user) && stringCheck(password)){
-            for(ClientData clientData : players)
-                if(clientData.getUsername().equals(user))
-                    if((clientData.getPassword().equals(password)) && !clientData.isConnected()){
+    public boolean check(String user, String password) {
+        if (stringCheck(user) && stringCheck(password)) {
+            for (ClientData clientData : players)
+                if (clientData.getUsername().equals(user))
+                    if ((clientData.getPassword().equals(password)) && !clientData.isConnected()) {
                         clientData.changeStatus();
-                        clientData.setPhase(LOGIN);
+                        if (clientData.getPhase() != GAME)
+                            clientData.setPhase(LOGIN);
                         return true;
                     } else {
                         return false;
@@ -39,89 +42,117 @@ public class ClientDatabase {
         }
     }
 
-    public void setClientHandler(String username, ClientHandler clientHandler){
+    public void status() {
+        //TODO eliminate
+        System.out.println("CLIENT DATABASE:");
+        System.out.println(" -Players number: " + players.size());
+        System.out.println(" -Online players number: " + onlinePlayersNumber());
+        System.out.println(" -Players:");
+        for (ClientData player : players) {
+            System.out.println("  + " + player.getUsername() + " - " + (player.isConnected() ?
+                    player.getPhase() : "OFFLINE"));
+        }
+    }
+
+    public void setClientHandler(String username, ClientHandler clientHandler) {
         ClientData player = findPlayer(username);
-        if(player != null){
+        if (player != null) {
             player.setClientHandler(clientHandler);
         }
     }
 
-    public void disconnect(String username){
+    public void disconnect(String username) {
         ClientData toBeDisconnected = null;
-        for(ClientData clientData : players){
-            if(clientData.getUsername().equals(username) && clientData.isConnected()){
+        for (ClientData clientData : players) {
+            if (clientData.getUsername().equals(username) && clientData.isConnected()) {
                 toBeDisconnected = clientData;
-                clientData.changeStatus();
             }
         }
-        if(toBeDisconnected != null)
+        if (toBeDisconnected != null) {
+            toBeDisconnected.shutDownTimer();
+            toBeDisconnected.changeStatus();
             phaseDisconnection(toBeDisconnected);
+        }
     }
 
-    public boolean contain(String user){
-        for(ClientData clientData : players){
-            if(clientData.getUsername().equals(user)){
+    public boolean contain(String user) {
+        for (ClientData clientData : players) {
+            if (clientData.getUsername().equals(user)) {
                 return true;
             }
         }
         return false;
     }
 
-    public int onlinePlayersNumber(){
-        int number=0;
-        for(ClientData clientData : players){
-            if(clientData.isConnected()){
+    public int onlinePlayersNumber() {
+        int number = 0;
+        for (ClientData clientData : players) {
+            if (clientData.isConnected()) {
                 number++;
             }
         }
-        return  number;
+        return number;
     }
 
-    public void setPhase(String username , Phase phase){
+    public void setPhase(String username, Phase phase) {
         ClientData clientData = findPlayer(username);
-        if(clientData != null)
+        if (clientData != null)
             clientData.setPhase(phase);
     }
 
-    public Phase getPhase(String username){
+    public Phase getPhase(String username) {
         ClientData clientData = findPlayer(username);
-        if(clientData != null)
+        if (clientData != null)
             return clientData.getPhase();
         return null;
     }
 
-    public ClientData findPlayer(String username){
-        for(ClientData c : players){
-            if(c.getUsername().equals(username)){
+    public ClientData findPlayer(String username) {
+        for (ClientData c : players) {
+            if (c.getUsername().equals(username)) {
                 return c;
             }
         }
         return null;
     }
 
-    public ClientData getPlayerData(String username){
+    public long getPlayerLastTime(String username){
+        ClientData clientData = findPlayer(username);
+        if (clientData != null)
+            return clientData.getLastTime();
+        return 0;
+    }
+
+    public void setPlayerLastTime(String username, long lastTime){
+        ClientData clientData = findPlayer(username);
+        if (clientData != null)
+            clientData.setLastTime(lastTime);
+    }
+
+    public ClientData getPlayerData(String username) {
         return findPlayer(username);
     }
 
-    private void phaseDisconnection(ClientData player){
-        switch(player.getPhase()){
+    private void phaseDisconnection(ClientData player) {
+        switch (player.getPhase()) {
             case GAME:
                 VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
-                virtualView.notifyObservers(player.getUsername()+"/exit");
-                System.out.println("Game: player: "+player.getUsername()+" left the game...");
+                virtualView.notifyObservers(player.getUsername() + "/exit");
+                System.out.println("Game: player: " + player.getUsername() + " left the game...");
                 break;
             case LOBBY:
                 Lobby.getLobby().removePlayer(player.getUsername());
                 break;
             default:
                 VirtualView view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
-                if(view != null)
+                if (view != null)
                     VirtualViewsDataBase.getVirtualViewsDataBase().removeVirtualView(player.getUsername());
                 break;
         }
+        player.getClientHandler().close();
     }
 
-    private boolean stringCheck(String string){
-        return (string.length()>0 && !string.equals(" "));
+    private boolean stringCheck(String string) {
+        return (string.length() > 0 && !string.equals(" "));
     }
 }

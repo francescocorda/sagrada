@@ -40,7 +40,7 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         connection.sendMessage("login/insert_credentials");
         while (status == ONLINE) {
             commands = messageParser(connection.getMessage());
-            if (commands.size()==3 && commands.remove(0).equals("login")) {
+            if (commands.size() == 3 && commands.remove(0).equals("login")) {
                 String tempUsername = commands.remove(0);
                 if (!(tempUsername.equals("") || commands.isEmpty())) {
                     String password = commands.remove(0);
@@ -109,18 +109,8 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     }
 
     public void sendMessage(String message) {
-        if (status == ONLINE && isOnline()) {
+        if (isOnline()) {
             connection.sendMessage(message);
-        }
-    }
-
-    private void playerOffline() {
-        if (username == null || username.equals("")) {
-            System.out.println("client closed connection");
-        } else {
-            players.disconnect(username);
-            System.out.println("User: " + username + " logged out");
-            Thread.currentThread().interrupt();
         }
     }
 
@@ -130,14 +120,27 @@ public class ClientSocketInterpreter implements Runnable, Observer {
 
     public void close() {
         this.connection.close();
-        Thread.currentThread().interrupt();
         if (reader != null)
-            reader.interrupt();
+            reader.kill();
+        VirtualView temp = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);
+        if (temp != null)
+            temp.deleteObserver(this);
+        Thread.currentThread().interrupt();
     }
 
     public boolean isOnline() {
-        reader.waitForPong();
-        return status == ONLINE;
+        if (status == ONLINE) {
+            reader.waitForPong();
+            return true;
+        } else {
+            reader.kill();
+            VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username).deleteObserver(this);
+            return false;
+        }
+    }
+
+    public void offline() {
+        status = OFFLINE;
     }
 
     private void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
@@ -145,10 +148,14 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         if (players.check(username, password)) {
             toScreen("User: " + username + " logged in.");
             ClientData player = ClientDatabase.getPlayerDatabase().getPlayerData(username);
-            VirtualView view = new VirtualView(player);
-            view.addObserver(this);
-            VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(view);
-            reader = new SocketReader(connection, username);
+            if (VirtualViewsDataBase.getVirtualViewsDataBase().contains(username)) {
+                VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username).addObserver(this);
+            } else {
+                VirtualView view = new VirtualView(player);
+                view.addObserver(this);
+                VirtualViewsDataBase.getVirtualViewsDataBase().addVirtualView(view);
+            }
+            reader = new SocketReader(connection, username, this);
             players.setClientHandler(username, new ClientHandlerSocket(client));
         } else {
             throw new NotValidInputException();
@@ -164,7 +171,7 @@ public class ClientSocketInterpreter implements Runnable, Observer {
 
     @Override
     public void update(String message) {
-        if (message!=null)
+        if (message != null)
             handleEvent(message);
     }
 
@@ -175,6 +182,8 @@ public class ClientSocketInterpreter implements Runnable, Observer {
 
     private void handleEvent(String message) {
         ArrayList<String> commands = messageParser(message);
+        if (message.equals("logout"))
+            players.disconnect(username);
         if (commands.size() > 2 && commands.remove(0).equals(username) &&
                 commands.remove(0).equals("lobby")) {
             joinLobby(commands);
@@ -182,11 +191,11 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     }
 
     private ArrayList<String> messageParser(String message) {
-        toScreen("Message: "+message);
+        toScreen("Message: " + message);
         return new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
     }
 
-    private void toScreen(String message){
+    private void toScreen(String message) {
         System.out.println(message);
     }
 }

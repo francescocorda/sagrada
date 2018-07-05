@@ -1,6 +1,8 @@
 package it.polimi.ingsw.Server;
 
+import it.polimi.ingsw.ClientDatabase;
 import it.polimi.ingsw.Lobby;
+import it.polimi.ingsw.VirtualViewsDataBase;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 
 import java.util.Scanner;
@@ -168,7 +170,21 @@ public class ServerMain {
                 println("SERVER CLOSED...");
                 System.exit(0);
             }
+            if(text.equals("state")){
+                showCurrentState();
+            }
         }
+    }
+
+    private static void showCurrentState(){
+        //TODO eliminate
+        println("###############--STATE--################");
+        Lobby.getLobby().status();
+        println("");
+        VirtualViewsDataBase.getVirtualViewsDataBase().status();
+        println("");
+        ClientDatabase.getPlayerDatabase().status();
+        println("############--END_STATE--###############");
     }
 
     public static boolean getStatus() {

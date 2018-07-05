@@ -136,8 +136,10 @@ public class CLI {
         String password;
         while (temp) {
             println("LOGIN");
-            println("Username: ");
+            println("Username [max 15 symbols]: ");
             username = in.nextLine();
+            if (username.length() > 15)
+                username = username.substring(0, 15);
             println("Password: ");
             password = in.nextLine();
             try {
@@ -168,7 +170,7 @@ public class CLI {
         long time;
         while (temp) {
             try {
-                print("LOBBY\nYear(YYYY):\t");
+                print("LOBBY: Insert last time you visited a Cathedral\nYear(YYYY):\t");
                 yearStr = in.nextLine();
                 if (!yearStr.equals("")) {
                     print("Month(MM):\t");
@@ -200,32 +202,22 @@ public class CLI {
      */
     private void game() {
         boolean temp = true;
-        boolean oneExit = false;
         String message = new String();
         while (temp) {
             message = in.nextLine();
             ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*" + INPUT_STREAM_SEPARATOR_SYMBOL + "\\s*")));
             message = String.join(MESSAGE_SEPARATOR_SYMBOL, commands);
             try {
-                if (message.equals("exit")) {
-                    if (oneExit) {
-                        temp = false;
-                        oneExit = false;
-                    } else {
-                        oneExit = true;
-                        communicator.sendMessage(message);
-                    }
-                } else {
-                    if (message.equals("join")) {
-                        oneExit = false;
-                    }
-                    communicator.sendMessage(message);
+                if (message.equals("logout")) {
+                    temp = false;
                 }
+                communicator.sendMessage(message);
             } catch (NetworkErrorException e) {
                 println("Server Offline / Network Error");
                 temp = false;
             }
         }
+        communicator.close();
         startCLI();
     }
 

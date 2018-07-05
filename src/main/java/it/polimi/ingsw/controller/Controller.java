@@ -1,11 +1,10 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.*;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
 import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
 import it.polimi.ingsw.Model.Game.Game;
-import it.polimi.ingsw.ParserManager;
 import it.polimi.ingsw.Server.ServerMain;
-import it.polimi.ingsw.exceptions.DuplicateException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -19,8 +18,7 @@ import java.util.logging.Logger;
 public class Controller implements Observer {
 
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
-    private static final String INACTIVE_TABLE = "INACTIVE_TABLE";
-    private static final String JOIN_ACTION = "JOIN";
+
     private int turnTimerSeconds;
     static final String INVALID_FORMAT = "Command of invalid format.";
     static final String WAIT_YOUR_TURN = "Wait your turn.";
@@ -54,7 +52,20 @@ public class Controller implements Observer {
     private ArrayList<String> offlinePlayers;
     private Game game;
 
+    private boolean isGameEnded;
+
+    public ArrayList<String> getPlayers() {
+        //TODO eliminate
+        return players;
+    }
+
+    public ArrayList<String> getOFFPlayer() {
+        //TODO eliminate
+        return offlinePlayers;
+    }
+
     public Controller(int matchID, List<VirtualView> views) {
+        isGameEnded = false;
         turnTimerSeconds = ServerMain.getServerMain().getTurnSeconds();
         offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
@@ -140,7 +151,7 @@ public class Controller implements Observer {
             @Override
             public void run() {
                 for (String name : players) {
-                    if(game.setPatternCard(name, 0)) {
+                    if (game.setPatternCard(name, 0)) {
                         sendActiveTableElement(name, START);
                     }
                 }
@@ -181,7 +192,11 @@ public class Controller implements Observer {
     public synchronized void update(String message) {
         ArrayList<String> commands;
         commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-        handleEvent(commands);
+        if (isGameEnded){
+            handelEndGameEvent(commands);
+        } else {
+            handleEvent(commands);
+        }
     }
 
     @Override
@@ -189,6 +204,32 @@ public class Controller implements Observer {
         //ArrayList<String> commands;
         //commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
         //handleEvent(commands);
+    }
+
+    private synchronized void handelEndGameEvent(ArrayList<String> commands) {
+        if (commands.size() == 2) {
+            String username = commands.remove(0);
+            VirtualView playerView = null;
+            if (players.contains(username)) {
+                for(VirtualView view : views){
+                    if(view.getUsername().equals(username)){
+                        playerView = view;
+                    }
+                }
+                if (commands.get(0).equals("logout")) {
+                    ClientDatabase.getPlayerDatabase().disconnect(username);
+                    handleOfflinePlayer(username);
+                } else if (commands.get(0).equals("play")) {
+                    Lobby lobby = Lobby.getLobby();
+                    playerView.deleteObservers();
+                    playerView.addObserver(lobby);
+                    lobby.addPlayer(username, ClientDatabase.getPlayerDatabase().getPlayerLastTime(username));
+                    ClientDatabase.getPlayerDatabase().getPlayerData(username).setPhase(Phase.LOBBY);
+                    players.remove(username);
+                    views.remove(playerView);
+                }
+            }
+        }
     }
 
     private synchronized void handleEvent(ArrayList<String> commands) {
@@ -199,6 +240,8 @@ public class Controller implements Observer {
                     state.exitGame(username);
                 } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size() == 1) {
                     state.joinGame(username);
+                } else if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
+                    ClientDatabase.getPlayerDatabase().disconnect(username);
                 } else if (!offlinePlayers.contains(username)) {
                     state.handleEvent(username, commands);
                 }
@@ -239,17 +282,16 @@ public class Controller implements Observer {
     }
 
     synchronized void checkGameState() {
-        String player = game.getCurrentPlayer();
         if (game.isTurnEnded()) {
             if (game.isRoundEnded() && game.isGameEnded()) {
                 game.countScores();
                 sendMessage(game.getWinner(), YOU_WON);
                 state = endState;
                 timer.cancel();
+                endGame();
                 return;
             }
             if (!offlinePlayers.contains(game.getCurrentPlayer())) {
-                if(player != null) sendActiveTableElement(player, INACTIVE_TABLE);
                 setTimerSkipTurn();
             }
         }
@@ -261,6 +303,7 @@ public class Controller implements Observer {
                 String lastPlayer = game.getCurrentPlayer();
                 game.endGame();
                 sendMessage(lastPlayer, YOU_WON);
+                endGame();
             }
             state = endState;
             timer.cancel();
@@ -281,10 +324,40 @@ public class Controller implements Observer {
                 offlinePlayers.add(game.getCurrentPlayer());
                 sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
-                sendActiveTableElement(game.getCurrentPlayer(), JOIN_ACTION);
                 skipTurn();
             }
         }, turnTimerSeconds * 1000);
+    }
+
+    private void endGame() {
+        handleOfflinePlayers();
+        isGameEnded = true;
+        handleOnlinePlayers();
+    }
+
+    private void handleOnlinePlayers() {
+        for (String player : players) {
+            if (!offlinePlayers.contains(player)) {
+                sendMessage(player, "Chose [play] to play again, [logout] to go back to login");
+            }
+        }
+    }
+
+    private void handleOfflinePlayers() {
+        Lobby.getLobby().removeController(this);
+        for (String offlinePlayer : offlinePlayers) {
+            handleOfflinePlayer(offlinePlayer);
+        }
+    }
+
+    private void handleOfflinePlayer(String username){
+        VirtualViewsDataBase virtualViewsDataBase = VirtualViewsDataBase.getVirtualViewsDataBase();
+        ClientData client = ClientDatabase.getPlayerDatabase().findPlayer(username);
+        if (!client.isConnected()) {
+            virtualViewsDataBase.getVirtualView(username).deleteObservers();
+            virtualViewsDataBase.removeVirtualView(username);
+            client.setPhase(Phase.LOGIN);
+        }
     }
 
     Game getGame() {

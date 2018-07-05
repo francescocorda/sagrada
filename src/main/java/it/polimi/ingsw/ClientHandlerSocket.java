@@ -82,4 +82,11 @@ public class ClientHandlerSocket implements ClientHandler {
         if(!clientSocketInterpreter.isOnline())
             throw new NetworkErrorException();
     }
+
+    @Override
+    public void close() {
+        clientSocketInterpreter.close();
+    }
+
+
 }

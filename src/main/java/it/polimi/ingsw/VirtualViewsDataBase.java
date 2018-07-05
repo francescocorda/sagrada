@@ -52,4 +52,13 @@ public class VirtualViewsDataBase {
         }
         return false;
     }
+
+    public void status(){
+        //TODO eliminate
+        System.out.println("VIRTUAL VIEW DATABASE:\n Status:\n - Number of views: "+virtualViews.size());
+        System.out.println(" - VirtualViews's players:");
+        for(VirtualView view : virtualViews){
+            System.out.println("   +"+view.getUsername());
+        }
+    }
 }

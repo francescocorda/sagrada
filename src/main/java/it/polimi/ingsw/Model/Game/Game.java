@@ -89,7 +89,7 @@ public class Game {
         this.toolCards = toolCards;
     }
 
-    public void setPatternDeck(ArrayList<PatternCard> deck){
+    public void setPatternDeck(PatternDeck deck){
         patternDeck = new PatternDeck(deck);
     }
 

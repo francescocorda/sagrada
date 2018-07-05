@@ -175,7 +175,7 @@ public class WindowFrame implements Serializable {
     @Override
     public String toString(){
         //Used Symbols:
-        String emptyDiceSymbol =  "\uD83E\uDD76";
+        String emptyDiceSymbol =  "\u25FB";
         String verticalSeparatorSymbol = "|";
         String horizontalLine = "-----------------\t";
         String horizontalSeparator = "--"+verticalSeparatorSymbol+horizontalLine+

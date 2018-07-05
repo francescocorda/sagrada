@@ -1,0 +1,8 @@
+{
+  "column": {
+    "name": "Column Shade Variety",
+    "description": "Columns with no repeated values",
+    "points": "4",
+    "restriction": "face"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "set": {
+    "name": "Medium Shades",
+    "description": "Sets of 3 & 4 values anywhere",
+    "points": "2",
+    "restriction": "face",
+    "elements": [
+      "THREE",
+      "FOUR"
+    ]
+  }
+}

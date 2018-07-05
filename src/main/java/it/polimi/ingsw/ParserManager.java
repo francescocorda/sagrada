@@ -3,11 +3,13 @@ package it.polimi.ingsw;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
+import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
 import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
 import it.polimi.ingsw.Model.Cards.PublicObjectives.*;
 import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
 import it.polimi.ingsw.Model.effects.Effect;
 import it.polimi.ingsw.Model.effects.EffectFactory;
+import it.polimi.ingsw.exceptions.DuplicateException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,7 +22,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,10 +32,7 @@ public class ParserManager {
 
     private static ParserManager instance = null;
     private JSONParser parser;
-    private static final String JSON_PATTERNS_PATH = "src/main/resources/patterns.json";
-
-    private static final String JSON_PATTERNS_PATH1 = "/patterns.json";
-    private static final String JSON_PATTERNS_PARAMETER_1 = "patternDeck";
+    private static final String JSON_PATTERNS_PATH = "./src/main/resources/patterns";
     private static final String JSON_PATTERNS_PARAMETER_2 = "name";
     private static final String JSON_PATTERNS_PARAMETER_3 = "difficulty";
     private static final String JSON_PATTERNS_PARAMETER_4 = "patternCard";
@@ -50,16 +48,14 @@ public class ParserManager {
     private static final String JSON_PUB_OBJ_PARAMETER_8 = "set";
     private static final String JSON_PUB_OBJ_PARAMETER_9 = "elements";
     private static final String JSON_PUB_OBJ_PARAMETER_10 = "diagonal";
-    private static final String JSON_TOOLCARDS_PATH = "src/main/resources/toolcards.json";
-    private static final String JSON_TOOLCARDS_PATH1 = "/toolcards.json";
-    private static final String JSON_TOOLCARDS_PARAMETER_1 = "toolcards";
-    private static final String JSON_TOOLCARDS_PARAMETER_2 = "ID";
-    private static final String JSON_TOOLCARDS_PARAMETER_3 = "name";
-    private static final String JSON_TOOLCARDS_PARAMETER_4 = "description";
-    private static final String JSON_TOOLCARDS_PARAMETER_5 = "usableInTurns";
-    private static final String JSON_TOOLCARDS_PARAMETER_6 = "movesLeft";
-    private static final String JSON_TOOLCARDS_PARAMETER_7 = "classes";
-    private static final String JSON_TOOLCARDS_PARAMETER_8 = "parameters";
+    private static final String JSON_TOOL_CARDS_PATH = "./src/main/resources/toolcards";
+    private static final String JSON_TOOL_CARDS_PARAMETER_2 = "ID";
+    private static final String JSON_TOOL_CARDS_PARAMETER_3 = "name";
+    private static final String JSON_TOOL_CARDS_PARAMETER_4 = "description";
+    private static final String JSON_TOOL_CARDS_PARAMETER_5 = "usableInTurns";
+    private static final String JSON_TOOL_CARDS_PARAMETER_6 = "movesLeft";
+    private static final String JSON_TOOL_CARDS_PARAMETER_7 = "classes";
+    private static final String JSON_TOOL_CARDS_PARAMETER_8 = "parameters";
 
     private Gson gson;
 
@@ -75,48 +71,27 @@ public class ParserManager {
         return instance;
     }
 
-    private String readFile(String pathname) throws IOException {
+    private ArrayList<String> walkResources(String directory) {
+        ArrayList<String> list = new ArrayList<>();
 
-        File file = new File(pathname);
-        StringBuilder fileContents = new StringBuilder((int) file.length());
-        Scanner scanner = new Scanner(file);
-        String lineSeparator = System.getProperty("line.separator");
-
-        try {
-            while (scanner.hasNextLine()) {
-                fileContents.append(scanner.nextLine() + lineSeparator);
-            }
-            return fileContents.toString();
-        } finally {
-            scanner.close();
-        }
-    }
-
-    public ArrayList<PatternCard> getPatternDeck(){
-        ArrayList<PatternCard> deck = new ArrayList<>();
-        List<Path> list = new ArrayList<>();
-
-        try (Stream<Path> paths = Files.walk(Paths.get("./src/main/resources/patterns"))) {
-             list.addAll(paths
-                     .filter(Files::isRegularFile)
-                     .map(path -> path.subpath(4, 6))
-                     .collect(Collectors.toList()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        /*try (Stream<Path> paths = Files.walk(Paths.get("./patterns"))) {
+        try (Stream<Path> paths = Files.walk(Paths.get(directory))) {
             list.addAll(paths
                     .filter(Files::isRegularFile)
-                    .map(Path::getFileName)
+                    .map(path -> path.subpath(4, 6).toString().replace("\\","/"))
                     .collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+        return list;
+    }
+
+    public PatternDeck getPatternDeck(){
+        PatternDeck deck = new PatternDeck();
+        List<String> list = walkResources(JSON_PATTERNS_PATH);
 
         if(!list.isEmpty()) {
-            for (Path path: list) {
-                InputStream inputStream = this.getClass().getResourceAsStream("/" + path.toString());
+            for (String path: list) {
+                InputStream inputStream = this.getClass().getResourceAsStream("/" + path);
                 JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
                 JsonParser parser = new JsonParser();
                 JsonObject patternJson = parser.parse(reader).getAsJsonObject();
@@ -148,11 +123,8 @@ public class ParserManager {
         Object obj = null;
         InputStream inputStream = this.getClass().getResourceAsStream(JSON_PUB_OBJ_PATH1);
         try {
-            //obj = parser.parse(new FileReader(JSON_PUB_OBJ_PATH));
             obj = parser.parse(new InputStreamReader(inputStream));
-        } catch (IOException e) {
-            System.out.println(e);
-        } catch (ParseException e) {
+        } catch (IOException | ParseException e) {
             System.out.println(e);
         }
         JSONObject jsonObject = (JSONObject) obj;
@@ -209,49 +181,51 @@ public class ParserManager {
         return puODeck;
     }
 
-    public ArrayList<ToolCard> getToolCards() {
+    public ArrayList<ToolCard> getToolCards(){
         ArrayList<ToolCard> toolCards = new ArrayList<>();
+        ArrayList<String> fileList = walkResources(JSON_TOOL_CARDS_PATH);
         Gson gson = new Gson();
-        InputStream inputStream = this.getClass().getResourceAsStream(JSON_TOOLCARDS_PATH1);
-        //try {
-        //JsonReader reader = new JsonReader(new FileReader(JSON_TOOLCARDS_PATH));
-        JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
-        JsonParser parser = new JsonParser();
-        JsonObject object = parser.parse(reader).getAsJsonObject();
-        JsonArray deck = object.getAsJsonArray(JSON_TOOLCARDS_PARAMETER_1);
-        for (JsonElement obj : deck) {
-            JsonObject card = obj.getAsJsonObject();
-            int ID = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_2), Integer.class);
-            String name = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_3), String.class);
-            String description = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_4), String.class);
-            int[] turnsArray = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_5), int[].class);
-            ArrayList<Integer> turnsList = new ArrayList<>();
-            for (int i : turnsArray) {
-                turnsList.add(i);
-            }
-            int[] movesArray = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_6), int[].class);
-            ArrayList<Integer> movesList = new ArrayList<>();
-            for (int i : movesArray) {
-                movesList.add(i);
-            }
+        if(!fileList.isEmpty()) {
+            for (String path : fileList) {
+                InputStream inputStream = this.getClass().getResourceAsStream("/" + path);
+                JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+                JsonParser parser = new JsonParser();
+                JsonObject card = parser.parse(reader).getAsJsonObject();
+                int ID = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_2), Integer.class);
+                String name = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_3), String.class);
+                String description = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_4), String.class);
+                int[] turnsArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_5), int[].class);
+                ArrayList<Integer> turnsList = new ArrayList<>();
+                for (int i : turnsArray) {
+                    turnsList.add(i);
+                }
+                int[] movesArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_6), int[].class);
+                ArrayList<Integer> movesList = new ArrayList<>();
+                for (int i : movesArray) {
+                    movesList.add(i);
+                }
 
-            String[] classes = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_7), String[].class);
-            String[] parameters = gson.fromJson(card.get(JSON_TOOLCARDS_PARAMETER_8), String[].class);
-            EffectFactory factory = new EffectFactory();
-            ArrayList<Effect> effects = new ArrayList<>();
-            for (int i = 0; i < classes.length; i++) {
-                effects.add(factory.createEffect(classes[i], parameters[i]));
+                String[] classes = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_7), String[].class);
+                String[] parameters = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_8), String[].class);
+                EffectFactory factory = new EffectFactory();
+                ArrayList<Effect> effects = new ArrayList<>();
+                for (int i = 0; i < classes.length; i++) {
+                    effects.add(factory.createEffect(classes[i], parameters[i]));
+                }
+                ToolCard toolCard = new ToolCard(ID, name, description, turnsList, movesList);
+                toolCard.setEffects(effects);
+                int i = 0;
+                while (i<toolCards.size() && toolCards.get(i).getID()<toolCard.getID()) {
+                    i++;
+                }
+                if (i==toolCards.size()) {
+                    toolCards.add(toolCard);
+                } else if (toolCards.get(i).getID()!=toolCard.getID()) {
+                    toolCards.add(i, toolCard);
+                }
             }
-            ToolCard toolCard = new ToolCard(ID, name, description, turnsList, movesList);
-            toolCard.setEffects(effects);
-            toolCards.add(toolCard);
         }
-
         return toolCards;
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
-        //return null;
     }
 
 }

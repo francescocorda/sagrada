@@ -1,5 +1,6 @@
 package it.polimi.ingsw.Model.Cards.Patterns;
 
+import it.polimi.ingsw.exceptions.DuplicateException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,8 +21,28 @@ public class PatternDeck implements Serializable {
     public static final int PATTERN_CARD_NUMBER = 24;
     private ArrayList<PatternCard> deck;
 
-    public PatternDeck(ArrayList<PatternCard> deck){
-        this.deck = deck;
+    public PatternDeck() {
+        deck = new ArrayList<>();
+    }
+
+    public PatternDeck(PatternDeck patternDeck) {
+        this.deck = new ArrayList<>(patternDeck.deck);
+    }
+
+    public void add(PatternCard patternCard) {
+        if (deck.isEmpty()) {
+            deck.add(patternCard);
+        } else {
+            int i = 0;
+            while (i<deck.size() && deck.get(i).getID()<patternCard.getID()) {
+                i++;
+            }
+            if (i == deck.size()) {
+                deck.add(patternCard);
+            } else if (deck.get(i).getID()!=patternCard.getID()) {
+                deck.add(i,patternCard);
+            }
+        }
     }
 
     public ArrayList<PatternCard> getPatternDeck(){

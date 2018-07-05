@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
@@ -105,6 +106,8 @@ public class ScoreTrackManager implements GUIManager {
     Text score3;
     @FXML
     Text score4;
+    @FXML
+    TextArea text;
     private ArrayList<Circle> cerchiPiccoli;
     private ArrayList<Circle> cerchiGrandi;
     private ArrayList<Circle> cerchiLegenda;
@@ -220,7 +223,7 @@ public class ScoreTrackManager implements GUIManager {
                         i++;
                     }
                 }
-                );
+        );
     }
 
     /**
@@ -229,7 +232,8 @@ public class ScoreTrackManager implements GUIManager {
      */
     @Override
     public void updateTable(Table table) {
-        showScoreTrack(table.getScoreTrack());
+        Platform.runLater(  //Compulsory to update GUI
+                () ->  showScoreTrack(table.getScoreTrack()));
     }
 
     /**
@@ -237,11 +241,11 @@ public class ScoreTrackManager implements GUIManager {
      * It loads the lobby.fxml file.
      */
     public void newGameAction(javafx.event.ActionEvent event){
-        /*try {
-            GUIData.getGUIData().getCommunicator().sendMessage("Game");
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("play");
         } catch (NetworkErrorException e) {
             e.printStackTrace();
-        }*/
+        }
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         try {
             stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
@@ -270,7 +274,9 @@ public class ScoreTrackManager implements GUIManager {
      * Since here there is not a message to show, this method is empty.
      */
     @Override
-    public void editMessage(String message) {}
+    public void editMessage(String message) {
+        Platform.runLater(() -> this.text.appendText(message+"\n"));
+    }
 
     /**
      * This is a method necessary for the others GUIManager classes.

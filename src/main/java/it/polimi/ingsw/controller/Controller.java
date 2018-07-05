@@ -19,7 +19,8 @@ import java.util.logging.Logger;
 public class Controller implements Observer {
 
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
-
+    private static final String INACTIVE_TABLE = "INACTIVE_TABLE";
+    private static final String JOIN_ACTION = "JOIN";
     private int turnTimerSeconds;
     static final String INVALID_FORMAT = "Command of invalid format.";
     static final String WAIT_YOUR_TURN = "Wait your turn.";
@@ -238,6 +239,7 @@ public class Controller implements Observer {
     }
 
     synchronized void checkGameState() {
+        String player = game.getCurrentPlayer();
         if (game.isTurnEnded()) {
             if (game.isRoundEnded() && game.isGameEnded()) {
                 game.countScores();
@@ -247,6 +249,7 @@ public class Controller implements Observer {
                 return;
             }
             if (!offlinePlayers.contains(game.getCurrentPlayer())) {
+                if(player != null) sendActiveTableElement(player, INACTIVE_TABLE);
                 setTimerSkipTurn();
             }
         }
@@ -278,6 +281,7 @@ public class Controller implements Observer {
                 offlinePlayers.add(game.getCurrentPlayer());
                 sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
+                sendActiveTableElement(game.getCurrentPlayer(), JOIN_ACTION);
                 skipTurn();
             }
         }, turnTimerSeconds * 1000);

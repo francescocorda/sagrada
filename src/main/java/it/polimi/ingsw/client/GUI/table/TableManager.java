@@ -11,6 +11,7 @@ import it.polimi.ingsw.client.Communicator;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
 import it.polimi.ingsw.client.GUI.login.LoginManager;
+import it.polimi.ingsw.client.GUI.scoreTrack.ScoreTrackManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -80,6 +81,7 @@ public class TableManager implements GUIManager {
     private MouseEvent event;
     int initialPos;
     private StackPane draggableDice;
+    private String temp;
 
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
@@ -243,6 +245,7 @@ public class TableManager implements GUIManager {
     Button plus;
     @FXML Button one; @FXML Button two; @FXML Button three; @FXML Button four; @FXML Button five; @FXML Button six;
     @FXML Rectangle tool1Border; @FXML Rectangle tool2Border; @FXML Rectangle tool3Border;
+    @FXML Button joinGameButton;
 
     /**
      * It's called by the FXMLLoader when the file table.fxml is loaded.
@@ -386,6 +389,7 @@ public class TableManager implements GUIManager {
         tool2Border.setStyle("-fx-fill: #00ffff;"); tool2Border.setVisible(false);
         tool3Border.setStyle("-fx-fill: #00ffff;"); tool3Border.setVisible(false);
         moveButton.setVisible(false); toolCardButton.setVisible(false); skipButton.setVisible(false); cancelButton.setVisible(false);
+        joinGameButton.setVisible(false);
     }
 
     /**
@@ -478,7 +482,7 @@ public class TableManager implements GUIManager {
                 int stop = NUM_OF_COL * (row - 1) + col;
                 int cont = START_NUMBER+1;
                 for (int i = 1; i <= NUM_OF_ROW; i++) {
-                    for (int j = 1; j < NUM_OF_COL; j++) {
+                    for (int j = 1; j <= NUM_OF_COL; j++) {
                         if (cont < stop) {
                             if (window.getDice(i, j) != null || window.getPatternCard().getRestriction(i, j).escape().compareTo("\u2680") >= 0) {
                                 num++;
@@ -521,7 +525,6 @@ public class TableManager implements GUIManager {
             }
             draggableDice=null;
         }
-        event.consume();
     }
 
     /**
@@ -538,7 +541,7 @@ public class TableManager implements GUIManager {
                     idPool = i+1;
                 }
             }
-            draggableDice = poolItems.get(idPool-initialPos-1);
+            if(poolItems.get(idPool-initialPos-1)!=null) draggableDice = poolItems.get(idPool-initialPos-1);
             try {
                 communicator.sendMessage(Integer.toString((idPool-initialPos)));
             } catch (NetworkErrorException e1) {
@@ -664,18 +667,32 @@ public class TableManager implements GUIManager {
     }
 
     /**
+     * It's called when the joinGameButton is pressed.
+     * It sends to the server the message "join".
+     */
+    @FXML
+    public void joinGameAction(ActionEvent e){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("join");
+        } catch (NetworkErrorException exc) {
+            exc.printStackTrace();
+        }
+        e.consume();
+    }
+
+    /**
      * It's called by the class view(CLIView or GUIView) and receives as parameters a message
      * to print into the properly TextArea in the table.
      */
     public synchronized void editMessage(String message) {
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
+                    temp = message;
                     if (message != null && (message.contains("New Turn.") || message.contains("NewTurn.") || message.equals("Wait your turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
                         if (activeTool == true) {
                             removeBorder();
                             activeTool = false;
                         }
-                        if(message.contains("New Turn.") || message.contains("NewTurn.") || message.contains("Wait your turn.")) hideMoveButtons();
                     }
                     if(message!=null) {
                         this.text.appendText(message+"\n");
@@ -1067,7 +1084,7 @@ public class TableManager implements GUIManager {
     @FXML
     public void exitAction(MouseEvent event){
         try {
-            GUIData.getGUIData().getCommunicator().sendMessage("exit");
+            GUIData.getGUIData().getCommunicator().sendMessage("logout");
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             URL location = getClass().getResource("/GUI/login.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(location);
@@ -1109,17 +1126,25 @@ public class TableManager implements GUIManager {
      * This method is called by the class View(GUIView or CLIView) when the game is ended.
      */
     public void showScoreTrack(ScoreTrack scoreTrack){
-        Stage stage;
-        if(event!=null) {
-             stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        } else stage = GUIData.getGUIData().getStage();
-        try {
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/scoreTrack.fxml"))));
-            stage.setMaximized(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        GUIData.getGUIData().getView().getGUIManager().showScoreTrack(scoreTrack);
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    Stage stage;
+                    if(event!=null) {
+                        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    } else stage = GUIData.getGUIData().getStage();
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/scoreTrack.fxml"));
+                        stage.setScene(new Scene(fxmlLoader.load()));
+                        GUIData.getGUIData().getView().setGUIManager(fxmlLoader.getController());
+                        //stage.setMaximized(true);
+                        stage.centerOnScreen();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    if(temp!=null)  GUIData.getGUIData().getView().getGUIManager().editMessage(temp);
+                    GUIData.getGUIData().getView().getGUIManager().showScoreTrack(scoreTrack);
+                }
+        );
     }
 
     /**
@@ -1170,6 +1195,16 @@ public class TableManager implements GUIManager {
                         toolCardButton.setVisible(false);
                         skipButton.setVisible(false);
                         cancelButton.setVisible(true);
+                    }
+                    if(element.equals("START")){
+                        cancelButton.setVisible(false);
+                    }
+                    if(element.equals("JOIN")){
+                        joinGameButton.setVisible(true);
+                    } else joinGameButton.setVisible(false);
+                    if(element.equals("INACTIVE_TABLE")){
+                        hideMoveButtons();
+                        cancelButton.setVisible(false);
                     }
                 }
         );

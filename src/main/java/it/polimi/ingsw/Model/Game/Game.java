@@ -181,7 +181,8 @@ public class Game {
     }
 
     public String getCurrentPlayer() {
-        return rounds.get(0).getCurrentPlayer().getName();
+        if(!isGameEnded()) return rounds.get(0).getCurrentPlayer().getName();
+        else return null;
     }
 
     public boolean isCurrentPlayer(String name) {
@@ -193,11 +194,11 @@ public class Game {
 
     public void performMove(ArrayList<String> commands) {
         if(rounds.get(0).getPlayerTurn(0).getMovesLeft() > 0) {
-           try {
-               move.performMove(commands);
-           } catch (ImpossibleMoveException e) {
-               cancelMove();
-           }
+            try {
+                move.performMove(commands);
+            } catch (ImpossibleMoveException e) {
+                cancelMove();
+            }
         }
     }
 

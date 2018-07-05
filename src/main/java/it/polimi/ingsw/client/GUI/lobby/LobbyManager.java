@@ -46,7 +46,8 @@ public class LobbyManager implements GUIManager{
     private String temp;
     private String activeTemp;
     private boolean flag=false;
-    private MouseEvent e = null;
+    private MouseEvent mouseEvent = null;
+    private  ActionEvent actionEvent = null;
     private HashMap<Integer, String> dices = null;
     private ArrayList<Rectangle> pattern4Items;
     private HashMap<String, String> colors = null;  //Restriction of colors
@@ -193,6 +194,20 @@ public class LobbyManager implements GUIManager{
             tokens3.get(i).setVisible(false);
             tokens4.get(i).setVisible(false);
         }
+        if(GUIData.getGUIData().getTime()!=-1){
+            date.setVisible(false);
+            phrase.setVisible(false);
+            joinLobby.setVisible(false);
+            String username = GUIData.getGUIData().getUsername();
+            long time = GUIData.getGUIData().getTime();
+            try {
+                GUIData.getGUIData().getCommunicator().lobby(username, time);
+            } catch (NetworkErrorException e) {
+                e.printStackTrace();
+            } catch (NotValidInputException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -209,6 +224,7 @@ public class LobbyManager implements GUIManager{
             try {
                 long time = chronoLocalDate.toEpochDay()*24*60*60;
                 time = isDateValid(time);
+                GUIData.getGUIData().setTime(time);
                 communicator.lobby(username, time);
                 date.setVisible(false);
                 joinLobby.setVisible(false);
@@ -230,7 +246,7 @@ public class LobbyManager implements GUIManager{
      * Finally it consumes the event.
      */
     public void patternChoose(MouseEvent event){
-        this.e = event;
+        this.mouseEvent = event;
         String card=new String();
         GridPane source;
         source = (GridPane) event.getSource();
@@ -257,10 +273,10 @@ public class LobbyManager implements GUIManager{
     /**
      * This method is called in order to load table.fxml file
      */
-    public void loadTable(String message){
+    public void loadTable(){
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
-                    Stage stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
+                    Stage stage = GUIData.getGUIData().getStage();
                     URL location = getClass().getResource("/GUI/table.fxml");
                     FXMLLoader fxmlLoader = new FXMLLoader(location);
                     try {
@@ -268,13 +284,11 @@ public class LobbyManager implements GUIManager{
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    GUIData.getGUIData().setStage(stage);
-                    stage.setMaximized(true);
+                    //stage.setMaximized(true);
+                    stage.centerOnScreen();
                     TableManager TM = fxmlLoader.getController();
                     GUIData.getGUIData().getView().setGUIManager(TM);
-                    if(table!=null) TM.updateTable(table);
                     if(temp!=null) TM.editMessage(temp);
-                    if(activeTemp != null) TM.activeElement(activeTemp);
                 }
         );
     }
@@ -285,24 +299,25 @@ public class LobbyManager implements GUIManager{
      * If the message is "back_to_game" is loaded the table.fxml file.
      */
     public synchronized void editMessage(String message){
-        this.message.appendText(message.concat("\n"));
-        if(message.equals("back_to_game")){
-            Platform.runLater(  //Compulsory to update GUI
-                    () -> {
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    this.message.appendText(message.concat("\n"));
+                    if(message.equals("back_to_game")){
                         temp = message;
-                        loadTable(temp);
+                        loadTable();
                         GUIManager TM =  GUIData.getGUIData().getView().getGUIManager();
                         TM.editMessage(temp);
                     }
-            );
-        }
-        else if(message.equals("Pattern card assigned.")) {
-            temp = new String();
-            temp = message;
-            flag = true;
-        } else if(flag){
-            temp = temp.concat("\n"+message);
-        }
+                    else if(message.equals("Pattern card assigned.")) {
+                        temp = new String();
+                        temp = message;
+                        flag = true;
+                    } else if(flag && !message.contains("Pattern card assigned.")){
+                        temp = temp.concat("\n"+message);
+                        GUIData.getGUIData().getView().getGUIManager().editMessage(temp);
+                    }
+                }
+        );
     }
 
     /**
@@ -373,10 +388,15 @@ public class LobbyManager implements GUIManager{
     }
 
     /**
-     * This method is called by the View class in order to update local attribute table.
+     * this method is called by the view class in order to update local attribute table.
      */
     public void updateTable(Table table){
-        this.table=table;
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    this.table=table;
+                    if(table!=null) GUIData.getGUIData().getView().getGUIManager().updateTable(table);
+                }
+        );
     }
 
     /**
@@ -405,19 +425,23 @@ public class LobbyManager implements GUIManager{
      * in the properly boxes in the javaFx application.
      */
     public void displayPrivateObjectiveCard(PrivateObjectiveCard card) {
-        PVOCName.setText(card.getName());
-        PVOCName.setVisible(true);
-        PVOCID.setText("ID: "+card.getID());
-        PVOCID.setVisible(true);
-        PVOCDescription.setText(card.getDescription());
-        PVOCDescription.setVisible(true);
-        PVOCColor.setText(card.getColor().name());
-        PVOCColor.setVisible(true);
-        Image image;
-        InputStream inputStream= this.getClass().getResourceAsStream("/GUI/privateObj.PNG");
-        image = new Image(inputStream);
-        privateObj.setImage(image);
-        privateObj.setVisible(true);
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    PVOCName.setText(card.getName());
+                    PVOCName.setVisible(true);
+                    PVOCID.setText("ID: "+card.getID());
+                    PVOCID.setVisible(true);
+                    PVOCDescription.setText(card.getDescription());
+                    PVOCDescription.setVisible(true);
+                    PVOCColor.setText(card.getColor().name());
+                    PVOCColor.setVisible(true);
+                    Image image;
+                    InputStream inputStream= this.getClass().getResourceAsStream("/GUI/privateObj.PNG");
+                    image = new Image(inputStream);
+                    privateObj.setImage(image);
+                    privateObj.setVisible(true);
+                }
+        );
     }
 
     /**
@@ -429,9 +453,14 @@ public class LobbyManager implements GUIManager{
      * This method is called by the View in order to update properly activeTemp local attribute.
      */
     public void activeElement(String element){
-        activeTemp = element;
-        if(element.equals("START")){
-            loadTable(temp);
-        }
+        Platform.runLater(  //Compulsory to update GUI
+                () -> {
+                    if(element.equals("CHOOSE_ACTION")) GUIData.getGUIData().getView().getGUIManager().activeElement(element);
+                    activeTemp = element;
+                    if(element.equals("START")){
+                        loadTable();
+                    }
+                }
+        );
     }
 }

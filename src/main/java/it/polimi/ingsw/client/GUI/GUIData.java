@@ -18,6 +18,21 @@ public class GUIData {
     private Communicator communicator;
     private String username;
     private GUIView view;
+    private long time =-1;
+
+    /**
+     * This method is the getter of the private attribute time.
+     */
+    public long getTime() {
+        return time;
+    }
+
+    /**
+     * This method is the setter of the private attribute time.
+     */
+    public void setTime(long time) {
+        this.time = time;
+    }
 
     /**
      * This method is the getter of the private attribute event.

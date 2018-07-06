@@ -8,6 +8,11 @@ import java.rmi.registry.LocateRegistry;
 
 public class RMIServer {
 
+    /**
+     * creates an {@link RMIServer} given an {@link Integer} rmiPort.
+     * @param rmiPort : the given port for this {@link RMIServer}
+     * @throws NetworkErrorException if a {@link RemoteException} or a {@link MalformedURLException} is thrown
+     */
     public RMIServer(int rmiPort) throws NetworkErrorException {
         try {
             LocateRegistry.createRegistry(rmiPort);

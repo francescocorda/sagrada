@@ -29,18 +29,28 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     private String username;
     private SocketReader reader = null;
 
-    public ClientSocketInterpreter(Socket socket) {
+    /**
+     * creates a new {@link ClientSocketInterpreter} given a {@link Socket} socket.
+     * @param socket : the given {@link Socket}
+     */
+    ClientSocketInterpreter(Socket socket) {
         this.connection = new ConnectionSocket(socket);
         players = ClientDatabase.getPlayerDatabase();
         status = ONLINE;
     }
 
+    /**
+     * handles socket player.
+     */
     @Override
     public void run() {
         login();
         sendMessage("lobby/last_access/insert_last_access");
     }
 
+    /**
+     * handles socket player's login.
+     */
     private void login() {
         ArrayList<String> commands;
         connection.sendMessage("login/insert_credentials");
@@ -71,7 +81,11 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         }
     }
 
-    public void joinLobby(List<String> commands) {
+    /**
+     * handle player's joining lobby phase given an {@link ArrayList<String>} commands.
+     * @param commands : the given {@link ArrayList<String>}
+     */
+    private void joinLobby(List<String> commands) {
         final String invalidCommand = "lobby/invalid_command";
         long systemTime = System.currentTimeMillis() / 1000; //current unix time in seconds
         String tempMessage;
@@ -114,16 +128,27 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         }
     }
 
+    /**
+     * sends the given {@link String} message to the client.
+     * it does that through the use of method {@link ConnectionSocket#sendMessage(String)}
+     * @param message : the given {@link String} message
+     */
     public void sendMessage(String message) {
         if (isOnline()) {
             connection.sendMessage(message);
         }
     }
 
+    /**
+     * @return {@link #username}.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * closes this {@link ClientSocketInterpreter}.
+     */
     public void close() {
         this.connection.close();
         if (reader != null)
@@ -134,6 +159,9 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         Thread.currentThread().interrupt();
     }
 
+    /**
+     * @return true if the client is still {@link Status#ONLINE}.
+     */
     public boolean isOnline() {
         if (status == ONLINE) {
             reader.waitForPong();
@@ -145,10 +173,20 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         }
     }
 
+    /**
+     * set {@link #status} to {@link Status#OFFLINE}.
+     */
     public void offline() {
         status = OFFLINE;
     }
 
+    /**
+     * handles player's login action given it's credentials.
+     * @param username : the given {@link String} username
+     * @param password : the given {@link String} password
+     * @param client : the given {@link ClientSocketInterpreter} client
+     * @throws NotValidInputException if given credentials are not valid
+     */
     private void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
         toScreen("Client number " + ServerMain.getServerMain().getNewClientNumber() + " connected through Socket");
         if (players.check(username, password)) {
@@ -168,6 +206,12 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         }
     }
 
+    /**
+     * handles player's joinLobby action given it's username and time.
+     * @param username : the given {@link String} username
+     * @param time : the given {@link Long} time
+     * @throws NotValidInputException if the given values are not valid
+     */
     private void joinLobbyHandler(String username, long time) throws NotValidInputException {
         long systemTime = System.currentTimeMillis() / 1000; //current unix time in seconds
         if (systemTime > time) {
@@ -175,17 +219,29 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         } else throw new NotValidInputException();
     }
 
+    /**
+     * gets the {@link String} message to be handled by {@link #handleEvent(String)}.
+     * @param message : the given {@link String} message
+     */
     @Override
     public void update(String message) {
         if (message != null)
             handleEvent(message);
     }
 
+    /**
+     * it does nothing.
+     * @param o : the given {@link Observable}
+     */
     @Override
     public void update(Observable o) {
 
     }
 
+    /**
+     * handles the given message.
+     * @param message : the given {@link String} message
+     */
     private void handleEvent(String message) {
         ArrayList<String> commands = messageParser(message);
         if (message.equals("logout"))
@@ -196,11 +252,21 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         }
     }
 
+    /**
+     * converts a given {@link String} message into it's corresponding {@link ArrayList<String>} of commands.
+     * @param message : the given {@link String} message
+     * @return an {@link ArrayList<String>} of commands that derives from
+     * the conversion of given {@link String} message
+     */
     private ArrayList<String> messageParser(String message) {
         toScreen("Message: " + message);
         return new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
     }
 
+    /**
+     * displays the given {@link String} message.
+     * @param message : the given {@link String} message
+     */
     private void toScreen(String message) {
         System.out.println(message);
     }

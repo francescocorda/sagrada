@@ -19,7 +19,14 @@ public class SocketReader extends Thread {
     private final Object check = new Object();
     private ClientSocketInterpreter clientSocketInterpreter;
 
-    public SocketReader(ConnectionSocket connection, String username, ClientSocketInterpreter csi) {
+    /**
+     * creates a new {@link SocketReader} given a {@link ConnectionSocket} connection,
+     * {@link String} username, {@link ClientSocketInterpreter} csi.
+     * @param connection : the given {@link SocketReader}
+     * @param username : the given {@link String} username
+     * @param csi : the given {@link ClientSocketInterpreter}
+     */
+    SocketReader(ConnectionSocket connection, String username, ClientSocketInterpreter csi) {
         this.username = username;
         this.connection = connection;
         this.view = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(username);

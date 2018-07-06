@@ -14,6 +14,11 @@ public class SocketServer extends Thread{
 
     private ServerSocket serverSocket;
 
+    /**
+     * creates a {@link SocketServer} given a {@link Integer} port.
+     * @param port : the given {@link Integer} port
+     * @throws NetworkErrorException if any connection related error occurs
+     */
     public SocketServer(int port) throws NetworkErrorException {
         try {
             this.serverSocket = new java.net.ServerSocket(port);
@@ -24,6 +29,9 @@ public class SocketServer extends Thread{
         start();
     }
 
+    /**
+     * handles the creation of new {@link ClientSocketInterpreter}.
+     */
     @Override
     public void run() {
         Logger logger = Logger.getLogger(PatternDeck.class.getName());
@@ -50,6 +58,9 @@ public class SocketServer extends Thread{
         }
     }
 
+    /**
+     * closes this {@link ServerSocket}.
+     */
     public void close(){
         System.exit(0);
     }

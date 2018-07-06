@@ -18,6 +18,13 @@ public class ServerMain {
     private static final String DEFAULT_SYMBOL = "";
     private static final String NOT_VALID_INPUT = "Not valid input...";
     private static final String CLOSING_SETTER = "): ";
+    private static final String START_STATE = "###############--START_STATE--################";
+    private static final String END_STATE = "################--END_STATE--#################";
+    private static final String STATE = "state";
+    private static final String SERVER_CLOSED = "SERVER CLOSED...";
+    private static final String QUIT = "quit";
+    private static final String SERVER_READY = "SERVER READY...";
+    private static final String BLANK = "";
     private static boolean serverUp;
     private static SocketServer serverSocket;
     private static RMIServer rmiServer;
@@ -30,9 +37,15 @@ public class ServerMain {
     private int numberOfClient = -1;
     private static int timerSeconds = 2 * 60;
 
+    /**
+     * creates a new {@link ServerMain}
+     */
     private ServerMain() {
     }
 
+    /**
+     * @return tho only instance of {@link ServerMain}.
+     */
     public static synchronized ServerMain getServerMain() {
         if (instance == null) {
             instance = new ServerMain();
@@ -41,14 +54,11 @@ public class ServerMain {
     }
 
     /**
-     * Initialize all the structure for the game/server
+     * Initialize all the structure for the game/server.
      * @param args the usual main args
      */
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String text;
         serverUp = true;
-        boolean flag = true;
         setSocketServer();
         setRMIServer();
         setTimerLobby();
@@ -57,6 +67,9 @@ public class ServerMain {
         start();
     }
 
+    /**
+     * sets the time of a player's turn, so the one of it's timer.
+     */
     private static void setTimerPlayerTurn(){
         Scanner scanner = new Scanner(System.in);
         String text;
@@ -76,6 +89,9 @@ public class ServerMain {
         }
     }
 
+    /**
+     * set the time of Lobby's countdown for {@link Lobby#startGame()}.
+     */
     private static void setTimerLobby(){
         Scanner scanner = new Scanner(System.in);
         String text;
@@ -95,6 +111,9 @@ public class ServerMain {
         }
     }
 
+    /**
+     * sets the port for a {@link SocketServer}.
+     */
     private static void setSocketServer(){
         Scanner scanner = new Scanner(System.in);
         String text;
@@ -125,6 +144,9 @@ public class ServerMain {
         }
     }
 
+    /**
+     * sets the port for a {@link RMIServer}.
+     */
     private static void setRMIServer(){
         Scanner scanner = new Scanner(System.in);
         String text;
@@ -155,64 +177,93 @@ public class ServerMain {
         }
     }
 
+    /**
+     * handle {@link ServerMain} behaviour after initialization.
+     */
     private static void start() {
         Scanner scanner = new Scanner(System.in);
         String text;
         boolean flag = true;
-        println("SERVER READY...");
+        println(SERVER_READY);
         while(flag){
             text = scanner.nextLine();
             text = text.toLowerCase();
-            if(text.equals("quit")){
+            if(text.equals(QUIT)){
                 flag = false;
                 serverUp = false;
                 serverSocket.close();
                 Lobby.getLobby().close();
-                println("SERVER CLOSED...");
+                println(SERVER_CLOSED);
                 System.exit(0);
             }
-            if(text.equals("state")){
+            if(text.equals(STATE)){
                 showCurrentState();
             }
         }
     }
 
+    /**
+     * shows current state.
+     */
     private static void showCurrentState(){
-        //TODO eliminate
-        println("###############--STATE--################");
+        println(START_STATE);
         Lobby.getLobby().status();
-        println("");
+        println(BLANK);
         VirtualViewsDataBase.getVirtualViewsDataBase().status();
-        println("");
+        println(BLANK);
         ClientDatabase.getPlayerDatabase().status();
-        println("############--END_STATE--###############");
+        println(END_STATE);
     }
 
+    /**
+     * @return true if {@link ServerMain#serverUp} is true; false otherwise.
+     */
     public static boolean getStatus() {
         return serverUp;
     }
 
+    /**
+     * @return the number of the new connecting client.
+     */
     public int getNewClientNumber() {
         numberOfClient++;
         return numberOfClient;
     }
 
+    /**
+     * sets the seconds of a player's turn as the given seconds.
+     * @param seconds : the given seconds
+     */
     private static void setTimerPlayerTurn(int seconds){
         turnSeconds = seconds;
     }
 
+    /**
+     * @return of a player's turn.
+     */
     public int getTurnSeconds(){
         return turnSeconds;
     }
 
+    /**
+     * sets the seconds of Lobby's timer for a {@link Lobby#startGame()} as the given seconds.
+     * @param seconds : the given seconds.
+     */
     private static void setTimerSeconds(int seconds) {
         timerSeconds = seconds;
     }
 
+    /**
+     * @return the seconds of Lobby's timer for a {@link Lobby#startGame()}.
+     */
     public int getTimerSeconds() {
         return timerSeconds;
     }
 
+    /**
+     * displays the given {@link String} message.
+     * @param message : the given {@link String} message
+     */
     private static void println(String message) {
         System.out.println(message);
     }

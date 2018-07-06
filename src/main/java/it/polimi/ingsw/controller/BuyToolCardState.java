@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Model.Game.Game.TOOL_CARDS_DIMENSION;
+import static it.polimi.ingsw.model.game.Game.TOOL_CARDS_DIMENSION;
 import static it.polimi.ingsw.controller.Controller.*;
 
 public class BuyToolCardState extends State {

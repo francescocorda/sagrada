@@ -1,18 +1,18 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.client.CLI.CLI;
-import it.polimi.ingsw.client.GUI.login.Login;
+import it.polimi.ingsw.client.game_mode.cli.CLI;
+import it.polimi.ingsw.client.game_mode.gui.login.Login;
 import java.util.Scanner;
 
 public class Client {
 
     /**
-     * starts client and allows to choose whether to play through CLI or GUI
+     * starts client and allows to choose whether to play through cli or gui
      * @param args the usual main args
      */
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        println("Would you like to play in GUI or CLI?");
+        println("Would you like to play in gui or cli?");
         boolean temp = true;
         while (temp) {
             String mode = in.nextLine();
@@ -29,7 +29,7 @@ public class Client {
                     break;
                 default:
                     println("Wrong input...\n");
-                    println("Would you like to play in GUI or CLI?");
+                    println("Would you like to play in gui or cli?");
             }
         }
     }

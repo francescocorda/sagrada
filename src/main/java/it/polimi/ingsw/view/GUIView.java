@@ -1,11 +1,11 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
-import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Game.Table;
-import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.model.cards.patterns.PatternCard;
+import it.polimi.ingsw.model.cards.private_objectives.PrivateObjectiveCard;
+import it.polimi.ingsw.model.game.Table;
+import it.polimi.ingsw.client.game_mode.gui.GUIManager;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.SocketVisitor;
+import it.polimi.ingsw.server.socket.SocketVisitor;
 
 
 public class GUIView extends Observable implements View {

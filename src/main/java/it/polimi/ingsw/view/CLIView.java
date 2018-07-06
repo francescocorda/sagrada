@@ -1,21 +1,21 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
-import it.polimi.ingsw.Model.Cards.Patterns.Restriction;
-import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Cards.PublicObjectives.PublicObjectiveCard;
-import it.polimi.ingsw.Model.Cards.toolcard.ToolCard;
-import it.polimi.ingsw.Model.Game.Dice;
-import it.polimi.ingsw.Model.Game.Player;
-import it.polimi.ingsw.Model.Game.Table;
-import it.polimi.ingsw.Model.Game.WindowFrame;
+import it.polimi.ingsw.model.cards.patterns.PatternCard;
+import it.polimi.ingsw.model.cards.patterns.Restriction;
+import it.polimi.ingsw.model.cards.private_objectives.PrivateObjectiveCard;
+import it.polimi.ingsw.model.cards.public_objectives.PublicObjectiveCard;
+import it.polimi.ingsw.model.cards.toolcard.ToolCard;
+import it.polimi.ingsw.model.game.Dice;
+import it.polimi.ingsw.model.game.Player;
+import it.polimi.ingsw.model.game.Table;
+import it.polimi.ingsw.model.game.WindowFrame;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.SocketVisitor;
+import it.polimi.ingsw.server.socket.SocketVisitor;
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.COLUMN;
-import static it.polimi.ingsw.Model.Cards.Patterns.PatternCard.ROW;
+import static it.polimi.ingsw.model.cards.patterns.PatternCard.COLUMN;
+import static it.polimi.ingsw.model.cards.patterns.PatternCard.ROW;
 
 public class CLIView extends Observable implements View {
 

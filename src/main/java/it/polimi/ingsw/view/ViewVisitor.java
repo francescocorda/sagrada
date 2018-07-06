@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.model.game.Table;
 
 public class ViewVisitor{
 

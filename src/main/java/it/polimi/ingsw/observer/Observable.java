@@ -1,6 +1,6 @@
 package it.polimi.ingsw.observer;
 
-import it.polimi.ingsw.SocketVisitor;
+import it.polimi.ingsw.server.socket.SocketVisitor;
 import it.polimi.ingsw.view.ViewVisitor;
 
 import java.io.Serializable;
@@ -9,10 +9,17 @@ import java.util.Vector;
 public abstract class Observable implements Serializable {
     private transient Vector<Observer> obs;
 
+    /**
+     * return a new {@link Observable}
+     */
     public Observable() {
         this.obs = new Vector<>();
     }
 
+    /**
+     * adds a given {@link Observer} o to {@link #obs}
+     * @param o : the given {@link Observer}
+     */
     public synchronized void addObserver(Observer o) {
         if (o == null)
             throw new NullPointerException();
@@ -21,6 +28,10 @@ public abstract class Observable implements Serializable {
         }
     }
 
+    /**
+     *
+     * @param o
+     */
     public synchronized void deleteObserver(Observer o) {
         obs.remove(o);
     }

@@ -1,10 +1,15 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.*;
-import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
-import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.Model.Game.Game;
-import it.polimi.ingsw.Server.ServerMain;
+import it.polimi.ingsw.database.ClientData;
+import it.polimi.ingsw.database.ClientDatabase;
+import it.polimi.ingsw.database.Phase;
+import it.polimi.ingsw.database.VirtualViewsDataBase;
+import it.polimi.ingsw.model.cards.patterns.PatternCard;
+import it.polimi.ingsw.model.cards.private_objectives.PrivateObjectiveCard;
+import it.polimi.ingsw.model.game.Game;
+import it.polimi.ingsw.server.Lobby;
+import it.polimi.ingsw.database.ParserManager;
+import it.polimi.ingsw.server.ServerMain;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -31,7 +36,7 @@ public class Controller implements Observer {
     static final String LEFT_THE_GAME = " left the game.";
     static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
     static final String JOINED_THE_GAME = " joined the game.";
-    static final String GAME_JOINED = "Game joined.";
+    static final String GAME_JOINED = "game joined.";
     static final String BACK_TO_GAME = "back_to_game";
     static final String PATTERN_ASSIGNED = "Pattern card assigned.";
     private static final String YOU_WON = "You Won!";
@@ -196,7 +201,7 @@ public class Controller implements Observer {
         ArrayList<String> commands;
         commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
         if (isGameEnded){
-            handelEndGameEvent(commands);
+            handleEndGameEvent(commands);
         } else {
             handleEvent(commands);
         }
@@ -209,7 +214,7 @@ public class Controller implements Observer {
         //handleEvent(commands);
     }
 
-    private synchronized void handelEndGameEvent(ArrayList<String> commands) {
+    private synchronized void handleEndGameEvent(ArrayList<String> commands) {
         if (commands.size() == 2) {
             String username = commands.remove(0);
             VirtualView playerView = null;
@@ -344,7 +349,7 @@ public class Controller implements Observer {
     private void handleOnlinePlayers() {
         for (String player : players) {
             if (!offlinePlayers.contains(player)) {
-                sendMessage(player, "Chose [play] to play again, [logout] to go back to login");
+                sendMessage(player, "Choose [play] to play again, [logout] to go back to login");
             }
         }
     }

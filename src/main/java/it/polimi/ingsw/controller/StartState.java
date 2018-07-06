@@ -3,7 +3,7 @@ package it.polimi.ingsw.controller;
 
 import java.util.ArrayList;
 
-import static it.polimi.ingsw.Model.Game.Game.PROPOSED_PATTERNS;
+import static it.polimi.ingsw.model.game.Game.PROPOSED_PATTERNS;
 import static it.polimi.ingsw.controller.Controller.CHOOSE_PATTERN_CARD;
 import static it.polimi.ingsw.controller.Controller.INVALID_FORMAT;
 import static it.polimi.ingsw.controller.Controller.PATTERN_ASSIGNED;

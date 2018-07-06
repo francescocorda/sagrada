@@ -1,6 +1,6 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.Model.Game.Game;
+import it.polimi.ingsw.model.game.Game;
 
 import java.util.ArrayList;
 

@@ -1,14 +1,14 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.ClientDatabase;
-import it.polimi.ingsw.ClientHandler;
-import it.polimi.ingsw.Model.Cards.Patterns.PatternCard;
-import it.polimi.ingsw.Model.Cards.PrivateObjectives.PrivateObjectiveCard;
-import it.polimi.ingsw.ClientData;
-import it.polimi.ingsw.Model.Game.Table;
+import it.polimi.ingsw.database.ClientDatabase;
+import it.polimi.ingsw.server.client_handler.ClientHandler;
+import it.polimi.ingsw.model.cards.patterns.PatternCard;
+import it.polimi.ingsw.model.cards.private_objectives.PrivateObjectiveCard;
+import it.polimi.ingsw.database.ClientData;
+import it.polimi.ingsw.model.game.Table;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.observer.Observable;
-import it.polimi.ingsw.SocketVisitor;
+import it.polimi.ingsw.server.socket.SocketVisitor;
 
 
 public class VirtualView extends Observable implements View {

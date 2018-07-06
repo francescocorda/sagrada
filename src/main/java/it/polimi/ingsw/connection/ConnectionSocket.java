@@ -1,7 +1,6 @@
 package it.polimi.ingsw.connection;
 
-import it.polimi.ingsw.Model.Cards.Patterns.PatternDeck;
-import it.polimi.ingsw.Model.Game.Color;
+import it.polimi.ingsw.model.cards.patterns.PatternDeck;
 
 import java.io.*;
 import java.net.Socket;

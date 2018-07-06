@@ -198,15 +198,6 @@ public class LobbyManager implements GUIManager{
             date.setVisible(false);
             phrase.setVisible(false);
             joinLobby.setVisible(false);
-            String username = GUIData.getGUIData().getUsername();
-            long time = GUIData.getGUIData().getTime();
-            try {
-                GUIData.getGUIData().getCommunicator().lobby(username, time);
-            } catch (NetworkErrorException e) {
-                e.printStackTrace();
-            } catch (NotValidInputException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -312,9 +303,9 @@ public class LobbyManager implements GUIManager{
                         temp = new String();
                         temp = message;
                         flag = true;
-                    } else if(flag && !message.contains("Pattern card assigned.")){
-                        temp = temp.concat("\n"+message);
-                        GUIData.getGUIData().getView().getGUIManager().editMessage(temp);
+                    } else if(flag /*&& !message.contains("Pattern card assigned.")*/){
+                        //temp = temp.concat("\n"+message);
+                        GUIData.getGUIData().getView().getGUIManager().editMessage(message);
                     }
                 }
         );

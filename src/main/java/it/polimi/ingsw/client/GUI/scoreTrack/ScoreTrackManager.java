@@ -7,6 +7,7 @@ import it.polimi.ingsw.Model.Game.ScoreTrack;
 import it.polimi.ingsw.Model.Game.Table;
 import it.polimi.ingsw.client.GUI.GUIData;
 import it.polimi.ingsw.client.GUI.GUIManager;
+import it.polimi.ingsw.client.GUI.login.LoginManager;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -21,6 +22,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ScoreTrackManager implements GUIManager {
@@ -114,6 +116,7 @@ public class ScoreTrackManager implements GUIManager {
     private ArrayList<String> colors;
     private ArrayList<Text> usernames;
     private ArrayList<Text> scores;
+    private String temp = "NULL";
 
     /**
      * It's called by the FXMLLoader when the file scoreTrack.fxml is loaded.
@@ -241,6 +244,7 @@ public class ScoreTrackManager implements GUIManager {
      * It loads the lobby.fxml file.
      */
     public void newGameAction(javafx.event.ActionEvent event){
+        temp="ACTIVE";
         try {
             GUIData.getGUIData().getCommunicator().sendMessage("play");
         } catch (NetworkErrorException e) {
@@ -260,13 +264,21 @@ public class ScoreTrackManager implements GUIManager {
      * It stops javaFx process and program.
      */
     public void exitAction(){
+        GUIData.getGUIData().setTime(-1);
         try {
-            GUIData.getGUIData().getCommunicator().sendMessage("exit");
+            GUIData.getGUIData().getCommunicator().sendMessage("logout");
+            Stage stage = GUIData.getGUIData().getStage();
+            URL location = getClass().getResource("/GUI/login.fxml");
+            FXMLLoader fxmlLoader = new FXMLLoader(location);
+            stage.setScene(new Scene(fxmlLoader.load(), 500, 650));
+            stage.centerOnScreen();
+            LoginManager LM = fxmlLoader.getController();
+            GUIData.getGUIData().getView().setGUIManager(LM);
         } catch (NetworkErrorException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        Platform.exit();
-        System.exit(0);
     }
 
     /**
@@ -275,7 +287,14 @@ public class ScoreTrackManager implements GUIManager {
      */
     @Override
     public void editMessage(String message) {
-        Platform.runLater(() -> this.text.appendText(message+"\n"));
+        Platform.runLater(() -> {
+            this.text.appendText(message+"\n");
+            if(!temp.equals("NULL")){
+                if(temp.equals("ACTIVE")) temp="";
+                GUIData.getGUIData().getView().getGUIManager().editMessage(message);
+            }
+        }
+        );
     }
 
     /**

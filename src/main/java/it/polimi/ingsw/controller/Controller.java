@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 public class Controller implements Observer {
 
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
-
+    private static String INACTIVE_TABLE = "INACTIVE_TABLE";
+    private static String JOIN_ACTION = "JOIN";
     private int turnTimerSeconds;
     static final String INVALID_FORMAT = "Command of invalid format.";
     static final String WAIT_YOUR_TURN = "Wait your turn.";
@@ -32,6 +33,7 @@ public class Controller implements Observer {
     static final String JOINED_THE_GAME = " joined the game.";
     static final String GAME_JOINED = "Game joined.";
     static final String BACK_TO_GAME = "back_to_game";
+    static final String PATTERN_ASSIGNED = "Pattern card assigned.";
     private static final String YOU_WON = "You Won!";
     private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
     private static final String START = "START";
@@ -153,6 +155,7 @@ public class Controller implements Observer {
                 for (String name : players) {
                     if (game.setPatternCard(name, 0)) {
                         sendActiveTableElement(name, START);
+                        sendMessage(name, PATTERN_ASSIGNED);
                     }
                 }
                 game.doneAssignPatternCards();
@@ -282,6 +285,7 @@ public class Controller implements Observer {
     }
 
     synchronized void checkGameState() {
+        String player = game.getCurrentPlayer();
         if (game.isTurnEnded()) {
             if (game.isRoundEnded() && game.isGameEnded()) {
                 game.countScores();
@@ -292,6 +296,7 @@ public class Controller implements Observer {
                 return;
             }
             if (!offlinePlayers.contains(game.getCurrentPlayer())) {
+                if(player != null) sendActiveTableElement(player, INACTIVE_TABLE);
                 setTimerSkipTurn();
             }
         }
@@ -322,8 +327,9 @@ public class Controller implements Observer {
             public void run() {
                 state = chooseActionState;
                 offlinePlayers.add(game.getCurrentPlayer());
-                sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
+                //sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
+                sendActiveTableElement(game.getCurrentPlayer(), JOIN_ACTION);
                 skipTurn();
             }
         }, turnTimerSeconds * 1000);

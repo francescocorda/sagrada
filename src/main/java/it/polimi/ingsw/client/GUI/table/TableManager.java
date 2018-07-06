@@ -81,7 +81,7 @@ public class TableManager implements GUIManager {
     private MouseEvent event;
     int initialPos;
     private StackPane draggableDice;
-    private String temp;
+    private String temp = "NULL";
 
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
@@ -677,6 +677,7 @@ public class TableManager implements GUIManager {
         } catch (NetworkErrorException exc) {
             exc.printStackTrace();
         }
+        joinGameButton.setVisible(false);
         e.consume();
     }
 
@@ -687,7 +688,11 @@ public class TableManager implements GUIManager {
     public synchronized void editMessage(String message) {
         Platform.runLater(  //Compulsory to update GUI
                 () -> {
-                    temp = message;
+                    if(!temp.equals("NULL")) {
+                        if(temp.equals("ACTIVE")) temp="";
+                        GUIData.getGUIData().getView().getGUIManager().editMessage(message);
+                    }
+
                     if (message != null && (message.contains("New Turn.") || message.contains("NewTurn.") || message.equals("Wait your turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
                         if (activeTool == true) {
                             removeBorder();
@@ -745,7 +750,10 @@ public class TableManager implements GUIManager {
                         }
 
                     }
-                    if(!table.getScoreTrack().isEmpty()) this.showScoreTrack(table.getScoreTrack());
+                    if(!table.getScoreTrack().isEmpty()) {
+                        this.showScoreTrack(table.getScoreTrack());
+                        this.temp="ACTIVE";
+                    }
                 }
         );
     }
@@ -1092,6 +1100,7 @@ public class TableManager implements GUIManager {
             stage.centerOnScreen();
             LoginManager LM = fxmlLoader.getController();
             GUIData.getGUIData().getView().setGUIManager(LM);
+            GUIData.getGUIData().setTime(-1);
         } catch (NetworkErrorException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1141,7 +1150,6 @@ public class TableManager implements GUIManager {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(temp!=null)  GUIData.getGUIData().getView().getGUIManager().editMessage(temp);
                     GUIData.getGUIData().getView().getGUIManager().showScoreTrack(scoreTrack);
                 }
         );
@@ -1201,7 +1209,7 @@ public class TableManager implements GUIManager {
                     }
                     if(element.equals("JOIN")){
                         joinGameButton.setVisible(true);
-                    } else joinGameButton.setVisible(false);
+                    }
                     if(element.equals("INACTIVE_TABLE")){
                         hideMoveButtons();
                         cancelButton.setVisible(false);

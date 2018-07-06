@@ -1,13 +1,12 @@
 package it.polimi.ingsw.controller;
 
 
-import it.polimi.ingsw.exceptions.NotValidInputException;
-
 import java.util.ArrayList;
 
 import static it.polimi.ingsw.Model.Game.Game.PROPOSED_PATTERNS;
 import static it.polimi.ingsw.controller.Controller.CHOOSE_PATTERN_CARD;
 import static it.polimi.ingsw.controller.Controller.INVALID_FORMAT;
+import static it.polimi.ingsw.controller.Controller.PATTERN_ASSIGNED;
 
 
 public class StartState extends State {
@@ -27,7 +26,7 @@ public class StartState extends State {
             if ((indexPattern >= 1 && indexPattern <= PROPOSED_PATTERNS) && commands.isEmpty()) {
                 if (game.setPatternCard(username, indexPattern-1)) {
                     controller.sendActiveTableElement(username, "START");
-                    controller.sendMessage(username, "Pattern card assigned.");
+                    controller.sendMessage(username, PATTERN_ASSIGNED);
                 }
             } else {
                 controller.sendMessage(username, INVALID_FORMAT);

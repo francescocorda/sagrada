@@ -29,13 +29,16 @@ public abstract class Observable implements Serializable {
     }
 
     /**
-     *
-     * @param o
+     * deletes the given {@link Observer} o from this {@link Observable}.
+     * @param o : the given {@link Observer} o
      */
     public synchronized void deleteObserver(Observer o) {
         obs.remove(o);
     }
 
+    /**
+     * notifies all {@link Observer} of this {@link Observable} about it's current state.
+     */
     public void notifyObservers() {
 
         Object[] arrLocal;
@@ -48,6 +51,10 @@ public abstract class Observable implements Serializable {
             ((Observer)arrLocal[i]).update(this);
     }
 
+    /**
+     * notifies all {@link Observer} of this {@link Observable} about a given {@link String} message.
+     * @param message : the given {@link String} message
+     */
     public void notifyObservers(String message) {
         Object[] arrLocal;
 
@@ -59,15 +66,30 @@ public abstract class Observable implements Serializable {
             ((Observer)arrLocal[i]).update(message);
     }
 
+    /**
+     * deletes all {@link Observer}s of this {@link Observable}
+     */
     public synchronized void deleteObservers() {
         obs.removeAllElements();
     }
 
+    /**
+     * @return the number of this {@link Observable} {@link Observer}s.
+     */
     public synchronized int countObservers() {
         return obs.size();
     }
 
+    /**
+     * shows it's state through a given {@link ViewVisitor} visitor.
+     * @param visitor : the given {@link ViewVisitor} visitor
+     */
     public abstract void display(ViewVisitor visitor);
 
+    /**
+     *
+     * @param visitor
+     * @return
+     */
     public abstract String convert(SocketVisitor visitor);
 }

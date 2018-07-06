@@ -363,7 +363,7 @@ public class Controller implements Observer {
 
     private void handleOfflinePlayer(String username){
         VirtualViewsDataBase virtualViewsDataBase = VirtualViewsDataBase.getVirtualViewsDataBase();
-        ClientData client = ClientDatabase.getPlayerDatabase().findPlayer(username);
+        ClientData client = ClientDatabase.getPlayerDatabase().getPlayerData(username);
         if (!client.isConnected()) {
             virtualViewsDataBase.getVirtualView(username).deleteObservers();
             virtualViewsDataBase.removeVirtualView(username);

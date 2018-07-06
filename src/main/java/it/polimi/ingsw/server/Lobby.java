@@ -96,7 +96,7 @@ public class Lobby implements Observer {
     }
 
     public synchronized void removePlayer(String username) {
-        ClientData player = players.findPlayer(username);
+        ClientData player = players.getPlayerData(username);
         int index = connectedPlayers.indexOf(player);
         if(index<0)
             return;

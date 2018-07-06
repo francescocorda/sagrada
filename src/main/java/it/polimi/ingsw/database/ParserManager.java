@@ -59,11 +59,16 @@ public class ParserManager {
 
     private Gson gson;
 
-
+    /**
+     * creates a {@link ParserManager}
+     */
     private ParserManager() {
         parser = new JSONParser();
     }
 
+    /**
+     * @return the only instance of the {@link ParserManager}
+     */
     public static ParserManager getParserManager() {
         if (instance == null) {
             instance = new ParserManager();
@@ -71,6 +76,10 @@ public class ParserManager {
         return instance;
     }
 
+    /**
+     * @param directory : the given {@link String} directory
+     * @return an {@link ArrayList<String>} of File's names in the given {@link String} directory
+     */
     private ArrayList<String> walkResources(String directory) {
         ArrayList<String> list = new ArrayList<>();
 
@@ -85,6 +94,9 @@ public class ParserManager {
         return list;
     }
 
+    /**
+     * @return the {@link PatternDeck}.
+     */
     public PatternDeck getPatternDeck(){
         PatternDeck deck = new PatternDeck();
         List<String> list = walkResources(JSON_PATTERNS_PATH);
@@ -119,6 +131,9 @@ public class ParserManager {
         return deck;
     }
 
+    /**
+     * @return an {@link ArrayList<PublicObjectiveCard>}.
+     */
     public ArrayList<PublicObjectiveCard> getPublicObjectiveDeck() {
         ArrayList<PublicObjectiveCard> puODeck = new ArrayList<>();
         Object obj = null;
@@ -182,6 +197,9 @@ public class ParserManager {
         return puODeck;
     }
 
+    /**
+     * @return an {@link ArrayList<ToolCard>}.
+     */
     public ArrayList<ToolCard> getToolCards(){
         ArrayList<ToolCard> toolCards = new ArrayList<>();
         ArrayList<String> fileList = walkResources(JSON_TOOL_CARDS_PATH);

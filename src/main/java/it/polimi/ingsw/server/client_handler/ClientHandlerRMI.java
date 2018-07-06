@@ -12,10 +12,19 @@ import java.rmi.RemoteException;
 public class ClientHandlerRMI implements ClientHandler {
     private RMIClientInterface rmiClientInterface;
 
+    /**
+     * creates a {@link ClientHandlerRMI} given a {@link RMIClientInterface} rmiClientInterface
+     * @param rmiClientInterface : the given {@link RMIClientInterface}
+     */
     public ClientHandlerRMI(RMIClientInterface rmiClientInterface) {
         this.rmiClientInterface = rmiClientInterface;
     }
 
+    /**
+     * displays to the client the given {@link Table} table.
+     * @param table : the given {@link Table}
+     * @throws NetworkErrorException
+     */
     @Override
     public void displayGame(Table table) throws NetworkErrorException {
         try {
@@ -25,6 +34,12 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * sends the given {@link String} message.
+     * it does that through method {@link RMIClientInterface#send(String)}
+     * @param message : the given {@link String}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public void sendMessage(String message) throws NetworkErrorException {
         try {
@@ -34,6 +49,12 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * sends to the client the given {@link String} element that represents the active element.
+     * it does that through method {@link RMIClientInterface#sendActiveTableElement(String)}
+     * @param element : the given {@link String}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public void sendActiveTableElement(String element) throws NetworkErrorException {
         try {
@@ -43,6 +64,12 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * sends to the client the given {@link PatternCard} patternCard.
+     * it does that through method {@link RMIClientInterface#sendActiveTableElement(String)}
+     * @param patternCard : the given {@link PatternCard}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public void sendPatternCard(PatternCard patternCard) throws NetworkErrorException {
         try {
@@ -52,6 +79,12 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * sends to the client the given {@link PrivateObjectiveCard} privateObjectiveCard.
+     * it does that through method {@link RMIClientInterface#sendPrivateObjectiveCard(PrivateObjectiveCard)}
+     * @param privateObjectiveCard : the given {@link PrivateObjectiveCard}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public void sendPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) throws NetworkErrorException {
         try {
@@ -61,6 +94,12 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * updates the client of the given {@link Observable} o.
+     * it does that through method {@link RMIClientInterface#update(Observable)}
+     * @param o : the given {@link Observable}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public void update(Observable o) throws NetworkErrorException {
         try {
@@ -70,6 +109,11 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * checks if the client is still online.
+     * it does that through method {@link RMIClientInterface#checkConnection()}
+     * @throws NetworkErrorException if any connection related exception is thrown
+     */
     @Override
     public synchronized void check() throws NetworkErrorException {
         try {
@@ -79,6 +123,9 @@ public class ClientHandlerRMI implements ClientHandler {
         }
     }
 
+    /**
+     * does nothing.
+     */
     @Override
     public void close() {
         //useless for rmi

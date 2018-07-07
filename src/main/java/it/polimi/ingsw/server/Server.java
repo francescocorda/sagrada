@@ -80,7 +80,11 @@ public class Server {
             try{
                 if(!text.equals(DEFAULT_SYMBOL)){
                     int seconds = Integer.parseInt(text);
-                    setTimerPlayerTurn(seconds);
+                    if(seconds < 0){
+                        throw new NumberFormatException();
+                    } else {
+                        setTimerPlayerTurn(seconds);
+                    }
                 }
                 flag = false;
             } catch (NumberFormatException e){
@@ -102,7 +106,11 @@ public class Server {
             try{
                 if(!text.equals(DEFAULT_SYMBOL)){
                     int seconds = Integer.parseInt(text);
-                    setTimerSeconds(seconds);
+                    if(seconds < 0){
+                        throw new NumberFormatException();
+                    } else {
+                        setTimerSeconds(seconds);
+                    }
                 }
                 flag = false;
             } catch (NumberFormatException e){
@@ -128,7 +136,11 @@ public class Server {
             else {
                 try {
                     socketPort = Integer.parseInt(text);
-                    flag = false;
+                    if(socketPort<0){
+                        throw new NumberFormatException();
+                    } else {
+                        flag = false;
+                    }
                 } catch (NumberFormatException e) {
                     println(NOT_VALID_INPUT);
                 }
@@ -161,7 +173,11 @@ public class Server {
             else {
                 try {
                     rmiPort = Integer.parseInt(text);
-                    flag = false;
+                    if(rmiPort < 0){
+                        throw new NumberFormatException();
+                    } else {
+                        flag = false;
+                    }
                 } catch (NumberFormatException e) {
                     println(NOT_VALID_INPUT);
                 }

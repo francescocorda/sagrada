@@ -24,7 +24,7 @@ public class RMIServer {
             RMIServerInterface clientHandlerRMI = new RMIServerImplementation();
             Naming.rebind("//localhost:"+rmiPort+"/ClientHandler", clientHandlerRMI);
         } catch (RemoteException | MalformedURLException e) {
-            System.err.println("Connection error: " + e.getMessage() + "!");
+            System.out.println("Connection error!");
             throw new NetworkErrorException();
         }
     }

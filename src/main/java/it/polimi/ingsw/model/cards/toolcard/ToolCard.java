@@ -29,6 +29,14 @@ public class ToolCard implements Serializable {
     private transient int stopIndex;
     private transient int stop;
 
+    /**
+     * creates a new {@link ToolCard} from the given parameters.
+     * @param ID : is the given int ID
+     * @param name : is the given {@link String} name
+     * @param description : is the given {@link String} description
+     * @param usableInTurns : is the given {@link ArrayList<Integer>} usableInTurns
+     * @param movesLeft : is the given {@link ArrayList<Integer>} movesLeft
+     */
     public ToolCard(int ID, String name, String description, ArrayList<Integer> usableInTurns, ArrayList<Integer> movesLeft) {
         this.ID = ID;
         this.name = name;
@@ -44,6 +52,7 @@ public class ToolCard implements Serializable {
         this.stops = new ArrayList<>();
     }
 
+    //TODO JAvaDoc
     public void useToolCard(ArrayList<String> commands, Table table, Round round) throws ImpossibleMoveException {
         boolean result = true;
         while (index<effects.size() && index<stop && result) {
@@ -79,6 +88,8 @@ public class ToolCard implements Serializable {
         }
     }
 
+
+    //TODO JavaDoc
     public void resetToolCard(Table table, Round round) {
         index = 0;
         stopIndex = 0;
@@ -89,6 +100,9 @@ public class ToolCard implements Serializable {
         round.getPlayerTurn(0).setColorRoundTrack(null);
     }
 
+    /**
+     * sets {@link #stop} to it's next value.
+     */
     public void nextStop() {
         if (stopIndex+1<stops.size()) {
             stopIndex++;
@@ -96,6 +110,7 @@ public class ToolCard implements Serializable {
         }
     }
 
+    //TODO JavaDoc
     public void generateStops(ArrayList<Effect> effects) {
         this.stops = new ArrayList<>();
         for (int i = 0; i < effects.size(); i++) {
@@ -110,6 +125,9 @@ public class ToolCard implements Serializable {
         }
     }
 
+    /**
+     * @return the {@link String} ActiveTableElement.
+     */
     public String getActiveTableElement() {
         if (index < effects.size())
             return effects.get(index).getActiveTableElement();
@@ -117,67 +135,124 @@ public class ToolCard implements Serializable {
             return "";
     }
 
-    public int getCommandsLenght() {
+    /**
+     * @return the length of Commands.
+     */
+    public int getCommandsLength() {
         return effects.get(index).getCommandsLenght();
     }
 
+    /**
+     * @return {@link #effects}.
+     */
     public ArrayList<Effect> getEffects() {
         return effects;
     }
 
+    /**
+     * sets {@link #effects} as the given {@link ArrayList<Effect>} effects.
+     * @param effects : the given {@link ArrayList<Effect>} effects
+     */
     public void setEffects(ArrayList<Effect> effects) {
         this.effects = effects;
         generateStops(effects);
     }
 
+    /**
+     * @return {@link #ID}.
+     */
     public int getID() {
         return ID;
     }
 
+    /**
+     * sets {@link #ID} as the given int ID.
+     * @param ID : the given int ID
+     */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+    /**
+     * @return {@link #name}.
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * sets {@link #name} as the given {@link String} name.
+     * @param name : the given {@link String} name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return {@link #description}.
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     * sets {@link #description} as the given {@link String} description.
+     * @param description : the given {@link String} description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return {@link #numOfTokens}.
+     */
     public int getNumOfTokens() {
         return numOfTokens;
     }
 
+    /**
+     * sets {@link #numOfTokens} as the given int numOfTokens.
+     * @param numOfTokens : the given int numOfTokens
+     */
     public void setNumOfTokens(int numOfTokens) {
         this.numOfTokens = numOfTokens;
     }
 
+    /**
+     * @return {@link #usableInTurns}.
+     */
     public ArrayList<Integer> getUsableInTurns() {
         return usableInTurns;
     }
 
+    /**
+     * sets {@link #usableInTurns} as the given {@link ArrayList<Integer>}.
+     * @param usableInTurns : the given {@link ArrayList<Integer>}
+     */
     public void setUsableInTurns(ArrayList<Integer> usableInTurns) {
         this.usableInTurns = usableInTurns;
     }
 
+    /**
+     * @return {@link #movesLeft}.
+     */
     public ArrayList<Integer> getMovesLeft() {
         return movesLeft;
     }
 
+    /**
+     * sets {@link #movesLeft} as the given {@link ArrayList<Integer>}.
+     * @param movesLeft : the given {@link ArrayList<Integer>}
+     */
     public void setMovesLeft(ArrayList<Integer> movesLeft) {
         this.movesLeft = movesLeft;
     }
 
+    /**
+     * @param player : the given {@link Player} player
+     * @return true if the given {@link Player} player can afford to buy this {@link ToolCard},
+     * false otherwise.
+     */
     public boolean payTokens(Player player) {
         if (player.getNumOfTokens() >= price) {
             numOfTokens += price;
@@ -191,6 +266,10 @@ public class ToolCard implements Serializable {
         return false;
     }
 
+    /**
+     *refunds the given {@link Player} player's tokens.
+     * @param player : the given {@link Player} player
+     */
     public void refundTokens(Player player) {
         int refund = 0;
         if (numOfTokens >= INITIAL_PRICE) {
@@ -210,12 +289,19 @@ public class ToolCard implements Serializable {
         }
     }
 
+    /**
+     * @param turn : the given {@link PlayerTurn} turn
+     * @return if at the given {@link PlayerTurn} turn this {@link ToolCard} is allowed or not.
+     */
     public boolean useAllowed(PlayerTurn turn) {
         return usableInTurns.contains(turn.getTurnNumber())
                 && movesLeft.contains(turn.getMovesLeft())
                 && !turn.isToolCardUsed();
     }
 
+    /**
+     * @return the {@link String} representation of this {@link ToolCard}.
+     */
     @Override
     public String toString() {
         return  "\nID: " + ID + "\n" +
@@ -225,6 +311,9 @@ public class ToolCard implements Serializable {
                 "Price: " + price + "\n";
     }
 
+    /**
+     * displays {@link #toString()}.
+     */
     public void dump() {
         System.out.println(toString());
     }

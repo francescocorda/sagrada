@@ -13,6 +13,13 @@ public class RowPublicObjectiveCard extends PublicObjectiveCard {
 
     String restriction;
 
+    /**
+     * creates a new {@link RowPublicObjectiveCard} from the given parameters.
+     * @param name : is the {@link String} name
+     * @param ID : is the given int ID
+     * @param points : is the given int points
+     * @param restriction : is {@link String} restriction
+     */
     public RowPublicObjectiveCard(String name, int ID, int points, String restriction) {
         super(name, ID, points);
         this.points = points;
@@ -20,7 +27,10 @@ public class RowPublicObjectiveCard extends PublicObjectiveCard {
     }public RowPublicObjectiveCard(){}
 
 
-
+    /**
+     * @param windowFrame : the given {@link WindowFrame} windowFrame
+     * @return the score of the given {@link WindowFrame} windowFrame.
+     */
     @Override
     public int countScore(WindowFrame windowFrame) {
         int score = 0;
@@ -42,5 +52,4 @@ public class RowPublicObjectiveCard extends PublicObjectiveCard {
         }
         return score;
     }
-
 }

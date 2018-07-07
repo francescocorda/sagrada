@@ -277,7 +277,7 @@ public class Game {
     }
 
     public int getToolCardCommandsSize() {
-        return table.getActiveToolCard().getCommandsLenght();
+        return table.getActiveToolCard().getCommandsLength();
     }
 
     public int getMoveCommandsSize() {

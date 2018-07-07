@@ -14,6 +14,14 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
     ArrayList<String> elements;
     int[] numPerElement;
 
+    /**
+     *sets the {@link PublicObjectiveCard} accordingly to the given parameters.
+     * @param name : is the {@link String} name
+     * @param ID : is the given int ID
+     * @param points : is the given int points
+     * @param restriction : is {@link String} restriction
+     * @param elements : is the given {@link ArrayList<String>} elements
+     */
     public SetPublicObjectiveCard(String name, int ID, int points, String restriction, ArrayList<String> elements) {
         super(name, ID, points);
         this.restriction = restriction;
@@ -24,6 +32,10 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
         }
     }
 
+    /**
+     * @param windowFrame : the given {@link WindowFrame}
+     * @return the score of the given {@link WindowFrame} windowFrame.
+     */
     @Override
     public int countScore(WindowFrame windowFrame) {
 
@@ -55,6 +67,9 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
         return  min*points;
     }
 
+    /**
+     * @return the {@link String} representation of this {@link SetPublicObjectiveCard}
+     */
     @Override
     public String toString() {
         String string = super.toString();

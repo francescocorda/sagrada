@@ -75,6 +75,7 @@ public class LoginManager implements GUIManager{
      */
     @FXML
     public void loginAction(MouseEvent event) {
+        if(username.getText().length()>15) username.setText(username.getText(0, 14));
         if (!connection.getText().equals("socket")) {
             view = new GUIView();
             view.setGUIManager(this);
@@ -99,8 +100,6 @@ public class LoginManager implements GUIManager{
                 stage.centerOnScreen();
             } catch (NetworkErrorException | NotValidInputException e) {
                 logger.log(Level.SEVERE, "Network Error.");
-                //serverPort.setText("Error.");
-                //IPaddress.setText("Error.");
             }catch (NumberFormatException e){
                 logger.log(Level.SEVERE, "Wrong server port.");
             }

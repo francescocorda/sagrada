@@ -291,20 +291,22 @@ public class LobbyManager implements GUIManager{
     public synchronized void editMessage(String message){
         Platform.runLater(  //Compulsory to update gui
                 () -> {
-                    this.message.appendText(message.concat("\n"));
-                    if(message.equals("back_to_game")){
-                        temp = message;
-                        loadTable();
-                        GUIManager TM =  GUIData.getGUIData().getView().getGUIManager();
-                        TM.editMessage(temp);
-                    }
-                    else if(message.equals("Pattern card assigned.")) {
-                        temp = new String();
-                        temp = message;
-                        flag = true;
-                    } else if(flag /*&& !message.contains("Pattern card assigned.")*/){
-                        //temp = temp.concat("\n"+message);
-                        GUIData.getGUIData().getView().getGUIManager().editMessage(message);
+                    if(message!=null)
+                    {
+                        this.message.appendText(message.concat("\n"));
+                        if(message.equals("Welcome Back!")){
+                            temp = message;
+                            loadTable();
+                            GUIManager TM =  GUIData.getGUIData().getView().getGUIManager();
+                            TM.editMessage(temp);
+                        }
+                        else if(message.equals("Pattern card assigned.")) {
+                            temp = new String();
+                            temp = message;
+                            flag = true;
+                        } else if(flag){
+                            GUIData.getGUIData().getView().getGUIManager().editMessage(message);
+                        }
                     }
                 }
         );

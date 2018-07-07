@@ -33,9 +33,7 @@ public abstract class Observable implements Serializable {
      * @param o : the given {@link Observer} o
      */
     public synchronized void deleteObserver(Observer o) {
-        System.out.println("Old size:"+obs.size());
         obs.remove(o);
-        System.out.println("New size:"+obs.size());
     }
 
     /**

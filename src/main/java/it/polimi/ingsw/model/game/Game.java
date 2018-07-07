@@ -431,7 +431,7 @@ public class Game {
     }
 
     public Table getTable() {
-        return table.copy();
+        return table;
     }
 
     public ArrayList<Round> getRounds() {

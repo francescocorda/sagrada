@@ -1,0 +1,244 @@
+{"patternDeck":
+[
+  {
+    "name": "Kaleidoscopic Dream",
+    "difficulty": "4",
+    "patternCard": [
+      "YELLOW", "BLUE", "WHITE", "WHITE", "ONE",
+      "GREEN", "WHITE", "FIVE", "WHITE", "FOUR",
+      "THREE", "WHITE", "RED", "WHITE", "GREEN",
+      "TWO", "WHITE", "WHITE", "BLUE", "YELLOW"
+    ]
+  },
+  {
+    "name": "Virtus",
+    "difficulty": "5",
+    "patternCard": [
+      "FOUR", "WHITE", "TWO", "FIVE", "GREEN",
+      "WHITE", "WHITE", "SIX", "GREEN", "TWO",
+      "WHITE", "THREE", "GREEN", "FOUR", "WHITE",
+      "FIVE", "GREEN", "ONE", "WHITE", "WHITE"
+    ]
+  },
+  {
+    "name": "Aurorae Magnificus",
+    "difficulty": "5",
+    "patternCard": [
+      "FIVE", "GREEN", "BLUE", "PURPLE", "TWO",
+      "PURPLE", "WHITE", "WHITE", "WHITE", "YELLOW",
+      "YELLOW", "WHITE", "SIX", "WHITE", "PURPLE",
+      "ONE", "WHITE", "WHITE", "GREEN", "FOUR"
+    ]
+  },
+  {
+    "name": "Via Lux",
+    "difficulty": "4",
+    "patternCard": [
+      "YELLOW", "WHITE", "SIX", "WHITE", "WHITE",
+      "WHITE", "ONE", "FIVE", "WHITE", "TWO",
+      "THREE", "YELLOW", "RED", "PURPLE", "WHITE",
+      "WHITE", "WHITE", "FOUR", "THREE", "RED"
+    ]
+  },
+  {
+    "name": "Sun Catcher",
+    "difficulty": "3",
+    "patternCard": [
+      "WHITE", "BLUE", "TWO", "WHITE", "YELLOW",
+      "WHITE", "FOUR", "WHITE", "RED", "WHITE",
+      "WHITE", "WHITE", "FIVE", "YELLOW", "WHITE",
+      "GREEN", "THREE", "WHITE", "WHITE", "PURPLE"
+    ]
+  },
+  {
+    "name": "Bellesguard",
+    "difficulty": "3",
+    "patternCard": [
+      "BLUE", "SIX", "WHITE", "WHITE", "YELLOW",
+      "WHITE", "THREE", "BLUE", "WHITE", "WHITE",
+      "WHITE", "FIVE", "SIX", "TWO", "WHITE",
+      "WHITE", "FOUR", "WHITE", "ONE", "GREEN"
+    ]
+  },
+  {
+    "name": "Firmitas",
+    "difficulty": "5",
+    "patternCard": [
+      "PURPLE", "SIX", "WHITE", "WHITE", "THREE",
+      "FIVE", "PURPLE", "THREE", "WHITE", "WHITE",
+      "WHITE", "TWO", "PURPLE", "ONE", "WHITE",
+      "WHITE", "ONE", "FIVE", "PURPLE", "FOUR"
+    ]
+  },
+  {
+    "name": "Symphony of Light",
+    "difficulty": "6",
+    "patternCard": [
+      "TWO", "WHITE", "FIVE", "WHITE", "ONE",
+      "YELLOW", "SIX", "PURPLE", "TWO", "RED",
+      "WHITE", "BLUE", "FOUR", "GREEN", "WHITE",
+      "WHITE", "THREE", "WHITE", "FIVE", "WHITE"
+    ]
+  },
+  {
+    "name": "Aurora Sagradis",
+    "difficulty": "4",
+    "patternCard": [
+      "RED", "WHITE", "BLUE", "WHITE", "YELLOW",
+      "FOUR", "PURPLE", "THREE", "GREEN", "TWO",
+      "WHITE", "ONE", "WHITE", "FIVE", "WHITE",
+      "WHITE", "WHITE", "SIX", "WHITE", "WHITE"
+    ]
+  },
+  {
+    "name": "Industria",
+    "difficulty": "5",
+    "patternCard": [
+      "ONE", "RED", "THREE", "WHITE", "SIX",
+      "FIVE", "FOUR", "RED", "TWO", "WHITE",
+      "WHITE", "WHITE", "FIVE", "RED", "ONE",
+      "WHITE", "WHITE", "WHITE", "THREE", "RED"
+    ]
+  },
+  {
+    "name": "Shadow Thief",
+    "difficulty": "5",
+    "patternCard": [
+      "SIX", "PURPLE", "WHITE", "WHITE", "FIVE",
+      "FIVE", "WHITE", "PURPLE", "WHITE", "WHITE",
+      "RED", "SIX", "WHITE", "PURPLE", "WHITE",
+      "YELLOW", "RED", "FIVE", "FOUR", "THREE"
+    ]
+  },
+  {
+    "name": "Batllo",
+    "difficulty": "5",
+    "patternCard": [
+      "WHITE", "WHITE", "SIX", "WHITE", "WHITE",
+      "WHITE", "FIVE", "BLUE", "FOUR", "WHITE",
+      "THREE", "GREEN", "YELLOW", "PURPLE", "TWO",
+      "ONE", "FOUR", "RED", "FIVE", "THREE"
+    ]
+  },
+  {
+    "name": "Gravitas",
+    "difficulty": "5",
+    "patternCard": [
+      "ONE", "ONE", "THREE", "BLUE", "WHITE",
+      "WHITE", "TWO", "BLUE", "WHITE", "WHITE",
+      "SIX", "BLUE", "WHITE", "FOUR", "WHITE",
+      "BLUE", "FIVE", "TWO", "WHITE", "ONE"
+    ]
+  },
+  {
+    "name": "Fractal Drops",
+    "difficulty": "3",
+    "patternCard": [
+      "WHITE", "FOUR", "WHITE", "YELLOW", "SIX",
+      "RED", "WHITE", "TWO", "WHITE", "WHITE",
+      "WHITE", "WHITE", "RED", "PURPLE", "ONE",
+      "BLUE", "YELLOW", "WHITE", "WHITE", "WHITE"
+    ]
+  },
+  {
+    "name": "Lux Astram",
+    "difficulty": "5",
+    "patternCard": [
+      "WHITE", "ONE", "GREEN", "PURPLE", "FOUR",
+      "SIX", "PURPLE", "TWO", "FIVE", "GREEN",
+      "ONE", "GREEN", "FIVE", "THREE", "PURPLE",
+      "WHITE", "WHITE", "WHITE", "WHITE", "WHITE"
+    ]
+  },
+  {
+    "name": "Chromatic Splendor",
+    "difficulty": "4",
+    "patternCard": [
+      "WHITE", "WHITE", "GREEN", "WHITE", "WHITE",
+      "TWO", "YELLOW", "FIVE", "BLUE", "ONE",
+      "WHITE", "RED", "THREE", "PURPLE", "WHITE",
+      "ONE", "WHITE", "SIX", "WHITE", "FOUR"
+    ]
+  },
+  {
+    "name": "Firelight",
+    "difficulty": "5",
+    "patternCard": [
+      "THREE", "FOUR", "ONE", "FIVE", "WHITE",
+      "WHITE", "SIX", "TWO", "WHITE", "YELLOW",
+      "WHITE", "WHITE", "WHITE", "YELLOW", "RED",
+      "FIVE", "WHITE", "YELLOW", "RED", "SIX"
+    ]
+  },
+  {
+    "name": "Luz Celestial",
+    "difficulty": "3",
+    "patternCard": [
+      "WHITE", "WHITE", "RED", "FIVE", "WHITE",
+      "PURPLE", "FOUR", "WHITE", "GREEN", "THREE",
+      "SIX", "WHITE", "WHITE", "BLUE", "WHITE",
+      "WHITE", "YELLOW", "TWO", "WHITE", "WHITE"
+    ]
+  },
+  {
+    "name": "Water of Life",
+    "difficulty": "6",
+    "patternCard": [
+      "SIX", "BLUE", "WHITE", "WHITE", "ONE",
+      "WHITE", "FIVE", "BLUE", "WHITE", "WHITE",
+      "FOUR", "RED", "TWO", "BLUE", "WHITE",
+      "GREEN", "SIX", "YELLOW", "THREE", "PURPLE"
+    ]
+  },
+  {
+    "name": "Ripples of Light",
+    "difficulty": "5",
+    "patternCard": [
+      "WHITE", "WHITE", "WHITE", "RED", "FIVE",
+      "WHITE", "WHITE", "PURPLE", "FOUR", "BLUE",
+      "WHITE", "BLUE", "THREE", "YELLOW", "SIX",
+      "YELLOW", "TWO", "GREEN", "ONE", "RED"
+    ]
+  },
+  {
+    "name": "Lux Mundi",
+    "difficulty": "6",
+    "patternCard": [
+      "WHITE", "WHITE", "ONE", "WHITE", "WHITE",
+      "ONE", "GREEN", "THREE", "BLUE", "TWO",
+      "BLUE", "FIVE", "FOUR", "SIX", "GREEN",
+      "WHITE", "BLUE", "FIVE", "GREEN", "WHITE"
+    ]
+  },
+  {
+    "name": "Comitas",
+    "difficulty": "5",
+    "patternCard": [
+      "YELLOW", "WHITE", "TWO", "WHITE", "SIX",
+      "WHITE", "FOUR", "WHITE", "FIVE", "YELLOW",
+      "WHITE", "WHITE", "WHITE", "YELLOW", "FIVE",
+      "ONE", "TWO", "YELLOW", "THREE", "WHITE"
+    ]
+  },
+  {
+    "name": "Sun's Glory",
+    "difficulty": "6",
+    "patternCard": [
+      "ONE", "PURPLE", "YELLOW", "WHITE", "FOUR",
+      "PURPLE", "YELLOW", "WHITE", "WHITE", "SIX",
+      "YELLOW", "WHITE", "WHITE", "FIVE", "THREE",
+      "WHITE", "FIVE", "FOUR", "TWO", "ONE"
+    ]
+  },
+  {
+    "name": "Fulgor del Cielo",
+    "difficulty": "5",
+    "patternCard": [
+      "WHITE", "BLUE", "RED", "WHITE", "WHITE",
+      "WHITE", "FOUR", "FIVE", "WHITE", "BLUE",
+      "BLUE", "TWO", "WHITE", "RED", "FIVE",
+      "SIX", "RED", "THREE", "ONE", "WHITE"
+    ]
+  }
+]
+}

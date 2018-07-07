@@ -1,0 +1,15 @@
+{
+  "set": {
+    "name": "Color Variety",
+    "description": "Sets of one of each color anywhere",
+    "points": "4",
+    "restriction": "color",
+    "elements": [
+      "RED",
+      "GREEN",
+      "YELLOW",
+      "BLUE",
+      "PURPLE"
+    ]
+  }
+}

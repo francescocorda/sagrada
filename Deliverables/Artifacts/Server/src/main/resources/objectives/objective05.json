@@ -1,0 +1,12 @@
+{
+  "set": {
+    "name": "Light Shades",
+    "description": "Sets of 1 & 2 values anywhere",
+    "points": "2",
+    "restriction": "face",
+    "elements": [
+      "ONE",
+      "TWO"
+    ]
+  }
+}

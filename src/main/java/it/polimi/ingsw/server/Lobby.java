@@ -358,7 +358,7 @@ public class Lobby implements Observer {
                 toScreen(LEVEL_3+player);
             }
             toScreen(LEVEL_2+OFFLINE_PLAYERS);
-            for(String player : controller.getOFFPlayer()){
+            for(String player : controller.getOfflinePlayers()){
                 toScreen(LEVEL_3+player);
             }
             counter++;

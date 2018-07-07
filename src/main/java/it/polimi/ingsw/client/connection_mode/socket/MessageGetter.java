@@ -129,6 +129,9 @@ public class MessageGetter extends Thread {
                     break;
             }
         } else {
+            if (command.equals("Choose [play] to play again, [logout] to go back to login")) {
+                lock = true;
+            }
             view.displayMessage(command);
         }
     }

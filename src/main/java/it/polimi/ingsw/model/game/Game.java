@@ -394,6 +394,7 @@ public class Game {
             countScore(lastPlayer);
             table.getScoreTrack().add(0, lastPlayer);
             table.notifyObservers();
+            table.notifyObservers("Game end.");
         }
     }
 
@@ -422,6 +423,10 @@ public class Game {
         table.deleteObserver(o);
     }
 
+    public void deleteObservers() {
+        table.deleteObservers();
+    }
+
     public void notifyObservers() {
         table.notifyObservers();
     }
@@ -432,6 +437,10 @@ public class Game {
 
     public Table getTable() {
         return table;
+    }
+
+    public Table getTableCopy() {
+        return table.copy();
     }
 
     public ArrayList<Round> getRounds() {

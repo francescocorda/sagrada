@@ -61,16 +61,11 @@ public class Controller implements Observer {
 
     private boolean isGameEnded;
 
-    public ArrayList<String> getPlayers() {
-        //TODO eliminate
-        return players;
-    }
-
-    public ArrayList<String> getOFFPlayer() {
-        //TODO eliminate
-        return offlinePlayers;
-    }
-
+    /**
+     * creates a new {@link Controller} from the given {@link List<VirtualView>} of views and int matchID.
+     * @param matchID : the given match ID.
+     * @param views : the given {@link List<VirtualView>} of views.
+     */
     public Controller(int matchID, List<VirtualView> views) {
         isGameEnded = false;
         turnTimerSeconds = Server.getServerMain().getTurnSeconds();
@@ -100,42 +95,92 @@ public class Controller implements Observer {
         startGame();
     }
 
+    /**
+     * @return an {@link ArrayList<String>} of all the players in the game.
+     */
+    public ArrayList<String> getPlayers() {
+        return players;
+    }
+
+    /**
+     * @return an {@link ArrayList<String>} of all the offline players in the game.
+     */
+    public ArrayList<String> getOfflinePlayers() {
+        return offlinePlayers;
+    }
+
+    /**
+     * @return a instance of the current {@link State} of the controller.
+     */
     State getState() {
         return state;
     }
 
+    /**
+     * sets the current {@link State} of the Controller
+     * @param state is the given {@link State}
+     */
     void setState(State state) {
         this.state = state;
     }
 
+    /**
+     * @return a instance of the {@link StartState} of the controller.
+     */
     State getStartState() {
         return startState;
     }
 
+    /**
+     * @return a instance of the {@link ChooseActionState} of the controller.
+     */
     State getChooseActionState() {
         return chooseActionState;
     }
 
+    /**
+     * @return a instance of the {@link MoveState} of the controller.
+     */
     State getMoveState() {
         return moveState;
     }
 
+    /**
+     * @return a instance of the {@link BuyToolCardState} of the controller.
+     */
     State getBuyToolCardState() {
         return buyToolCardState;
     }
 
+    /**
+     * @return a instance of the {@link UseToolCardState} of the controller.
+     */
     State getUseToolCardState() {
         return useToolCardState;
     }
 
+    /**
+     * @return a instance of the {@link EndState} of the controller.
+     */
     State getEndState() {
         return endState;
     }
 
+    /**
+     * @param username is the given username to check
+     * @return true if the game contains a player with the same name as the parameter, false otherwise
+     */
     public boolean contains(String username) {
         return (offlinePlayers.contains(username));
     }
 
+    /**
+     * This method prepares the board table for the {@link Game}:
+     * rolls the Draw Pool for the first time
+     * draws and assigns 1 {@link it.polimi.ingsw.model.cards.public_objectives.PublicObjectiveCard} to each player
+     * sends 4 {@link PatternCard} to each player from which he will choose one.
+     * Then it starts a timer that assign 1 {@link PatternCard} to each player that hasn't chosen it yet.
+     */
     private void startGame() {
         game.drawDices();
         game.drawPublicObjectiveCards();
@@ -172,6 +217,11 @@ public class Controller implements Observer {
         }, turnTimerSeconds * 1000);
     }
 
+    /**
+     * Sends a message to the {@link VirtualView} associated with the given name.
+     * @param name is the player's name
+     * @param message is the message to send
+     */
     public void sendMessage(String name, String message) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
@@ -180,14 +230,22 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * Updates the table view of the selected player's {@link VirtualView}.
+     * @param name is the given {@link String} name
+     */
     public void updateTable(String name) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name) && !game.isGameEnded()) {
-                virtualView.displayGame(game.getTable());
+                virtualView.displayGame(game.getTableCopy());
             }
         }
     }
 
+    /**
+     * Send the current active table element to the selected player's {@link VirtualView}.
+     * @param name is the given {@link String} name
+     */
     public void sendActiveTableElement(String name) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
@@ -196,6 +254,11 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * Send the current active table element to the selected player's {@link VirtualView}.
+     * @param name is the given {@link String} name
+     * @param element is the given {@link String} active element
+     */
     public void sendActiveTableElement(String name, String element) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
@@ -204,6 +267,10 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * * updates this {@link Controller} with the given {@link String} message.
+     * @param message : the given {@link String} message
+     */
     @Override
     public synchronized void update(String message) {
         ArrayList<String> commands;
@@ -215,13 +282,19 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * * updates this {@link Controller} with the given {@link Observable} o.
+     * @param o : the given {@link String} message
+     */
     @Override
     public synchronized void update(Observable o) {
-        //ArrayList<String> commands;
-        //commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-        //handleEvent(commands);
     }
 
+    /**
+     * handles the End Game Event: starts a new game if the selection is "play",
+     * disconnects the player if the selection is "logout"
+     * @param commands is the given {@link ArrayList<String>} of received commands
+     */
     private synchronized void handleEndGameEvent(ArrayList<String> commands) {
         if (commands.size() == 2) {
             String username = commands.remove(0);
@@ -248,6 +321,13 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * handles Game Events:
+     * disconnects the player if the received command is "logout",
+     * reconnects the players if the received command is "join",
+     * delegates the interpretation of the commands to the current state in the other cases.
+     * @param commands is the given {@link ArrayList<String>} of received commands
+     */
     private synchronized void handleEvent(ArrayList<String> commands) {
         if (commands.size() > 1) {
             String username = commands.remove(0);
@@ -265,10 +345,9 @@ public class Controller implements Observer {
         }
     }
 
-    ArrayList<String> getOfflinePlayers() {
-        return offlinePlayers;
-    }
-
+    /**
+     * deletes the VirtualView observer associated with the given username from the Game observers list
+     */
     void deleteObserver(String username) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(username)) {
@@ -278,6 +357,9 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * adds the VirtualView observer associated with the given username to the Game observers list
+     */
     void addObserver(String username) {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(username)) {
@@ -287,16 +369,25 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * Skips the current turn if the game is not ended, calls a check of the game current state.
+     */
     void skipTurn() {
         if (!game.isGameEnded())
             game.skipTurn();
         checkGameState();
     }
 
+    /**
+     * sends to the current player the message indicating that it's their turn
+     */
     void itsYourTurn() {
         sendMessage(game.getCurrentPlayer(), ITS_YOUR_TURN);
     }
 
+    /**
+     * Checks the current state of the game, acting differently if the current Turn or Round is
+     */
     synchronized void checkGameState() {
         String player = game.getCurrentPlayer();
         if (game.isTurnEnded()) {
@@ -306,6 +397,7 @@ public class Controller implements Observer {
                 state = endState;
                 timer.cancel();
                 endGame();
+                game.deleteObservers();
                 return;
             }
             if(!offlinePlayers.contains(player)) {
@@ -324,6 +416,7 @@ public class Controller implements Observer {
                 game.endGame();
                 sendMessage(lastPlayer, YOU_WON);
                 endGame();
+                game.deleteObservers();
             }
             state = endState;
             timer.cancel();

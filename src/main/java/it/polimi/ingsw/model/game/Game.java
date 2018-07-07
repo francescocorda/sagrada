@@ -281,7 +281,7 @@ public class Game {
     }
 
     public int getMoveCommandsSize() {
-        return move.getCommandsLenght();
+        return move.getCommandsLength();
     }
 
     public void useToolCard(ArrayList<String> commands) {

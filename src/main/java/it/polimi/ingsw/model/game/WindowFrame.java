@@ -16,11 +16,18 @@ public class WindowFrame implements Serializable {
     private Dice[][] dices;
     private PatternCard patternCard;
 
+    /**
+     * creates a new {@link WindowFrame}.
+     */
     public WindowFrame(){
         dices = new Dice[ROW][COLUMN];
         patternCard=null;
     }
 
+    /**
+     * creates a new {@link WindowFrame} from the given {@link WindowFrame} windowFrame.
+     * @param windowFrame : the given {@link WindowFrame} windowFrame
+     */
     public WindowFrame(WindowFrame windowFrame) {
         this.patternCard = new PatternCard(windowFrame.getPatternCard());
         this.dices = new Dice[ROW][COLUMN];
@@ -33,7 +40,22 @@ public class WindowFrame implements Serializable {
         }
     }
 
-    public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException, InvalidNeighboursException, InvalidFirstMoveException, OccupiedCellException {
+    /**
+     * sets the given {@link Dice} dice at the given coordinates.
+     * @param row : the given int row
+     * @param col : the given int column
+     * @param dice : the given {@link Dice} dice
+     * @throws MismatchedRestrictionException if the given {@link Dice} dice cannot be place because of a
+     * restriction
+     * @throws InvalidNeighboursException if the given {@link Dice} dice cannot be placed because of a
+     * conflicting neighbour
+     * @throws InvalidFirstMoveException if the given {@link Dice} dice cannot be placed because of a
+     * wrong time move
+     * @throws OccupiedCellException if the given {@link Dice} dice cannot be placed because of a position
+     * already occupied
+     */
+    public void setDice(int row, int col, Dice dice) throws MismatchedRestrictionException,
+            InvalidNeighboursException, InvalidFirstMoveException, OccupiedCellException {
 
         if(row<1 || row>ROW || col<1 || col>COLUMN) {
             throw new IndexOutOfBoundsException();

@@ -17,6 +17,11 @@ public class Move implements Serializable {
     private PlaceIn placeInW;
     private int count;
 
+    /**
+     * creates a new {@link Move} from the given parameters.
+     * @param table : the given {@link Table} table
+     * @param round : the given {@link Round} round
+     */
     public Move(Table table, Round round) {
         this.table = table;
         this.round = round;
@@ -25,6 +30,11 @@ public class Move implements Serializable {
         count = 0;
     }
 
+    /**
+     * performs the move accordingly to the given {@link ArrayList<String>} commands.
+     * @param commands : the given {@link ArrayList<String>} commands
+     * @throws ImpossibleMoveException if the given commands are not valid
+     */
     public void performMove(ArrayList<String> commands) throws ImpossibleMoveException {
         if (count == 0) {
             if (removeFromDP.applyEffect(commands,table,round)) {
@@ -43,6 +53,11 @@ public class Move implements Serializable {
         }
     }
 
+    /**
+     * explains the effect accordingly to the given parameters.
+     * @param table : the given {@link Table} table
+     * @param round : the given {@link Round} round
+     */
     public void explainEffect(Table table, Round round) {
         if (count==0) {
             removeFromDP.explainEffect(table, round);
@@ -51,6 +66,9 @@ public class Move implements Serializable {
         }
     }
 
+    /**
+     * @return the move's ActiveTableElement.
+     */
     public String getActiveTableElement() {
         if (count==0) {
             return removeFromDP.getActiveTableElement();
@@ -59,8 +77,10 @@ public class Move implements Serializable {
         }
     }
 
-
-    public int getCommandsLenght() {
+    /**
+     * @return the int commands' length.
+     */
+    public int getCommandsLength() {
         if(count==0) {
             return removeFromDP.getCommandsLenght();
         } else {

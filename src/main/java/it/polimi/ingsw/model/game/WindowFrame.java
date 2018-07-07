@@ -82,6 +82,13 @@ public class WindowFrame implements Serializable {
         }
     }
 
+    /**
+     * inserts the given {@link Dice} dice at the given coordinates.
+     * @param row : the given int row
+     * @param col : the given int column
+     * @param dice : the given {@link Dice} dice
+     * @throws MismatchedRestrictionException if the dice cannot be placed at the given coordinates
+     */
     private void insertDice(int row, int col, Dice dice) throws MismatchedRestrictionException {
         if(patternCard.getRestriction(row, col).equals(Restriction.WHITE)
                 || patternCard.getExceptionRestriction(row, col)
@@ -93,6 +100,9 @@ public class WindowFrame implements Serializable {
         }
     }
 
+    /**
+     * @return whether {@link #dices} is empty or not.
+     */
     public boolean isEmpty() {
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
@@ -104,18 +114,37 @@ public class WindowFrame implements Serializable {
         return true;
     }
 
+    /**
+     * @param row : the given int row
+     * @param col : the given int column
+     * @return the {@link Dice} at the given coordinates of {@link #dices}.
+     */
     public Dice getDice(int row, int col) {
         return dices[row-1][col-1];
     }
 
+    /**
+     * sets {@link #patternCard} as the given {@link PatternCard} patternCard.
+     * @param patternCard : the given {@link PatternCard} patternCard
+     */
     public void setPatternCard(PatternCard patternCard) {
         this.patternCard = patternCard;
     }
 
+    /**
+     * @return {@link #patternCard}.
+     */
     public PatternCard getPatternCard() {
         return this.patternCard;
     }
 
+    /**
+     * @param row the given int row
+     * @param col : the given int column
+     * @param dice : the given {@link Dice} dice
+     * @return whether the given {@link Dice} dice can be placed at the given coordinates of {@link #dices}
+     * or not by checking the restriction given by the surrounding dices.
+     */
     public boolean checkNeighboursRestriction(int row, int col, Dice dice) {    //checks that all the horizontal and vertical neighbours
         // don't have the same face or color as the dice
 
@@ -139,7 +168,12 @@ public class WindowFrame implements Serializable {
         return true;
     }
 
-    public boolean hasNeighbours(int row, int col) {    //checks that the cell has at least one neighbour
+    /**
+     * @param row : the given int row
+     * @param col : the given int column
+     * @return whether he given coordinates have neighbours or not.
+     */
+    public boolean hasNeighbours(int row, int col) {
 
         if(row<1 || row>ROW || col<1 || col>COLUMN) {
             throw new IndexOutOfBoundsException();
@@ -159,7 +193,12 @@ public class WindowFrame implements Serializable {
         return false;
     }
 
-
+    /**
+     * @param row : the given int row
+     * @param col : the given int column
+     * @return the removed {@link Dice} dice from the given coordinate
+     * @throws DiceNotFoundException if the given coordinates do not correspond to any dice
+     */
     public Dice removeDice(int row, int col) throws DiceNotFoundException {
         Dice temp;
         if(row<1 || row>ROW || col<1 || col>COLUMN) {
@@ -175,6 +214,10 @@ public class WindowFrame implements Serializable {
         }
     }
 
+    /**
+     * void the given {@link String} restrictionToIgnore.
+     * @param restrictionToIgnore : the given {@link String} restrictionToIgnore
+     */
     public void enableException(String restrictionToIgnore){
         for(int i=1; i<=ROW; i++){
             for(int j=1; j<=COLUMN; j++){
@@ -193,7 +236,9 @@ public class WindowFrame implements Serializable {
         }
     }
 
-
+    /**
+     * @return the {@link String} representation of this {@link WindowFrame}.
+     */
     @Override
     public String toString(){
         //Used Symbols:
@@ -243,7 +288,7 @@ public class WindowFrame implements Serializable {
         return string;
     }
 
-
+    //TODO eliminate
     public String toGameString(){
         //Used Symbols:
         String emptyDiceSymbol =  "\u25FB";
@@ -275,6 +320,10 @@ public class WindowFrame implements Serializable {
         return string;
     }
 
+    /**
+     * @param colors : the given {@link Set<Color>} colors
+     * @return whether {@link #dices}'s {@link Dice}s have a {@link Color}.
+     */
     public boolean containsColors(Set<Color> colors) {
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COLUMN; j++) {
@@ -286,6 +335,9 @@ public class WindowFrame implements Serializable {
         return false;
     }
 
+    /**
+     * @return the int number of empty cells in {@link #dices}.
+     */
     public int getEmptyCells() {
         int emptyCells = 0;
         for (int i = 0; i < ROW; i++) {
@@ -298,6 +350,9 @@ public class WindowFrame implements Serializable {
         return emptyCells;
     }
 
+    /**
+     * displays {@link #toString()}.
+     */
     public void dump(){
         System.out.println(toString());
     }

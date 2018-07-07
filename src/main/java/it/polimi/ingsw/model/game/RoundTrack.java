@@ -7,6 +7,9 @@ public class RoundTrack implements Serializable {
     private ArrayList<ArrayList<Dice>> roundTrack;
     public static final int NUMBER_OF_ROUNDS = 10;
 
+    /**
+     * creates a new {@link RoundTrack}.
+     */
     public RoundTrack() {
         roundTrack = new ArrayList<>();
         for(int i = 0; i< NUMBER_OF_ROUNDS; i++) {
@@ -14,6 +17,10 @@ public class RoundTrack implements Serializable {
         }
     }
 
+    /**
+     * creates a new {@link RoundTrack} from the given {@link RoundTrack} roundTrack.
+     * @param roundTrack : the given {@link RoundTrack} roundTrack
+     */
     public RoundTrack(RoundTrack roundTrack) {
         this.roundTrack = new ArrayList<>();
         for (int i=0; i<roundTrack.size(); i++) {
@@ -24,10 +31,20 @@ public class RoundTrack implements Serializable {
         }
     }
 
+    /**
+     * @param indexRT : the given int indexRT
+     * @return the {@link Dice} at the given int indexRT of {@link #roundTrack}.
+     */
     public ArrayList<Dice> getRoundDices(int indexRT) {
         return roundTrack.get(indexRT);
     }
 
+    /**
+     * sets the given {@link ArrayList<Dice>} roundDices as the {@link ArrayList<Dice>} at the given
+     * int indexRT of {@link #roundTrack}.
+     * @param roundDices : the given {@link ArrayList<Dice>} roundDices
+     * @param indexRT : the given int indexRT
+     */
     public void setRoundDices(ArrayList<Dice> roundDices, int indexRT) {
         //indexRT start from value 0
         ArrayList<Dice> dices = new ArrayList<>();
@@ -37,14 +54,23 @@ public class RoundTrack implements Serializable {
         roundTrack.set(indexRT, dices);
     }
 
+    /**
+     * @return if {@link #roundTrack} is empty or not.
+     */
     public boolean isEmpty() {
         return roundTrack.isEmpty();
     }
 
+    /**
+     * @return {@link #roundTrack}'s int size.
+     */
     public int size() {
         return roundTrack.size();
     }
 
+    /**
+     * @return the {@link String} representation of this {@link RoundTrack}.
+     */
     @Override
     public String toString(){
         if(roundTrack.isEmpty())
@@ -60,8 +86,10 @@ public class RoundTrack implements Serializable {
         return string;
     }
 
+    /**
+     * displays {@link #toString()}.
+     */
     public void dump(){
         System.out.println(toString());
     }
-
 }

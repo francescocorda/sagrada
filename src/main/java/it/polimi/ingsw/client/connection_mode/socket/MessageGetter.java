@@ -19,6 +19,7 @@ public class MessageGetter extends Thread {
     private boolean lock;
     private View view;
     private Gson gson;
+    private boolean endGame;
 
     /**
      * creates a new {@link MessageGetter} given a {@link ConnectionSocket} connection and a
@@ -36,6 +37,7 @@ public class MessageGetter extends Thread {
         wait = true;
         on = true;
         lock = true;
+        endGame = false;
         gson = new Gson();
         start();
     }
@@ -75,7 +77,8 @@ public class MessageGetter extends Thread {
                 }
             }
         } catch (NullPointerException e) {
-            System.out.println("server Offline");
+            if(!endGame)
+                System.out.println("server Offline");
             Thread.currentThread().interrupt();
         }
     }

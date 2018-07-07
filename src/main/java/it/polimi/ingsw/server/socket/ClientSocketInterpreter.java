@@ -6,7 +6,7 @@ import it.polimi.ingsw.server.client_handler.ClientHandlerSocket;
 import it.polimi.ingsw.database.ClientData;
 import it.polimi.ingsw.database.ClientDatabase;
 import it.polimi.ingsw.database.VirtualViewsDataBase;
-import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.connection.ConnectionSocket;
 import it.polimi.ingsw.observer.Observable;
@@ -188,7 +188,7 @@ public class ClientSocketInterpreter implements Runnable, Observer {
      * @throws NotValidInputException if given credentials are not valid
      */
     private void loginHandler(String username, String password, ClientSocketInterpreter client) throws NotValidInputException {
-        toScreen("Client number " + ServerMain.getServerMain().getNewClientNumber() + " connected through Socket");
+        toScreen("Client number " + Server.getServerMain().getNewClientNumber() + " connected through Socket");
         if (players.check(username, password)) {
             toScreen("User: " + username + " logged in.");
             ClientData player = ClientDatabase.getPlayerDatabase().getPlayerData(username);

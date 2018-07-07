@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import static java.lang.Math.abs;
 
 public class Round implements Serializable {
-    private ArrayList<Player> players;
     private ArrayList<PlayerTurn> playerTurns;
 
 
     public Round(ArrayList<Player> players, int first){
-        this.players =  players;
         playerTurns = new ArrayList<>();
         int indexPlayers = first;
 
@@ -48,7 +46,7 @@ public class Round implements Serializable {
     }
 
     public void removeTurn(int index) {
-        this.playerTurns.remove(0);
+        this.playerTurns.remove(index);
     }
 
 

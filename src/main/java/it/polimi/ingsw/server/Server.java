@@ -8,7 +8,7 @@ import it.polimi.ingsw.server.socket.SocketServer;
 
 import java.util.Scanner;
 
-public class ServerMain {
+public class Server {
 
     private static final String NETWORK_ERROR = "Network Error, try a different port...";
     private static final String RMI_SETTER_MESSAGE = "Set rmi port (leave it empty for default value: ";
@@ -33,22 +33,22 @@ public class ServerMain {
     private static int socketPort;
     private static int rmiPort;
     private static int turnSeconds = 2 * 60;
-    private static ServerMain instance = null;
+    private static Server instance = null;
     private int numberOfClient = -1;
     private static int timerSeconds = 2 * 60;
 
     /**
-     * creates a new {@link ServerMain}
+     * creates a new {@link Server}
      */
-    private ServerMain() {
+    private Server() {
     }
 
     /**
-     * @return tho only instance of {@link ServerMain}.
+     * @return tho only instance of {@link Server}.
      */
-    public static synchronized ServerMain getServerMain() {
+    public static synchronized Server getServerMain() {
         if (instance == null) {
-            instance = new ServerMain();
+            instance = new Server();
         }
         return instance;
     }
@@ -178,7 +178,7 @@ public class ServerMain {
     }
 
     /**
-     * handle {@link ServerMain} behaviour after initialization.
+     * handle {@link Server} behaviour after initialization.
      */
     private static void start() {
         Scanner scanner = new Scanner(System.in);
@@ -216,7 +216,7 @@ public class ServerMain {
     }
 
     /**
-     * @return true if {@link ServerMain#serverUp} is true; false otherwise.
+     * @return true if {@link Server#serverUp} is true; false otherwise.
      */
     public static boolean getStatus() {
         return serverUp;

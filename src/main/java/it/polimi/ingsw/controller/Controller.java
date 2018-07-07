@@ -9,7 +9,7 @@ import it.polimi.ingsw.model.cards.private_objectives.PrivateObjectiveCard;
 import it.polimi.ingsw.model.game.Game;
 import it.polimi.ingsw.server.Lobby;
 import it.polimi.ingsw.database.ParserManager;
-import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.observer.Observable;
 import it.polimi.ingsw.observer.Observer;
@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 public class Controller implements Observer {
 
     private static final Logger logger = Logger.getLogger(Controller.class.getName());
-    private static String INACTIVE_TABLE = "INACTIVE_TABLE";
-    private static String JOIN_ACTION = "JOIN";
+    private static final String INACTIVE_TABLE = "INACTIVE_TABLE";
+    private static final String JOIN_ACTION = "JOIN";
     private int turnTimerSeconds;
     static final String INVALID_FORMAT = "Command of invalid format.";
     static final String WAIT_YOUR_TURN = "Wait your turn.";
@@ -36,7 +36,7 @@ public class Controller implements Observer {
     static final String LEFT_THE_GAME = " left the game.";
     static final String YOU_LEFT_THE_GAME = "You left the game. Choose join to get back.";
     static final String JOINED_THE_GAME = " joined the game.";
-    static final String GAME_JOINED = "game joined.";
+    static final String GAME_JOINED = "Game joined.";
     static final String BACK_TO_GAME = "back_to_game";
     static final String PATTERN_ASSIGNED = "Pattern card assigned.";
     private static final String YOU_WON = "You Won!";
@@ -73,7 +73,7 @@ public class Controller implements Observer {
 
     public Controller(int matchID, List<VirtualView> views) {
         isGameEnded = false;
-        turnTimerSeconds = ServerMain.getServerMain().getTurnSeconds();
+        turnTimerSeconds = Server.getServerMain().getTurnSeconds();
         offlinePlayers = new ArrayList<>();
         ParserManager pm = ParserManager.getParserManager();
         players = new ArrayList<>();
@@ -176,6 +176,14 @@ public class Controller implements Observer {
         for (VirtualView virtualView : views) {
             if (virtualView.getUsername().equals(name)) {
                 virtualView.displayMessage(message);
+            }
+        }
+    }
+
+    public void updateTable(String name) {
+        for (VirtualView virtualView : views) {
+            if (virtualView.getUsername().equals(name) && !game.isGameEnded()) {
+                virtualView.displayGame(game.getTable());
             }
         }
     }
@@ -300,8 +308,10 @@ public class Controller implements Observer {
                 endGame();
                 return;
             }
+            if(!offlinePlayers.contains(player)) {
+                sendActiveTableElement(player, INACTIVE_TABLE);
+            }
             if (!offlinePlayers.contains(game.getCurrentPlayer())) {
-                if(player != null) sendActiveTableElement(player, INACTIVE_TABLE);
                 setTimerSkipTurn();
             }
         }
@@ -331,10 +341,12 @@ public class Controller implements Observer {
             @Override
             public void run() {
                 state = chooseActionState;
-                offlinePlayers.add(game.getCurrentPlayer());
-                //sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
-                sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
-                sendActiveTableElement(game.getCurrentPlayer(), JOIN_ACTION);
+                if (!offlinePlayers.contains(game.getCurrentPlayer())) {
+                    offlinePlayers.add(game.getCurrentPlayer());
+                    deleteObserver(game.getCurrentPlayer());
+                    sendMessage(game.getCurrentPlayer(), YOU_LEFT_THE_GAME);
+                    sendActiveTableElement(game.getCurrentPlayer(), JOIN_ACTION);
+                }
                 skipTurn();
             }
         }, turnTimerSeconds * 1000);

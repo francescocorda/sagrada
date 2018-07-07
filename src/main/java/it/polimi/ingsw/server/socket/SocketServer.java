@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.socket;
 
-import it.polimi.ingsw.server.ServerMain;
-import it.polimi.ingsw.server.socket.ClientSocketInterpreter;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.model.cards.patterns.PatternDeck;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class SocketServer extends Thread{
         Logger logger = Logger.getLogger(PatternDeck.class.getName());
         Socket socket;
         try {
-            while (ServerMain.getStatus()) {
+            while (Server.getStatus()) {
                 socket = serverSocket.accept();
                 Runnable client = new ClientSocketInterpreter(socket);
                 new Thread(client).start();

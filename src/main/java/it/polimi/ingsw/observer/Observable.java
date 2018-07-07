@@ -33,7 +33,9 @@ public abstract class Observable implements Serializable {
      * @param o : the given {@link Observer} o
      */
     public synchronized void deleteObserver(Observer o) {
+        System.out.println("Old size:"+obs.size());
         obs.remove(o);
+        System.out.println("New size:"+obs.size());
     }
 
     /**
@@ -48,7 +50,7 @@ public abstract class Observable implements Serializable {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--)
-            ((Observer)arrLocal[i]).update(this);
+            ((Observer)arrLocal[i]).update(this.copy());
     }
 
     /**
@@ -79,6 +81,11 @@ public abstract class Observable implements Serializable {
     public synchronized int countObservers() {
         return obs.size();
     }
+
+    /**
+     * @return a deep copy of the {@link Observable}.
+     */
+    public abstract Observable copy();
 
     /**
      * shows it's state through a given {@link ViewVisitor} visitor.

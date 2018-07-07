@@ -31,6 +31,7 @@ public abstract class State {
         controller.getOfflinePlayers().remove(username);
         controller.sendMessage(username, BACK_TO_GAME);
         controller.sendMessage(username, GAME_JOINED);
+        controller.updateTable(username);
         game.notifyObservers(username + JOINED_THE_GAME);
         controller.addObserver(username);
     }

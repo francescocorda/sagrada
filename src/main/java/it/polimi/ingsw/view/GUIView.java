@@ -9,7 +9,7 @@ import it.polimi.ingsw.server.socket.SocketVisitor;
 
 
 public class GUIView extends Observable implements View {
-    private GUIManager manager;
+    private transient GUIManager manager;
     private String username;
     private ViewVisitor visitor;
     private final Object sync = new Object();
@@ -20,16 +20,27 @@ public class GUIView extends Observable implements View {
         username = null;
     }
 
+    /**
+     * @return a deep copy of the {@link GUIView}.
+     */
     @Override
-    public void displayGame(Table table) {
-        manager.updateTable(table);
+    public GUIView copy() {
+        GUIView tempView = new GUIView();
+        tempView.setUsername(this.username);
+        return tempView;
     }
 
     @Override
-    public void displayMessage(String message) {
+    public void displayGame(Table table) {
         synchronized (sync) {
-            manager.editMessage(message);
+            manager.updateTable(table);
+            sync.notifyAll();
         }
+    }
+
+    @Override
+    public synchronized void displayMessage(String message) {
+        manager.editMessage(message);
     }
 
     @Override
@@ -58,8 +69,11 @@ public class GUIView extends Observable implements View {
 
     @Override
     public void update(String message) {
-        if (message != null) {
-            displayMessage(message);
+        synchronized (sync) {
+            if (message != null) {
+                displayMessage(message);
+            }
+            sync.notifyAll();
         }
     }
 

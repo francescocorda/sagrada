@@ -11,7 +11,7 @@ import it.polimi.ingsw.observer.Observable;
 
 public class ClientHandlerSocket implements ClientHandler {
 
-    private static final String DISPLAY_GAME = "game/displayGame";
+    private static final String DISPLAY_GAME = "game/displayGame/";
     private static final String ACTIVE_ELEMENT = "game/active_table_element/";
     private static final String PATTERN_CARD = "game/pattern_card/";
     private static final String PRIVATE_OBJECTIVE_CARD = "game/private_objective_card/";
@@ -39,8 +39,9 @@ public class ClientHandlerSocket implements ClientHandler {
      */
     @Override
     public void displayGame(Table table) throws NetworkErrorException {
+        String jsonTable = table.convert(socketVisitor);
         try{
-            clientSocketInterpreter.sendMessage(DISPLAY_GAME);
+            clientSocketInterpreter.sendMessage(DISPLAY_GAME+jsonTable);
         } catch (Exception e){
             throw new NetworkErrorException();
         }

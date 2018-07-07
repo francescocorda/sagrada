@@ -4,7 +4,7 @@ import it.polimi.ingsw.server.Lobby;
 import it.polimi.ingsw.server.client_handler.ClientHandlerRMI;
 import it.polimi.ingsw.database.ClientDatabase;
 import it.polimi.ingsw.database.VirtualViewsDataBase;
-import it.polimi.ingsw.server.ServerMain;
+import it.polimi.ingsw.server.Server;
 import it.polimi.ingsw.client.connection_mode.rmi.RMIClientInterface;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.VirtualView;
@@ -36,7 +36,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIS
      * @throws RemoteException if any connection error occurs
      */
     public void login(String username, String password, RMIClientInterface client)throws NotValidInputException, RemoteException {
-        System.out.println("Client number "+ ServerMain.getServerMain().getNewClientNumber()+" connected through rmi");
+        System.out.println("Client number "+ Server.getServerMain().getNewClientNumber()+" connected through rmi");
         if (clientDatabase.check(username, password)) {
             System.out.println("User: "+username+" logged in.");
             clientDatabase.setClientHandler(username, new ClientHandlerRMI(client));

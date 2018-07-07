@@ -179,14 +179,16 @@ public class Game {
     }
 
     public String getCurrentPlayer() {
-        if(!isGameEnded()) return rounds.get(0).getCurrentPlayer().getName();
-        else return null;
+        if (!isGameEnded())
+            return rounds.get(0).getCurrentPlayer().getName();
+        else
+            return null;
     }
 
     public boolean isCurrentPlayer(String name) {
-        if(rounds.get(0).getPlayerTurn(0).getPlayer().getName().equals(name)) {
-            return true;
-        } else
+        if (!isGameEnded())
+            return rounds.get(0).getPlayerTurn(0).getPlayer().getName().equals(name);
+        else
             return false;
     }
 
@@ -217,7 +219,7 @@ public class Game {
         return false;
     }
 
-    public void saveGame() {
+    private void saveGame() {
         this.old_draftPool = table.cloneDraftPool();
         this.old_windowFrame = new WindowFrame(rounds.get(0).getCurrentPlayer().getWindowFrame());
         this.old_diceBag = new DiceBag(table.getDiceBag());
@@ -315,6 +317,7 @@ public class Game {
             table.getScoreTrack().add(player);
         }
         table.notifyObservers();
+        table.notifyObservers("Game end.");
     }
 
     public void countScore(Player player) {
@@ -338,7 +341,6 @@ public class Game {
 
     public boolean isGameEnded() {
         if (rounds.isEmpty()) {
-            table.notifyObservers("game end.");
             return true;
         } else {
             return false;
@@ -429,7 +431,7 @@ public class Game {
     }
 
     public Table getTable() {
-        return table;
+        return table.copy();
     }
 
     public ArrayList<Round> getRounds() {

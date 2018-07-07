@@ -86,7 +86,7 @@ public class ParserManager {
         try (Stream<Path> paths = Files.walk(Paths.get(directory))) {
             list.addAll(paths
                     .filter(Files::isRegularFile)
-                    .map(path -> path.getFileName().toString())
+                    .map(path -> path.normalize().toString())
                     .collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,31 +100,40 @@ public class ParserManager {
     public PatternDeck getPatternDeck(){
         PatternDeck deck = new PatternDeck();
         List<String> list = walkResources(JSON_PATTERNS_PATH);
-        //List<String> list = listFilesForFolder(new FileInputStream(JSON_PATTERNS_PATH));
         if(!list.isEmpty()) {
             for (String path: list) {
-                InputStream inputStream = ParserManager.class.getResourceAsStream("/patterns/" + path);
-                JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
-                JsonParser parser = new JsonParser();
-                JsonObject patternJson = parser.parse(reader).getAsJsonObject();
-                String name = patternJson.get(JSON_PATTERNS_PARAMETER_2).getAsString();
-                String ID = patternJson.get(JSON_PATTERNS_PARAMETER_1).getAsString();
-                PatternCard patternCard = new PatternCard(name, Integer.valueOf(ID));
-                int difficulty = patternJson.get(JSON_PATTERNS_PARAMETER_3).getAsInt();
+                InputStream inputStream;
                 try {
-                    patternCard.setDifficulty(difficulty);
-                } catch (NotValidInputException e) {
-                    System.out.println(e);
-                }
-                JsonArray card = patternJson.get(JSON_PATTERNS_PARAMETER_4).getAsJsonArray();
-                if (card.size() == ROW * COLUMN) {
-                    for (int i = 0; i < ROW; i++) {
-                        for (int k = 0; k < COLUMN; k++) {
-                            patternCard.setRestriction(i + 1, k + 1, Restriction.valueOf(card.get(i * 5 + k).getAsString()));
+                    inputStream = new FileInputStream(path);
+                    JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+                    JsonParser parser = new JsonParser();
+                    JsonObject patternJson = parser.parse(reader).getAsJsonObject();
+                    String name = patternJson.get(JSON_PATTERNS_PARAMETER_2).getAsString();
+                    String ID = patternJson.get(JSON_PATTERNS_PARAMETER_1).getAsString();
+                    PatternCard patternCard = new PatternCard(name, Integer.valueOf(ID));
+                    int difficulty = patternJson.get(JSON_PATTERNS_PARAMETER_3).getAsInt();
+                    try {
+                        patternCard.setDifficulty(difficulty);
+                    } catch (NotValidInputException e) {
+                        System.out.println(e);
+                    }
+                    JsonArray card = patternJson.get(JSON_PATTERNS_PARAMETER_4).getAsJsonArray();
+                    if (card.size() == ROW * COLUMN) {
+                        for (int i = 0; i < ROW; i++) {
+                            for (int k = 0; k < COLUMN; k++) {
+                                patternCard.setRestriction(i + 1, k + 1, Restriction.valueOf(card.get(i * 5 + k).getAsString()));
+                            }
                         }
                     }
+                    deck.add(patternCard);
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
                 }
-                deck.add(patternCard);
             }
         }
         System.out.println("Pattern deck size: " + deck.size());
@@ -203,46 +212,55 @@ public class ParserManager {
     public ArrayList<ToolCard> getToolCards(){
         ArrayList<ToolCard> toolCards = new ArrayList<>();
         ArrayList<String> fileList = walkResources(JSON_TOOL_CARDS_PATH);
-        //List<String> fileList = listFilesForFolder(new File(JSON_TOOL_CARDS_PATH));
         Gson gson = new Gson();
         if(!fileList.isEmpty()) {
             for (String path : fileList) {
-                InputStream inputStream = this.getClass().getResourceAsStream("/toolcards/" + path);
-                JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
-                JsonParser parser = new JsonParser();
-                JsonObject card = parser.parse(reader).getAsJsonObject();
-                int ID = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_2), Integer.class);
-                String name = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_3), String.class);
-                String description = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_4), String.class);
-                int[] turnsArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_5), int[].class);
-                ArrayList<Integer> turnsList = new ArrayList<>();
-                for (int i : turnsArray) {
-                    turnsList.add(i);
-                }
-                int[] movesArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_6), int[].class);
-                ArrayList<Integer> movesList = new ArrayList<>();
-                for (int i : movesArray) {
-                    movesList.add(i);
-                }
+                InputStream inputStream;
+                try {
+                    inputStream = new FileInputStream(path);
+                    JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+                    JsonParser parser = new JsonParser();
+                    JsonObject card = parser.parse(reader).getAsJsonObject();
+                    int ID = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_2), Integer.class);
+                    String name = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_3), String.class);
+                    String description = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_4), String.class);
+                    int[] turnsArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_5), int[].class);
+                    ArrayList<Integer> turnsList = new ArrayList<>();
+                    for (int i : turnsArray) {
+                        turnsList.add(i);
+                    }
+                    int[] movesArray = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_6), int[].class);
+                    ArrayList<Integer> movesList = new ArrayList<>();
+                    for (int i : movesArray) {
+                        movesList.add(i);
+                    }
 
-                String[] classes = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_7), String[].class);
-                String[] parameters = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_8), String[].class);
-                EffectFactory factory = new EffectFactory();
-                ArrayList<Effect> effects = new ArrayList<>();
-                for (int i = 0; i < classes.length; i++) {
-                    effects.add(factory.createEffect(classes[i], parameters[i]));
-                }
-                ToolCard toolCard = new ToolCard(ID, name, description, turnsList, movesList);
-                toolCard.setEffects(effects);
-                int i = 0;
-                while (i<toolCards.size() && toolCards.get(i).getID()<toolCard.getID()) {
-                    i++;
-                }
-                if (i==toolCards.size()) {
-                    toolCards.add(toolCard);
-                } else if (toolCards.get(i).getID()!=toolCard.getID()) {
-                    toolCards.add(i, toolCard);
-                }
+                    String[] classes = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_7), String[].class);
+                    String[] parameters = gson.fromJson(card.get(JSON_TOOL_CARDS_PARAMETER_8), String[].class);
+                    EffectFactory factory = new EffectFactory();
+                    ArrayList<Effect> effects = new ArrayList<>();
+                    for (int i = 0; i < classes.length; i++) {
+                        effects.add(factory.createEffect(classes[i], parameters[i]));
+                    }
+                    ToolCard toolCard = new ToolCard(ID, name, description, turnsList, movesList);
+                    toolCard.setEffects(effects);
+                    int i = 0;
+                    while (i<toolCards.size() && toolCards.get(i).getID()<toolCard.getID()) {
+                        i++;
+                    }
+                    if (i==toolCards.size()) {
+                        toolCards.add(toolCard);
+                    } else if (toolCards.get(i).getID()!=toolCard.getID()) {
+                        toolCards.add(i, toolCard);
+                    }
+                    try {
+                        inputStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
             }
         }
         return toolCards;

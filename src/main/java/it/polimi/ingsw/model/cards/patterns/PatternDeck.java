@@ -5,12 +5,9 @@ import it.polimi.ingsw.exceptions.NotValidInputException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import static java.lang.Integer.valueOf;
-
 
 public class PatternDeck implements Serializable {
 
-    public static final int PATTERN_CARD_NUMBER = 24;
     private ArrayList<PatternCard> deck;
 
     public PatternDeck() {

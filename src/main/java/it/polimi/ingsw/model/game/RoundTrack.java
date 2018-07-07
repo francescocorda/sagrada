@@ -25,7 +25,6 @@ public class RoundTrack implements Serializable {
     }
 
     public ArrayList<Dice> getRoundDices(int indexRT) {
-        //indexRT start from value 0
         return roundTrack.get(indexRT);
     }
 

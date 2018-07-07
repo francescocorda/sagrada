@@ -56,19 +56,11 @@ public class Table extends Observable{
         activeToolCard = null;
     }
 
-
-
-    public String toJson(){
-        Table table = new Table();
-        table.setPlayers(players);
-        table.setRoundTrack(roundTrack);
-        table.setDiceBag(diceBag);
-        table.setDraftPool(draftPool);
-        table.setGamePublicObjectiveCards(gamePOC);
-        table.setGameToolCards(gameToolCards);
-        table.setActiveDice(activeDice);
-        table.setScoreTrack(scoreTrack);
-        return (new Gson()).toJson(table);
+    public Table copy() {
+        Gson gson = new Gson();
+        String table = gson.toJson(this);
+        Table tempTable = gson.fromJson(table, Table.class);
+        return tempTable;
     }
 
     public Player getPlayer(String username) {

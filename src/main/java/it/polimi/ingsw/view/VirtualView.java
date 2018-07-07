@@ -20,6 +20,14 @@ public class VirtualView extends Observable implements View {
         this.clientData = clientData;
     }
 
+    /**
+     * @return a deep copy of the {@link VirtualView}.
+     */
+    @Override
+    public VirtualView copy() {
+        return new VirtualView(this.clientData);
+    }
+
     public String getUsername() {
         return clientData.getUsername();
     }

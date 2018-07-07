@@ -35,8 +35,13 @@ public class RMIClientImplementation implements RMIClientInterface {
         ArrayList<String> commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
         if(commands.remove(0).equals("lobby"))
             lobby(commands);
-        else
-            view.displayMessage(message);
+        else {
+            if (!message.equals("back_to_game"))
+                view.displayMessage(message);
+            else {
+                view.displayMessage("Welcome Back!");
+            }
+        }
     }
 
     /**

@@ -63,7 +63,7 @@ public class Lobby implements Observer {
         players = ClientDatabase.getPlayerDatabase();
         views = new ArrayList<>();
         controllers = new ArrayList<>();
-        timerSeconds = ServerMain.getServerMain().getTimerSeconds();
+        timerSeconds = Server.getServerMain().getTimerSeconds();
         vvdb = VirtualViewsDataBase.getVirtualViewsDataBase();
     }
 

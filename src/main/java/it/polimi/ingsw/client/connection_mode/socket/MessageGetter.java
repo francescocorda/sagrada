@@ -63,10 +63,11 @@ public class MessageGetter extends Thread {
                     check = new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*")));
                     if ((check.size() > 1 && check.get(1).equals("welcome")) || (check.size() == 1 && check.get(0).equals("back_to_game"))) {
                         lock = false;
-                        if (check.size()>1)
+                        if (check.size()>1) {
                             view.displayMessage("Welcome!");
-                        else
+                        } else {
                             view.displayMessage("Welcome Back!");
+                        }
                     } else
                         setMessage(tempMessage);
                 } else {
@@ -115,6 +116,8 @@ public class MessageGetter extends Thread {
                     view.displayPrivateObjectiveCard(pOCard);
                     break;
                 case "active_table_element":
+                    if(!commands.isEmpty() && commands.get(0).equals("JOIN"))
+                        lock = true;
                     view.activeTableElement(commands.remove(0));
                     break;
                 case "update":

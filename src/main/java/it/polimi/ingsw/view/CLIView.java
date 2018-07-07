@@ -31,6 +31,16 @@ public class CLIView extends Observable implements View {
         username = null;
     }
 
+    /**
+     * @return a deep copy of the {@link CLIView}.
+     */
+    @Override
+    public CLIView copy() {
+        CLIView tempView = new CLIView();
+        tempView.setUsername(this.username);
+        return tempView;
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

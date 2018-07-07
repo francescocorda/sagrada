@@ -7,13 +7,24 @@ import static it.polimi.ingsw.model.cards.patterns.PatternCard.ROW;
 
 public class DiagonalPublicObjectiveCard extends PublicObjectiveCard {
 
-    String restriction;
+    private String restriction;
 
+    /**
+     * creates a new {@link DiagonalPublicObjectiveCard} from the given parameters.
+     * @param name : the given {@link String} name
+     * @param ID : the given {@link Integer} ID
+     * @param points : the given {@link Integer} points
+     * @param restriction : the given {@link String} restriction
+     */
     public DiagonalPublicObjectiveCard(String name, int ID, int points, String restriction) {
         super(name, ID, points);
         this.restriction = restriction;
     }
 
+    /**
+     * @param windowFrame : the given {@link WindowFrame}
+     * @return the resulting score of the given {@link WindowFrame}
+     */
     @Override
     public int countScore(WindowFrame windowFrame) {
         int score = 0;

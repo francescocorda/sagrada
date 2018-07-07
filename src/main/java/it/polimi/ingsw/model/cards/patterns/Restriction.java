@@ -21,22 +21,34 @@ public enum Restriction implements Serializable {
     public static final String RESET = "\u001B[0m";
     private String escape;
 
+    /**
+     * creates a new {@link Restriction} from the given {@link String} escape.
+     * @param escape : the given {@link String} escape
+     */
     Restriction(String escape) {
         this.escape = escape;
     }
 
+    /**
+     * @return the {@link Restriction#escape}.
+     */
     public String escape() {
         return escape;
     }
 
-
+    /**
+     * @param value : the given {@link String} value
+     * @return true if the given {@link String} value equals {@link Restriction escape}.
+     */
     public boolean compare(String value) {
         return this.escape.equals(value);
     }
 
+    /**
+     * @param color : the given {@link Color} color
+     * @return true if the given {@link Color} color equals {@link #escape}
+     */
     public boolean compare(Color color) {
         return this.escape.equals(color.escape());
     }
-
-
 }

@@ -7,6 +7,10 @@ import java.util.ArrayList;
 public class PublicObjectiveDeck implements Serializable {
     private ArrayList<PublicObjectiveCard> puODeck;
 
+    /**
+     * creates a new 
+     * @param deck
+     */
     public PublicObjectiveDeck(ArrayList<PublicObjectiveCard> deck){
         puODeck = deck;
     }

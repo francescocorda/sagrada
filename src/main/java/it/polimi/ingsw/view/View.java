@@ -14,7 +14,7 @@ public interface View extends Observer {
     void displayGame(Table table);
 
     /**
-     * displays a given message.
+     * displays a given {@link String} message.
      * @param message : {@link String} to be displayed
      */
     void displayMessage(String message);

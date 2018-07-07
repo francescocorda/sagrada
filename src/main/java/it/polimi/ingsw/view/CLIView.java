@@ -41,14 +41,25 @@ public class CLIView extends Observable implements View {
         return tempView;
     }
 
+    /**
+     * sets {@link #username} as the given {@link String } username.
+     * @param username : the given {@link String } username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * @return {@link #username}.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * updates the view about the given {@link String } message.
+     * @param message : the given {@link String} message
+     */
     @Override
     public void update(String message) {
         if (message != null) {
@@ -56,17 +67,28 @@ public class CLIView extends Observable implements View {
         }
     }
 
+    /**
+     * updates the view about the given {@link Observable } o.
+     * @param o : the given {@link Observable} o
+     */
     @Override
     public void update(Observable o) {
         o.display(visitor);
     }
 
-
+    /**
+     * displays the given {@link PrivateObjectiveCard} privateObjectiveCard.
+     * @param privateObjectiveCard : {@link PrivateObjectiveCard} to be displayed
+     */
     public void displayPrivateObjectiveCard(PrivateObjectiveCard privateObjectiveCard) {
         privateObjectiveCard.dump();
     }
 
 
+    /**
+     * displays the given {@link Table} table.
+     * @param table : {@link Table} to be displayed
+     */
     public void displayGame(Table table) {
         Player myPlayer = null;
         ArrayList<Player> players = new ArrayList<>();
@@ -115,19 +137,30 @@ public class CLIView extends Observable implements View {
     }
 
 
+    /**
+     * displays the given {@link PatternCard} patternCard.
+     * @param patternCard : {@link PatternCard} to be displayed
+     */
     public void displayPatternCard(PatternCard patternCard) {
         patternCard.dump();
     }
 
+    /**
+     * displays a given {@link String} message.
+     * @param message : {@link String} to be displayed
+     */
     public void displayMessage(String message) {
         System.out.println(message);
     }
 
+    /**
+     * shows which is the element to be activated.
+     * @param element : {@link String} that contains a reference to the element to be activated
+     */
     @Override
     public void activeTableElement(String element) {
         System.out.println(element);
     }
-
 
     @Override
     public void display(ViewVisitor visitor) {
@@ -139,6 +172,10 @@ public class CLIView extends Observable implements View {
         return null;
     }
 
+    /**
+     * displays the given {@link Player}s' {@link WindowFrame} in horizontal.
+     * @param players : the given {@link Player}
+     */
     private void showPlayers(ArrayList<Player> players) {
         int playerSpace = 30;
         String verticalSeparatorSymbol = "|";
@@ -215,10 +252,19 @@ public class CLIView extends Observable implements View {
         print("\n\n");
     }
 
+    /**
+     * displays the given {@link String} string.
+     * @param string : the given {@link String} string
+     */
     private void print(String string) {
         System.out.print(string);
     }
 
+    /**
+     * displays the given {@link String} word adding spaces to match the given fixedLength.
+     * @param word : the given {@link String} word
+     * @param fixedLength : the given fixedLength
+     */
     private void printFixedLength(String word, int fixedLength) {
         String emptyDiceSymbol = "\u25FB";
         String space = new String();
@@ -240,6 +286,14 @@ public class CLIView extends Observable implements View {
         print(space);
     }
 
+    /**
+     * @param window : the given {@link WindowFrame}
+     * @param row : the given row
+     * @param verticalSeparatorSymbol : given a {@link String}
+     * verticalSeparatorSymbol
+     * @return the given row of the given {@link WindowFrame} adding the given a {@link String}
+     * verticalSeparatorSymbol at the end of it.
+     */
     private String windowFrameRow(WindowFrame window, int row, String verticalSeparatorSymbol) {
         String emptyDiceSymbol = "\u25FB";
         String string = "";

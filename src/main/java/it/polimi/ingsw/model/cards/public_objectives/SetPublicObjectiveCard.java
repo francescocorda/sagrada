@@ -73,7 +73,7 @@ public class SetPublicObjectiveCard extends PublicObjectiveCard {
     @Override
     public String toString() {
         String string = super.toString();
-        String emptyDiceSymbol =  "\uD83E\uDD76";
+        String emptyDiceSymbol =  "\u25FB";
         string = string.concat("\nElements: ");
         for (String c: elements) {
             if (restriction.equals("face")) {

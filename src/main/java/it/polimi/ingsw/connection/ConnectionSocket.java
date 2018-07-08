@@ -1,7 +1,6 @@
 package it.polimi.ingsw.connection;
 
 import it.polimi.ingsw.model.cards.patterns.PatternDeck;
-import it.polimi.ingsw.model.game.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -44,8 +43,6 @@ public class ConnectionSocket {
      */
     public void sendMessage(String message) {
         outSocket.println(message);
-       if (!message.equals("pong") && !message.equals("ping"))
-            System.out.println(Color.RED.escape() + "MESSAGE OUT: " + message + Color.RESET);
     }
 
     /**

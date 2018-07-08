@@ -10,10 +10,6 @@ import it.polimi.ingsw.model.cards.toolcard.ToolCard;
 import it.polimi.ingsw.model.effects.Effect;
 import it.polimi.ingsw.model.effects.EffectFactory;
 import it.polimi.ingsw.exceptions.NotValidInputException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -30,15 +26,13 @@ import static it.polimi.ingsw.model.cards.patterns.PatternCard.ROW;
 public class ParserManager {
 
     private static ParserManager instance = null;
-    private JSONParser parser;
     private static final String JSON_PATTERNS_PATH = "./src/main/resources/patterns";
     private static final String JSON_PATTERNS_PARAMETER_1 = "id";
     private static final String JSON_PATTERNS_PARAMETER_2 = "name";
     private static final String JSON_PATTERNS_PARAMETER_3 = "difficulty";
     private static final String JSON_PATTERNS_PARAMETER_4 = "patternCard";
-    private static final String JSON_PUB_OBJ_PATH = "src/main/resources/objectives.json";
-    private static final String JSON_PUB_OBJ_PATH1 = "/objectives.json";
-    private static final String JSON_PUB_OBJ_PARAMETER_1 = "objectiveDeck";
+    private static final String JSON_PUB_OBJ_PATH = "./src/main/resources/objectives";
+    private static final String JSON_PUB_OBJ_PARAMETER_1 = "type";
     private static final String JSON_PUB_OBJ_PARAMETER_2 = "row";
     private static final String JSON_PUB_OBJ_PARAMETER_3 = "name";
     private static final String JSON_PUB_OBJ_PARAMETER_4 = "points";
@@ -48,6 +42,7 @@ public class ParserManager {
     private static final String JSON_PUB_OBJ_PARAMETER_8 = "set";
     private static final String JSON_PUB_OBJ_PARAMETER_9 = "elements";
     private static final String JSON_PUB_OBJ_PARAMETER_10 = "diagonal";
+    private static final String JSON_PUB_OBJ_PARAMETER_11 = "ID";
     private static final String JSON_TOOL_CARDS_PATH = "./src/main/resources/toolcards";
     private static final String JSON_TOOL_CARDS_PARAMETER_2 = "ID";
     private static final String JSON_TOOL_CARDS_PARAMETER_3 = "name";
@@ -56,15 +51,6 @@ public class ParserManager {
     private static final String JSON_TOOL_CARDS_PARAMETER_6 = "movesLeft";
     private static final String JSON_TOOL_CARDS_PARAMETER_7 = "classes";
     private static final String JSON_TOOL_CARDS_PARAMETER_8 = "parameters";
-
-    private Gson gson;
-
-    /**
-     * creates a {@link ParserManager}
-     */
-    private ParserManager() {
-        parser = new JSONParser();
-    }
 
     /**
      * @return the only instance of the {@link ParserManager}
@@ -145,64 +131,82 @@ public class ParserManager {
      */
     public ArrayList<PublicObjectiveCard> getPublicObjectiveDeck() {
         ArrayList<PublicObjectiveCard> puODeck = new ArrayList<>();
-        Object obj = null;
-        InputStream inputStream = this.getClass().getResourceAsStream(JSON_PUB_OBJ_PATH1);
-        try {
-            obj = parser.parse(new InputStreamReader(inputStream));
-        } catch (IOException | ParseException e) {
-            System.out.println(e);
-        }
-        JSONObject jsonObject = (JSONObject) obj;
-        JSONObject jPuODeck;
-        if (jsonObject != null) {
-            jPuODeck = (JSONObject) jsonObject.get(JSON_PUB_OBJ_PARAMETER_1);
-        } else {
-            throw new NullPointerException();
-        }
-
-        JSONArray jRowArray = (JSONArray) jPuODeck.get(JSON_PUB_OBJ_PARAMETER_2);
-        for (int i = 0; i < jRowArray.size(); i++) {
-            JSONObject jRowPuOC = (JSONObject) jRowArray.get(i);
-            PublicObjectiveCard row = new RowPublicObjectiveCard((String) jRowPuOC.get(JSON_PUB_OBJ_PARAMETER_3),
-                    puODeck.size() + 1,
-                    Integer.valueOf((String) jRowPuOC.get(JSON_PUB_OBJ_PARAMETER_4)),
-                    (String) jRowPuOC.get(JSON_PUB_OBJ_PARAMETER_5));
-            row.setDescription((String) jRowPuOC.get(JSON_PUB_OBJ_PARAMETER_6));
-            puODeck.add(row);
-        }
-
-        JSONArray jColArray = (JSONArray) jPuODeck.get(JSON_PUB_OBJ_PARAMETER_7);
-        for (int i = 0; i < jColArray.size(); i++) {
-            JSONObject jColPuOC = (JSONObject) jColArray.get(i);
-            PublicObjectiveCard col = new ColumnPublicObjectiveCard((String) jColPuOC.get(JSON_PUB_OBJ_PARAMETER_3),
-                    puODeck.size() + 1,
-                    Integer.valueOf((String) jColPuOC.get(JSON_PUB_OBJ_PARAMETER_4)),
-                    (String) jColPuOC.get(JSON_PUB_OBJ_PARAMETER_5));
-            col.setDescription((String) jColPuOC.get(JSON_PUB_OBJ_PARAMETER_6));
-            puODeck.add(col);
-        }
-        JSONArray jSetArray = (JSONArray) jPuODeck.get(JSON_PUB_OBJ_PARAMETER_8);
-        for (int i = 0; i < jSetArray.size(); i++) {
-            JSONObject jSetPuOC = (JSONObject) jSetArray.get(i);
-            JSONArray jElementsArray = (JSONArray) jSetPuOC.get(JSON_PUB_OBJ_PARAMETER_9);
-            ArrayList<String> elements = new ArrayList<>();
-            for (int j = 0; j < jElementsArray.size(); j++) {
-                elements.add(Restriction.valueOf((String) jElementsArray.get(j)).escape());
+        List<String> list = walkResources(JSON_PUB_OBJ_PATH);
+        if (!list.isEmpty()) {
+            for (String path : list) {
+                InputStream inputStream;
+                try {
+                    inputStream = new FileInputStream(path);
+                    JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+                    JsonParser parser = new JsonParser();
+                    JsonObject objectiveJson = parser.parse(reader).getAsJsonObject();
+                    String type = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_1).getAsString();
+                    PublicObjectiveCard puOC = new PublicObjectiveCard();
+                    boolean initialized = false;
+                    if (type.equals(JSON_PUB_OBJ_PARAMETER_2)) {
+                        String name = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_3).getAsString();
+                        int id = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_11).getAsInt();
+                        int points = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_4).getAsInt();
+                        String restriction = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_5).getAsString();
+                        String description = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_6).getAsString();
+                        puOC = new RowPublicObjectiveCard(name, id, points, restriction);
+                        puOC.setDescription(description);
+                        initialized = true;
+                    } else if (type.equals(JSON_PUB_OBJ_PARAMETER_7)) {
+                        String name = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_3).getAsString();
+                        int id = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_11).getAsInt();
+                        int points = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_4).getAsInt();
+                        String restriction = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_5).getAsString();
+                        String description = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_6).getAsString();
+                        puOC = new ColumnPublicObjectiveCard(name, id, points, restriction);
+                        puOC.setDescription(description);
+                        initialized = true;
+                    } else if (type.equals(JSON_PUB_OBJ_PARAMETER_8)) {
+                        String name = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_3).getAsString();
+                        int id = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_11).getAsInt();
+                        int points = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_4).getAsInt();
+                        String restriction = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_5).getAsString();
+                        String description = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_6).getAsString();
+                        ArrayList<String> elements = new ArrayList<>();
+                        JsonArray jElementsArray = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_9).getAsJsonArray();
+                        for (int j = 0; j < jElementsArray.size(); j++) {
+                            elements.add(Restriction.valueOf(jElementsArray.get(j).getAsString()).escape());
+                        }
+                        puOC = new SetPublicObjectiveCard(name, id, points, restriction, elements);
+                        puOC.setDescription(description);
+                        initialized = true;
+                    } else if (type.equals(JSON_PUB_OBJ_PARAMETER_10)) {
+                        String name = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_3).getAsString();
+                        int id = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_11).getAsInt();
+                        int points = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_4).getAsInt();
+                        String restriction = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_5).getAsString();
+                        String description = objectiveJson.get(JSON_PUB_OBJ_PARAMETER_6).getAsString();
+                        puOC = new DiagonalPublicObjectiveCard(name, id, points, restriction);
+                        puOC.setDescription(description);
+                        initialized = true;
+                    }
+                    if (initialized) {
+                        int i = 0;
+                        while (i < puODeck.size() && puODeck.get(i).getID() < puOC.getID()) {
+                            i++;
+                        }
+                        if (i == puODeck.size()) {
+                            puODeck.add(puOC);
+                        } else if (puODeck.get(i).getID() != puOC.getID()) {
+                            puODeck.add(i, puOC);
+                        }
+                        try {
+                            inputStream.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
-            PublicObjectiveCard set = new SetPublicObjectiveCard((String) jSetPuOC.get(JSON_PUB_OBJ_PARAMETER_3),
-                    puODeck.size() + 1,
-                    Integer.valueOf((String) jSetPuOC.get(JSON_PUB_OBJ_PARAMETER_4)),
-                    (String) jSetPuOC.get(JSON_PUB_OBJ_PARAMETER_5), elements);
-            set.setDescription((String) jSetPuOC.get(JSON_PUB_OBJ_PARAMETER_6));
-            puODeck.add(set);
         }
-        JSONObject jDiagonalPuOC = (JSONObject) jPuODeck.get(JSON_PUB_OBJ_PARAMETER_10);
-        PublicObjectiveCard diagonal = new DiagonalPublicObjectiveCard((String) jDiagonalPuOC.get(JSON_PUB_OBJ_PARAMETER_3),
-                puODeck.size() + 1,
-                Integer.valueOf((String) jDiagonalPuOC.get(JSON_PUB_OBJ_PARAMETER_4)),
-                (String) jDiagonalPuOC.get(JSON_PUB_OBJ_PARAMETER_5));
-        diagonal.setDescription((String) jDiagonalPuOC.get(JSON_PUB_OBJ_PARAMETER_6));
-        puODeck.add(diagonal);
+        System.out.println("Public Objective Deck Size: " + puODeck.size());
         return puODeck;
     }
 
@@ -258,11 +262,12 @@ public class ParserManager {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
+        System.out.println("Tool Cards Deck Size: " + toolCards.size());
         return toolCards;
     }
 

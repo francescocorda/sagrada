@@ -116,7 +116,7 @@ public class ClientSocketInterpreter implements Runnable, Observer {
                         sendMessage(invalidCommand);
                     }
                 } else {
-                    if (tempMessage.equals("exit"))
+                    if (tempMessage.equals("logout"))
                         break;
                     else {
                         sendMessage(invalidCommand);

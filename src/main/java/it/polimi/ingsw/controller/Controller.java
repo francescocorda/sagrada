@@ -42,7 +42,8 @@ public class Controller implements Observer {
     private static final String YOU_WON = "You Won!";
     private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
     private static final String START = "START";
-    private static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
+    static final String GAME_END = "Game end.";
+    static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
     static final int CHOOSE_ACTION_DIM = 1;
 
     private State startState;
@@ -276,11 +277,7 @@ public class Controller implements Observer {
     public synchronized void update(String message) {
         ArrayList<String> commands;
         commands = new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
-        if (isGameEnded){
-            handleEndGameEvent(commands);
-        } else {
-            handleEvent(commands);
-        }
+        handleEvent(commands);
     }
 
     /**
@@ -289,37 +286,6 @@ public class Controller implements Observer {
      */
     @Override
     public synchronized void update(Observable o) {
-    }
-
-    /**
-     * handles the End Game Event: starts a new game if the selection is "play",
-     * disconnects the player if the selection is "logout"
-     * @param commands is the given {@link ArrayList<String>} of received commands
-     */
-    private synchronized void handleEndGameEvent(ArrayList<String> commands) {
-        if (commands.size() == 2) {
-            String username = commands.remove(0);
-            VirtualView playerView = null;
-            if (players.contains(username)) {
-                for(VirtualView view : views){
-                    if(view.getUsername().equals(username)){
-                        playerView = view;
-                    }
-                }
-                if (commands.get(0).equals("logout")) {
-                    ClientDatabase.getPlayerDatabase().disconnect(username);
-                    handleOfflinePlayer(username);
-                } else if (commands.get(0).equals("play")) {
-                    Lobby lobby = Lobby.getLobby();
-                    playerView.deleteObservers();
-                    playerView.addObserver(lobby);
-                    lobby.addPlayer(username, ClientDatabase.getPlayerDatabase().getPlayerLastTime(username));
-                    ClientDatabase.getPlayerDatabase().getPlayerData(username).setPhase(Phase.LOBBY);
-                    players.remove(username);
-                    views.remove(playerView);
-                }
-            }
-        }
     }
 
     /**
@@ -333,14 +299,17 @@ public class Controller implements Observer {
         if (commands.size() > 1) {
             String username = commands.remove(0);
             if (players.contains(username)) {
-                if (!offlinePlayers.contains(username) && commands.get(0).equals("exit") && commands.size() == 1) {
+                if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
+                    ClientDatabase.getPlayerDatabase().disconnect(username); //TODO commentare per tornare alla situazione di prima
                     state.exitGame(username);
-                } else if (offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size() == 1) {
+                } else if (!isGameEnded && offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size() == 1) {
                     state.joinGame(username);
-                } else if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
+                }/* else if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
                     ClientDatabase.getPlayerDatabase().disconnect(username);
-                } else if (!offlinePlayers.contains(username)) {
+                } */else if (!offlinePlayers.contains(username) || isGameEnded) {
                     state.handleEvent(username, commands);
+                } else {
+                    System.out.println(commands.get(0));
                 }
             }
         }
@@ -413,6 +382,7 @@ public class Controller implements Observer {
             skipTurn();
         } else if (offlinePlayers.size() == players.size() - 1) {
             if (!game.isGameEnded()) {
+                state = endState;
                 String lastPlayer = game.getCurrentPlayer();
                 game.endGame();
                 sendMessage(lastPlayer, YOU_WON);
@@ -462,7 +432,7 @@ public class Controller implements Observer {
     /**
      * Sends to the online players a message asking if the want to play again
      */
-    private void handleOnlinePlayers() {
+    void handleOnlinePlayers() {
         for (String player : players) {
             if (!offlinePlayers.contains(player)) {
                 sendMessage(player, END_GAME_MESSAGE);
@@ -474,7 +444,7 @@ public class Controller implements Observer {
      * Removes the controller from the Lobby, deletes the VirtualViews observers
      * and kills the offline players Virtual View
      */
-    private void handleOfflinePlayers() {
+    void handleOfflinePlayers() {
         Lobby.getLobby().removeController(this);
         for (String offlinePlayer : offlinePlayers) {
             handleOfflinePlayer(offlinePlayer);
@@ -485,7 +455,7 @@ public class Controller implements Observer {
      * deletes the VirtualView's observers and remove the Virtual View from the database
      * @param username is the name associated with the Virtual View
      */
-    private void handleOfflinePlayer(String username){
+    void handleOfflinePlayer(String username){
         VirtualViewsDataBase virtualViewsDataBase = VirtualViewsDataBase.getVirtualViewsDataBase();
         ClientData client = ClientDatabase.getPlayerDatabase().getPlayerData(username);
         if (!client.isConnected()) {
@@ -500,5 +470,12 @@ public class Controller implements Observer {
      */
     Game getGame() {
         return game;
+    }
+
+    /**
+     * @return an instance of {@link List<VirtualView>}
+     */
+    List<VirtualView> getViews() {
+        return views;
     }
 }

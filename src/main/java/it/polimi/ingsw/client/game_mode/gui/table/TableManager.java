@@ -81,6 +81,7 @@ public class TableManager implements GUIManager {
     int initialPos;
     private StackPane draggableDice;
     private String temp = "NULL";
+    private String temp2 = "NULL";
 
     @FXML GridPane draftPool;
     @FXML Rectangle dice1;
@@ -247,6 +248,7 @@ public class TableManager implements GUIManager {
     @FXML Button joinGameButton;
     @FXML Button yesButton;
     @FXML Button noButton;
+    @FXML Button playButton;
 
     /**
      * It's called by the FXMLLoader when the file table.fxml is loaded.
@@ -393,6 +395,7 @@ public class TableManager implements GUIManager {
         joinGameButton.setVisible(false);
         yesButton.setVisible(false);
         noButton.setVisible(false);
+        playButton.setVisible(false);
     }
 
     /**
@@ -696,13 +699,21 @@ public class TableManager implements GUIManager {
                     }
 
                     if (message != null && (message.contains("New Turn.") || message.contains("NewTurn.") || message.equals("Wait your turn.") || message.contains("New round") || message.contains("It's your turn!"))) {
-                        if (activeTool == true) {
+                        if (activeTool) {
                             removeBorder();
                             activeTool = false;
                         }
                     }
                     if(message!=null) {
                         this.text.appendText(message+"\n");
+                    }
+                    if(message.equals("Choose [play] to play again, [logout] to go back to login")){
+                        playButton.setVisible(true);
+                        joinGameButton.setVisible(false);
+                    }
+                    if(!temp2.equals("NULL")){
+                        if(temp2.equals("ACTIVE")) temp2="";
+                        GUIData.getGUIData().getView().getGUIManager().editMessage(message);
                     }
                 }
         );
@@ -1129,6 +1140,27 @@ public class TableManager implements GUIManager {
             GUIData.getGUIData().setTime(-1);
         } catch (NetworkErrorException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is called if the exitButton is pressed and sends to the server the message "logout".
+     * It consumes the event.
+     */
+    @FXML
+    public void playAction(MouseEvent event){
+        temp2 = "ACTIVE";
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("play");
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/GUI/lobby.fxml"))));
+            stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }

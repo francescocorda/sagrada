@@ -10,7 +10,7 @@ on which the server is listening for the corresponding communication technology(
 for socket and 1099 for rmi).  
 Now you have to insert your credentials to login(username before and then password).  
 Last you have to insert the date last time you visit a cathedral. By leaving it blank you mean you visit it today  
-last time.
+last time.  
 NB: while you're playing, if you have to insert two commands you have to separate them by a space character.  
     for example: you want to insert the coordinates of a dice which positions is row 1 and column 1  
     you have to insert "1 1".

@@ -19,7 +19,7 @@ public class PrivateObjectiveDeck implements Serializable {
     private static final String COLOR_YELLOW = "yellow";
     private static final String COLOR_BLUE = "blue";
     private static final String COLOR_PURPLE = "purple";
-    private static final String SUM_VALUES_OF_ALL = "Sum values of all";
+    private static final String SUM_VALUES_OF_ALL = "Sum values of all ";
     private static final String DICES = " dices";
 
 

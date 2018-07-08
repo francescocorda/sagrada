@@ -124,9 +124,6 @@ public class CLIView extends Observable implements View {
 
         showPlayers(players);
 
-        if (table.getActiveToolCard() != null) {
-            table.getActiveToolCard().dump();
-        }
         if (table.getActiveDice() != null) {
             System.out.println(table.getActiveDice().toString());
         }
@@ -159,7 +156,7 @@ public class CLIView extends Observable implements View {
      */
     @Override
     public void activeTableElement(String element) {
-        System.out.println(element);
+       // System.out.println(element);
     }
 
     @Override
@@ -312,5 +309,4 @@ public class CLIView extends Observable implements View {
         }
         return string;
     }
-
 }

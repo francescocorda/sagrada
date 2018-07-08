@@ -11,15 +11,24 @@ import static it.polimi.ingsw.controller.Controller.PATTERN_ASSIGNED;
 
 public class StartState extends State {
 
+    /**
+     *creates a new {@link StartState}.
+     */
     public StartState(Controller controller) {
         super(controller);
     }
 
+    /**
+     *handles the given commands for the given user.
+     */
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         assignPatternCard(username, commands);
     }
 
+    /**
+     *assigns the {@link it.polimi.ingsw.model.cards.patterns.PatternCard} from the given commands to the given user.
+     */
     private synchronized void assignPatternCard(String username, ArrayList<String> commands) {
         if (checkFormat(commands)) {
             int indexPattern = Integer.parseInt(commands.remove(0));

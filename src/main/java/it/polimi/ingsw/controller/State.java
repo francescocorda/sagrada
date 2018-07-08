@@ -11,13 +11,22 @@ public abstract class State {
     Controller controller;
     Game game;
 
+    /**
+     *creates a new {@link State}.
+     */
     public State(Controller controller) {
         this.controller = controller;
         this.game = controller.getGame();
     }
 
+    /**
+     *handles the given commands for the given user.
+     */
     public abstract void handleEvent(String username, ArrayList<String> commands);
 
+    /**
+     *exits the given user from the game.
+     */
     public void exitGame(String username) {
         if (!controller.getOfflinePlayers().contains(username)) {
             controller.getOfflinePlayers().add(username);
@@ -27,6 +36,9 @@ public abstract class State {
         controller.sendMessage(username, YOU_LEFT_THE_GAME);
     }
 
+    /**
+     *join the given user to the game.
+     */
     public void joinGame(String username) {
         controller.getOfflinePlayers().remove(username);
         controller.sendMessage(username, BACK_TO_GAME);
@@ -36,6 +48,9 @@ public abstract class State {
         controller.addObserver(username);
     }
 
+    /**
+     *@return whether the format of the given commands is correct or not.
+     */
     boolean checkFormat(ArrayList<String> commands) {
         boolean result = false;
         try {

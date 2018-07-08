@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class EndState extends State {
 
+    /**
+     *creates a new {@link EndState}.
+     */
     public EndState(Controller controller) {
         super(controller);
     }

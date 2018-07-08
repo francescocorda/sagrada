@@ -51,7 +51,6 @@ public class ClientData {
                 try {
                     clientHandler.check();
                 } catch (NetworkErrorException e) {
-                    System.out.println("PERIODIC CHECK TRIGGERED");
                     ClientDatabase.getPlayerDatabase().disconnect(username);
                     this.cancel();
                 }

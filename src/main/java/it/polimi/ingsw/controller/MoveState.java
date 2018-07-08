@@ -8,10 +8,16 @@ import static it.polimi.ingsw.controller.Controller.WAIT_YOUR_TURN;
 
 public class MoveState extends State {
 
+    /**
+     *creates a new {@link MoveState}
+     */
     public MoveState(Controller controller) {
         super(controller);
     }
 
+    /**
+     *handles given commands for the given user.
+     */
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (game.isCurrentPlayer(username)) {
@@ -34,6 +40,9 @@ public class MoveState extends State {
         }
     }
 
+    /**
+     * performs the given commands for the given user.
+     */
     public void performMove(String username, ArrayList<String> commands) {
         if (commands.size() == game.getMoveCommandsSize() && checkFormat(commands)) {
             game.performMove(commands);
@@ -42,6 +51,9 @@ public class MoveState extends State {
         }
     }
 
+    /**
+     *exits the given user from the game.
+     */
     @Override
     public void exitGame(String username) {
         super.exitGame(username);

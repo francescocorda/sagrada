@@ -136,7 +136,7 @@ public class Server {
             else {
                 try {
                     socketPort = Integer.parseInt(text);
-                    if(socketPort<0){
+                    if(socketPort<=0){
                         throw new NumberFormatException();
                     } else {
                         flag = false;
@@ -173,7 +173,7 @@ public class Server {
             else {
                 try {
                     rmiPort = Integer.parseInt(text);
-                    if(rmiPort < 0){
+                    if(rmiPort <= 0){
                         throw new NumberFormatException();
                     } else {
                         flag = false;

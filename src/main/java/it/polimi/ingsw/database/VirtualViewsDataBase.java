@@ -82,7 +82,6 @@ public class VirtualViewsDataBase {
      * shows the status of {@link VirtualViewsDataBase}
      */
     public void status(){
-        //TODO eliminate
         System.out.println("VIRTUAL VIEW DATABASE:\n Status:\n - Number of views: "+virtualViews.size());
         System.out.println(" - VirtualViews's players:");
         for(VirtualView view : virtualViews){

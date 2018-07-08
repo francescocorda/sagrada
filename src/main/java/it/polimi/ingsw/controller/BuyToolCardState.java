@@ -7,10 +7,16 @@ import static it.polimi.ingsw.controller.Controller.*;
 
 public class BuyToolCardState extends State {
 
+    /**
+     *creates a new {@link BuyToolCardState}.
+     */
     public BuyToolCardState(Controller controller) {
         super(controller);
     }
 
+    /**
+     *handles the given commands for the given username.
+     */
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (game.isCurrentPlayer(username)) {
@@ -20,6 +26,9 @@ public class BuyToolCardState extends State {
         }
     }
 
+    /**
+     *exits the given username from the game.
+     */
     @Override
     public void exitGame(String username) {
         super.exitGame(username);
@@ -28,6 +37,9 @@ public class BuyToolCardState extends State {
         }
     }
 
+    /**
+     *make the given user to buy a toolcard.
+     */
     private void buyToolCard(String username, ArrayList<String> commands) {
         if (commands.size() == 1 && commands.get(0).equals("cancel")) {
             controller.setState(controller.getChooseActionState());

@@ -8,10 +8,16 @@ import static it.polimi.ingsw.controller.Controller.WAIT_YOUR_TURN;
 
 public class UseToolCardState extends State {
 
+    /**
+     * creates a new {@link UseToolCardState}
+     */
     public UseToolCardState(Controller controller) {
         super(controller);
     }
 
+    /**
+     *handles the given commands for the given user.
+     */
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (game.isCurrentPlayer(username)) {
@@ -34,6 +40,9 @@ public class UseToolCardState extends State {
         }
     }
 
+    /**
+     *uses the given {@link it.polimi.ingsw.model.cards.toolcard.ToolCard} from the given commands for the given user.
+     */
     private void useToolCard(String username, ArrayList<String> commands) {
         if (commands.size() == game.getToolCardCommandsSize() && checkFormat(commands)) {
             game.useToolCard(commands);
@@ -42,6 +51,9 @@ public class UseToolCardState extends State {
         }
     }
 
+    /**
+     *exits the given user from the game.
+     */
     @Override
     public void exitGame(String username) {
         super.exitGame(username);

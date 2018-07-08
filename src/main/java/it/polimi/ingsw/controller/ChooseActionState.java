@@ -6,10 +6,16 @@ import static it.polimi.ingsw.controller.Controller.*;
 
 public class ChooseActionState extends State {
 
+    /**
+     * creates a new {@link ChooseActionState}.
+     */
     public ChooseActionState(Controller controller) {
         super(controller);
     }
 
+    /**
+     *handles the given commands for the given user.
+     */
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (!game.isGameEnded() && game.isCurrentPlayer(username)) {
@@ -48,6 +54,9 @@ public class ChooseActionState extends State {
         }
     }
 
+    /**
+     *exits the given username for the game
+     */
     @Override
     public void exitGame(String username) {
         super.exitGame(username);

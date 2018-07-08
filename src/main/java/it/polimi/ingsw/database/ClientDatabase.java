@@ -62,7 +62,6 @@ public class ClientDatabase {
      * shows the status of {@link ClientDatabase}
      */
     public void status() {
-        //TODO eliminate
         System.out.println("CLIENT DATABASE:");
         System.out.println(" -Players number: " + players.size());
         System.out.println(" -Online players number: " + onlinePlayersNumber());
@@ -117,21 +116,6 @@ public class ClientDatabase {
         return number;
     }
 
-    //TODO eliminate
-    /*
-    public void setPhase(String username, Phase phase) {
-        ClientData clientData = getPlayerData(username);
-        if (clientData != null)
-            clientData.setPhase(phase);
-    }
-
-    public Phase getPhase(String username) {
-        ClientData clientData = getPlayerData(username);
-        if (clientData != null)
-            return clientData.getPhase();
-        return null;
-    }*/
-
     /**
      * @param username : the given {@link String} username
      * @return {@link ClientData} who's {@link ClientData#username} corresponds to the given {@link String} username
@@ -176,9 +160,7 @@ public class ClientDatabase {
     private void phaseDisconnection(ClientData player) {
         switch (player.getPhase()) {
             case GAME:
-                //VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
-                //virtualView.notifyObservers(player.getUsername() + "/exit");
-                System.out.println("game: player: " + player.getUsername() + " left the game...");
+                System.out.println("Game: player: " + player.getUsername() + " left the game...");
                 break;
             case LOBBY:
                 Lobby.getLobby().removePlayer(player.getUsername());

@@ -11,3 +11,17 @@ enter in lobby. By leaving this gap blank, timer is set to 120 seconds by defaul
 Finally you have to insert  the timer of the turn. This timer starts at the begin of a player turn and if the timer  
 expires before the end of the turn, automatically the player will be disconnected. By leaving it blank timer is set  
 to 120 seconds by default.
+
+Here's a list of our project's features and andvanced functionalities:
+
+Requirements Game-specific:  
+-implemented all toolCards, from 1 to 12(complete rules)
+
+Requirements Game-agnostic:  
+-we implemented ALL requirements listed in the game-agnostic section  
+-dynamics patternCard(advanced funcionality)  
+-multiples matches(advanced funcionality)  
+
+We implemented both rmi and socket technology of communications. Each player can connect through  
+its preferred technology and in one game, can disconnect itself and reconnect using the other technology.  
+Users can play a game both in command line or in graphic user interface.  

@@ -11,6 +11,9 @@ import static it.polimi.ingsw.controller.Controller.PATTERN_ASSIGNED;
 
 public class StartState extends State {
 
+    private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
+    private static final String START = "START";
+
     /**
      *creates a new {@link StartState}.
      */
@@ -34,7 +37,7 @@ public class StartState extends State {
             int indexPattern = Integer.parseInt(commands.remove(0));
             if ((indexPattern >= 1 && indexPattern <= PROPOSED_PATTERNS) && commands.isEmpty()) {
                 if (game.setPatternCard(username, indexPattern-1)) {
-                    controller.sendActiveTableElement(username, "START");
+                    controller.sendActiveTableElement(username, START);
                     controller.sendMessage(username, PATTERN_ASSIGNED);
                 }
             } else {
@@ -44,7 +47,7 @@ public class StartState extends State {
             if (game.doneAssignPatternCards()) {
                 controller.setState(controller.getChooseActionState());
                 if (!game.isGameEnded())
-                    controller.sendActiveTableElement(game.getCurrentPlayer(), "CHOOSE_ACTION");
+                    controller.sendActiveTableElement(game.getCurrentPlayer(), CHOOSE_ACTION);
                 controller.setTimerSkipTurn();
                 controller.itsYourTurn();
             }

@@ -8,6 +8,9 @@ import static it.polimi.ingsw.controller.Controller.WAIT_YOUR_TURN;
 
 public class UseToolCardState extends State {
 
+    private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
+    private static final String CANCEL = "cancel";
+
     /**
      * creates a new {@link UseToolCardState}
      */
@@ -21,10 +24,10 @@ public class UseToolCardState extends State {
     @Override
     public void handleEvent(String username, ArrayList<String> commands) {
         if (game.isCurrentPlayer(username)) {
-            if (commands.size()==1 && commands.get(0).equals("cancel")) {
+            if (commands.size()==1 && commands.get(0).equals(CANCEL)) {
                 game.cancelToolCardUse();
                 controller.setState(controller.getChooseActionState());
-                controller.sendActiveTableElement(username, "CHOOSE_ACTION");
+                controller.sendActiveTableElement(username, CHOOSE_ACTION);
                 controller.sendMessage(username, ACTION_CANCELED);
                 controller.itsYourTurn();
             } else {

@@ -6,6 +6,11 @@ import static it.polimi.ingsw.controller.Controller.*;
 
 public class ChooseActionState extends State {
 
+    private static final String TOOLCARD_MESSAGE = "TOOLCARD";
+    private static final String TOOLCARD = "toolcard";
+    private static final String SKIP = "skip";
+    private static final String MOVE = "move";
+
     /**
      * creates a new {@link ChooseActionState}.
      */
@@ -21,7 +26,7 @@ public class ChooseActionState extends State {
         if (!game.isGameEnded() && game.isCurrentPlayer(username)) {
             if (commands.size() == CHOOSE_ACTION_DIM) {
                 switch (commands.remove(0)) {
-                    case "move":
+                    case MOVE:
                         if(game.moveAllowed()) {
                             game.createMove();
                             controller.sendActiveTableElement(username);
@@ -30,14 +35,14 @@ public class ChooseActionState extends State {
                             controller.itsYourTurn();
                         }
                         break;
-                    case "skip":
+                    case SKIP:
                         controller.skipTurn();
                         break;
-                    case "toolcard":
+                    case TOOLCARD:
                         if (!game.isToolCardUsed()) {
                             controller.sendMessage(username, CHOOSE_TOOL_CARD);
                             controller.setState(controller.getBuyToolCardState());
-                            controller.sendActiveTableElement(username, "TOOLCARD");
+                            controller.sendActiveTableElement(username, TOOLCARD_MESSAGE);
                         } else {
                             controller.itsYourTurn();
                         }

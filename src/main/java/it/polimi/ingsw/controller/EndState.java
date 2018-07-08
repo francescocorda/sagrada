@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 public class EndState extends State {
 
+    private static final String LOGOUT = "logout";
+    private static final String PLAY = "play";
+
     /**
      *creates a new {@link EndState}.
      */
@@ -31,10 +34,10 @@ public class EndState extends State {
                         playerView = view;
                     }
                 }
-                if (commands.get(0).equals("logout")) {
+                if (commands.get(0).equals(LOGOUT)) {
                     ClientDatabase.getPlayerDatabase().disconnect(username);
                     controller.handleOfflinePlayer(username);
-                } else if (commands.get(0).equals("play")) {
+                } else if (commands.get(0).equals(PLAY)) {
                     Lobby lobby = Lobby.getLobby();
                     if (playerView != null) {
                         playerView.deleteObservers();

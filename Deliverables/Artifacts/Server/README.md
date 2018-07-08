@@ -16,7 +16,7 @@ We implemented the ADVANCED FUNCTIONALITY  that allows us to create new patternC
 This funcionality is very simple to use, you only have to go to "resources" folder and to add a new file in the folder "patterns".  
 New file must have the same json format of the already existing ones; in order to fire any doubts here's an example.
 
-We want to add a new patternCard named "blank" withoud any restrictions, giving it the ID 25(NOTE that in the forlder cannot exist two patternCard with the same id, since it is used as key to load the card in the deck).  
+We want to add a new patternCard named "blank" withoud any restrictions, giving it the ID 25(NOTE that in the forlder cannot exist two patternCards with the same id, since it is used as key to load the card in the deck).  
 Here's the content of the file you have to add:  
 {  
   "name": "blank",  

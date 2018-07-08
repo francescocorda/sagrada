@@ -12,16 +12,20 @@ Finally you have to insert  the timer of the turn. This timer starts at the begi
 expires before the end of the turn, automatically the player will be disconnected. By leaving it blank timer is set  
 to 120 seconds by default.
 
-Here's a list of our project's features and andvanced functionalities:
+We implemented the ADVANCED FUNCTIONALITY  that allows us to create new patternCard and to add it on the pool from which patternCards are drafted.  
+This funcionality is very simple to use, you only have to go to "resources" folder and to add a new file in the folder "patterns".  
+New file must have the same json format of the already existing ones; in order to fire any doubts here's an example.
 
-Requirements Game-specific:  
--implemented all toolCards, from 1 to 12(complete rules)
-
-Requirements Game-agnostic:  
--we implemented ALL requirements listed in the game-agnostic section  
--dynamics patternCard(advanced funcionality)  
--multiples matches(advanced funcionality)  
-
-We implemented both rmi and socket technology of communications. Each player can connect through  
-its preferred technology and in one game, can disconnect itself and reconnect using the other technology.  
-Users can play a game both in command line or in graphic user interface.  
+We want to add a new patternCard named "blank" withoud any restrictions, giving it the ID 25(NOTE that in the forlder cannot exist two patternCard with the same id, since it is used as key to load the card in the deck).  
+Here's the content of the file you have to add:  
+{  
+  "name": "blank",  
+  "id": "25",  
+  "difficulty": "1",  
+  "patternCard": [  
+    "WHITE", "WHITE", "WHITE", "WHITE", "WHITE",  
+    "WHITE", "WHITE", "WHITE", "WHITE", "WHITE",  
+    "WHITE", "WHITE", "WHITE", "WHITE", "WHITE",  
+    "WHITE", "WHITE", "WHITE", "WHITE", "WHITE"  
+  ]  
+}

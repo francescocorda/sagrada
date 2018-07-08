@@ -30,7 +30,7 @@ public class TestToolCards {
         names.add("fede");
         names.add("ale");
         game = new Game(1, names);
-        game.getTable().setDraftPool(9);
+        game.getTable().setDrawPool(9);
         table = game.getTable();
         players = game.getTable().getPlayers();
         for (Player player: players) {
@@ -45,7 +45,7 @@ public class TestToolCards {
 
     @Test
     public void toolCard1Test() throws WrongRoundException, InvalidNeighboursException, ImpossibleMoveException {
-        for (Dice c : game.getTable().getDraftPool()) {
+        for (Dice c : game.getTable().getDrawPool()) {
             if (c.valueOf() == 1 || c.valueOf() == 6) {
                 try {
                     c.setFace(3);
@@ -57,8 +57,8 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(0);
         ArrayList<String> commands = new ArrayList<>();
-        int dimension = game.getTable().getDraftPool().size();
-        Dice dice1 = game.getTable().getDraftPool().get(0);
+        int dimension = game.getTable().getDrawPool().size();
+        Dice dice1 = game.getTable().getDrawPool().get(0);
         int value = dice1.valueOf();
 
 
@@ -71,42 +71,42 @@ public class TestToolCards {
 
 
         //funzionamento base
-        assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(value, game.getTable().getDraftPool().get(0).valueOf() - 1);
+        assertEquals(dimension, game.getTable().getDrawPool().size());
+        assertEquals(value, game.getTable().getDrawPool().get(0).valueOf() - 1);
 
         //verifica che non posso trasformare un 1 in 6
         try {
-            game.getTable().getDraftPool().get(0).setFace(1);
+            game.getTable().getDrawPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        dimension = game.getTable().getDraftPool().size();
+        dimension = game.getTable().getDrawPool().size();
 
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
         commands.add("1");
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         commands.add("-1");
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
-        assertEquals(dimension-1, game.getTable().getDraftPool().size());
+        assertEquals(dimension-1, game.getTable().getDrawPool().size());
         assertEquals(1, game.getTable().getActiveDice().valueOf());
 
         ArrayList<String> commands1 = new ArrayList<>();
         commands1.add("+1");
         toolCard.useToolCard(commands1, game.getTable(), game.getRounds().get(0));
-        assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(2, game.getTable().getDraftPool().get(0).valueOf());
+        assertEquals(dimension, game.getTable().getDrawPool().size());
+        assertEquals(2, game.getTable().getDrawPool().get(0).valueOf());
 
         game.getTable().dumpDraftPool();
 
         //verifica che non posso trasformare un 6 in 1;
         try {
-            game.getTable().getDraftPool().get(0).setFace(6);
+            game.getTable().getDrawPool().get(0).setFace(6);
 
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
         game.getTable().dumpDraftPool();
-        dimension = game.getTable().getDraftPool().size();
+        dimension = game.getTable().getDrawPool().size();
         ArrayList<String> commands2 = new ArrayList<>();
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
         commands2.add("1");
@@ -116,13 +116,13 @@ public class TestToolCards {
         toolCard.useToolCard( commands2, game.getTable(), game.getRounds().get(0));
         game.getTable().dumpDraftPool();
 
-        assertEquals(dimension-1, game.getTable().getDraftPool().size());
+        assertEquals(dimension-1, game.getTable().getDrawPool().size());
         assertEquals(6, game.getTable().getActiveDice().valueOf());
         ArrayList<String> commands3 = new ArrayList<>();
         commands3.add("-1");
         toolCard.useToolCard( commands3, game.getTable(), game.getRounds().get(0));
-        assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(5, game.getTable().getDraftPool().get(0).valueOf());
+        assertEquals(dimension, game.getTable().getDrawPool().size());
+        assertEquals(5, game.getTable().getDrawPool().get(0).valueOf());
     }
 
     @Test
@@ -132,11 +132,11 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -144,8 +144,8 @@ public class TestToolCards {
         ArrayList<String> commands = new ArrayList<>();
 
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
@@ -153,7 +153,7 @@ public class TestToolCards {
 
 
 
-        int dimension = table.getDraftPool().size();
+        int dimension = table.getDrawPool().size();
 
         //funzionamento base
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
@@ -165,7 +165,7 @@ public class TestToolCards {
         toolCard.useToolCard(comm2, game.getTable(), game.getRounds().get(0));
         windowFrame.dump();
 
-        assertEquals(dimension, game.getTable().getDraftPool().size());
+        assertEquals(dimension, game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN, windowFrame.getDice(1, 2).getColor());
         assertEquals(3, windowFrame.getDice(1, 2).valueOf());
 
@@ -184,7 +184,7 @@ public class TestToolCards {
 
         WindowFrame window = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        assertEquals(dimension,  game.getTable().getDraftPool().size());
+        assertEquals(dimension,  game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN,  window.getDice(1,2).getColor());
         assertEquals(3,  window.getDice(1,2).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
@@ -207,7 +207,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         windowFrame.dump();
 
-        assertEquals(dimension,  game.getTable().getDraftPool().size());
+        assertEquals(dimension,  game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN,  window.getDice(1,2).getColor());
         assertEquals(3,  window.getDice(1,2).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(1,2));
@@ -222,26 +222,26 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
 
-        int dimension = table.getDraftPool().size();
+        int dimension = table.getDrawPool().size();
 
         //funzionamento base
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
@@ -253,7 +253,7 @@ public class TestToolCards {
         toolCard.useToolCard(comm2, game.getTable(), game.getRounds().get(0));
         windowFrame.dump();
 
-        assertEquals(dimension, game.getTable().getDraftPool().size());
+        assertEquals(dimension, game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN, windowFrame.getDice(2, 3).getColor());
         assertEquals(3, windowFrame.getDice(2, 3).valueOf());
 
@@ -272,7 +272,7 @@ public class TestToolCards {
 
         WindowFrame window = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        assertEquals(dimension,  game.getTable().getDraftPool().size());
+        assertEquals(dimension,  game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN,  window.getDice(2,3).getColor());
         assertEquals(3,  window.getDice(2,3).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(2,3));
@@ -295,7 +295,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         windowFrame.dump();
 
-        assertEquals(dimension,  game.getTable().getDraftPool().size());
+        assertEquals(dimension,  game.getTable().getDrawPool().size());
         assertEquals(Color.GREEN,  window.getDice(2,3).getColor());
         assertEquals(3,  window.getDice(2,3).valueOf());
         assertEquals(false, windowFrame.getPatternCard().getExceptionRestriction(2,3));
@@ -308,26 +308,26 @@ public class TestToolCards {
         ToolCard toolCard = toolCards.get(3);
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
 
-        int dimension = table.getDraftPool().size();
+        int dimension = table.getDrawPool().size();
 
         //funzionamento base
         toolCard.useToolCard(new ArrayList<>(), game.getTable(), game.getRounds().get(0));
@@ -349,7 +349,7 @@ public class TestToolCards {
         windowFrame.dump();
 
 
-        assertEquals(dimension, table.getDraftPool().size());
+        assertEquals(dimension, table.getDrawPool().size());
         assertEquals(Color.BLUE, windowFrame.getDice(3, 2).getColor());
         assertEquals(2, windowFrame.getDice(3, 2).valueOf());
         assertEquals(Color.GREEN, windowFrame.getDice(4, 2).getColor());
@@ -362,18 +362,18 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(4);
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        int dimensionDP = table.getDraftPool().size();
-        Color diceColorDP = table.getDraftPool().get(0).getColor();
-        int diceFaceDP = table.getDraftPool().get(0).valueOf();
+        int dimensionDP = table.getDrawPool().size();
+        Color diceColorDP = table.getDrawPool().get(0).getColor();
+        int diceFaceDP = table.getDrawPool().get(0).valueOf();
         table.dumpDraftPool();
 
         table.getRoundTrack().setRoundDices(table.getDiceBag().draw(9),0);
@@ -398,12 +398,12 @@ public class TestToolCards {
         table.dumpDraftPool();
         table.getRoundTrack().dump();
 
-        assertEquals(dimensionDP, table.getDraftPool().size());
+        assertEquals(dimensionDP, table.getDrawPool().size());
         assertEquals(dimensionRT1, table.getRoundTrack().getRoundDices(0).size());
         assertEquals(diceFaceDP, table.getRoundTrack().getRoundDices(0).get(0).valueOf());
         assertEquals(diceColorDP, table.getRoundTrack().getRoundDices(0).get(0).getColor());
-        assertEquals(diceFaceRT, table.getDraftPool().get(0).valueOf());
-        assertEquals(diceColorRT, table.getDraftPool().get(0).getColor());
+        assertEquals(diceFaceRT, table.getDrawPool().get(0).valueOf());
+        assertEquals(diceColorRT, table.getDrawPool().get(0).getColor());
 
     }
 
@@ -414,27 +414,27 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
 
-        int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.RED);
+        int dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.RED);
 
         table.dumpDraftPool();
         //funzionamento base
@@ -447,13 +447,13 @@ public class TestToolCards {
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         windowFrame.dump();
         table.dumpDraftPool();
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.RED, windowFrame.getDice(3, 3).getColor());
 
 
         //verifica che devo rispettare restrizione colore
-        dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.RED);
+        dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.RED);
         table.dumpDraftPool();
 
 
@@ -473,7 +473,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         windowFrame.dump();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(null, windowFrame.getDice(1, 1));
         assertEquals(dice, windowFrame.getDice(2, 4));
         table.dumpDraftPool();
@@ -486,16 +486,16 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(6);
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
-        int dimensionDP = table.getDraftPool().size();
+        int dimensionDP = table.getDrawPool().size();
         table.dumpDraftPool();
 
         ArrayList<String> commands = new ArrayList<>();
@@ -506,7 +506,7 @@ public class TestToolCards {
         table.dumpDraftPool();
         table.getRoundTrack().dump();
 
-        assertEquals(dimensionDP, table.getDraftPool().size());
+        assertEquals(dimensionDP, table.getDrawPool().size());
 
     }
 
@@ -517,29 +517,29 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
 
-        int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.PURPLE);
+        int dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.PURPLE);
         try {
-            table.getDraftPool().get(0).setFace(1);
+            table.getDrawPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -554,20 +554,20 @@ public class TestToolCards {
 
 
         windowFrame.dump();
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.PURPLE, windowFrame.getDice(3, 2).getColor());
         assertEquals(1, windowFrame.getDice(3, 2).valueOf());
 
 
         //verifica che devo rispettare restrizione colore
-        dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.YELLOW);
+        dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.YELLOW);
         try {
-            table.getDraftPool().get(0).setFace(4);
+            table.getDrawPool().get(0).setFace(4);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        dimension = table.getDraftPool().size();
+        dimension = table.getDrawPool().size();
         commands = new ArrayList<>();
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         commands.add("1");
@@ -580,7 +580,7 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         windowFrame.dump();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.YELLOW, windowFrame.getDice(4, 3).getColor());
         assertEquals(4, windowFrame.getDice(4, 3).valueOf());
         assertEquals(null, windowFrame.getDice(3, 3));
@@ -588,13 +588,13 @@ public class TestToolCards {
 
         //verifica che devo rispettare restrizione posizione
         commands.clear();
-        table.getDraftPool().get(0).setColor(Color.PURPLE);
+        table.getDrawPool().get(0).setColor(Color.PURPLE);
         try {
-            table.getDraftPool().get(0).setFace(1);
+            table.getDrawPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
-        dimension = table.getDraftPool().size();
+        dimension = table.getDrawPool().size();
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         commands.add("1");
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
@@ -605,7 +605,7 @@ public class TestToolCards {
 
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.PURPLE, windowFrame.getDice(3, 4).getColor());
         assertEquals(1, windowFrame.getDice(3, 4).valueOf());
         assertEquals(null, windowFrame.getDice(1, 5));
@@ -619,29 +619,29 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
 
-        int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.PURPLE);
+        int dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.PURPLE);
         try {
-            table.getDraftPool().get(0).setFace(1);
+            table.getDrawPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -655,16 +655,16 @@ public class TestToolCards {
 
         windowFrame.dump();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.PURPLE, windowFrame.getDice(4, 3).getColor());
         assertEquals(1, windowFrame.getDice(4, 3).valueOf());
 
 
         //verifica che devo rispettare restrizione colore
-        dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.YELLOW);
+        dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.YELLOW);
         try {
-            table.getDraftPool().get(0).setFace(4);
+            table.getDrawPool().get(0).setFace(4);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -681,17 +681,17 @@ public class TestToolCards {
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
         windowFrame.dump();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.YELLOW, windowFrame.getDice(4, 5).getColor());
         assertEquals(4, windowFrame.getDice(4, 5).valueOf());
         assertEquals(null, windowFrame.getDice(3, 5));
 
 
         //verifica che devo rispettare restrizione faccia
-        dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.PURPLE);
+        dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.PURPLE);
         try {
-            table.getDraftPool().get(0).setFace(2);
+            table.getDrawPool().get(0).setFace(2);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -708,7 +708,7 @@ public class TestToolCards {
 
         windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertEquals(Color.PURPLE, windowFrame.getDice(4, 1).getColor());
         assertEquals(2, windowFrame.getDice(4, 1).valueOf());
         assertEquals(null, windowFrame.getDice(1, 5));
@@ -716,7 +716,7 @@ public class TestToolCards {
 
     @Test
     public void toolCard10Test() throws WrongRoundException, InvalidNeighboursException, ImpossibleMoveException {
-        for (Dice c : game.getTable().getDraftPool()) {
+        for (Dice c : game.getTable().getDrawPool()) {
             if (c.valueOf() == 1 || c.valueOf() == 6) {
                 try {
                     c.setFace(3);
@@ -728,8 +728,8 @@ public class TestToolCards {
 
         ToolCard toolCard = toolCards.get(9);
         ArrayList<String> commands = new ArrayList<>();
-        int dimension = game.getTable().getDraftPool().size();
-        Dice dice1 = game.getTable().getDraftPool().get(0);
+        int dimension = game.getTable().getDrawPool().size();
+        Dice dice1 = game.getTable().getDrawPool().get(0);
         int value = dice1.valueOf();
 
 
@@ -741,8 +741,8 @@ public class TestToolCards {
 
 
         //funzionamento base
-        assertEquals(dimension, game.getTable().getDraftPool().size());
-        assertEquals(value, 7-table.getDraftPool().get(0).valueOf());
+        assertEquals(dimension, game.getTable().getDrawPool().size());
+        assertEquals(value, 7-table.getDrawPool().get(0).valueOf());
 
     }
 
@@ -753,29 +753,29 @@ public class TestToolCards {
 
         WindowFrame windowFrame = game.getRounds().get(0).getCurrentPlayer().getWindowFrame();
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
 
         ArrayList<String> commands = new ArrayList<>();
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException | InvalidFirstMoveException e) {
             e.printStackTrace();
         }
         windowFrame.dump();
 
         table.dumpDraftPool();
-        int dimension = table.getDraftPool().size();
-        table.getDraftPool().get(0).setColor(Color.PURPLE);
+        int dimension = table.getDrawPool().size();
+        table.getDrawPool().get(0).setColor(Color.PURPLE);
         try {
-            table.getDraftPool().get(0).setFace(1);
+            table.getDrawPool().get(0).setFace(1);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -795,7 +795,7 @@ public class TestToolCards {
         windowFrame.dump();
         table.dumpDraftPool();
 
-        assertEquals(dimension-1, table.getDraftPool().size());
+        assertEquals(dimension-1, table.getDrawPool().size());
         assertNotEquals(null, windowFrame.getDice(2, 4));
 
     }
@@ -822,13 +822,13 @@ public class TestToolCards {
 
 
 
-        table.getDraftPool().get(0).setColor(Color.BLUE);
-        table.getDraftPool().get(1).setColor(Color.BLUE);
-        table.getDraftPool().get(2).setColor(Color.GREEN);
+        table.getDrawPool().get(0).setColor(Color.BLUE);
+        table.getDrawPool().get(1).setColor(Color.BLUE);
+        table.getDrawPool().get(2).setColor(Color.GREEN);
         try {
-            table.getDraftPool().get(0).setFace(2);
-            table.getDraftPool().get(1).setFace(5);
-            table.getDraftPool().get(2).setFace(3);
+            table.getDrawPool().get(0).setFace(2);
+            table.getDrawPool().get(1).setFace(5);
+            table.getDrawPool().get(2).setFace(3);
         } catch (InvalidFaceException e) {
             e.printStackTrace();
         }
@@ -837,9 +837,9 @@ public class TestToolCards {
         ArrayList<String> commands = new ArrayList<>();
 
         try {
-            windowFrame.setDice(1,3,table.getDraftPool().remove(0));
-            windowFrame.setDice(2,2,table.getDraftPool().remove(0));
-            windowFrame.setDice(3,2,table.getDraftPool().remove(0));
+            windowFrame.setDice(1,3,table.getDrawPool().remove(0));
+            windowFrame.setDice(2,2,table.getDrawPool().remove(0));
+            windowFrame.setDice(3,2,table.getDrawPool().remove(0));
         } catch (MismatchedRestrictionException | InvalidNeighboursException | OccupiedCellException e) {
             e.printStackTrace();
         }

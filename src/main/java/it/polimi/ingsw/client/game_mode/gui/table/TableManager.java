@@ -723,7 +723,7 @@ public class TableManager implements GUIManager {
                     showPUOCs(table.getGamePublicObjectiveCards());
                     showTools(table.getGameToolCards());
                     showPVOC(table.getPlayer(GUIData.getGUIData().getUsername()).getPrivateObjectiveCard());
-                    showDraftPool(table.getDraftPool());
+                    showDraftPool(table.getDrawPool());
                     showSelectedDice(table.getActiveDice());
                     showRoundTrack(table.getRoundTrack());
                     int size = table.getPlayers().size();

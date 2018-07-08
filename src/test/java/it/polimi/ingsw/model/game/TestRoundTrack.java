@@ -12,7 +12,7 @@ public class TestRoundTrack {
     @Test
     public void roundTrackTest() {
         Table table = new Table();
-        table.setDraftPool(9);
+        table.setDrawPool(9);
         ArrayList<Dice> dices = new ArrayList<>();
         dices.add(new Dice(Color.PURPLE));
         try {

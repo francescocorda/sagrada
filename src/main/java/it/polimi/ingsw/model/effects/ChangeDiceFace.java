@@ -17,13 +17,17 @@ public class ChangeDiceFace extends Effect {
 
     private static final HashMap<ChangeFace, String> descriptions = descriptions();
     private static final HashMap<ChangeFace, Boolean> stops = stops();
-    private static final HashMap<ChangeFace, Integer> lenghts = lenghts();
+    private static final HashMap<ChangeFace, Integer> lenghts = lengths();
 
     private static final int INCREASE_FACE = 1;
     private static final int OPPOSITE_FACE = -7;
 
     private ChangeFace changeFace;
 
+    /**
+     *
+     * @return the description associated with the {@link ChangeFace} element of the effect
+     */
     static HashMap<ChangeFace, String> descriptions() {
         HashMap<ChangeFace, String> temp = new HashMap<>();
         temp.put(SEQUENTIAL, "Choose +1 to increment and -1 to decrement the dice value.");
@@ -33,6 +37,10 @@ public class ChangeDiceFace extends Effect {
         return temp;
     }
 
+    /**
+     *
+     * @return the boolean associated with the {@link ChangeFace} element of the effect
+     */
     static HashMap<ChangeFace, Boolean> stops() {
         HashMap<ChangeFace, Boolean> temp = new HashMap<>();
         temp.put(SEQUENTIAL, true);
@@ -42,7 +50,11 @@ public class ChangeDiceFace extends Effect {
         return temp;
     }
 
-    static HashMap<ChangeFace, Integer> lenghts() {
+    /**
+     *
+     * @return the command's length associated with the {@link ChangeFace} element of the effect
+     */
+    static HashMap<ChangeFace, Integer> lengths() {
         HashMap<ChangeFace, Integer> temp = new HashMap<>();
         temp.put(SEQUENTIAL, 1);
         temp.put(OPPOSITE, 0);
@@ -52,14 +64,29 @@ public class ChangeDiceFace extends Effect {
     }
 
 
+    /**
+     * create a new {@link ChangeDiceFace} given the parameter
+     * @param changeFace is the given parameter that defines the effect's behaviour
+     */
     public ChangeDiceFace(ChangeFace changeFace) {
         this.changeFace = changeFace;
         this.stop = stops.get(changeFace);
-        this.commandsLenght = lenghts.get(changeFace);
+        this.commandsLength = lenghts.get(changeFace);
     }
 
 
-
+    /**
+     * Changes the active dice's face accordingly to the {@link ChangeFace} attribute of the class:
+     * changeFace = RANDOM --> assign a random value
+     * changeFace = SEQUENTIAL --> increase or decrease the value by one, 1 can't become 6 and vice versa
+     * changeFace = CHOOSE --> assign a value given the command received as a parameter
+     * changeFace = OPPOSITE --> assign the opposite value
+     * @param commands is the given {@link ArrayList<String>} of commands needed to apply the effect
+     * @param table is the given {@link Table} that the effect modifies using its effects
+     * @param round is the given {@link Round} in which the effect acts: some effects need only to know in
+     *              which temporal state are of the game, some others actively modify the turns order and/or length
+     * @return true if the model manipulation made by the effect is completed correctly
+     */
     @Override
     public boolean applyEffect(ArrayList<String> commands, Table table, Round round) {
 
@@ -94,12 +121,20 @@ public class ChangeDiceFace extends Effect {
         return false;
     }
 
-
+    /**
+     * explains the effect accordingly to the given parameters.
+     * @param table : the given {@link Table} table
+     * @param round : the given {@link Round} round
+     */
     @Override
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + descriptions.get(changeFace));
     }
 
+    /**
+     *
+     * @return the element of the table activated by the effect
+     */
     @Override
     public String getActiveTableElement() {
         return changeFace.toString();

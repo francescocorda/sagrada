@@ -2,6 +2,13 @@ package it.polimi.ingsw.model.effects;
 
 public class EffectFactory {
 
+    /**
+     * create a new {@link Effect} accordingly to the paramaters
+     * @param nameEffect is the effect' name
+     * @param parameter is the parameter need to create the effect (it's usually an enum that define the
+     *                  behaviour of the effect)
+     * @return the {@link Effect} created
+     */
     public Effect createEffect(String nameEffect, String parameter) {
         if(nameEffect.equals("RemoveFrom")) {
             return new RemoveFrom(Element.valueOf(parameter));

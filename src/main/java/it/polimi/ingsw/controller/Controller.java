@@ -42,6 +42,7 @@ public class Controller implements Observer {
     private static final String YOU_WON = "You Won!";
     private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
     private static final String START = "START";
+    private static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
     static final int CHOOSE_ACTION_DIM = 1;
 
     private State startState;
@@ -386,7 +387,7 @@ public class Controller implements Observer {
     }
 
     /**
-     * Checks the current state of the game, acting differently if the current Turn or Round is
+     * Checks the current state of the game, acting differently if the turn, round or game is ended
      */
     synchronized void checkGameState() {
         String player = game.getCurrentPlayer();
@@ -427,6 +428,10 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * Sets the timer for the player's turn. Ends the turn if the player doesn't complete his moves in the time
+     * assigned.
+     */
     void setTimerSkipTurn() {
         timer.cancel();
         timer = new Timer();
@@ -445,20 +450,30 @@ public class Controller implements Observer {
         }, turnTimerSeconds * 1000);
     }
 
+    /**
+     * Handles the offline players and the online players properly when the game ends
+     */
     private void endGame() {
         handleOfflinePlayers();
         isGameEnded = true;
         handleOnlinePlayers();
     }
 
+    /**
+     * Sends to the online players a message asking if the want to play again
+     */
     private void handleOnlinePlayers() {
         for (String player : players) {
             if (!offlinePlayers.contains(player)) {
-                sendMessage(player, "Choose [play] to play again, [logout] to go back to login");
+                sendMessage(player, END_GAME_MESSAGE);
             }
         }
     }
 
+    /**
+     * Removes the controller from the Lobby, deletes the VirtualViews observers
+     * and kills the offline players Virtual View
+     */
     private void handleOfflinePlayers() {
         Lobby.getLobby().removeController(this);
         for (String offlinePlayer : offlinePlayers) {
@@ -466,6 +481,10 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * deletes the VirtualView's observers and remove the Virtual View from the database
+     * @param username is the name associated with the Virtual View
+     */
     private void handleOfflinePlayer(String username){
         VirtualViewsDataBase virtualViewsDataBase = VirtualViewsDataBase.getVirtualViewsDataBase();
         ClientData client = ClientDatabase.getPlayerDatabase().getPlayerData(username);
@@ -476,6 +495,9 @@ public class Controller implements Observer {
         }
     }
 
+    /**
+     * @return an instance of the Game
+     */
     Game getGame() {
         return game;
     }

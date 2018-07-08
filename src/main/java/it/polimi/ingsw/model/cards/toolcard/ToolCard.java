@@ -52,7 +52,21 @@ public class ToolCard implements Serializable {
         this.stops = new ArrayList<>();
     }
 
-    //TODO JAvaDoc
+    /**
+     * The method apply the tool card effect until another input is needed to proceed further.
+     * The tool card effects that need an input from the controller are identified as stops; only one stop effect is
+     * executed at every method call.
+     * When the input violates the game rules, the current effect returns a false result. The execution does
+     * not proceed until an input that respect the game logic is received.
+     * When the tool card use is completed, {@link #resetToolCard(Table, Round)} is called.
+     * @param commands is the given {@link ArrayList<String>} of commands that the tool card uses as base for its
+     *                 operations
+     * @param table is the given {@link Table} that the tool card modifies using its effects
+     * @param round is the given {@link Round} in which the tool card acts: some tool cards need only to know in
+     *              which temporal state are of the game, some others actively modify the turns order and/or length
+     * @throws ImpossibleMoveException if the combination of commands given by the controller or the current state
+     * of the game leads to a state do not allow any proceeding
+     */
     public void useToolCard(ArrayList<String> commands, Table table, Round round) throws ImpossibleMoveException {
         boolean result = true;
         while (index<effects.size() && index<stop && result) {
@@ -89,7 +103,11 @@ public class ToolCard implements Serializable {
     }
 
 
-    //TODO JavaDoc
+    /**
+     *The method resets the tool card and prepares it to the next use in the game.
+     * @param table is the given {@link Table} that the tool card modifies using its effects
+     * @param round is the given {@link Round} in which the tool card acts
+     */
     public void resetToolCard(Table table, Round round) {
         index = 0;
         stopIndex = 0;
@@ -110,7 +128,11 @@ public class ToolCard implements Serializable {
         }
     }
 
-    //TODO JavaDoc
+    /**
+     * The method iterate over a list of effects and saves the position of the ones that are "stops":
+     * An effect is a stop if it needs an external input to operate.
+     * @param effects is the {@link ArrayList<Effect>} of effects
+     */
     public void generateStops(ArrayList<Effect> effects) {
         this.stops = new ArrayList<>();
         for (int i = 0; i < effects.size(); i++) {
@@ -139,7 +161,7 @@ public class ToolCard implements Serializable {
      * @return the length of Commands.
      */
     public int getCommandsLength() {
-        return effects.get(index).getCommandsLenght();
+        return effects.get(index).getCommandsLength();
     }
 
     /**

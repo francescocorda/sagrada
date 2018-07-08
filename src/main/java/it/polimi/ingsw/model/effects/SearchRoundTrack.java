@@ -12,11 +12,29 @@ public class SearchRoundTrack extends Effect {
 
     private static String description = "The color of the dice must be present in the round track.";
 
+    /**
+     * create a new {@link SearchRoundTrack}
+     */
     public SearchRoundTrack() {
         this.stop = false;
-        this.commandsLenght = 0;
+        this.commandsLength = 0;
     }
 
+    /**
+     * In the first call the effect search if the Round Track contains at least a dice with the same
+     * color as the active dice.
+     * In the second call the effect checks that the current active dice is of the same color as the
+     * one considered in the first call.
+     * @param commands is the given {@link ArrayList<String>} of commands needed to apply the effect
+     * @param table is the given {@link Table} that the effect modifies using its effects
+     * @param round is the given {@link Round} in which the effect acts: some effects need only to know in
+     *              which temporal state are of the game, some others actively modify the turns order and/or length
+     * @return true if the model manipulation made by the effect is completed correctly
+     * @throws RollBackException if the combination of commands given by the caller leads to a state that violates the
+     * logic and the effect needs to be applied again with new commands
+     * @throws ImpossibleMoveException if the combination of commands given by the caller or the current state
+     * of the game leads to a state that do not allow any proceeding
+     */
     @Override
     public boolean applyEffect(ArrayList<String> commands, Table table, Round round) throws RollBackException, ImpossibleMoveException {
         Color color = round.getPlayerTurn(0).getColorRoundTrack();
@@ -63,11 +81,19 @@ public class SearchRoundTrack extends Effect {
         }
     }
 
+    /**
+     * explains the effect accordingly to the given parameters.
+     * @param table : the given {@link Table} table
+     * @param round : the given {@link Round} round
+     */
     @Override
     public void explainEffect(Table table, Round round) {
         table.notifyObservers(round.getCurrentPlayer().getName() + "'s turn: " + description);
     }
 
+    /**
+     * @return the element of the table activated by the effect
+     */
     @Override
     public String getActiveTableElement() {
         return "";

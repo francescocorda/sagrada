@@ -82,9 +82,9 @@ public class Move implements Serializable {
      */
     public int getCommandsLength() {
         if(count==0) {
-            return removeFromDP.getCommandsLenght();
+            return removeFromDP.getCommandsLength();
         } else {
-            return placeInW.getCommandsLenght();
+            return placeInW.getCommandsLength();
         }
     }
 }

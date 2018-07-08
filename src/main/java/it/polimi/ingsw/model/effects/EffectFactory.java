@@ -26,6 +26,8 @@ public class EffectFactory {
             return new RollDraftPool();
         } else if(nameEffect.equals("SearchRoundTrack")) {
             return new SearchRoundTrack();
+        } else if(nameEffect.equals("StopMove")) {
+        return new StopMove();
         } else {
             return null;
         }

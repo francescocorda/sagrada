@@ -45,7 +45,8 @@ public class ClientSocketInterpreter implements Runnable, Observer {
     @Override
     public void run() {
         login();
-        sendMessage("lobby/last_access/insert_last_access");
+        if (status== ONLINE)
+            sendMessage("lobby/last_access/insert_last_access");
     }
 
     /**
@@ -56,6 +57,10 @@ public class ClientSocketInterpreter implements Runnable, Observer {
         connection.sendMessage("login/insert_credentials");
         while (status == ONLINE) {
             commands = messageParser(connection.getMessage());
+            if (commands == null) {
+                status = OFFLINE;
+                break;
+            }
             if (commands.size() == 3 && commands.remove(0).equals("login")) {
                 String tempUsername = commands.remove(0);
                 if (!(tempUsername.equals("") || commands.isEmpty())) {
@@ -259,7 +264,9 @@ public class ClientSocketInterpreter implements Runnable, Observer {
      * the conversion of given {@link String} message
      */
     private ArrayList<String> messageParser(String message) {
+        if (message!= null)
         return new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
+        else return null;
     }
 
     /**

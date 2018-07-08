@@ -129,6 +129,15 @@ public class ToolCard implements Serializable {
     }
 
     /**
+     * moves the indexes to end of the effect's list
+     */
+    public void endUse() {
+        index = effects.size()-1;
+        stopIndex = effects.size();
+        stop = effects.size();
+    }
+
+    /**
      * The method iterate over a list of effects and saves the position of the ones that are "stops":
      * An effect is a stop if it needs an external input to operate.
      * @param effects is the {@link ArrayList<Effect>} of effects
@@ -143,7 +152,7 @@ public class ToolCard implements Serializable {
         this.stops.add(effects.size());
         this.stopIndex = 0;
         if (!stops.isEmpty()) {
-        this.stop = this.stops.get(0);
+            this.stop = this.stops.get(0);
         }
     }
 

@@ -19,6 +19,6 @@ If you want to play in graphic user interface, you have to fill the username and
 Then you have to choose the technology of communications in the apposite menu.  
 Please fill the blank of IP address(default: localhost) and of the port(default: 3001 for socket, 1099 for rmi).  
 Click on Login button and new scene will appear to you. 
-Please select from the datePicker last time you visit a cathedral and the press the joinLobby button.
+Please select from the datePicker last time you visit a cathedral and then press the joinLobby button.
 
 Enjoy!

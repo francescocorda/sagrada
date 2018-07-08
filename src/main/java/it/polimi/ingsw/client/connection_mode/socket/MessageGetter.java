@@ -71,6 +71,8 @@ public class MessageGetter extends Thread {
                         } else {
                             view.displayMessage("Welcome Back!");
                         }
+                    } else if(tempMessage.equals(END_GAME_MESSAGE)){
+                        view.displayMessage(END_GAME_MESSAGE);
                     } else
                         setMessage(tempMessage);
                 } else {

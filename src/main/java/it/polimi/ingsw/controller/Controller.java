@@ -43,7 +43,7 @@ public class Controller implements Observer {
     private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
     private static final String START = "START";
     static final String GAME_END = "Game end.";
-    static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
+    private static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
     static final int CHOOSE_ACTION_DIM = 1;
 
     private State startState;
@@ -65,8 +65,9 @@ public class Controller implements Observer {
 
     /**
      * creates a new {@link Controller} from the given {@link List<VirtualView>} of views and int matchID.
+     *
      * @param matchID : the given match ID.
-     * @param views : the given {@link List<VirtualView>} of views.
+     * @param views   : the given {@link List<VirtualView>} of views.
      */
     public Controller(int matchID, List<VirtualView> views) {
         isGameEnded = false;
@@ -120,6 +121,7 @@ public class Controller implements Observer {
 
     /**
      * sets the current {@link State} of the Controller
+     *
      * @param state is the given {@link State}
      */
     void setState(State state) {
@@ -221,7 +223,8 @@ public class Controller implements Observer {
 
     /**
      * Sends a message to the {@link VirtualView} associated with the given name.
-     * @param name is the player's name
+     *
+     * @param name    is the player's name
      * @param message is the message to send
      */
     public void sendMessage(String name, String message) {
@@ -234,6 +237,7 @@ public class Controller implements Observer {
 
     /**
      * Updates the table view of the selected player's {@link VirtualView}.
+     *
      * @param name is the given {@link String} name
      */
     public void updateTable(String name) {
@@ -246,6 +250,7 @@ public class Controller implements Observer {
 
     /**
      * Send the current active table element to the selected player's {@link VirtualView}.
+     *
      * @param name is the given {@link String} name
      */
     public void sendActiveTableElement(String name) {
@@ -258,7 +263,8 @@ public class Controller implements Observer {
 
     /**
      * Send the current active table element to the selected player's {@link VirtualView}.
-     * @param name is the given {@link String} name
+     *
+     * @param name    is the given {@link String} name
      * @param element is the given {@link String} active element
      */
     public void sendActiveTableElement(String name, String element) {
@@ -271,6 +277,7 @@ public class Controller implements Observer {
 
     /**
      * * updates this {@link Controller} with the given {@link String} message.
+     *
      * @param message : the given {@link String} message
      */
     @Override
@@ -282,6 +289,7 @@ public class Controller implements Observer {
 
     /**
      * * updates this {@link Controller} with the given {@link Observable} o.
+     *
      * @param o : the given {@link String} message
      */
     @Override
@@ -293,6 +301,7 @@ public class Controller implements Observer {
      * disconnects the player if the received command is "logout",
      * reconnects the players if the received command is "join",
      * delegates the interpretation of the commands to the current state in the other cases.
+     *
      * @param commands is the given {@link ArrayList<String>} of received commands
      */
     private synchronized void handleEvent(ArrayList<String> commands) {
@@ -366,7 +375,7 @@ public class Controller implements Observer {
                 game.deleteObservers();
                 return;
             }
-            if(!offlinePlayers.contains(player)) {
+            if (!offlinePlayers.contains(player)) {
                 sendActiveTableElement(player, INACTIVE_TABLE);
             }
             if (!offlinePlayers.contains(game.getCurrentPlayer())) {
@@ -413,7 +422,7 @@ public class Controller implements Observer {
                 }
                 skipTurn();
             }
-        }, turnTimerSeconds * 1000);
+        }, (long) turnTimerSeconds * 1000);
     }
 
     /**
@@ -428,11 +437,9 @@ public class Controller implements Observer {
     /**
      * Sends to the online players a message asking if the want to play again
      */
-    void handleOnlinePlayers() {
+    private void handleOnlinePlayers() {
         for (String player : players) {
-            if (!offlinePlayers.contains(player)) {
-                sendMessage(player, END_GAME_MESSAGE);
-            }
+            sendMessage(player, END_GAME_MESSAGE);
         }
     }
 
@@ -440,7 +447,7 @@ public class Controller implements Observer {
      * Removes the controller from the Lobby, deletes the VirtualViews observers
      * and kills the offline players Virtual View
      */
-    void handleOfflinePlayers() {
+    private void handleOfflinePlayers() {
         Lobby.getLobby().removeController(this);
         for (String offlinePlayer : offlinePlayers) {
             handleOfflinePlayer(offlinePlayer);
@@ -449,9 +456,10 @@ public class Controller implements Observer {
 
     /**
      * deletes the VirtualView's observers and remove the Virtual View from the database
+     *
      * @param username is the name associated with the Virtual View
      */
-    void handleOfflinePlayer(String username){
+    void handleOfflinePlayer(String username) {
         VirtualViewsDataBase virtualViewsDataBase = VirtualViewsDataBase.getVirtualViewsDataBase();
         ClientData client = ClientDatabase.getPlayerDatabase().getPlayerData(username);
         if (!client.isConnected()) {

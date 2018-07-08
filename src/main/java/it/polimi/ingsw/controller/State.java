@@ -28,12 +28,12 @@ public abstract class State {
      *exits the given user from the game.
      */
     public void exitGame(String username) {
+        controller.deleteObserver(username);
         if (!controller.getOfflinePlayers().contains(username)) {
             controller.getOfflinePlayers().add(username);
+            game.notifyObservers(username + LEFT_THE_GAME);
+            controller.sendMessage(username, YOU_LEFT_THE_GAME);
         }
-        controller.deleteObserver(username);
-        game.notifyObservers(username + LEFT_THE_GAME);
-        controller.sendMessage(username, YOU_LEFT_THE_GAME);
     }
 
     /**

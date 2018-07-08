@@ -470,6 +470,22 @@
                                 <Insets right="330.0" top="110.0" />
                             </GridPane.margin>
                         </Button>
+                  <Button fx:id="yesButton" maxHeight="40.0" maxWidth="50.0" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#yesPressed" prefHeight="40.0" prefWidth="50.0" text="YES" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets right="25.0" />
+                     </GridPane.margin>
+                  </Button>
+                  <Button fx:id="noButton" maxHeight="40.0" maxWidth="50.0" minHeight="40.0" minWidth="50.0" mnemonicParsing="false" onAction="#noPressed" prefHeight="40.0" prefWidth="50.0" text="NO" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets left="-25.0" />
+                     </GridPane.margin>
+                  </Button>
                     </children>
                 </GridPane>
             </content>

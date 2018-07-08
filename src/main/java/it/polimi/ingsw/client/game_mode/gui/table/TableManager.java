@@ -245,6 +245,8 @@ public class TableManager implements GUIManager {
     @FXML Button one; @FXML Button two; @FXML Button three; @FXML Button four; @FXML Button five; @FXML Button six;
     @FXML Rectangle tool1Border; @FXML Rectangle tool2Border; @FXML Rectangle tool3Border;
     @FXML Button joinGameButton;
+    @FXML Button yesButton;
+    @FXML Button noButton;
 
     /**
      * It's called by the FXMLLoader when the file table.fxml is loaded.
@@ -389,6 +391,8 @@ public class TableManager implements GUIManager {
         tool3Border.setStyle("-fx-fill: #00ffff;"); tool3Border.setVisible(false);
         moveButton.setVisible(false); toolCardButton.setVisible(false); skipButton.setVisible(false); cancelButton.setVisible(false);
         joinGameButton.setVisible(false);
+        yesButton.setVisible(false);
+        noButton.setVisible(false);
     }
 
     /**
@@ -603,7 +607,6 @@ public class TableManager implements GUIManager {
      * It sends to the server the index of the dice selected.
      * It consumes the event.
      */
-
     @FXML
     public void mousePressedRound(MouseEvent e) {
         if(roundTrackEnable){
@@ -1071,6 +1074,30 @@ public class TableManager implements GUIManager {
     }
 
     /**
+     * This method is called if the yesButton is pressed and sends to the server the message "1".
+     */
+    @FXML
+    public void yesPressed(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("1");
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is called if the noButton is pressed and sends to the server the message "2".
+     */
+    @FXML
+    public void noPressed(){
+        try {
+            GUIData.getGUIData().getCommunicator().sendMessage("2");
+        } catch (NetworkErrorException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * This method is called if a faceButton(one, two, three, four, five or six) is pressed
      * and sends to the server the related face.
      */
@@ -1211,6 +1238,13 @@ public class TableManager implements GUIManager {
                     if(element.equals("INACTIVE_TABLE") || element.equals("JOIN")){
                         hideMoveButtons();
                         cancelButton.setVisible(false);
+                    }
+                    if(element.equals("YES_NO")) {
+                        yesButton.setVisible(true);
+                        noButton.setVisible(true);
+                    } else{
+                        yesButton.setVisible(false);
+                        noButton.setVisible(false);
                     }
                 }
         );

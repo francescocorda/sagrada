@@ -297,8 +297,9 @@ public class LobbyManager implements GUIManager{
                         if(message.equals("Welcome Back!")){
                             temp = message;
                             loadTable();
-                            GUIManager TM =  GUIData.getGUIData().getView().getGUIManager();
-                            TM.editMessage(temp);
+                            flag = true;
+                        } else if(flag){
+                            GUIData.getGUIData().getView().getGUIManager().editMessage(message);
                         }
                         else if(message.equals("Pattern card assigned.")) {
                             temp = new String();

@@ -300,16 +300,12 @@ public class Controller implements Observer {
             String username = commands.remove(0);
             if (players.contains(username)) {
                 if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
-                    ClientDatabase.getPlayerDatabase().disconnect(username); //TODO commentare per tornare alla situazione di prima
+                    ClientDatabase.getPlayerDatabase().disconnect(username);
                     state.exitGame(username);
                 } else if (!isGameEnded && offlinePlayers.contains(username) && commands.get(0).equals("join") && commands.size() == 1) {
                     state.joinGame(username);
-                }/* else if (!offlinePlayers.contains(username) && commands.get(0).equals("logout") && commands.size() == 1) {
-                    ClientDatabase.getPlayerDatabase().disconnect(username);
-                } */else if (!offlinePlayers.contains(username) || isGameEnded) {
+                } else if (!offlinePlayers.contains(username) || isGameEnded) {
                     state.handleEvent(username, commands);
-                } else {
-                    System.out.println(commands.get(0));
                 }
             }
         }

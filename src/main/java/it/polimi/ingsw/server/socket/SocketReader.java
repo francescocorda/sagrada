@@ -48,15 +48,12 @@ public class SocketReader extends Thread {
         String message;
         String temp;
         flag = true;
-        missingPong=0;
         while (flag) {
             message = username + "/";
             try {
                 temp = connection.getMessage();
                 if(missingPong>0 && temp.equals("pong")){
                     missingPong--;
-                    if(missingPong<0)
-                        missingPong=0;
                     cancelTimer();
                 } else {
                     message = message.concat(temp);
@@ -105,8 +102,8 @@ public class SocketReader extends Thread {
      */
     public void waitForPong() {
         synchronized (check){
-            connection.sendMessage("ping");
             missingPong++;
+            connection.sendMessage("ping");
             if(!timerOn){
                 try{
                     timerOn=true;

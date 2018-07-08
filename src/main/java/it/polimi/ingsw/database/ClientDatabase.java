@@ -160,6 +160,8 @@ public class ClientDatabase {
     private void phaseDisconnection(ClientData player) {
         switch (player.getPhase()) {
             case GAME:
+                VirtualView virtualView = VirtualViewsDataBase.getVirtualViewsDataBase().getVirtualView(player.getUsername());
+                virtualView.notifyObservers(player.getUsername() + "/logout");
                 System.out.println("Game: player: " + player.getUsername() + " left the game...");
                 break;
             case LOBBY:

@@ -856,6 +856,9 @@ public class TestToolCards {
         commands.add("4");commands.add("2");
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         commands = new ArrayList<>();
+        commands.add("1");
+        toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
+        commands = new ArrayList<>();
         commands.add("2"); commands.add("2");
         toolCard.useToolCard(commands, game.getTable(), game.getRounds().get(0));
         commands = new ArrayList<>();

@@ -39,9 +39,7 @@ public class GUIView extends Observable implements View {
     }
 
     @Override
-    public synchronized void displayMessage(String message) {
-        manager.editMessage(message);
-    }
+    public synchronized void displayMessage(String message) { manager.editMessage(message); }
 
     @Override
     public void activeTableElement(String element) {
@@ -69,17 +67,17 @@ public class GUIView extends Observable implements View {
 
     @Override
     public void update(String message) {
-        synchronized (sync) {
-            if (message != null) {
-                displayMessage(message);
-            }
-            sync.notifyAll();
+        if (message != null) {
+            displayMessage(message);
         }
     }
 
     @Override
     public void update(Observable o) {
-        o.display(visitor);
+        synchronized (sync) {
+            o.display(visitor);
+            sync.notifyAll();
+        }
     }
 
     public void setGUIManager(GUIManager manager) {

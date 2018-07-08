@@ -274,11 +274,11 @@ public class LobbyManager implements GUIManager{
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                    //stage.setMaximized(true);
                     stage.centerOnScreen();
-                    TableManager TM = fxmlLoader.getController();
+                    GUIManager TM = fxmlLoader.getController();
                     GUIData.getGUIData().getView().setGUIManager(TM);
                     if(temp!=null) TM.editMessage(temp);
+                    if(this.table!=null) TM.updateTable(this.table);
                 }
         );
     }

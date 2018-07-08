@@ -1085,7 +1085,7 @@ public class TableManager implements GUIManager {
     }
 
     /**
-     * This method is called if the exitButton is pressed and sends to the server the message "exit".
+     * This method is called if the exitButton is pressed and sends to the server the message "logout".
      * It consumes the event.
      */
     @FXML
@@ -1144,7 +1144,6 @@ public class TableManager implements GUIManager {
                         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI/scoreTrack.fxml"));
                         stage.setScene(new Scene(fxmlLoader.load()));
                         GUIData.getGUIData().getView().setGUIManager(fxmlLoader.getController());
-                        //stage.setMaximized(true);
                         stage.centerOnScreen();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -1209,7 +1208,7 @@ public class TableManager implements GUIManager {
                     if(element.equals("JOIN")){
                         joinGameButton.setVisible(true);
                     }
-                    if(element.equals("INACTIVE_TABLE")){
+                    if(element.equals("INACTIVE_TABLE") || element.equals("JOIN")){
                         hideMoveButtons();
                         cancelButton.setVisible(false);
                     }

@@ -75,7 +75,7 @@ public class LoginManager implements GUIManager{
      */
     @FXML
     public void loginAction(MouseEvent event) {
-        if(username.getText().length()>15) username.setText(username.getText(0, 14));
+        if(username.getText().length()>15) username.setText(username.getText(0, 15));
         if (!connection.getText().equals("socket")) {
             view = new GUIView();
             view.setGUIManager(this);

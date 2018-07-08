@@ -16,6 +16,16 @@ public class CommunicatorSocket implements Communicator {
     private View view;
     private ConnectionSocket connection;
     private MessageGetter mg;
+    private static final String SEPARATOR_SYMBOL = "/";
+    private static final String LOGIN = "login";
+    private static final String LOBBY = "lobby";
+    private static final String LAST_ACCESS = "last_access";
+    private static final String SUCCESS = "success";
+    private static final String FAILED = "failed";
+    private static final String LOGOUT = "logout";
+    private static final String INVALID_COMMAND = "invalid_command";
+    private static final String INVALID_TIME = "invalid_time";
+    private static final String ERROR_MESSAGE = "ERROR: message received: ";
 
     /**
      * creates a {@link CommunicatorSocket} Object from a given {@link #view}.
@@ -58,28 +68,27 @@ public class CommunicatorSocket implements Communicator {
     @Override
     public void login(String username, String password) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
-        getMessage(); //Clean buffer
+        getMessage(); //clean buffer
         try {
-            //waiting message protocol to be updated
-            connection.sendMessage("login/" + username + "/" + password);
+            connection.sendMessage(LOGIN+SEPARATOR_SYMBOL + username + SEPARATOR_SYMBOL + password);
             returnedMessage = getMessage();
         } catch (Exception e) {
             throw new NetworkErrorException();
         }
         ArrayList<String> commands = new ArrayList<>(Arrays.asList(returnedMessage.split("\\s*/\\s*")));
-        if (commands.remove(0).equals("login")) {
+        if (commands.remove(0).equals(LOGIN)) {
             switch (commands.remove(0)) {
-                case "success":
+                case SUCCESS:
                     break;
-                case "failed":
-                case "invalid_command":
+                case FAILED:
+                case INVALID_COMMAND:
                     throw new NotValidInputException();
                 default:
                     println(returnedMessage);
                     throw new NetworkErrorException();
             }
         } else {
-            println("ERROR: message received: " + returnedMessage);
+            println(ERROR_MESSAGE + returnedMessage);
         }
     }
 
@@ -97,20 +106,20 @@ public class CommunicatorSocket implements Communicator {
     public void lobby(String username, long time) throws NetworkErrorException, NotValidInputException {
         String returnedMessage;
         try {
-            connection.sendMessage("lobby/last_access/" + time);
+            connection.sendMessage(LOBBY+SEPARATOR_SYMBOL+LAST_ACCESS+SEPARATOR_SYMBOL + time);
             returnedMessage = getMessage();
         } catch (Exception e) {
             throw new NetworkErrorException();
         }
         ArrayList<String> commands = new ArrayList<>(Arrays.asList(returnedMessage.split("\\s*/\\s*")));
         String phase = commands.remove(0);
-        if (phase.equals("lobby")) {
+        if (phase.equals(LOBBY)) {
             switch (commands.remove(0)) {
-                case "last_access":
-                    if(!commands.isEmpty() && commands.remove(0).equals("invalid_time"))
+                case LAST_ACCESS:
+                    if(!commands.isEmpty() && commands.remove(0).equals(INVALID_TIME))
                         throw new NotValidInputException();
                     break;
-                case "invalid_command":
+                case INVALID_COMMAND:
                     throw new NotValidInputException();
                 default:
                     break;
@@ -120,13 +129,14 @@ public class CommunicatorSocket implements Communicator {
 
     /**
      * sends a given message to the server.
-     * it does that through method {@link ConnectionSocket {@link #sendMessage(String)}}
      * @param message is the given message to be sent to the server
      * @throws NetworkErrorException if any error occurs
      */
     @Override
     public void sendMessage(String message) throws NetworkErrorException {
         try {
+            if(message.equals(LOGOUT))
+                mg.setLogout(true);
             connection.sendMessage(message);
         } catch (Exception e) {
             throw new NetworkErrorException();
@@ -158,10 +168,9 @@ public class CommunicatorSocket implements Communicator {
 
     /**
      * show on screen a given message.
-     * @param message
+     * @param message : the given {@link String} message
      */
     private void println(String message){
-        //TODO substitute with a LOGGER
         System.out.println(message);
     }
 }

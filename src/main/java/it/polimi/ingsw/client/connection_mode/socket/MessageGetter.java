@@ -19,7 +19,8 @@ public class MessageGetter extends Thread {
     private boolean lock;
     private View view;
     private Gson gson;
-    private boolean endGame;
+    private boolean logout;
+    private static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
 
     /**
      * creates a new {@link MessageGetter} given a {@link ConnectionSocket} connection and a
@@ -37,7 +38,7 @@ public class MessageGetter extends Thread {
         wait = true;
         on = true;
         lock = true;
-        endGame = false;
+        logout = false;
         gson = new Gson();
         start();
     }
@@ -77,7 +78,7 @@ public class MessageGetter extends Thread {
                 }
             }
         } catch (NullPointerException e) {
-            if(!endGame)
+            if(!logout)
                 System.out.println("server Offline");
             Thread.currentThread().interrupt();
         }
@@ -132,7 +133,7 @@ public class MessageGetter extends Thread {
                     break;
             }
         } else {
-            if (command.equals("Choose [play] to play again, [logout] to go back to login")) {
+            if (command.equals(END_GAME_MESSAGE)) {
                 lock = true;
             }
             view.displayMessage(command);
@@ -234,5 +235,13 @@ public class MessageGetter extends Thread {
     public void kill() {
         on = false;
         Thread.currentThread().interrupt();
+    }
+
+    /**
+     * sets this {@link #logout} as the given {@link Boolean} logout.
+     * @param logout : the given {@link Boolean} logout
+     */
+    public void setLogout(boolean logout) {
+        this.logout = logout;
     }
 }

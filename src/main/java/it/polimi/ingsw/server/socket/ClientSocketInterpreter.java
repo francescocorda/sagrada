@@ -259,7 +259,6 @@ public class ClientSocketInterpreter implements Runnable, Observer {
      * the conversion of given {@link String} message
      */
     private ArrayList<String> messageParser(String message) {
-        toScreen("Message: " + message);
         return new ArrayList<>(Arrays.asList(message.split("\\s*/\\s*")));
     }
 

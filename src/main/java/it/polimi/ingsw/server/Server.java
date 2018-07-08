@@ -18,8 +18,8 @@ public class Server {
     private static final String DEFAULT_SYMBOL = "";
     private static final String NOT_VALID_INPUT = "Not valid input...";
     private static final String CLOSING_SETTER = "): ";
-    private static final String START_STATE = "###############--START_STATE--################";
-    private static final String END_STATE = "################--END_STATE--#################";
+    private static final String START_STATE = "###############--CURRENT_STATE--################";
+    private static final String END_STATE =   "################---END_STATE---#################";
     private static final String STATE = "state";
     private static final String SERVER_CLOSED = "SERVER CLOSED...";
     private static final String QUIT = "quit";
@@ -208,6 +208,7 @@ public class Server {
                 flag = false;
                 serverUp = false;
                 serverSocket.close();
+                rmiServer.close();
                 Lobby.getLobby().close();
                 println(SERVER_CLOSED);
                 System.exit(0);

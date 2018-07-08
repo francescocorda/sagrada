@@ -1,6 +1,7 @@
 package it.polimi.ingsw.connection;
 
 import it.polimi.ingsw.model.cards.patterns.PatternDeck;
+import it.polimi.ingsw.model.game.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -23,7 +24,6 @@ public class ConnectionSocket {
      */
     private void connectionSocketHandler() {
         try {
-            //setup communication channels
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e) {
@@ -44,8 +44,8 @@ public class ConnectionSocket {
      */
     public void sendMessage(String message) {
         outSocket.println(message);
-       /* if (!message.equals("pong") && !message.equals("ping"))
-            System.out.println(Color.RED.escape() + "MESSAGE OUT: " + message + Color.RESET);*/
+       if (!message.equals("pong") && !message.equals("ping"))
+            System.out.println(Color.RED.escape() + "MESSAGE OUT: " + message + Color.RESET);
     }
 
     /**
@@ -59,8 +59,6 @@ public class ConnectionSocket {
         String message;
         try {
             message = inSocket.readLine();
-            /*if (!message.equals("ping") && !message.equals("pong"))
-                System.out.println(Color.YELLOW.escape() + "MESSAGE IN: " + message + Color.RESET);*/
         } catch (IOException e) {
             message = null;
         }

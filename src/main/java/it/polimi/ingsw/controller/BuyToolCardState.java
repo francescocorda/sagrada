@@ -7,6 +7,9 @@ import static it.polimi.ingsw.controller.Controller.*;
 
 public class BuyToolCardState extends State {
 
+    private static final String CHOOSE_ACTION = "CHOOSE_ACTION";
+    private static final String CANCEL = "cancel";
+
     /**
      *creates a new {@link BuyToolCardState}.
      */
@@ -41,9 +44,9 @@ public class BuyToolCardState extends State {
      *make the given user to buy a toolcard.
      */
     private void buyToolCard(String username, ArrayList<String> commands) {
-        if (commands.size() == 1 && commands.get(0).equals("cancel")) {
+        if (commands.size() == 1 && commands.get(0).equals(CANCEL)) {
             controller.setState(controller.getChooseActionState());
-            controller.sendActiveTableElement(username, "CHOOSE_ACTION");
+            controller.sendActiveTableElement(username, CHOOSE_ACTION);
             controller.sendMessage(username, ACTION_CANCELED);
             controller.itsYourTurn();
         } else if(commands.size() == 1 && checkFormat(commands)) {
@@ -57,11 +60,11 @@ public class BuyToolCardState extends State {
                     } else {
                         controller.itsYourTurn();
                         controller.setState(controller.getChooseActionState());
-                        controller.sendActiveTableElement(username, "CHOOSE_ACTION");
+                        controller.sendActiveTableElement(username, CHOOSE_ACTION);
                     }
                 } else {
                     controller.setState(controller.getChooseActionState());
-                    controller.sendActiveTableElement(username, "CHOOSE_ACTION");
+                    controller.sendActiveTableElement(username, CHOOSE_ACTION);
                     controller.itsYourTurn();
                 }
             } else {

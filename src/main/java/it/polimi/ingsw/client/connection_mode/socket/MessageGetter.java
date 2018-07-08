@@ -21,6 +21,33 @@ public class MessageGetter extends Thread {
     private Gson gson;
     private boolean logout;
     private static final String END_GAME_MESSAGE = "Choose [play] to play again, [logout] to go back to login";
+    private static final String PING = "ping";
+    private static final String PONG = "pong";
+    private static final String WELCOME = "welcome";
+    private static final String WELCOME_MESSAGE = "Welcome!";
+    private static final String WELCOME_BACK_MESSAGE = "Welcome Back!";
+    private static final String BACK_TO_GAME = "back_to_game";
+    private static final String SERVER_OFFLINE = "server Offline";
+    private static final String LOBBY = "lobby";
+    private static final String GAME = "game";
+    private static final String DISPLAY_GAME = "displayGame";
+    private static final String PATTERN_CARD = "pattern_card";
+    private static final String PRIVATE_OBJECTIVE_CARD = "private_objective_card";
+    private static final String ACTIVE_TABLE_ELEMENT = "active_table_element";
+    private static final String JOIN = "JOIN";
+    private static final String UPDATE = "update";
+    private static final String PLAYER_JOINED = "player_joined";
+    private static final String PLAYER_JOINED_MESSAGE = "Player joined: ";
+    private static final String LIST_OF_PLAYERS = "list_of_players";
+    private static final String LIST_OF_PLAYERS_MESSAGE = "LIST OF PLAYERS:\n";
+    private static final String PLAYER_LEFT = "player_left";
+    private static final String PLAYER_LEFT_MESSAGE = "Player left: ";
+    private static final String START_GAME = "start_game";
+    private static final String START_GAME_MESSAGE = "GAME START:";
+    private static final String TIMER_STARTED = "timer_started";
+    private static final String TIMER_STARTED_MESSAGE = "TIMER START!";
+    private static final String TIMER_RESET = "timer_reset";
+    private static final String TIMER_RESET_MESSAGE = "TIMER RESET";
 
     /**
      * creates a new {@link MessageGetter} given a {@link ConnectionSocket} connection and a
@@ -60,16 +87,16 @@ public class MessageGetter extends Thread {
         try {
             while (on) {
                 String tempMessage = connection.getMessage();
-                if (tempMessage.equals("ping")) {
-                    connection.sendMessage("pong");
+                if (tempMessage.equals(PING)) {
+                    connection.sendMessage(PONG);
                 } else if (lock) {
                     check = new ArrayList<>(Arrays.asList(tempMessage.split("\\s*/\\s*")));
-                    if ((check.size() > 1 && check.get(1).equals("welcome")) || (check.size() == 1 && check.get(0).equals("back_to_game"))) {
+                    if ((check.size() > 1 && check.get(1).equals(WELCOME)) || (check.size() == 1 && check.get(0).equals(BACK_TO_GAME))) {
                         lock = false;
                         if (check.size()>1) {
-                            view.displayMessage("Welcome!");
+                            view.displayMessage(WELCOME_MESSAGE);
                         } else {
-                            view.displayMessage("Welcome Back!");
+                            view.displayMessage(WELCOME_BACK_MESSAGE);
                         }
                     } else if(tempMessage.equals(END_GAME_MESSAGE)){
                         view.displayMessage(END_GAME_MESSAGE);
@@ -81,7 +108,7 @@ public class MessageGetter extends Thread {
             }
         } catch (NullPointerException e) {
             if(!logout)
-                System.out.println("server Offline");
+                System.out.println(SERVER_OFFLINE);
             Thread.currentThread().interrupt();
         }
     }
@@ -92,7 +119,7 @@ public class MessageGetter extends Thread {
      */
     private synchronized void handleCommands(ArrayList<String> commands) {
         String phase = commands.get(0);
-        if (phase.equals("lobby")) {
+        if (phase.equals(LOBBY)) {
             commands.remove(0);
             lobby(commands);
         } else {
@@ -107,26 +134,26 @@ public class MessageGetter extends Thread {
     private void game(ArrayList<String> commands) {
         Table table;
         String command = commands.remove(0);
-        if(command.equals("game")){
+        if(command.equals(GAME)){
             switch (commands.remove(0)) {
-                case "displayGame":
+                case DISPLAY_GAME:
                     table = gson.fromJson(commands.remove(0), Table.class);
                     view.displayGame(table);
                     break;
-                case "pattern_card":
+                case PATTERN_CARD:
                     PatternCard patternCard = gson.fromJson(commands.get(0), PatternCard.class);
                     view.displayPatternCard(patternCard);
                     break;
-                case "private_objective_card":
+                case PRIVATE_OBJECTIVE_CARD:
                     PrivateObjectiveCard pOCard = gson.fromJson(commands.get(0), PrivateObjectiveCard.class);
                     view.displayPrivateObjectiveCard(pOCard);
                     break;
-                case "active_table_element":
-                    if(!commands.isEmpty() && commands.get(0).equals("JOIN"))
+                case ACTIVE_TABLE_ELEMENT:
+                    if(!commands.isEmpty() && commands.get(0).equals(JOIN))
                         lock = true;
                     view.activeTableElement(commands.remove(0));
                     break;
-                case "update":
+                case UPDATE:
                     String observable = commands.remove(0);
                     table = gson.fromJson(observable, Table.class);
                     view.update(table);
@@ -149,24 +176,24 @@ public class MessageGetter extends Thread {
     private void lobby(ArrayList<String> commands) {
         String command = commands.remove(0);
         switch (command) {
-            case "player_joined":
-                view.displayMessage("Player joined: " + commands.remove(0));
+            case PLAYER_JOINED:
+                view.displayMessage(PLAYER_JOINED_MESSAGE + commands.remove(0));
                 break;
-            case "list_of_players":
-                view.displayMessage("LIST OF PLAYERS:\n" + getListOfPlayers(commands));
+            case LIST_OF_PLAYERS:
+                view.displayMessage(LIST_OF_PLAYERS_MESSAGE + getListOfPlayers(commands));
                 break;
-            case "player_left":
-                view.displayMessage("Player left: " + commands.remove(0));
+            case PLAYER_LEFT:
+                view.displayMessage(PLAYER_LEFT_MESSAGE + commands.remove(0));
                 break;
-            case "start_game":
-                view.displayMessage("GAME START:");
+            case START_GAME:
+                view.displayMessage(START_GAME_MESSAGE);
                 lobby(commands);
                 break;
-            case "timer_started":
-                view.displayMessage("TIMER START!");
+            case TIMER_STARTED:
+                view.displayMessage(TIMER_STARTED_MESSAGE);
                 break;
-            case "timer_reset":
-                view.displayMessage("TIMER RESET");
+            case TIMER_RESET:
+                view.displayMessage(TIMER_RESET_MESSAGE);
                 break;
             default:
                 view.displayMessage(message);

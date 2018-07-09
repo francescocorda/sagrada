@@ -8,6 +8,7 @@ import java.util.Random;
 public class Dice implements Serializable {
     private Color color;
     private String face;
+    private int value;
 
     /**
      * creates a new {@link Dice} from the given {@link Color} color.
@@ -16,6 +17,7 @@ public class Dice implements Serializable {
     public Dice(Color color) {
         this.color = color;
         this.face=null;
+        this.value= -1;
     }
 
     /**
@@ -25,6 +27,7 @@ public class Dice implements Serializable {
     public Dice(Dice dice) {
         this.color = dice.getColor();
         this.face = dice.getFace();
+        this.value = dice.value;
     }
 
     /**
@@ -66,6 +69,7 @@ public class Dice implements Serializable {
     public void setFace(int value) throws InvalidFaceException{
         if(value>0 && value<7){
             this.face=faces[value-1];
+            this.value=value;
         }
         else
             throw new InvalidFaceException();
@@ -91,7 +95,7 @@ public class Dice implements Serializable {
      * @return the int value of {@link #face}.
      */
     public int valueOf(){
-        return face.compareTo("\u2680")+1;
+        return value;
     }
 
     /**
@@ -101,6 +105,7 @@ public class Dice implements Serializable {
         int count = faces.length;
         Random rand = new Random();
         int index = rand.nextInt(count);
+        this.value = index+1;
         this.face = faces[index];
     }
 

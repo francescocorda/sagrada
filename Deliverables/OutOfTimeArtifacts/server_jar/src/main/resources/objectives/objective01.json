@@ -1,8 +1,0 @@
-{
-  "type": "row",
-  "ID": 1,
-  "name": "Row Color Variety",
-  "description": "Rows with no repeated colors",
-  "points": "6",
-  "restriction": "color"
-}

@@ -1,8 +1,0 @@
-{"ID":11,
-  "name":"Flux Remover",
-  "description":"After drafting, return the die to the\nDice Bag and pull 1 die from the bag.\nChoose a value and place the new die,\nobeying all placement restrictions.",
-  "usableInTurns":[1,2],
-  "movesLeft":[0,1],
-  "classes":["RemoveFrom", "SwapWith", "ChangeDiceFace", "PlaceIn"],
-  "parameters":["DRAFTPOOL", "DICEBAG", "CHOOSE", "WINDOW"]
-}

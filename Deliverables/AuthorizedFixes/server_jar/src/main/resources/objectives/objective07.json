@@ -1,0 +1,12 @@
+{
+  "type": "set",
+  "ID": 7,
+  "name": "Deep Shades",
+  "description": "Sets of 5 & 6 values anywhere",
+  "points": "2",
+  "restriction": "face",
+  "elements": [
+    "FIVE",
+    "SIX"
+  ]
+}

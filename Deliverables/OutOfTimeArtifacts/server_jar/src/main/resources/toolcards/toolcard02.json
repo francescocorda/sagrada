@@ -1,8 +1,0 @@
-{"ID":2,
-  "name":"Eglomise Brush",
-  "description":"Move any one die in your window\nignoring the color restrictions.\nYou must obey all other\nplacement restrictions",
-  "usableInTurns":[1,2],
-  "movesLeft":[0,1],
-  "classes":["RemoveFrom", "EnableException", "PlaceIn"],
-  "parameters":["WINDOW", "COLOR", "WINDOW"]
-}

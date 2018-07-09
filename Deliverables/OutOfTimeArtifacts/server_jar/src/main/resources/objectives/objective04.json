@@ -1,8 +1,0 @@
-{
-  "type": "column",
-  "ID": 4,
-  "name": "Column Shade Variety",
-  "description": "Columns with no repeated values",
-  "points": "4",
-  "restriction": "face"
-}

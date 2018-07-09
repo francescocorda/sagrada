@@ -1,8 +1,0 @@
-{"ID":12,
-  "name":"Tap Wheel",
-  "description":"Move up to 2 dice of the same\ncolor that match the color of a die\non the RoundTrack. You must obey\nall placement restrictions.",
-  "usableInTurns":[1,2],
-  "movesLeft":[0,1],
-  "classes":["RemoveFrom", "SearchRoundTrack", "PlaceIn", "StopMove", "RemoveFrom", "SearchRoundTrack", "PlaceIn"],
-  "parameters":["WINDOW", "", "WINDOW", "","WINDOW", "", "WINDOW"]
-}

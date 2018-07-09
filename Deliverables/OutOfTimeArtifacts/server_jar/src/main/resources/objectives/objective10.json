@@ -1,0 +1,15 @@
+{
+  "type": "diagonal",
+  "ID": 10,
+  "name": "Color Diagonals",
+  "description": "Count of diagonally adjacent\nsame color dice",
+  "points": "1",
+  "restriction": "color",
+  "elements": [
+    "RED",
+    "GREEN",
+    "YELLOW",
+    "BLUE",
+    "PURPLE"
+  ]
+}

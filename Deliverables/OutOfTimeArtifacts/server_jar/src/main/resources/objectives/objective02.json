@@ -1,0 +1,8 @@
+{
+  "type": "row",
+  "ID": 2,
+  "name": "Row Shade Variety",
+  "description": "Rows with no repeated values",
+  "points": "5",
+  "restriction": "face"
+}

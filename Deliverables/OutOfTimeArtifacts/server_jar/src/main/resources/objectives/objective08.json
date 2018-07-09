@@ -1,0 +1,16 @@
+{
+  "type": "set",
+  "ID": 8,
+  "name": "Shade Variety",
+  "description": "Sets of one of each value anywhere",
+  "points": "5",
+  "restriction": "face",
+  "elements": [
+    "ONE",
+    "TWO",
+    "THREE",
+    "FOUR",
+    "FIVE",
+    "SIX"
+  ]
+}

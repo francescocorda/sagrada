@@ -1,0 +1,8 @@
+{"ID":5,
+  "name":"Lens Cutter",
+  "description":"After drafting,\nswap the drafted\ndie with a die from the\nRound Track",
+  "usableInTurns":[1,2],
+  "movesLeft":[0,1],
+  "classes":["RemoveFrom", "SwapWith", "PlaceIn"],
+  "parameters":["DRAFTPOOL", "ROUNDTRACK", "DRAFTPOOL"]
+}

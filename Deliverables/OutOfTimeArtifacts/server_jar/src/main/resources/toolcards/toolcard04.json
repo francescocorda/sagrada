@@ -1,0 +1,8 @@
+{"ID":4,
+  "name":"Lathekin",
+  "description":"Move exactly two dice,\nobeying all placement restrictions",
+  "usableInTurns":[1,2],
+  "movesLeft":[0,1],
+  "classes":["RemoveFrom", "PlaceIn", "RemoveFrom", "PlaceIn"],
+  "parameters":["WINDOW", "WINDOW", "WINDOW", "WINDOW"]
+}

@@ -1,0 +1,8 @@
+{"ID":6,
+  "name":"Flux Brush",
+  "description":"After drafting,\nre-roll the drafted die.\nIf it cannot be placed,\nreturn it to the Draft Pool",
+  "usableInTurns":[1,2],
+  "movesLeft":[0,1],
+  "classes":["RemoveFrom", "ChangeDiceFace", "PlaceIn"],
+  "parameters":["DRAFTPOOL", "RANDOM", "WINDOW"]
+}

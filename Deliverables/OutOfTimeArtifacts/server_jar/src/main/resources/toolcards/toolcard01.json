@@ -1,0 +1,8 @@
+{"ID":1,
+  "name":"Grozing Pliers",
+  "description":"After drafting,\nincrease or decrease the value\nof the drafted die by 1.\n1 may not change to 6, or 6 to 1",
+  "usableInTurns":[1,2],
+  "movesLeft":[0,1],
+  "classes":["RemoveFrom", "ChangeDiceFace", "PlaceIn"],
+  "parameters":["DRAFTPOOL", "SEQUENTIAL", "DRAFTPOOL"]
+}

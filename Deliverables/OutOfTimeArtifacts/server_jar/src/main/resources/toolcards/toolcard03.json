@@ -1,0 +1,8 @@
+{"ID":3,
+  "name":"Copper Foil\nBurnisher",
+  "description":"Move any one die in your window\nignoring shade restriction.\nYou must obey all other\nplacement restriction",
+  "usableInTurns":[1,2],
+  "movesLeft":[0,1],
+  "classes":["RemoveFrom", "EnableException", "PlaceIn"],
+  "parameters":["WINDOW", "FACE", "WINDOW"]
+}

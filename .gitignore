@@ -95,7 +95,7 @@ out
 gen
 .idea/
 /.idea/
-/Deliverables/Artifacts/
+Deliverables/Artifacts/
 
 # Manifest Files
 .MF

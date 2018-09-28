@@ -1113,7 +1113,7 @@ public class TableManager implements GUIManager {
      * and sends to the server the related face.
      */
     @FXML
-    public void faceSelected(MouseEvent event) {
+    public void faceSelected(ActionEvent event) {
         Button source = (Button) event.getSource();
         try {
             GUIData.getGUIData().getCommunicator().sendMessage(source.getText());

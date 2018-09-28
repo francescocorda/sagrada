@@ -16,9 +16,9 @@ Requirements Game-specific:
 * implemented all tool cards, from 1 to 12(complete rules)  
 
 Requirements Game-agnostic:  
-* we implemented ALL requirements listed in the game-agnostic section  
-* dynamics patternCard(advanced functionality)  
-* multiples matches(advanced functionality)  
+* we implemented all requirements listed in the game-agnostic section  
+* dynamic pattern cards (advanced functionality)  
+* multiple matches (advanced functionality)  
 
 We implemented both rmi and socket technology of communications. Each player can connect through  
 its preferred technology and in one game, can disconnect itself and reconnect using the other technology.  

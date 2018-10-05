@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.communicator.*;
 import it.polimi.ingsw.exceptions.NetworkErrorException;
 import it.polimi.ingsw.exceptions.NotValidInputException;
 import it.polimi.ingsw.view.CLIView;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class CLI {
@@ -85,8 +88,16 @@ public class CLI {
             } catch (NetworkErrorException e) {
                 if (server.equals(DEFAULT_SERVER))
                     println("server Offline");
-                else
-                    println("server Offline or WRONG ip address");
+                else {
+                    try {
+                        InetAddress address = InetAddress.getByName(server);
+                        server = address.getHostAddress();
+                        serverPort = Integer.parseInt(port);
+                        communicator.initialize(server, serverPort);
+                    } catch (NetworkErrorException | UnknownHostException e1) {
+                        println("server Offline or WRONG ip address");
+                    }
+                }
             } catch (NumberFormatException e) {
                 println("Wrong server port.");
             }
@@ -118,7 +129,16 @@ public class CLI {
                 communicator.initialize(server, serverPort);
                 temp = false;
             } catch (NetworkErrorException e) {
-                println("server Offline or wrong IP:PORT");
+                try {
+                    InetAddress address = InetAddress.getByName(server);
+                    server = address.getHostAddress();
+                    serverPort = Integer.parseInt(port);
+                    println(server);
+                    communicator.initialize(server, serverPort);
+                    temp = false;
+                } catch (NetworkErrorException | UnknownHostException e1) {
+                    println("server Offline or WRONG IP:PORT");
+                }
             } catch (NumberFormatException e) {
                 println("Wrong server port.");
             }

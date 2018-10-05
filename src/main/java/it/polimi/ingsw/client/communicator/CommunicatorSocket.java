@@ -26,6 +26,8 @@ public class CommunicatorSocket implements Communicator {
     private static final String INVALID_COMMAND = "invalid_command";
     private static final String INVALID_TIME = "invalid_time";
     private static final String ERROR_MESSAGE = "ERROR: message received: ";
+    private static final String IP_REGEX = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
 
     /**
      * creates a {@link CommunicatorSocket} Object from a given {@link #view}.
@@ -47,8 +49,11 @@ public class CommunicatorSocket implements Communicator {
     @Override
     public void initialize(String addressIP, int port) throws NetworkErrorException {
         try {
-            Socket socket = new Socket(addressIP, port);
-            connection = new ConnectionSocket(socket);
+            if(addressIP.matches(IP_REGEX)){
+                Socket socket = new Socket(addressIP, port);
+                connection = new ConnectionSocket(socket);
+            } else
+                throw new IOException();
         } catch (IOException e) {
             throw new NetworkErrorException();
         }

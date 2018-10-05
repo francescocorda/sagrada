@@ -24,6 +24,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +35,8 @@ import static it.polimi.ingsw.client.game_mode.cli.CLI.DEFAULT_SERVER_SOCKET_POR
 
 public class LoginManager implements GUIManager{
     private static final Logger logger = Logger.getLogger( LoginManager.class.getName() );
+    private static final String IP_REGEX = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
+            "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
     private static String DEFAULT_PASS = "default";
     private Communicator communicator;
     private static GUIView view;
@@ -83,8 +87,18 @@ public class LoginManager implements GUIManager{
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
             if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_RMI_PORT);
             try {
+                String ip = IPaddress.getText();
+                if(!ip.matches(IP_REGEX)){
+                    InetAddress address;
+                    try {
+                        address = InetAddress.getByName(ip);
+                        ip = address.getHostAddress();
+                    } catch (UnknownHostException e) {
+                        throw new NetworkErrorException();
+                    }
+                }
                 int port = Integer.parseInt(serverPort.getText());
-                communicator.initialize(IPaddress.getText(), port);
+                communicator.initialize(ip, port);
                 if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);
@@ -110,8 +124,18 @@ public class LoginManager implements GUIManager{
             if(IPaddress.getText().equals("")) IPaddress.setText(DEFAULT_SERVER);
             if(serverPort.getText().equals("")) serverPort.setText(DEFAULT_SERVER_SOCKET_PORT);
             try {
+                String ip = IPaddress.getText();
+                if(!ip.matches(IP_REGEX)){
+                    InetAddress address;
+                    try {
+                        address = InetAddress.getByName(ip);
+                        ip = address.getHostAddress();
+                    } catch (UnknownHostException e) {
+                        throw new NetworkErrorException();
+                    }
+                }
                 int port = Integer.parseInt(serverPort.getText());
-                communicator.initialize(IPaddress.getText(), port);
+                communicator.initialize(ip, port);
                 if(password.getText().equals("")) password.setText(DEFAULT_PASS);
                 communicator.login(username.getText(), password.getText());
                 GUIData.getGUIData().setCommunicator(communicator);

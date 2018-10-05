@@ -115,6 +115,7 @@ public class LoginManager implements GUIManager{
             } catch (NetworkErrorException | NotValidInputException e) {
                 logger.log(Level.SEVERE, "Network Error.");
             }catch (NumberFormatException e){
+                
                 logger.log(Level.SEVERE, "Wrong server port.");
             }
         } else {

@@ -50,6 +50,7 @@ public class CommunicatorSocket implements Communicator {
     public void initialize(String addressIP, int port) throws NetworkErrorException {
         try {
             if(addressIP.matches(IP_REGEX)){
+
                 Socket socket = new Socket(addressIP, port);
                 connection = new ConnectionSocket(socket);
             } else

@@ -130,6 +130,7 @@ public class CLI {
                 temp = false;
             } catch (NetworkErrorException e) {
                 try {
+
                     InetAddress address = InetAddress.getByName(server);
                     server = address.getHostAddress();
                     serverPort = Integer.parseInt(port);

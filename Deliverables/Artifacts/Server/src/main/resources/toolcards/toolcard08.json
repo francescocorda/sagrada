@@ -1,8 +1,0 @@
-{"ID":8,
-  "name":"Running Pliers",
-  "description":"After your first turn,\nimmediately draft a die.\nSkip your next turn this round",
-  "usableInTurns":[1,2],
-  "movesLeft":[0,1],
-  "classes":["SkipNextTurn", "RemoveFrom", "PlaceIn"],
-  "parameters":["", "DRAFTPOOL", "WINDOW"]
-}

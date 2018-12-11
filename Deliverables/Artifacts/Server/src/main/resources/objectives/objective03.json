@@ -1,8 +1,0 @@
-{
-  "type": "column",
-  "ID": 3,
-  "name": "Column Color Variety",
-  "description": "Columns with no repeated colors",
-  "points": "5",
-  "restriction": "color"
-}

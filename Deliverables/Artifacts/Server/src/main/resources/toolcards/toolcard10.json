@@ -1,8 +1,0 @@
-{"ID":10,
-  "name":"Grinding Stone",
-  "description":"After drafting, flip the die\nto its opposite side.\n6 flips to 1, 5 to 2, 4 to 3, etc.",
-  "usableInTurns":[1,2],
-  "movesLeft":[0,1],
-  "classes":["RemoveFrom", "ChangeDiceFace", "PlaceIn"],
-  "parameters":["DRAFTPOOL", "OPPOSITE", "DRAFTPOOL"]
-}

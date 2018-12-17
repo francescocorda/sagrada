@@ -1,6 +1,6 @@
 # Sagrada Board Game  
 
-Final Project for the Software Engineering course at PoliMi A.Y. 2017-2018  
+### Final Project for the Software Engineering course at PoliMi A.Y. 2017-2018  
 Professor Luca Mottola  
 Group #11  
 
@@ -10,7 +10,7 @@ Federico Comolli - 10496119
 Francesco Corda - 10527649
 
 
-Here's a list of our project's features and andvanced functionalities:
+### Project features and andvanced functionalities
 
 Game-specific requirements:  
 * implemented all tool cards, from 1 to 12 (complete rules)  

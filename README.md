@@ -1,8 +1,8 @@
 # Sagrada Board Game  
 
 Final Project for the Software Engineering course at PoliMi A.Y. 2017-2018  
-Professor Luca Mottola
-Group #11
+Professor Luca Mottola  
+Group #11  
 
 Group Members:  
 Alessandro Corrà - 10496307  

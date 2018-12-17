@@ -4,7 +4,7 @@
 Professor Luca Mottola  
 Group #11  
 
-Group Members:  
+#### Group Members:  
 Alessandro Corrà - 10496307  
 Federico Comolli - 10496119    
 Francesco Corda - 10527649
@@ -12,10 +12,10 @@ Francesco Corda - 10527649
 
 ### Project features and andvanced functionalities
 
-Game-specific requirements:  
+#### Game-specific requirements:  
 * implemented all tool cards, from 1 to 12 (complete rules)  
 
-Game-agnostic requirements:  
+#### Game-agnostic requirements:  
 * implemented all requirements listed in the game-agnostic section  
 * dynamic pattern cards (advanced functionality)  
 * multiple matches (advanced functionality)  

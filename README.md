@@ -5,9 +5,9 @@ Professor Luca Mottola
 Group #11  
 
 #### Group Members:  
-Alessandro Corrà - 10496307  
-Federico Comolli - 10496119    
-Francesco Corda - 10527649
+Alessandro Corrà  
+Federico Comolli    
+Francesco Corda
 
 
 ### Project features and andvanced functionalities

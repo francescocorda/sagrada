@@ -5,12 +5,12 @@ Professor Luca Mottola
 Group #11  
 
 #### Group Members:  
-Alessandro Corrà  
-Federico Comolli    
-Francesco Corda
+[Alessandro Corrà](https://github.com/AlessandroCorra)  
+[Federico Comolli](https://github.com/federicocomolli)    
+[Francesco Corda](https://github.com/francescocorda)
 
 
-### Project features and andvanced functionalities
+### Project features
 
 #### Game-specific requirements:  
 * implemented all tool cards, from 1 to 12 (complete rules)  

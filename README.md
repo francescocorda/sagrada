@@ -1,6 +1,6 @@
 # Sagrada Board Game  
 
-### Final Project for the Software Engineering course @ PoliMi 2017/2018  
+### Project for the Software Engineering course @ PoliMi 2017/2018  
 Professor Luca Mottola  
 Group #11  
 
